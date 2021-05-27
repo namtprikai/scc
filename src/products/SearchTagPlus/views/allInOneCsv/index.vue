@@ -10,9 +10,6 @@ import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 import {Type} from '../../utils/configration';
 import ScenarioTemp from "@/components/ScenarioTemp/index.vue";
 import AllInOneCsvParent from "@/views/allInOneCsv";
-import { BotConfigModule } from "@/store/modules/botConfig";
-import { OldScenario } from "@/utils/allInOneCsv/scenario";
-import EditWrap from "@/components/EditWrap/index.vue";
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 // @ts-ignore
 @Component({

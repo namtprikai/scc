@@ -76,7 +76,7 @@ import { v4 } from 'uuid';
 import { getList } from '@/api/table';
 import { MessageList } from '@/api/messageList';
 import { eventHub } from '@/init/eventHub';
-import BotConfigParent from '@/views/botConfig/index';
+
 import _ from 'lodash';
 // import SlVueTree from "sl-vue-tree";
 import { Component, Vue, Watch, Prop, PropSync, Emit } from 'vue-property-decorator';

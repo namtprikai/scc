@@ -271,7 +271,6 @@ import EditWrap from '@/components/EditWrap/index.vue';
 import { Ajax, Wait } from '@/utils/parts';
 import _ from 'lodash';
 import { bartUrl } from '@product/utils/configration';
-import { BotConfigModule } from '@/store/modules/botConfig';
 import { ScenarioModule } from '@/store/modules/scenario';
 import WrapMessage from '@/components/WrapMessage/index.vue';
 import { ScriptMatchingManager } from '@sciseed/kctools/qaRetrieval';

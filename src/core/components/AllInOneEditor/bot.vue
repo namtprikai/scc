@@ -118,12 +118,11 @@ import Toolbar from '@/components/Tinymce/toolbar';
 import Editor from '@tinymce/tinymce-vue';
 import { Ajax, Wait } from '@/utils/parts';
 import { v4 } from 'uuid';
-import { BotConfigModule } from '@/store/modules/botConfig';
 import { OldScenario, BotConfigFlow } from '@/utils/allInOneCsv/scenario';
 import { BModal } from 'bootstrap-vue';
 import { chown } from 'fs';
 import { PRODUCT_ID } from '@product/utils/configration';
-import { defaultBotFlow } from '../../store/modules/botConfig2';
+import { defaultBotFlow,BotConfig2Module } from '@/store/modules/botConfig2';
 // @ts-ignore
 @Component({
 	components: { Editor },
@@ -328,7 +327,7 @@ export default class BotConfigTemp extends Vue {
 	fixItems() {
 		if (this.botFlow && 'id' in this.botFlow) {
 			const stepName = this.botFlow.id;
-			const testBotConfig: any = this.isEdit ? BotConfigModule.TestBotConfig : BotConfigModule.BotConfig;
+			const testBotConfig: any = BotConfig2Module.BotConfig2;
 			// console.log(testBotConfig);
 			if ('scenario' in testBotConfig) {
 				const success = testBotConfig.scenario.steps[stepName].action.success;
@@ -345,7 +344,7 @@ export default class BotConfigTemp extends Vue {
 	}
 
 	getStep(stepName: string) {
-		const testBotConfig: any = this.isEdit ? BotConfigModule.TestBotConfig : BotConfigModule.BotConfig;
+		const testBotConfig: any = BotConfig2Module.BotConfig2;
 		if ('scenario' in testBotConfig) {
 			return testBotConfig.scenario.steps[stepName].action.success;
 		}
@@ -444,83 +443,8 @@ export default class BotConfigTemp extends Vue {
 	// 	}
 	// 	this.createTitle();
 	// }
-	remove() {
-		this.$modal.show('dialog', {
-			title: '削除してよろしいでしょうか？',
-			buttons: [
-				{
-					title: 'hai',
-					handler: () => {
-						this.$modal.hide('dialog');
-						this.$modal.show(
-							{
-								template: `<div>
-			<h1>This is created inline</h1>
-						<input
-						id="testBotConfigpw"
-						type="text"
-					>
-						<button @click="$emit('close')">OK</button>
-		</div>`,
-								props: ['pw'],
-							},
-							{
-								pw: '',
-							},
-							{
-								height: 'auto',
-							},
-							{
-								'before-close': (event: any) => {
-									console.log('this will be called before the modal closes');
-									const pwinput: any = document.getElementById('testBotConfigpw');
-									if (pwinput.value === '123') {
-										this.doRemove();
-									} else {
-										this.$modal.show('dialog', {
-											title: '間違い',
-											buttons: [
-												{
-													title: 'hai',
-												},
-											],
-										});
-									}
-								},
-							},
-						);
-					},
-				},
-			],
-		});
-		// 		this.$modal.show(
-		// 	"パスワードを入力してください",
-		// 	`<input type='text' id='password'>`,
-		// 	() => {
-		// 		if ($("#password").val() === "sciseed_HIS_Delete") {
-		// 			this.modal.show(
-		// 				"本当に削除してよろしいでしょうか？",
-		// 				``,
-		// 				() => {
-		// 					this.doRemove();
-		// 				},
-		// 				() => {}
-		// 			);
-		// 		} else {
-		// 			this.modal.open("パスワードが違います", ``, () => {}, () => {});
-		// 		}
-		// 	},
-		// 	() => {}
-		// );
-	}
 
-	// this.modal.openOk(`保存しました`, ``);
-	doRemove() {
-		console.log('doRewmove');
-		if (this.botFlow) {
-			BotConfigModule.dleateTestFlow(this.botFlow.id);
-		}
-	}
+
 
 	// addNext(step: string, type: "number" | "or") {
 	// 	BotConfigModule.addTestFlow(step);

@@ -1,7 +1,7 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { BotConfig, BotConfigFlow } from '@/store/modules/botConfig2';
 import { BotConfig2Module } from '@/store/modules/botConfig2';
-import { BotConfigModule } from '@/store/modules/botConfig';
+
 import AllInOneScript from '../../components/AllInOneScript/index.vue';
 import { AllInOneCsvMaker } from '@/utils/allInOneCsv';
 import { ScriptDataTree, ScriptDataTreeCrawler } from '@/utils/allInOneCsv/script';

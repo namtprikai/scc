@@ -20,7 +20,7 @@ import VueSanitize from 'vue-sanitize';
  * it will intercept your request and you won't see the request in the network.
  * If you remove `import '../mock'` it will automatically request easy-mock data.
  */
-import '../../../mock'; // simulation data requests
+// import '../../../mock'; // simulation data requests
 import VModal from 'vue-js-modal';
 import App from './App.vue';
 // import parentstore from '@/store';

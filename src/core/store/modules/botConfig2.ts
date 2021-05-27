@@ -10,7 +10,6 @@ import { UpdateServer } from '@/api/updateServer';
 import type { BotConfig, BotConfigFlow } from '@/utils/allInOneCsv/scenario';
 import { changeNewBotConfig } from '@/utils/allInOneCsv/makeCsv';
 import { changeOldBotConfig, changeOldSearchConfig } from '@/utils/allInOneCsv/makeScript';
-import { BotConfigModule } from './botConfig';
 import { TalkScriptModule } from './talkScript';
 const ajax: Ajax = new Ajax({});
 function isDuplicateFlow(flowList: BotConfigFlow[], scenarioId: string): boolean | BotConfigFlow {

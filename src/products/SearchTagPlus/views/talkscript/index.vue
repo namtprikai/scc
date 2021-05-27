@@ -50,7 +50,6 @@ import { CallbackChecks } from '@/components/EditWrap/csv.i';
 import EditWrap from '@/components/EditWrap/csv.vue';
 import EditEnd from '@/components/EditWrap/end.vue';
 import { BotConfig2Module } from '@/store/modules/botConfig2';
-import { BotConfigModule } from '@/store/modules/botConfig';
 import AllInOneScript from '../../components/AllInOneScript/index.vue';
 import { AllInOneCsvMaker } from '@/utils/allInOneCsv';
 import { PRODUCT_ID, subsystemUrl, scriptUrl,Type } from '../../utils/configration';

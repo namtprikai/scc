@@ -26,7 +26,7 @@ import { UpdateServer } from '@/api/updateServer';
 import { clearTimeout, setTimeout } from 'timers';
 // import { TalkScript } from "@/store/modules/talkscript";
 import { v4 } from 'uuid';
-import { BotConfigModule } from '@/store/modules/botConfig';
+
 import { OldScenario } from '@/utils/allInOneCsv/scenario';
 import { BModal } from 'bootstrap-vue';
 import { chown } from 'fs';

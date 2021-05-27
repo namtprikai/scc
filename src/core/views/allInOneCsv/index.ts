@@ -15,7 +15,6 @@ import { TalkScript, ScriptDataTree, TalkScriptModule, ParseTreeToList, ScriptDa
 import { Ajax } from '@/utils/parts';
 import { UpdateServer } from '@/api/updateServer';
 import { PRODUCT_ID, subsystemUrl, scriptUrl, Type } from '@product/utils/configration';
-import { BotConfigModule } from '@/store/modules/botConfig';
 import { OldScenario } from '@/utils/allInOneCsv/scenario';
 import { BotConfig2Module } from '../../store/modules/botConfig2';
 const Encoding = require('encoding-japanese');

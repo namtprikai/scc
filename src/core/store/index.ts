@@ -4,7 +4,6 @@ import { IAppState } from './modules/app';
 import { IUserState } from './modules/user';
 import { IScenarioState } from './modules/scenario';
 import { ITalkScriptState } from './modules/talkScript';
-import { IBotConfigState } from './modules/botConfig';
 Vue.use(Vuex);
 
 export interface IRootState {
