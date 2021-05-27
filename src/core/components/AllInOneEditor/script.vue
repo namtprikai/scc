@@ -207,29 +207,6 @@
 						</b-card>
 					</div>
 				</div>
-
-				<!-- <b-form-group label="テキスト">
-					<b-form-textarea id="textarea" name="text" type="text" rows="17" v-model="scriptData.data.value"></b-form-textarea>
-				</b-form-group>-->
-				<!-- <b-form-group label="シナリオID">
-					<b-form-input
-						id="textinput2"
-						name="title"
-						type="text"
-						v-model="scriptData.data.scenario"
-					/>
-				</b-form-group>-->
-				<!-- <b-form-group label="選択肢" v-if="currentBotData">
-					<b-form-input
-						name="title"
-						type="text"
-						v-model="scenario.label"
-						v-for="(scenario,index) in currentBotData.next"
-						:key="index"
-					/>
-<button @click="removeBotNext(scenario.id)">-</button>
-<button @click="addBotNext()">+</button>
-				</b-form-group>-->
 			</div>
 		</div>
 		<b-modal ref="synonymModal" hide-footer no-close-on-backdrop scrollable>
