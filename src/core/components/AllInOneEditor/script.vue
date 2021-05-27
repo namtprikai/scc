@@ -256,7 +256,6 @@
 	}
 }
 </style>
-
 <script lang="ts">
 import { v4 } from 'uuid';
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
