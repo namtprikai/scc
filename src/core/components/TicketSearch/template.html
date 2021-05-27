@@ -1,0 +1,47 @@
+<b-container style="position: relative">
+		<div
+			class="grafhBox"
+			v-for="grafhConf in grafhList"
+			:style="{width:grafhConf.size}"
+		>
+			<div v-if="grafhConf.chartType=='bar'">
+				<barChart
+					class="mx-auto my-2"
+					v-if="grafhConf.data.length > 0"
+					v-loading="listLoading"
+					v-bind:data="grafhConf.data"
+					width="100%"
+					height="400px"
+					:titleText="grafhConf.titleText"
+					:valueUnit="grafhConf.valueUnit"
+				/>
+			</div>
+			<div v-if="grafhConf.chartType=='pie'">
+				<pieChart
+					class="mx-auto my-2"
+					v-if="grafhConf.data.length > 0"
+					v-loading="listLoading"
+					v-bind:data="grafhConf.data"
+					width="100%"
+					height="400px"
+					:titleText="grafhConf.titleText"
+					:valueUnit="grafhConf.valueUnit"
+					:xLabelAll="grafhConf.xLabelAll"
+				/>
+			</div>
+			<div v-if="grafhConf.chartType=='pareto'">
+				<paretoChart
+					class="mx-auto my-2"
+					v-if="grafhConf.data.length > 0"
+					v-loading="listLoading"
+					v-bind:data="grafhConf.data"
+					width="100%"
+					height="800px"
+					:titleText="grafhConf.titleText"
+					:valueUnit="grafhConf.valueUnit"
+					:xLabelAll="grafhConf.xLabelAll"
+				/>
+			</div>
+		</div>
+	</b-row>
+</b-container>

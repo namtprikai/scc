@@ -1,0 +1,79 @@
+@import '@product/styles/custom.scss';
+$width: 160px;
+.fileUpload {
+	&__body {
+		padding: 12px;
+		margin-bottom: 50px;
+	}
+	&__footer {
+		bottom: 0px;
+		display: flex;
+		justify-content: space-around;
+		align-items: flex-end;
+		position: absolute;
+		height: 50px;
+		width: 100%;
+		padding: 8px 6px;
+	}
+	&__upload-image {
+		width: $width;
+		height: $width * 0.7;
+		// border: solid 0.1px #999999;
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-color: $Light;
+	}
+	&__upload-text {
+		// white-space: nowrap;
+		// width: 150px;
+		font-size: 12px;
+		margin: 0 5px 0px 0;
+		// text-overflow: ellipsis;
+		// overflow: hidden;
+		word-wrap: break-word;
+		&--date {
+			color: $Text--Light;
+		}
+	}
+	&__upload-text-title {
+		// width: 150px;
+		font-size: 10px;
+		margin: 0px 0 3px 0;
+		// padding-left: 5px;
+		// border-bottom: thin dashed #4169e1;
+		// border-left: thin solid #4169e1;
+	}
+	&__upload-list {
+		flex-wrap: wrap;
+		align-items: stretch;
+		display: inline-flex;
+		// justify-content: space-between;
+		// &::after {
+		// 	content: "";
+		// 	display: block;
+		// 	width: 150px;
+		// }
+	}
+
+	// &__upload-list li {
+	// 	list-style: none;
+	// 	display: inline-block;
+	// 	margin-left: 10px;
+	// }
+	&__file {
+		// // @include box-shadow($input-box-shadow);
+		// border: $card-border-width solid $card-border-color;
+		// @include border-radius($card-border-radius);
+		margin: 12px 12px 12px 0px;
+		width: $width + 2px;
+		// box-shadow: ;
+	}
+}
+
+.appendix {
+	font-size: 8px;
+}
+.file-table {
+	font-size: 12px;
+}

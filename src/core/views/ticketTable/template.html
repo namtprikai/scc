@@ -1,0 +1,84 @@
+<div>
+		<TabHeader>
+				<b-button size="sm" v-on:click="search()" variant="primary" class="mr-2">
+					<b-spinner small v-if="isSearch"></b-spinner>検索
+				</b-button>
+				<b-button size="sm" v-on:click="csv()">CSVダウンロード</b-button>
+		</TabHeader>
+<div class="tab-body">
+	<b-container>
+		<b-row>
+			<b-col lg="6">
+				<el-date-picker
+					picker-options="{lang:'ja'}"
+					v-model="startdate"
+					type="date"
+					placeholder="Pick a date"
+					style="width: 100%"
+				/>
+			</b-col>
+			<b-col lg="6">
+				<el-date-picker
+					v-model="enddate"
+					type="date"
+					placeholder="Pick a date"
+					style="width: 100%"
+				/>
+			</b-col>
+		</b-row>
+		<hr />
+		<b-row class="mb-4" v-for="(condition,index) in conditionList" :key="index">
+			<b-col>
+				<b-form-group :label="condition.label" class="lead">
+					<b-form-checkbox
+						v-for="(check,j) in condition.checkList"
+						v-model="check.flg"
+						inline
+						:key="j"
+						>{{ check.label }}
+					</b-form-checkbox>
+				</b-form-group>
+				<b-button size="sm" v-on:click="selectAllStatus(condition)" class="mr-2"
+					>全て</b-button
+				>
+				<b-button size="sm" v-on:click="unselectAllStatus(condition)">解除</b-button>
+			</b-col>
+		</b-row>
+		<hr />
+			<div class="section text-center">
+				<b-button class variant="primary" size="lg" @click="search()">検索</b-button>
+			</div>
+	</b-container>
+	<el-tabs v-model="activeName" style="margin-top: 15px" type="border-card">
+		<el-tab-pane label="チケット" key="table" name="table">
+			<!-- <keep-alive> -->
+			<el-table
+				v-if="ticketGroup.tableData.length>0"
+				v-loading="isSearch"
+				:data="ticketGroup.tableData"
+				element-loading-text="Loading"
+				border
+				fit
+				highlight-current-row
+			>
+				<el-table-column
+					v-for="(TableKey,index) in ticketGroup.TableKeyList"
+					align="center"
+					v-bind:key="index"
+					v-bind:label="TableKey.label"
+				>
+					<template slot-scope="scope">{{ scope.row[index] }}</template>
+				</el-table-column>
+			</el-table>
+			<!-- </keep-alive> -->
+		</el-tab-pane>
+		<el-tab-pane label="レポート" key="grafh" name="grafh">
+			<!-- <keep-alive> -->
+			<div v-if="activeName=='grafh'">
+				<ticket-grafh :tickets="ticketGroup.keyData"></ticket-grafh>
+			</div>
+			<!-- </keep-alive> -->
+		</el-tab-pane>
+	</el-tabs>
+</div>
+</div>

@@ -1,0 +1,13 @@
+<div>
+	<treedion
+		v-for="(script,index) in scriptTreeData.children"
+		:currentItem="CurrentItem"
+		:botData="botData"
+		:index="index"
+		:parentData="scriptTreeData"
+		:key="script.id"
+		:data="script"
+		@setCurrentItem="setCurrentItem"
+		@SelectItem="SelectItem"
+	></treedion>
+</div>

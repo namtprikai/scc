@@ -1,0 +1,210 @@
+<template>
+	<div>
+		<div v-if="isSet">
+			<!--<b-col lg="4" class="pb-2">-->
+			<b-button class="button" v-on:click="save">保存</b-button>
+			<!--</b-col>
+      <b-col lg="4" class="pb-2">-->
+			<span v-if="Step === ParentStep">
+				<b-button class="button" v-on:click="deleate">削除</b-button>
+			</span>
+			<span v-else>
+				<b-button class="button" v-on:click="remove">削除</b-button>
+			</span>
+			<!--</b-col>-->
+		</div>
+		<!-- <edit-wrap/> -->
+		<div class="flow" v-if="Flow && Step && isSet">
+			<div v-if="Step === ParentStep">
+				<b-form-input type="text" v-model="Scenario.title" />
+			</div>
+			<div class="flow" v-if="isSet">
+				<scenario-temp :flow="Flow" :step="Step" :parentstep="ParentStep" :sibling="Sibling" />
+			</div>
+		</div>
+
+		<!-- <div class="contextmenu" ref="contextmenu" v-show="contextMenuIsVisible">
+			<div @click="removeNode">Remove</div>
+    </div>-->
+	</div>
+</template>
+
+<script lang="ts">
+import { v4 } from 'uuid';
+import { getList } from '@/api/table';
+import { Component, Vue } from 'vue-property-decorator';
+import { eventHub } from '@/init/eventHub';
+import ScenarioParent from '@/views/scenario/index';
+import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
+
+import ScenarioTemp from '@/components/ScenarioTemp/index.vue';
+import EditWrap from '@/components/EditWrap/index.vue';
+// import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
+// @ts-ignore
+@Component({
+	filters: {
+		statusFilter(status: string) {
+			const statusMap: { [id: string]: string } = {
+				published: 'success',
+				draft: 'gray',
+				deleted: 'danger',
+			};
+			return statusMap[status];
+		},
+	},
+	components: {
+		SlVueTree,
+		ScenarioTemp,
+		EditWrap,
+	},
+})
+export default class ScenarioComp extends ScenarioParent {}
+</script>
+<style type="sass" lang="scss">
+.sl-vue-tree-title {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.scenario {
+	width: 90%;
+	margin: auto;
+
+	&__scenarioTemp {
+		background-color: rgba(218, 134, 134, 0.356);
+		border-left: 1px solid #aaa;
+		padding-left: 30px;
+		padding-top: 12px;
+		padding-bottom: 12px;
+
+		&__ar {
+			margin: auto;
+		}
+
+		&__boder {
+			position: relative;
+			// border: 1px solid #aaa;
+			// margin-top: 12px;
+			margin-right: 6px;
+			padding: 10px;
+			background: #fff;
+			box-shadow: #aaa 3px 3px 3px;
+			// overflow: hidden;
+
+			.border {
+				z-index: 0;
+				content: '';
+				display: block;
+				position: absolute;
+				// border-left: solid 1px #aaa;
+				border-bottom: solid 1px #aaa;
+				width: 30px;
+				height: 1px; //calc(150% + 12px);
+				bottom: 50%;
+				left: -30px;
+			}
+		}
+
+		&__textarea {
+			resize: both;
+			width: 100%;
+		}
+
+		&__list {
+			position: relative;
+			border: solid 1px #aaa;
+			padding: 6px;
+		}
+	}
+
+	&__next {
+		padding-left: 10px;
+	}
+}
+
+// .firest {
+// 	.scenario__scenarioTemp__boder {
+// 		&::after {
+// 			z-index: 0;
+// 			content: '';
+// 			position: absolute;
+// 			border-left: solid 1px #aaa;
+// 			border-bottom: solid 1px #aaa;
+// 			width: 30px;
+// 			height: calc(50% + 12px);
+// 			bottom: 50%;
+// 			left: -30px;
+// 		}
+// 	}
+
+// }
+</style>
+<style type="sass" lang="scss" scoped>
+@import '~sl-vue-tree/dist/sl-vue-tree-minimal.css';
+/* .sl-vue-tree-node {
+	margin-left: 20px;
+	padding-left: 20px;
+}
+.sl-vue-tree {
+	margin-left: 20px;
+	padding-left: 20px;
+} */
+.addButton {
+	right: 0px;
+	display: block;
+	float: right;
+}
+.sl-vue-tree-title {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.contextmenu {
+	position: fixed;
+	background-color: white;
+	color: black;
+	border-radius: 2px;
+	cursor: pointer;
+}
+.contextmenu > div {
+	padding: 10px;
+}
+.contextmenu > div:hover {
+	background-color: rgba(100, 100, 255, 0.5);
+}
+.last-event {
+	color: white;
+	background-color: rgba(100, 100, 255, 0.5);
+	padding: 10px;
+	border-radius: 2px;
+}
+.tree-container {
+	flex-grow: 1;
+}
+.sl-vue-tree.sl-vue-tree-root {
+	flex-grow: 1;
+	overflow-x: hidden;
+	overflow-y: auto;
+	/* height: 300px; */
+}
+.json-preview {
+	flex-grow: 1;
+	margin-left: 10px;
+	background-color: #13242d;
+	border: 1px solid black;
+	padding: 10px;
+}
+.item-icon {
+	display: inline-block;
+	text-align: left;
+	width: 20px;
+}
+.button {
+	margin: 5px;
+}
+.flow {
+	margin-top: 15px;
+}
+</style>

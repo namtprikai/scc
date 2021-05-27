@@ -1,0 +1,16 @@
+<div>
+	<div v-if="botData">
+		<botdion
+			@editing="editing"
+			v-for="(child,index) in botData.next"
+			:key="index"
+			:index="index"
+			:data="child"
+			:parentData="botData"
+			:currentItem="CurrentItem"
+			　@setCurrentItem="setCurrentItem"
+			@SelectItem="SelectItem"
+		/>
+	</div>
+	<!-- <treedion v-for="(script,index) in scriptTreeData" :currentItem="CurrentItem" :botData="botData" :index="index" :parentData="scriptTreeData" :key="index" :data="script" @setCurrentItem="setCurrentItem" ></treedion> -->
+</div>

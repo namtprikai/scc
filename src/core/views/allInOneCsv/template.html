@@ -1,0 +1,76 @@
+<div>
+	<TabHeader>
+		<EditEnd class="mr-2" />
+		<b-button
+			size="sm"
+			v-on:click="save"
+			variant="primary"
+			:disabled="!Boolean(file)&&!Boolean(synonymFile)"
+		>
+			反映ステップへ進む
+		</b-button>
+	</TabHeader>
+	<div class="controllErea tab-body">
+		<b-container class="bv-example-row bv-example-row-flex-cols conteiner mt-3">
+			<b-row class="ml-0 mb-2">
+				<b-col lg="6" class="pb-2">
+					<b-form-file
+						accept=".csv"
+						v-model="file"
+						:state="Boolean(file)"
+						placeholder="FAQファイルを選択してください"
+						drop-placeholder="Drop file here..."
+						browse-text="選択"
+					></b-form-file>
+					<b-icon id="faq" icon="info-circle" font-scale="1"></b-icon>
+					<b-popover :target="`faq`" :placement="'left'" triggers="hover focus">
+						<template slot:content>
+							FAQと類義語のうち、更新したいファイルを選んでください。
+							<ul>
+								<li>FAQと類義語の両方を更新したい場合は、両方を選択してください。</li>
+								<li>
+									一方のみを更新したい場合は、その一方のファイルのみを選択してください。
+								</li>
+							</ul>
+						</template>
+					</b-popover>
+				</b-col>
+				<b-col lg="6" class="pb-2">
+					<b-form-file
+						accept=".csv"
+						v-model="synonymFile"
+						:state="Boolean(synonymFile)"
+						placeholder="類義語ファイルを選択してください"
+						drop-placeholder="Drop file here..."
+						browse-text="選択"
+					>
+					</b-form-file>
+					<b-icon id="synonym" icon="info-circle" font-scale="1"></b-icon>
+					<b-popover :target="`synonym`" :placement="'left'" triggers="hover focus">
+						<template slot:content>
+							FAQと類義語のうち、更新したいファイルを選んでください。
+							<ul>
+								<li>FAQと類義語の両方を更新したい場合は、両方を選択してください。</li>
+								<li>
+									一方のみを更新したい場合は、その一方のファイルのみを選択してください。
+								</li>
+							</ul>
+						</template>
+					</b-popover>
+				</b-col>
+			</b-row>
+
+			<b-row class="ml-0">
+				<b-col lg="12" class="pb-2">
+					<div>{{scenario}}</div>
+				</b-col>
+			</b-row>
+		</b-container>
+		<edit-wrap
+			:messages="['編集を開始すると、他のユーザーは編集できなくなります。 編集が終了したら「編集終了」をクリックして終了してください。','編集を行って保存すると編集前の状態は失われます。バックアップを取りたい場合は以下のチェックボックスを選択し、編集前の状態をCSVファイルで保存してください。']"
+			:editingmessage="''"
+			:callback-checks="callbackChecks"
+			:isEndbutton="false"
+		/>
+	</div>
+</div>

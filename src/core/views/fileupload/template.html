@@ -1,0 +1,99 @@
+<div>
+	<h2>{{Title}}</h2>
+	<p>
+		<!-- <input type="file" id="file" @change="selectedFile" /> -->
+		<b-form-file
+			@input="selectedFile"
+			placeholder="ファイルを選択してください"
+			class="mb-4"
+			multiple
+		></b-form-file>
+		<label id="output"></label>
+		<b-button
+			v-on:click="confirmOpened = true"
+			v-bind:disabled="uploadFileList==null"
+			style="margin-right: 10px"
+			>アップロード</b-button
+		>
+		<b-button v-on:click="reload()">リロード</b-button>
+	</p>
+	<wrap-message v-if="isUpload" :message="message" />
+	<div>
+		<b-input-group class="mb-2">
+			<b-input-group-prepend is-text>
+				<b-icon icon="search"></b-icon>
+			</b-input-group-prepend>
+			<b-form-input
+				v-model="filterText"
+				type="search"
+				placeholder="ファイル名から絞り込む　※ファイル名に存在する文字列を入力してください"
+			></b-form-input>
+		</b-input-group>
+	</div>
+	<div class="fileUpload__upload-list">
+		<li v-for="file in FileList" v-bind:key="file.Key">
+			<span class="fileUpload__file">
+				<div
+					class="fileUpload__upload-image"
+					:style="{ backgroundImage:'url('+file.url+')' }"
+					v-on:click="imagemodal(file.url,file.Key)"
+				>
+					<!-- <img class="upload-image" :src="file.url"> -->
+				</div>
+				<h2 class="fileUpload__upload-text-title">ファイル名:</h2>
+				<div class="fileUpload__upload-text">{{ file.Key }}</div>
+				<h2 class="fileUpload__upload-text-title">最終更新日:</h2>
+				<div class="fileUpload__upload-text">{{ file.LastModified }}</div>
+				<b-button class="clipcopy" :data-clipboard-text="getTag(file.Key)"
+					>コピー</b-button
+				>
+				<b-button v-on:click="deleate(file.Key)" class="ml-1">削除</b-button>
+			</span>
+		</li>
+	</div>
+	<transition name="modal" v-if="confirmOpened">
+		<div class="modal-mask">
+			<div class="modal-wrapper">
+				<div class="modal-container">
+					<div class="modal-header">
+						<h3>アップロード</h3>
+					</div>
+					<div class="modal-body">
+						<p>次のファイルをアップロードします。</p>
+						<table class="file-table" align="center">
+							<tr>
+								<th>ローカルファイル名</th>
+								<th>リモートファイル名</th>
+							</tr>
+							<tr v-for="(uploadFile,i) in uploadFileList" :key="i">
+								<td>{{ uploadFile.name }}</td>
+								<td>
+									<input
+										type="text"
+										v-model="fileNameList[i]"
+										:placeholder="fileNameList[i].name"
+									/>
+								</td>
+							</tr>
+						</table>
+						<br />
+						<br />
+						<p class="appendix">
+							※アップロード先でファイル名を変更する場合は、リモートファイル名に変更後の名前を入力してください。
+							<br />(未入力の場合や、スペースのみ入力されている場合は、ローカルファイル名が使用されます)
+						</p>
+						<p class="appendix">
+							※日本語、英数字(a～z,A～Z,0～9)、および、各種記号が利用できます。
+							<br />(記号は「", ?, :, |, &lt;, >, *, \, スペース」以外のもの)
+						</p>
+						<p>よろしいですか？</p>
+					</div>
+					<div class="modal-footer">
+						<b-button @click="cancel()">Cancel</b-button>
+						<b-button @click="ok()">OK</b-button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</transition>
+</div>

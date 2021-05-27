@@ -1,0 +1,75 @@
+/* base */
+$Primary: #164f88;
+$Secondary: #000000;
+$Denger: #941e16;
+$Warning: #d8bc47;
+$Success: #08919e;
+$Info: #26bec4;
+$Light: #e8e8e8;
+$Dark: #494653;
+$White: #fff;
+$Black: #000;
+
+$colors: (
+	'primary': $Primary,
+	'secondary': $Secondary,
+	'denger': $Denger,
+	'warning': $Warning,
+	'success': $Success,
+	'info': $Info,
+	'light': $Light,
+	'dark': $Dark,
+	'white': $White,
+	'black': $Black,
+) !default;
+/* Background */
+$Background--Primary: lighten($Primary, 10%);
+$Background--Secondary: lighten($Secondary, 10%);
+$Background--Denger: lighten($Denger, 10%);
+$Background--Warning: lighten($Warning, 10%);
+$Background--Success: lighten($Success, 10%);
+$Background--Info: lighten($Info, 10%);
+$Background--Light: lighten($Light, 10%);
+$Background--Dark: lighten($Dark, 10%);
+/* TextColor */
+$Text--Primary: darken($Primary, 30%);
+$Text--Secondary: darken($Secondary, 30%);
+$Text--Denger: darken($Denger, 30%);
+$Text--Warning: darken($Warning, 30%);
+$Text--Success: darken($Success, 30%);
+$Text--Info: darken($Info, 30%);
+$Text--Light: darken($Light, 30%);
+$Text--Dark: darken($Dark, 30%);
+/* ButtonTextColor */
+$ButtonText--Primary: $White;
+$ButtonText--Secondary: $White;
+$ButtonText--Denger: $White;
+$ButtonText--Warning: $White;
+$ButtonText--Success: $White;
+$ButtonText--Info: $White;
+$ButtonText--Light: darken($Light, 50%);
+$ButtonText--Dark: $White;
+// $base:#1b224c;
+// $back:#edf2f6;
+// $active:#12b88c;
+// $logo:#008d6a;
+// $negative:#7b7b7b;
+// $arert:#ff2700;
+
+/* Sidebar */
+$sideBarWidth: 180px;
+$subMenuBg: darken($Dark, 10%);
+$subMenuHover: darken($Dark, 15%);
+$subMenuActiveText: $White;
+
+/* Login page */
+$loginBg: $Dark;
+$lightGray: $Light;
+$darkGray: darken($Light, 10%);
+
+/* File upload area */
+
+$fileUploadHeight: 200px;
+$fileUploadBorderColor: lighten($Success, 10%);
+$fileUploadBorderColor--hover: lighten($Success, 20%);
+$fileUploadBorderColor--invalid: $Light; //;lighten($Denger, 20%);

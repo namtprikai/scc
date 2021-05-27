@@ -1,0 +1,54 @@
+<div>
+		<TabHeader>
+			<b-form inline class="tabHeaderForm">
+				<b-form-input v-model="searchText" placeholder="" class="mr-2"></b-form-input>
+				<EditEnd />
+				<b-button class="ml-2" size="sm" variant="primary" @click="openSaveModal()">反映ステップへ進む</b-button>
+			</b-form>
+
+
+	</TabHeader>
+	<div v-for="(script,index) in FilteredLeafs">
+		<div class="treeDionWrap">
+			<div class="treeDionDrop">
+				<div class="treeDion">
+					<div class="treeDion__item" @click="SelectItem(script)" :class="{
+						'treeDion__item--active': script.item.isActive,
+						'treeDion__item--editing': script.item.isEditing,
+						'treeDion__item--edited': script.item.isEdited,
+					}">
+						<span v-if="script.type=='bot'">
+							{{script.item.label||script.item.text}}
+						</span>
+						<span v-else-if="script.type=='script'">
+							{{script.item.label||script.item.text}}
+						</span>
+						<span v-else>
+							{{script}}
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<edit-wrap
+	:messages="[
+		'編集を開始すると、他のユーザーは編集できなくなります。 編集が終了したら「編集終了」をクリックして終了してください。',
+		'編集を行って保存すると編集前の状態は失われます。バックアップを取りたい場合は以下のチェックボックスを選択し、編集前の状態をCSVファイルで保存してください。',
+	]"
+	:editingmessage="''"
+	:callback-checks="callbackChecks"
+	:isEndbutton="false"
+/>
+	<!-- <treedion
+		v-for="(script,index) in ScriptTreeData.children"
+		:currentItem="CurrentItem"
+		:botData="botData"
+		:index="index"
+		:parentData="ScriptData"
+		:key="script.id"
+		:data="script"
+		@setCurrentItem="setCurrentItem"
+		@SelectItem="SelectItem"
+	></treedion> -->
+</div>
