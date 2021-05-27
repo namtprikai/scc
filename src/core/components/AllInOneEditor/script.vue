@@ -3,27 +3,6 @@
 		<!-- <wrap-message v-if="isMessage" :message="message" /> -->
 
 		<div v-if="Is_show">
-			<!-- <div class="section">
-				<b-card no-body>
-					<b-card-header>データ種別</b-card-header>
-					<b-card-body>
-						<b-form-radio
-							value="node"
-							v-model="scriptData.data.type"
-							name="some-radios"
-							inline
-							disabled
-						>カテゴリ</b-form-radio>
-						<b-form-radio
-							value="leaf"
-							v-model="scriptData.data.type"
-							name="some-radios"
-							inline
-							disabled
-						>スクリプト</b-form-radio>
-					</b-card-body>
-				</b-card>
-			</div> -->
 			<div class="section">
 				<b-card no-body>
 					<b-card-header>
