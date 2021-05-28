@@ -1,50 +1,30 @@
 import { Data } from "@/store/modules/talkScript";
-
-export interface IArticleData {
+interface ISAIAPIData{
+	id:number;
+	created?:Date;
+	modified?:Date;
+}
+export interface IConditionGroupData extends ISAIAPIData{
+	id:number;
+	level:number;
+	is_setting:boolean;
+	label:string;
+}
+export interface IConditionData extends ISAIAPIData{
+	id:number;
+	conditiongroup_id:number;
+	label:string;
+}
+export interface IUserData extends ISAIAPIData{
   id: number
-  status: string
-  title: string
-  abstractContent: string
-  fullContent: string
-  sourceURL: string
-  imageURL: string
-  timestamp: string | number
-  platforms: string[]
-  disableComment: boolean
-  importance: number
-  author: string
-  reviewer: string
-  type: string
-  pageviews: number
-}
-
-export interface IRoleData {
-  key: string
-  name: string
-  description: string
-  routes: any
-}
-
-export interface ITransactionData {
-  orderId: string
-  timestamp: string | number
-  username: string
-  price: number
-  status: string
-}
-
-export interface IUserData {
-  id: number
-  username: string
-  password: string
+  password?: string
   name: string
   email: string
-  phone: string
-  avatar: string
-  introduction: string
-  roles: string[]
+		is_lock:boolean;
+		created?:Date;
+		modified?:Date;
 }
-export interface IAdminData {
+export interface IAdminData extends ISAIAPIData{
 	id: number;
 	name: string;
 	password: string;
@@ -57,7 +37,7 @@ export interface IAdminData {
 	created?: Date;
 	modified?: Date;
 }
-export interface ICategoryData {
+export interface ICategoryData extends ISAIAPIData{
 	id:number;
 	product_id:Array<number>;
 	parent_id: number;
@@ -67,7 +47,22 @@ export interface ICategoryData {
 	created:Date;
 	modified: Date;
 }
-export interface IPolicyGroupData {
+export interface IPolicyGroupData extends ISAIAPIData{
 	label:string;
 	created:Date;
+}
+export interface IQuestion extends ISAIAPIData{
+	title:string;
+	label:string;
+	is_public:boolean;
+}
+
+export interface IKeyword extends ISAIAPIData{
+	label:string;
+	weight:number;
+}
+
+export interface IPolicy extends ISAIAPIData{
+	label:string;
+	is_sharing:boolean;
 }
