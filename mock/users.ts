@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { IUserData } from '../src/api/types'
+import { IUserData } from '../src/core/api/types'
 
 const userList: IUserData[] = [
   {

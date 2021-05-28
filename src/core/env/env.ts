@@ -4,6 +4,13 @@ export const Conf: any = {
 	// 	ApiUrl: "https://ai-chat-supporter.herokuapp.com",
 	// 	scriptUrl: "https://nlp.ai-x-supporter.com/api",
 	// },
+	mock:{
+		subsystemUrl: 'http://127.0.0.1:9528/api',
+		ApiUrl: 'http://127.0.0.1:9528/api',
+		scriptUrl: 'http://127.0.0.1:9528/api',
+		s3: 'https://s3-ap-northeast-1.amazonaws.com/file.upload.aichatsupporter',
+    bartUrl: 'https://builder.ai-x-supporter.com/v1/api/',
+	},
 	development: {
 		subsystemUrl: 'https://ozi4wzcd38.execute-api.ap-northeast-1.amazonaws.com/prod',
 		ApiUrl: 'https://ai-chat-supporter.herokuapp.com',
