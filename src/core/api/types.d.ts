@@ -1,4 +1,3 @@
-import { Data } from "@/store/modules/talkScript";
 interface ISAIAPIData{
 	id:number;
 	created?:Date;

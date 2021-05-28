@@ -446,7 +446,42 @@ paths:
                     properties:
                       routes:
                         $ref: '#/components/schemas/Role/properties/routes'
-  /users:
+  /admin:
+    get:
+      tags:
+        - admins
+      summary: Get admin list
+      description: Return a list of users
+      operationId: getAdmins
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        # - name: name
+        #   in: query
+        #   description: Used to filter users by matched username substring
+        #   schema:
+        #     type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+		/users:
     get:
       tags:
         - users

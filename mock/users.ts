@@ -7,21 +7,15 @@ const userList: IUserData[] = [
     id: 0,
     password: 'any',
     name: 'Super Admin',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    introduction: 'I am a super administrator',
     email: 'admin@test.com',
-    phone: '1234567890',
-    roles: ['admin']
+				is_lock:false,
   },
   {
     id: 1,
     password: 'any',
     name: 'Normal Editor',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    introduction: 'I am an editor',
     email: 'editor@test.com',
-    phone: '1234567890',
-    roles: ['editor']
+				is_lock:false,
   }
 ]
 const userCount = 100
@@ -31,11 +25,8 @@ for (let i = 2; i < userCount; i++) {
     id: i,
     password: faker.random.alphaNumeric(20),
     name: faker.name.findName(),
-    avatar: faker.image.imageUrl(),
-    introduction: faker.lorem.sentence(20),
     email: faker.internet.email(),
-    phone: faker.phone.phoneNumber(),
-    roles: ['visitor']
+				is_lock:false,
   })
 }
 
