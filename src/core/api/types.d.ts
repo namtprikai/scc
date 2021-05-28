@@ -3,6 +3,9 @@ interface ISAIAPIData{
 	created?:Date;
 	modified?:Date;
 }
+export interface IRoleData{
+	[key:any]:any;
+}
 export interface IProductData extends ISAIAPIData{
 	name:string;
 	confing:Object;

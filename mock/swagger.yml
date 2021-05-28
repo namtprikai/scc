@@ -197,7 +197,7 @@ paths:
         - admins
       summary: Logs user into the system
       description: Use username and password to login.
-      operationId: login
+      operationId: loginAdmin
       parameters:
         - name: name
           in: query
@@ -247,7 +247,7 @@ paths:
         - admins
       summary: Logs out current logged in adminuser session
       description: Log out current session.
-      operationId: logout
+      operationId: logoutAdmin
       responses:
         200:
           description: OK
@@ -265,7 +265,7 @@ paths:
         - admins
       summary: Get user by user name
       description: Get user by user name.
-      operationId: getUserByName
+      operationId: getAdminById
       security:
         - AccessTokenAuth: []
       parameters:
@@ -438,7 +438,7 @@ paths:
         - users
       summary: Logs user into the system
       description: Use username and password to login.
-      operationId: login
+      operationId: loginUser
       parameters:
         - name: name
           in: query
@@ -488,7 +488,7 @@ paths:
         - users
       summary: Logs out current logged in user session
       description: Log out current session.
-      operationId: logout
+      operationId: logoutUser
       responses:
         200:
           description: OK

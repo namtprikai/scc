@@ -1,7 +1,6 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
 import { IUserData } from '../src/core/api/types'
-
 const userList: IUserData[] = [
   {
     id: 0,
@@ -36,7 +35,7 @@ export const register = (req: Request, res: Response) => {
   })
 }
 
-export const login = (req: Request, res: Response) => {
+export const loginUser = (req: Request, res: Response) => {
   const { name } = req.body
   for (const user of userList) {
     if (user.name === name) {
@@ -54,7 +53,7 @@ export const login = (req: Request, res: Response) => {
   })
 }
 
-export const logout = (req: Request, res: Response) => {
+export const logoutUser = (req: Request, res: Response) => {
   return res.json({
     code: 20000
   })
@@ -68,9 +67,7 @@ export const getUsers = (req: Request, res: Response) => {
   })
   return res.json({
     code: 20000,
-    data: {
-      items: users
-    }
+    data: [...users]
   })
 }
 

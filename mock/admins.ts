@@ -1,7 +1,6 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
 import { IAdminData } from '../src/core/api/types'
-
 const adminList: IAdminData[] = [
   {
     id: 0,
@@ -28,14 +27,7 @@ for (let i = 2; i < userCount; i++) {
 				is_lock:false,
   })
 }
-
-export const register = (req: Request, res: Response) => {
-  return res.json({
-    code: 20000
-  })
-}
-
-export const login = (req: Request, res: Response) => {
+export const loginAdmin = (req: Request, res: Response) => {
   const { email,password } = req.body
   for (const user of adminList) {
     if (user.email === email&&user.password === password) {
@@ -53,7 +45,7 @@ export const login = (req: Request, res: Response) => {
   })
 }
 
-export const logout = (req: Request, res: Response) => {
+export const logoutAdmin = (req: Request, res: Response) => {
   return res.json({
     code: 20000
   })
