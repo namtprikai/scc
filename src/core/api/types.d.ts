@@ -58,6 +58,7 @@ export interface IAdminData {
 	modified: Date;
 }
 export interface ICategoryData {
+	id:number;
 	product_id:Array<number>;
 	parent_id: number;
 	label:string;
