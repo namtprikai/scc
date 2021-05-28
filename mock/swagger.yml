@@ -478,9 +478,190 @@ paths:
                       items:
                         type: array
                         items:
-                          $ref: '#/components/schemas/User'
+                          $ref: '#/components/schemas/Admin'
         401:
           $ref: '#/components/responses/Unauthorized'
+  /admin/login:
+    post:
+      tags:
+        - admins
+      summary: Logs user into the system
+      description: Use username and password to login.
+      operationId: login
+      parameters:
+        - name: name
+          in: query
+          required: true
+          description: The user name for login.
+          schema:
+            $ref: '#/components/schemas/Admin/properties/name'
+        - name: password
+          in: query
+          required: true
+          description: The password for login in clear text.
+          schema:
+            $ref: '#/components/schemas/Admin/properties/password'
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Rate-Limit:
+              schema:
+                type: integer
+                format: int32
+              description: calls per hour allowed by the user.
+            X-Expires-After:
+              schema:
+                type: string
+                format: date-time
+              description: date in UTC when token expires.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      accessToken:
+                        type: string
+                        example: admin-token
+        400:
+          $ref: '#/components/responses/InvalidUser'
+  /admin/logout:
+    post:
+      tags:
+        - admins
+      summary: Logs out current logged in adminuser session
+      description: Log out current session.
+      operationId: logout
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+  /admin/{id}:
+    get:
+      tags:
+        - admins
+      summary: Get user by user name
+      description: Get user by user name.
+      operationId: getUserByName
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id that needs to be fetched.
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/Admin'
+        400:
+          $ref: '#/components/responses/InvalidAdmin'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - users
+      summary: Updated user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: Name that need to be updated.
+          schema:
+            type: string
+        - name: user
+          in: query
+          required: true
+          description: The data for updated user.
+          schema:
+            $ref: "#/components/schemas/User"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+        400:
+          $ref: '#/components/responses/InvalidUser'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - users
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: The name that needs to be deleted.
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+        400:
+          $ref: '#/components/responses/InvalidUser'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
 		/users:
     get:
       tags:
@@ -917,15 +1098,28 @@ components:
         - key
         - name
         - routes
+				Admin:
+						type: object
+						properties:
+								id:
+										type: integer
+										format: int64
+								name:
+										type: string
+										example: Armour
+								password:
+										type: string
+										example: Abc123@
+								required:
+										- id
+										- name
+										- password
     User:
       type: object
       properties:
         id:
           type: integer
           format: int64
-        name:
-          type: string
-          example: Armour
         password:
           type: string
           example: 12345678
@@ -938,21 +1132,10 @@ components:
         phone:
           type: string
           example: 18888888888
-        avatar:
-          type: string
-          format: url
-        introduction:
-          type: string
-          example: Always Sunshine
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/Role/properties/key'
       required:
         - id
         - name
         - password
-        - roles
     Timestamp:
       oneOf:
       - type: integer
