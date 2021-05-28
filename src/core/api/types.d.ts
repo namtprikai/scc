@@ -4,6 +4,12 @@ interface ISAIAPIData{
 	created?:Date;
 	modified?:Date;
 }
+export interface IProductData extends ISAIAPIData{
+	name:string;
+	confing:Object;
+	max_failure_count_user:number;
+	max_failure_time_user:number;
+}
 export interface IConditionGroupData extends ISAIAPIData{
 	id:number;
 	level:number;
@@ -56,7 +62,11 @@ export interface IQuestion extends ISAIAPIData{
 	label:string;
 	is_public:boolean;
 }
-
+export interface IAnswer extends ISAIAPIData{
+	question_id:number;
+	text:string;
+	is_public:boolean;
+}
 export interface IKeyword extends ISAIAPIData{
 	label:string;
 	weight:number;
