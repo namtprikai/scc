@@ -36,20 +36,20 @@ export const register = (req: Request, res: Response) => {
 }
 
 export const login = (req: Request, res: Response) => {
-  const { name } = req.body
+  const { email,password } = req.body
   for (const user of adminList) {
-    if (user.name === name) {
+    if (user.email === email&&user.password === password) {
       return res.json({
         code: 20000,
         data: {
-          accessToken: name + '-token'
+          accessToken: user.email + '-token'
         }
       })
     }
   }
   return res.status(400).json({
     code: 50004,
-    messaege: 'Invalid User'
+    messaege: 'Invalid Admin'
   })
 }
 
@@ -59,12 +59,13 @@ export const logout = (req: Request, res: Response) => {
   })
 }
 
-export const getUsers = (req: Request, res: Response) => {
-  const { name } = req.query
-  const users = adminList.filter(user => {
-    const lowerCaseName = user.name.toLowerCase()
-    return !(name && lowerCaseName.indexOf((name as string).toLowerCase()) < 0)
-  })
+export const getAdmins = (req: Request, res: Response) => {
+  // const { name } = req.query
+  const users = adminList
+		// .filter(user => {
+  //   const lowerCaseName = user.name.toLowerCase()
+  //   return !(name && lowerCaseName.indexOf((name as string).toLowerCase()) < 0)
+  // })
   return res.json({
     code: 20000,
     data: {
@@ -73,54 +74,65 @@ export const getUsers = (req: Request, res: Response) => {
   })
 }
 
-export const getUserInfo = (req: Request, res: Response) => {
+export const getAdminInfo = (req: Request, res: Response) => {
   // Mock data based on access token
-  return res.json({
-    code: 20000,
-    data: {
-      user: req.header('X-Access-Token') === 'admin-token' ? adminList[0] : adminList[1]
-    }
-  })
+		const token = req.header('X-Access-Token');
+		for(const admin of adminList){
+			if(`${admin.email}-token`===token){
+				return res.json({
+					code: 20000,
+					data: {...
+						admin
+					}
+			})
+			}
+
+		}
+		return res.status(400).json({
+			code: 403,
+			messaege: 'Invalid Token'
+	})
 }
 
-export const getUserByName = (req: Request, res: Response) => {
-  const { username } = req.params
-  for (const user of adminList) {
-    if (user.name === username) {
+export const getAdminById = (req: Request, res: Response) => {
+  const { id } = req.params
+  for (const admin of adminList) {
+    if (String(admin.id) === id) {
       return res.json({
         code: 20000,
-        data: {
-          user
+        data: {...
+									admin
         }
       })
     }
   }
   return res.status(400).json({
     code: 50004,
-    messaege: 'Invalid User'
+    messaege: 'Invalid Admin'
   })
 }
 
-export const updateUser = (req: Request, res: Response) => {
+export const updateAdmin = (req: Request, res: Response) => {
   const { name } = req.params
   const { user } = req.body
-  for (const v of adminList) {
-    if (v.name === name) {
+  for (const admin of adminList) {
+    if (admin.name === name) {
+				Object.assign(admin,user);
       return res.json({
         code: 20000,
-        data: {
-          user
+        data: {...
+									admin
         }
       })
     }
   }
   return res.status(400).json({
     code: 50004,
-    messaege: 'Invalid User'
+    messaege: 'Invalid Admin'
   })
 }
 
-export const deleteUser = (req: Request, res: Response) => {
+export const deleteAdmin = (req: Request, res: Response) => {
   return res.json({
     code: 20000
   })
