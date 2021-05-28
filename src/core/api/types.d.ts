@@ -54,8 +54,8 @@ export interface IAdminData {
 	is_master: boolean;
 	is_enabled: boolean;
 	is_lock: boolean;
-	created: Date;
-	modified: Date;
+	created?: Date;
+	modified?: Date;
 }
 export interface ICategoryData {
 	id:number;

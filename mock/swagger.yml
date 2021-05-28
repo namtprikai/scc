@@ -514,12 +514,12 @@ paths:
       description: Use username and password to login.
       operationId: login
       parameters:
-        - name: username
+        - name: name
           in: query
           required: true
           description: The user name for login.
           schema:
-            $ref: '#/components/schemas/User/properties/username'
+            $ref: '#/components/schemas/User/properties/name'
         - name: password
           in: query
           required: true
@@ -574,7 +574,7 @@ paths:
                   code:
                     type: integer
                     format: int32
-  /users/{username}:
+  /users/{name}:
     get:
       tags:
         - users
@@ -584,7 +584,7 @@ paths:
       security:
         - AccessTokenAuth: []
       parameters:
-        - name: username
+        - name: name
           in: path
           required: true
           description: The name that needs to be fetched.
@@ -621,7 +621,7 @@ paths:
       security:
         - AccessTokenAuth: []
       parameters:
-        - name: username
+        - name: name
           in: path
           required: true
           description: Name that need to be updated.
@@ -664,7 +664,7 @@ paths:
       security:
         - AccessTokenAuth: []
       parameters:
-        - name: username
+        - name: name
           in: path
           required: true
           description: The name that needs to be deleted.
@@ -847,7 +847,7 @@ components:
           format: uuid
         timestamp:
           $ref: '#/components/schemas/Timestamp'
-        username:
+        name:
           type: string
           example: Chong Guo
         price:
@@ -861,7 +861,7 @@ components:
       required:
         - orderId
         - timestamp
-        - username
+        - name
         - price
         - status
     Role:
@@ -888,7 +888,7 @@ components:
         id:
           type: integer
           format: int64
-        username:
+        name:
           type: string
           example: Armour
         password:
@@ -915,7 +915,7 @@ components:
             $ref: '#/components/schemas/Role/properties/key'
       required:
         - id
-        - username
+        - name
         - password
         - roles
     Timestamp:
