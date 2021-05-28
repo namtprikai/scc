@@ -65,9 +65,10 @@ import DashboardParent from '@/views/dashboard/index';
 import PanThumb from '@/components/PanThumb/index.vue';
 import { PRODUCT_ID } from '../../utils/configration';
 import { Ajax, AndyPasswordValidator } from '@/utils/parts';
-import { AdminUserModule, IAdminUser } from '@/store/modules/adminUser';
+import { AdminUserModule } from '@/store/modules/adminUser';
 import Breadcrumb from '@/components/Breadcrumb/index.vue';
 const PasswordValidator = require('password-validator');
+import {IAdminData} from "@/api/types";
 // @ts-ignore
 @Component({
 	components: {},
@@ -144,11 +145,11 @@ export default class AdminUser extends Vue {
 	}
 
 	get AdminList() {
-		return AdminUserModule.AdminList.filter((admin: IAdminUser) => {
+		return AdminUserModule.AdminList.filter((admin: IAdminData) => {
 			if (UserModule.role === 999) {
 				return true;
 			}
-			return admin.role > 1;
+			// return admin.role > 1;
 		});
 	}
 
@@ -202,7 +203,7 @@ export default class AdminUser extends Vue {
 		this.listLoading = false;
 	}
 
-	public deleateAdmin(admin: IAdminUser) {
+	public deleateAdmin(admin: IAdminData) {
 		this.$modal.show('dialog', {
 			title: 'アカウントを削除しますか？',
 			text: '',
@@ -210,7 +211,7 @@ export default class AdminUser extends Vue {
 				{
 					title: 'はい',
 					handler: () => {
-						admin.role = 0;
+						// admin.role = 0;
 						AdminUserModule.setAdminUser(admin);
 						this.$modal.hide('dialog');
 					},
@@ -225,7 +226,7 @@ export default class AdminUser extends Vue {
 		});
 	}
 
-	public changeRole(admin: IAdminUser) {
+	public changeRole(admin: IAdminData) {
 		this.$modal.show('dialog', {
 			title: '権限を変更しますか？',
 			text: '',

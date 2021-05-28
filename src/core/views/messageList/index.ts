@@ -7,7 +7,7 @@ import { eventHub } from '@/init/eventHub';
 import { Ajax, MessageObj } from '@/utils/parts';
 import { PRODUCT_ID } from '@product/utils/configration';
 import { Message, MessageBox } from 'element-ui';
-import { AdminUserModule, IAdminUser } from '@/store/modules/adminUser';
+import { AdminUserModule } from '@/store/modules/adminUser';
 
 // @ts-ignore
 @Component({

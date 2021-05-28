@@ -6,7 +6,7 @@ import { Ajax } from '@/utils/parts';
 import WrapMessage from '@/components/WrapMessage/index.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import { PRODUCT_ID, subsystemUrl } from '@product/utils/configration';
-import { AdminUserModule, IAdminUser } from '@/store/modules/adminUser';
+import { AdminUserModule } from '@/store/modules/adminUser';
 // @ts-ignore
 @Component({
 	components: { WrapMessage },

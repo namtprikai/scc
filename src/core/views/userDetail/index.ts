@@ -6,7 +6,7 @@ import PanThumb from '@/components/PanThumb/index.vue';
 import { PRODUCT_ID } from '@product/utils/configration';
 import { Ajax } from '@/utils/parts';
 import { eventHub } from '@/init/eventHub';
-import { AdminUserModule, IAdminUser } from '@/store/modules/adminUser';
+import { AdminUserModule } from '@/store/modules/adminUser';
 import Breadcrumb from '@/components/Breadcrumb/index.vue';
 import { TagService } from '@/services/tag';
 import VueTagsInput from '@johmun/vue-tags-input';

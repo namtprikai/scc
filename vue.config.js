@@ -13,6 +13,7 @@ const DEV_WINDOW_URL = (process.env.DEV_WINDOW_URL || '').trim();
 const SILENT = process.env.SILENT !== undefined;
 const fs = require('fs');
 const TerserPlugin = require('terser-webpack-plugin');
+const mockServerPort = 9528 // TODO: get this variable from setting.ts
 const tsconfig = JSON.parse(fs.readFileSync('./tsconfigrc.json', 'utf-8'));
 let pconfigPath = `src/productConfigById/${CONFIG_PRODUCT_ID||PRODUCT_ID}/*`;
 tsconfig['compilerOptions']['paths']['@product/*'] = [`src/products/${PRODUCT}/*`];

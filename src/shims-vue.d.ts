@@ -11,3 +11,4 @@ declare module 'mailstring' {
   export const mailTo:any;
 }
 declare module 'vue-pagination-2';
+declare module 'faker';
