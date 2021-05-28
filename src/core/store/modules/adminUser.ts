@@ -3,30 +3,25 @@ import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-dec
 import store from '@/store';
 import { Ajax } from '@/utils/parts';
 import { PRODUCT_ID } from '@product/utils/configration';
+import {IAdminData} from "@/api/types";
 import { v4 } from 'uuid';
 const ajax: Ajax = new Ajax();
 export interface IAdminUserState {
 	AdminList: any;
 	// TalkScriptTree:any;
 }
-export interface IAdminUser {
-	id: string;
-	name: string;
-	product_id: string;
-	role: number;
-	email: string;
-}
+
 
 @Module({ dynamic: true, store, name: 'adminUser' })
 class AdminUserStore extends VuexModule implements IAdminUserState {
 	private adminList: any = [];
 	get AdminList() {
-		return this.adminList.filter((user: any) => user.role > 0);
+		return this.adminList.filter((user: any) => true);
 	}
 
 	@Mutation
-	private SET_ADMINLIST(adminUser: Array<IAdminUser>) {
-		this.adminList = adminUser.sort((a: IAdminUser, b: IAdminUser) => Number(a.id) - Number(b.id));
+	private SET_ADMINLIST(adminUser: Array<IAdminData>) {
+		this.adminList = adminUser.sort((a: IAdminData, b: IAdminData) => Number(a.id) - Number(b.id));
 	}
 
 	@Action({
@@ -34,7 +29,7 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 	})
 	public async getAdminUserList() {
 		const adminList = await ajax.http({
-			url: `product/${PRODUCT_ID}/admin_user`,
+			url: `/admin/`,
 			method: 'get',
 			headers: {
 				'Content-type': 'application/json',
@@ -45,29 +40,29 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 	}
 
 	@Action
-	public async setAdminUser(adminUser: IAdminUser) {
+	public async setAdminUser(adminUser: IAdminData) {
 		console.log('SETADMINUSER');
 		const admin = await ajax.http({
-			url: `product/${PRODUCT_ID}/admin_user/${adminUser.id}/`,
+			url: `/admin/${adminUser.id}/`,
 			method: 'patch',
 			headers: {
 				'Content-type': 'application/json',
 			},
-			data: { role: adminUser.role, name: adminUser.name },
+			data: { name: adminUser.name },
 		});
 		this.getAdminUserList();
 	}
 
 	@Action
-	public async addAdminUser(adminUser: { role: number; name: string; email: string; password: string }) {
-		const { role, name, email, password } = adminUser;
+	public async addAdminUser(adminUser: { role: number; name: string; email: string; password: string,config:any,is_master:boolean }) {
+		const { role, name, email, password ,is_master,config} = adminUser;
 		const admin = await ajax.http({
-			url: `product/${PRODUCT_ID}/admin_user/`,
+			url: `/admin/`,
 			method: 'post',
 			headers: {
 				'Content-type': 'application/json',
 			},
-			data: { role, name, email, password },
+			data: { role, name, email, password,is_master,config },
 		});
 		this.getAdminUserList();
 	}
