@@ -24,13 +24,13 @@ export interface IConditionData extends ISAIAPIData{
 	label:string;
 }
 export interface IUserData extends ISAIAPIData{
-  id: number
-  password?: string
-  name: string
-  email: string
-		is_lock:boolean;
-		created?:Date;
-		modified?:Date;
+  password?: string;
+  name: string;
+  email: string;
+		config?: Object;
+		is_mailauth_completed?: boolean;
+		is_enabled: boolean;
+		is_lock: boolean;
 }
 export interface IAdminData extends ISAIAPIData{
 	id: number;
@@ -59,6 +59,11 @@ export interface IPolicyGroupData extends ISAIAPIData{
 	label:string;
 	created:Date;
 }
+export interface IPolicy extends ISAIAPIData{
+	label:string;
+	is_sharing:boolean;
+}
+
 export interface IQuestion extends ISAIAPIData{
 	title:string;
 	label:string;
@@ -74,7 +79,3 @@ export interface IKeyword extends ISAIAPIData{
 	weight:number;
 }
 
-export interface IPolicy extends ISAIAPIData{
-	label:string;
-	is_sharing:boolean;
-}
