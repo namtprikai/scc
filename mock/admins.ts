@@ -65,7 +65,14 @@ export const getAdmins = (req: Request, res: Response) => {
     }
   })
 }
-
+export const getAdminByToken = (token:string) => {
+	for(const admin of adminList){
+		if(`${admin.email}-token`===token){
+			return admin
+		}
+	}
+	return null;
+}
 export const getAdminInfo = (req: Request, res: Response) => {
   // Mock data based on access token
 		const token = req.header('X-Access-Token');

@@ -68,6 +68,10 @@ export const getUsers = (req: Request, res: Response):Response => {
     const lowerCaseName = user.name.toLowerCase()
     return !(name && lowerCaseName.indexOf((name as string).toLowerCase()) < 0)
   })
+		.map(user => {
+			const {id,name,email}=user;
+			return {id,name,email}
+		})
   return res.json({
     code: 20000,
     data: [...users]
