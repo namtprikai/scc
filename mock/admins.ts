@@ -28,7 +28,7 @@ for (let i = 2; i < userCount; i++) {
   })
 }
 export const loginAdmin = (req: Request, res: Response) => {
-  const { email,password } = req.body
+  const { email,password } = req.body;
   for (const user of adminList) {
     if (user.email === email&&user.password === password) {
       return res.json({

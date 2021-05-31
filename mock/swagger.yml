@@ -199,12 +199,12 @@ paths:
       description: Use username and password to login.
       operationId: loginAdmin
       parameters:
-        - name: name
+        - name: email
           in: query
           required: true
           description: The user name for login.
           schema:
-            $ref: '#/components/schemas/Admin/properties/name'
+            $ref: '#/components/schemas/Admin/properties/email'
         - name: password
           in: query
           required: true
@@ -759,6 +759,9 @@ components:
           type: integer
           format: int64
         name:
+          type: string
+          example: Armour
+        email:
           type: string
           example: Armour
         password:
