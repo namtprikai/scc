@@ -7,8 +7,9 @@ import path from 'path'
 import yaml from 'yamljs'
 import * as api from './api'
 import { accessTokenAuth } from './security'
-import { connector, summarise } from 'swagger-routes-express'
+import { connector, summarise } from 'swagger-routes-express';
 
+import {validation} from "./validate";
 const app = express()
 const port = 9528
 
@@ -38,7 +39,10 @@ const apiDefinition = yaml.load(path.resolve(__dirname, 'swagger.yml'))
 const options = {
   security: {
     AccessTokenAuth: accessTokenAuth
-  }
+  },
+		middleware:{
+			validation:validation
+		}
 }
 const connectSwagger = connector(api, apiDefinition, options)
 connectSwagger(app)

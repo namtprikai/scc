@@ -36,9 +36,9 @@ export const register = (req: Request, res: Response) => {
 }
 
 export const loginUser = (req: Request, res: Response) => {
-  const { name } = req.body
+  const { id } = req.body
   for (const user of userList) {
-    if (user.name === name) {
+    if (user.id === id) {
       return res.json({
         code: 20000,
         data: {
@@ -59,7 +59,7 @@ export const logoutUser = (req: Request, res: Response) => {
   })
 }
 
-export const getUsers = (req: Request, res: Response) => {
+export const getUsers = (req: Request, res: Response):Response => {
   const { name } = req.query
   const users = userList.filter(user => {
     const lowerCaseName = user.name.toLowerCase()
@@ -80,7 +80,23 @@ export const getUserInfo = (req: Request, res: Response) => {
     }
   })
 }
-
+export const getUserById = (req: Request, res: Response) => {
+	const { id } = req.params
+	for (const user of userList) {
+			if (String(user.id) === id) {
+					return res.json({
+							code: 20000,
+							data: {
+									user
+							}
+					})
+			}
+	}
+	return res.status(400).json({
+			code: 50004,
+			messaege: 'Invalid User'
+	})
+}
 export const getUserByName = (req: Request, res: Response) => {
   const { name } = req.params
   for (const user of userList) {

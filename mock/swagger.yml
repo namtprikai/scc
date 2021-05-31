@@ -500,20 +500,22 @@ paths:
                   code:
                     type: integer
                     format: int32
-  /users/{name}:
+  /users/{id}:
     get:
       tags:
         - users
       summary: Get user by user name
       description: Get user by user name.
-      operationId: getUserByName
+      operationId: getUserById
       security:
         - AccessTokenAuth: []
+      x-middleware:
+        - validation
       parameters:
-        - name: name
+        - name: id
           in: path
           required: true
-          description: The name that needs to be fetched.
+          description: The id that needs to be fetched.
           schema:
             type: string
       responses:

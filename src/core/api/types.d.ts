@@ -29,8 +29,8 @@ export interface IUserData extends ISAIAPIData{
   email: string;
 		config?: Object;
 		is_mailauth_completed?: boolean;
-		is_enabled: boolean;
-		is_lock: boolean;
+		is_enabled?: boolean;
+		is_lock?: boolean;
 }
 export interface IAdminData extends ISAIAPIData{
 	id: number;
@@ -79,3 +79,7 @@ export interface IKeyword extends ISAIAPIData{
 	weight:number;
 }
 
+export interface ILog extends ISAIAPIData{
+	value: Object;
+	type:string;
+}
