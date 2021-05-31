@@ -1,4 +1,4 @@
 export * from './role'
-export * from './admins'
+export {getAdminById,getAdminInfo,getAdmins} from './admins'
 export * from './users'
 export * from './category'
