@@ -25,6 +25,9 @@ for (let i = 2; i < userCount; i++) {
     password: faker.random.alphaNumeric(20),
     name: faker.name.findName(),
     email: faker.internet.email(),
+				config:{},
+				is_enabled:true,
+				is_mailauth_completed:true,
 				is_lock:false,
   })
 }
