@@ -59,7 +59,7 @@ export interface IPolicyGroupData extends ISAIAPIData{
 	label:string;
 	created:Date;
 }
-export interface IPolicy extends ISAIAPIData{
+export interface IPolicyData extends ISAIAPIData{
 	label:string;
 	is_sharing:boolean;
 }
