@@ -372,6 +372,33 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         404:
           $ref: '#/components/responses/NotFound'
+  /admin/info:
+    get:
+      tags:
+        - admins
+      summary: Get current user info
+      description: This can only be done by the logged in user.
+      operationId: getAdminInfo
+      security:
+        - AccessTokenAuth: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/Admin'
+        401:
+          $ref: '#/components/responses/Unauthorized'
   /product/{product_id}/role/{role_id}/category:
     get:
       tags:

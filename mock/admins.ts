@@ -31,10 +31,12 @@ export const loginAdmin = (req: Request, res: Response) => {
   const { email,password } = req.body;
   for (const user of adminList) {
     if (user.email === email&&user.password === password) {
+					const token = user.email + '-token';
       return res.json({
         code: 20000,
         data: {
-          accessToken: user.email + '-token'
+									token,
+									user
         }
       })
     }

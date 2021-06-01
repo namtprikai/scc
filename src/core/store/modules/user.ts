@@ -31,7 +31,9 @@ class User extends VuexModule implements IUserState {
 		// this.password = userInfo.password;
 		// this.name = username;
 		// Auth.setAdminUser(data, userInfo.password, userInfo.username);
-		return data.token;
+		console.log(data);
+		debugger;
+		return {token:data.token,id:data.user.id};
 	}
   get Token(){
     return this.token;
@@ -39,7 +41,7 @@ class User extends VuexModule implements IUserState {
 	@Action({ commit: 'SET_TOKEN' })
 	public async FedLogOut() {
 		Auth.removeToken();
-		return '';
+		return {token:'',id:''};
 	}
 
 	@MutationAction({
@@ -50,7 +52,7 @@ class User extends VuexModule implements IUserState {
 		if (token === undefined || token === '' || token === false) {
 			throw Error('GetInfo: token is undefined!');
 		}
-		const data: any = await Login.getInfo(token);
+		const data: any = await Login.getInfo(token,UserModule.Id);
 		if (data.role) {
 			return {
 				id: data.id,
@@ -79,10 +81,13 @@ class User extends VuexModule implements IUserState {
 			role: -1,
 		};
 	}
-
+	get Id(){
+		return this.id;
+	}
 	@Mutation
-	private SET_TOKEN(token: string) {
+	private SET_TOKEN({id,token}:{id:string,token:string}) {
 		this.token = token;
+		this.id = id;
 	}
 }
 
