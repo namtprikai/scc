@@ -1,6 +1,7 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { IAdminData } from '../src/core/api/types'
+import { IAdminData } from '../src/core/api/types';
+const admin_polycyGropup = [];
 const adminList: IAdminData[] = [
   {
     id: 0,
