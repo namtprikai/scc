@@ -31,11 +31,6 @@ import { eventHub } from '@/init/eventHub';
 import EditWrap from '@/components/EditWrap/index.vue';
 import { apiUrl, scriptUrl, PRODUCT_ID, subsystemUrl } from './../../utils/configration';
 import { Ajax, Message } from '@/utils/parts';
-import ScriptFeedbackParent from '../../../../core/views/scriptFeedback/index';
-import { AdminUserModule } from '../../../../core/store/modules/adminUser';
-import { UserModule } from '../../../../core/store/modules/user';
-import { TalkScript, ScriptDataTree, TalkScriptModule, ParseTreeToList, ScriptDataTreeSearch } from '@/store/modules/talkScript';
-// @ts-ignore
 @Component({
 	components: { EditWrap },
 })

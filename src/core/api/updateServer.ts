@@ -1,15 +1,14 @@
 import request from '@/utils/request';
 import { PRODUCT_ID, scriptUrl } from '@product/utils/configration';
 import axios from 'axios';
-import { Ajax } from '@/utils/parts';
+import {AjaxService} from "@/services/ajax";
 export namespace UpdateServer {
 	const defaultParam = {};
-	const ajax = new Ajax();
 	export const setDefaultParam = (param: Object) => {
 		Object.assign(defaultParam, param || {});
 	};
 	export const deployPackageFromTest = (extendPram?: Object): Promise<any> =>
-		ajax.http({
+	AjaxService.ajax.http({
 			baseURL: `${scriptUrl}`,
 			url: 'deploy_package_from_test',
 			method: 'GET',
@@ -27,7 +26,7 @@ export namespace UpdateServer {
 			),
 		});
 	export const deployInvertedIndex = (extendPram?: Object): Promise<any> =>
-		ajax.http({
+	AjaxService.ajax.http({
 			baseURL: `${scriptUrl}`,
 			url: 'deploy_inverted_index/',
 			method: 'GET',

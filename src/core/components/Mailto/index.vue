@@ -91,11 +91,6 @@ import { Component, Vue, Watch, Prop, PropSync } from "vue-property-decorator";
 import Plugins from "@/components/Tinymce/plugins";
 import Toolbar from "@/components/Tinymce/toolbar";
 import _ from "lodash";
-import {
-	BotConfig2Module,
-	BotConfigFlow,
-	defaultBotFlow,
-} from "../../store/modules/botConfig2";
 import { JSDOM } from "jsdom";
 import { mailTo } from "mailstring";
 // @ts-ignore
@@ -106,7 +101,6 @@ export default class MailToComp extends Vue {
 	protected isShow = true;
 	protected isItto: "a" | "b" = "a";
 	protected currentSynonym = "";
-	protected currentBotData: BotConfigFlow | {} = {};
 	protected editValue = "";
 	protected isEdit = false;
 	protected toolbar = Toolbar;

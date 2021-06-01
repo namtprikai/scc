@@ -86,7 +86,7 @@ export default class UserDetailParent extends Vue {
 			console.log(e);
 		}
 		if (this.user.tags) {
-			this.currentUserTags = TagService.tagList.getTagsByIds(this.user.tags.map((t: any) => t.user_tag_id));
+			// this.currentUserTags = TagService.tagList.getTagsByIds(this.user.tags.map((t: any) => t.user_tag_id));
 		}
 		this.noEditTags = [];
 		console.log(this.currentUserTags);
@@ -131,7 +131,7 @@ export default class UserDetailParent extends Vue {
 			console.log(e);
 		}
 		if (this.user.tags) {
-			this.currentUserTags = TagService.tagList.getTagsByIds(this.user.tags.map((t: any) => t.user_tag_id));
+			// this.currentUserTags = TagService.tagList.getTagsByIds(this.user.tags.map((t: any) => t.user_tag_id));
 		}
 		this.noEditTags = [];
 		console.log(this.currentUserTags);
@@ -208,9 +208,7 @@ export default class UserDetailParent extends Vue {
 		});
 	}
 
-	private getTagsByCategory(category: string) {
-		return TagService.tagList.getTagsByCategory(category);
-	}
+
 
 	private parseTag(tags: Array<any>): Array<any> {
 		return tags.map(tag => Object.assign({ text: tag.name }, tag));
@@ -226,18 +224,6 @@ export default class UserDetailParent extends Vue {
 
 	private init() {
 		// itemの初期化
-		for (const item of this.items) {
-			if (item.dataType === 'tags' && item.category) {
-				const tags = TagService.tagList.getTagsByCategory(item.category);
-				item.autocompleteItems = this.parseTag(tags);
-				console.log(item);
-			}
-			if (item.dataType === 'radio' && item.category) {
-				const tags = TagService.tagList.getTagsByCategory(item.category);
-				item.radioItems = this.parseRadioTag(tags);
-				console.log(item);
-			}
-		}
 	}
 
 	private created() {

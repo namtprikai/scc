@@ -64,7 +64,7 @@ export interface IPolicyData extends ISAIAPIData{
 	is_sharing:boolean;
 }
 
-export interface IQuestion extends ISAIAPIData{
+export interface IQuestionData extends ISAIAPIData{
 	title:string;
 	label:string;
 	is_public:boolean;

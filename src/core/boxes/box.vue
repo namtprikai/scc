@@ -15,7 +15,6 @@
 		<!-- <router-view name="v1"/> -->
 		<!-- フレームモーダル置き場 -->
 		<div v-if="modalOpen">
-			<UploadModal v-if="modalOpen === 'uploadModal'" :params="params" />
 			<Modal v-if="modalOpen === 'MediaList'">
 				<MediaList />
 			</Modal>
@@ -29,16 +28,11 @@ import Panels from '@product/panels.vue';
 import { eventHub } from '@/init/eventHub';
 import { UserModule } from '@/store/modules/user';
 import MediaList from '@product/views/mediaList/modal.vue';
-
-// import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
-// import {} from "router.ts";
-import UploadModal from '@/components/UploadModal/index.vue';
 import Modal from '@/components/ModalComp/index.vue';
 // @ts-ignore
 @Component({
 	components: {
 		Panels,
-		UploadModal,
 		Modal,
 		MediaList,
 	},

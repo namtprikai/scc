@@ -278,12 +278,6 @@ export namespace TagService {
 		// if (isInit) {
 		// 	return;
 		// }
-		const data: any = await ajax.http({
-			url: `product/${PRODUCT_ID}/user_tag`,
-			method: 'GET',
-		});
-		console.log(data);
-		tagList.setTags(data);
 		isInit = true;
 	}
 }

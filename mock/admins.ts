@@ -5,7 +5,7 @@ const adminList: IAdminData[] = [
   {
     id: 0,
     name: 'adminuser1',
-    password: 'any',
+    password: 'Anyany',
     email: 'admin@test.com',
 				is_master:false,
 				config:{},

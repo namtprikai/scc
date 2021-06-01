@@ -37,14 +37,7 @@ import './styles/custom.scss';
 import { TagService } from './services/tag';
 import VueScrollto from 'vue-scrollto';
 import VueMoment from 'vue-moment';
-import {
-	ScriptDataTree,
-	TalkScript,
-	TalkScriptModule,
-} from "@/store/modules/talkScript";
 import { UpdateServer } from '@/api/updateServer';
-// import Accordion from "@/components/BotConfigTemp/Accordion.vue";
-import Treedion from '@/components/TreeFile/index.vue';
 import { TabHeader } from '@/components/TabHeader';
 import { BCardAccordion } from '@/components/BCardAccodion';
 import locale from 'element-ui/lib/locale/lang/ja';
@@ -74,7 +67,6 @@ UpdateServer.setDefaultParam({
 Vue.component('BCardAccordion', BCardAccordion);
 Vue.component('TabHeader', TabHeader);
 // Vue.component("accordion", Accordion);
-Vue.component('treedion', Treedion);
 // import * as history from 'connect-history-api-fallback';
 // Vue.use(history);
 Vue.use(VueMoment);
@@ -82,7 +74,6 @@ Vue.use(VueMoment);
 Vue.use(VueScrollto);
 eventHub.$on('loginAfterInit', async () => {
   console.log('loginAfterInit');
-    await TalkScriptModule.getTalkScript();
 	// await MessageListService.init();
 	TagService.init();
 });

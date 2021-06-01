@@ -3,7 +3,6 @@ import { UserModule } from '@/store/modules/user';
 import { mapGetters } from 'vuex';
 import { UpdateServer } from '@/api/updateServer';
 import { Ajax } from '@/utils/parts';
-import TreeItem from '@/components/TreeItem/index.vue';
 import { PRODUCT_ID } from '@product/utils/configration';
 import { eventHub } from '@/init/eventHub';
 import { v4 } from 'uuid';
@@ -14,7 +13,7 @@ import axios from 'axios';
 import { watch } from 'fs';
 // @ts-ignore
 @Component({
-	components: { TreeItem },
+	components: {  },
 })
 export default class ScenarioParent extends Vue {
 	protected isSet = false;

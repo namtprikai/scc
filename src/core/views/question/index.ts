@@ -1,0 +1,135 @@
+import { Component, Vue } from 'vue-property-decorator';
+
+import { mapGetters } from 'vuex';
+import { eventHub } from '@/init/eventHub';
+import { v4 } from 'uuid';
+import { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
+import {AjaxService} from "@/services/ajax";
+import { QuestionModule } from '@/store/modules/question';
+import { UpdateServer } from '@/api/updateServer';
+import WrapSppiner from '@/components/WrapSinner/index.vue';
+
+// @ts-ignore
+@Component({
+	components: { WrapSppiner },
+})
+export default class QuestionParent extends Vue {
+	protected isLoad = false;
+	protected contextMenuIsVisible = false;
+	protected created() {
+		this.fetchData();
+		eventHub.$on('scriptCsvUploadDone', this.fetchData);
+	}
+
+	protected destroyed() {
+		eventHub.$off('scriptCsvUploadDone', this.fetchData);
+	}
+
+	private async fetchData() {
+		this.isLoad = true;
+		await QuestionModule.GetQuestions();
+		this.isLoad = false;
+
+	}
+
+	get Questions(){
+		return QuestionModule.Questions;
+	}
+	isSave = false;
+	async save() {
+		this.$modal.show('dialog', {
+			title: '保存しますか？',
+			text: '',
+			buttons: [
+				{
+					title: 'はい',
+					handler: async () => {
+						this.isSave = true;
+						this.isSave = false;
+						this.$modal.hide('dialog');
+					},
+				},
+				{
+					title: 'いいえ',
+					handler: () => {
+						this.$modal.hide('dialog');
+					},
+				},
+			],
+		});
+	}
+
+
+	select(node: ISlTreeNode<any>, event: MouseEvent) {
+
+	}
+
+	showContextMenu(node: ISlTreeNode<any>, event: MouseEvent) {
+		event.preventDefault();
+		this.contextMenuIsVisible = true;
+		const $contextMenu: any = this.$refs.contextmenu;
+		$contextMenu.style.left = event.clientX + 'px';
+		$contextMenu.style.top = event.clientY + 'px';
+	}
+
+	removeNode() {
+		this.contextMenuIsVisible = false;
+		const $slVueTree: any = this.$refs.slVueTree;
+		const paths = $slVueTree.getSelected().map((node: any) => node.path);
+		console.log(paths);
+		$slVueTree.remove(paths);
+	}
+
+	addRoot() {
+		// const Talkscript = document.getElementById('Talkscript');
+		// (Talkscript || window).scrollTo(0, 999999);
+		this.$scrollTo('#End', 500, {
+			container: '#Talkscript',
+			easing: 'ease-in',
+			offset: 60,
+			force: true,
+			cancelable: true,
+			onStart: element => {
+				// scrolling started
+			},
+			onDone: element => {
+				// scrolling is done
+			},
+			onCancel: () => {
+				// scrolling has been interrupted
+			},
+			x: false,
+			y: true,
+		});
+	}
+
+	removeChild(node: any) {
+		this.$modal.show('dialog', {
+			title: '削除しますか？',
+			text: '',
+			buttons: [
+				{
+					title: 'はい',
+					handler: () => {
+						this.doRemoveChild(node);
+						this.$modal.hide('dialog');
+					},
+				},
+				{
+					title: 'いいえ',
+					handler: () => {
+						this.$modal.hide('dialog');
+					},
+				},
+			],
+		});
+	}
+
+	doRemoveChild(node: any) {
+
+	}
+
+	addChild(node: any) {
+
+	}
+}

@@ -18,9 +18,7 @@ import { eventHub } from '@/init/eventHub';
 import EditWrap from '@/components/EditWrap/index.vue';
 import { apiUrl, scriptUrl, PRODUCT_ID, subsystemUrl } from './../../utils/configration';
 import { Ajax, Message } from '@/utils/parts';
-import ScriptFeedbackParent from '../../../../core/views/scriptFeedback/index';
 import { UserModule } from '@/store/modules/user';
-import { TalkScript, ScriptDataTree, TalkScriptModule, ParseTreeToList, ScriptDataTreeSearch } from '@/store/modules/talkScript';
 // @ts-ignore
 @Component({
 	components: { EditWrap },

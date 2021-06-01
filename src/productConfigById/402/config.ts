@@ -8,7 +8,6 @@ import Frame5 from '@/frames/b_5.vue';
 import Frame6 from '@/frames/b_6.vue';
 import Frame7 from '@/frames/b_7.vue';
 import { EditModule } from '@/store/modules/edit';
-import { UpdateFlowItem } from '@/components/UploadModal/index.i';
 import moment from 'moment';
 import TicketCompParent, { Ticket, TicketData, TicketGroup, Condition, EnquateTicket } from '@/views/ticketTable';
 export const NoneString = 'なし';
@@ -30,54 +29,6 @@ export const UploadModalDiscription = `
 	<p>2. 「テスト環境に反映」あるいは「本番環境に反映」を選択してください。サーバーに保存されているボット表示設定とFAQ設定の内容が選択した環境に反映されます。</p>
 	<p>※「保存して〇〇環境に反映」を選択すると保存と反映が同時に行われます。</p>
 `;
-export const imageList: Array<UpdateFlowItem> = [
-	{
-		src: './img/uploadmodal/0.png',
-		flow: new Set(['save']),
-		discription: 'default',
-		active: false,
-		hidden: true,
-	},
-	{
-		src: './img/uploadmodal/1.webp',
-		flow: new Set(['save']),
-		discription: '保存',
-		active: false,
-	},
-	{
-		src: './img/uploadmodal/2.webp',
-		flow: new Set(['save', 'test']),
-		discription: '保存してテスト環境に反映',
-		active: false,
-		disable: false,
-	},
-	{
-		src: './img/uploadmodal/3.webp',
-		flow: new Set(['save', 'prod']),
-		discription: '保存して本番環境に反映',
-		active: false,
-	},
-	{
-		src: './img/uploadmodal/4.webp',
-		flow: new Set(['test']),
-		discription: 'テスト環境に反映',
-		active: false,
-		disable: false,
-	},
-	{
-		src: './img/uploadmodal/5.webp',
-		flow: new Set(['prod']),
-		discription: '本番環境に反映',
-		active: false,
-	},
-	{
-		src: './img/uploadmodal/6.webp',
-		flow: new Set(['save', 'test', 'prod']),
-		discription: '保存してテスト環境と本番環境に反映',
-		active: false,
-		disable: false,
-	},
-];
 export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vue>): RouterOptions {
 	return {
 		mode: 'hash',

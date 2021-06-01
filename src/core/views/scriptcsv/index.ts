@@ -3,7 +3,6 @@ import { UserModule } from '@/store/modules/user';
 import { mapGetters } from 'vuex';
 import { UpdateServer } from '@/api/updateServer';
 import { Ajax } from '@/utils/parts';
-import TreeItem from '@/components/TreeItem/index.vue';
 import { eventHub } from '@/init/eventHub';
 import { PRODUCT_ID, subsystemUrl, scriptUrl } from '@product/utils/configration';
 import { v4 } from 'uuid';
@@ -14,7 +13,7 @@ import axios from 'axios';
 const Encoding = require('encoding-japanese');
 // @ts-ignore
 @Component({
-	components: { TreeItem },
+	components: {  },
 })
 export default class ScriptcsvParent extends Vue {
 	protected scriptFile: any = null;

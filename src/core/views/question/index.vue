@@ -11,18 +11,9 @@
 				<b-button class="addButton" @click="addRoot()" variant="outline-secondary">新規追加</b-button>
 			</b-col>
 		</b-row>
-		<sl-vue-tree v-model="ScriptTreeData" @nodeclick="select" @nodecontextmenu="showContextMenu" ref="slVueTree">
-			<template slot="title" slot-scope="{ node }">
-				<span class="item-icon">
-					<i class="fa fa-file" v-if="node.isLeaf"></i>
-					<i class="fa fa-folder" v-if="!node.isLeaf"></i>
-				</span>
-				{{ node.data.text }}
-			</template>
-			<template slot="sidebar" slot-scope="{ node }">
-				<b-button class="addButton" v-if="!node.isLeaf" @click="addChild(node)" variant="outline-secondary">+</b-button>
-			</template>
-		</sl-vue-tree>
+		<b-list-group>
+  <b-list-group-item v-for="(question,index) in Questions" :key="index">{{question.title}}</b-list-group-item>
+</b-list-group>
 		<div class="contextmenu" ref="contextmenu" v-show="contextMenuIsVisible">
 			<div @click="removeNode">Remove</div>
 		</div>

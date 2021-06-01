@@ -9,7 +9,7 @@ export namespace Login {
 		new Promise(r => {
 			console.log('login');
 			request({
-				url: '/login',
+				url: 'admin/login',
 				method: 'post',
 				data: {
 					email: username,
@@ -42,7 +42,7 @@ export namespace Login {
 		token: string;
 	}> =>
 		request({
-			url: '/authorize',
+			url: '/admin/info',
 			method: 'get',
 			headers: {
 				'X-Requested-With': 'XMLHttpRequest',

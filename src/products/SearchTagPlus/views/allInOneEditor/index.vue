@@ -22,13 +22,10 @@
 <script lang="ts">
 import WrapMessage from '@/components/WrapMessage/index.vue';
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
 import Tinymce from '@/components/Tinymce/index.vue';
 import InputTag from '@/components/InputTag/index.vue';
 import Synonym from '@/components/Synonym/index.vue';
 import EditWrap from '@/components/EditWrap/index.vue';
-import BotEditor from '@/components/AllInOneEditor/bot.vue';
-import ScriptEditor from '@/components/AllInOneEditor/script.vue';
 import AllInOneEditorCompParent from '@/views/allInOneEditor';
 // @ts-ignore
 @Component({
@@ -38,8 +35,6 @@ import AllInOneEditorCompParent from '@/views/allInOneEditor';
 		Synonym,
 		EditWrap,
 		WrapMessage,
-		ScriptEditor,
-		BotEditor,
 	},
 })
 export default class AllInOneEditorComp extends AllInOneEditorCompParent {}

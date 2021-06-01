@@ -137,7 +137,7 @@ export default class UserDetail extends Vue {
 			console.log(e);
 		}
 		if (this.user.tags) {
-			this.currentUserTags = TagService.tagList.getTagsByIds(this.user.tags.map((t: any) => t.user_tag_id));
+			// this.currentUserTags = TagService.tagList.getTagsByIds(this.user.tags.map((t: any) => t.user_tag_id));
 		}
 		this.noEditTags = [];
 		console.log(this.currentUserTags);

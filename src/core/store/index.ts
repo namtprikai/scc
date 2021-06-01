@@ -3,7 +3,6 @@ import Vuex from 'vuex';
 import { IAppState } from './modules/app';
 import { IUserState } from './modules/user';
 import { IScenarioState } from './modules/scenario';
-import { ITalkScriptState } from './modules/talkScript';
 Vue.use(Vuex);
 
 export interface IRootState {
