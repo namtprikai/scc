@@ -13,7 +13,6 @@
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import { apiUrl, scriptUrl, PRODUCT_ID } from '@product/utils/configration';
 import { UpdateServer } from '@/api/updateServer';
-import { EditModule } from '@/store/modules/edit';
 import { Ajax } from '@/utils/parts';
 import { clearTimeout, setTimeout, clearInterval, setInterval } from 'timers';
 // @ts-ignore

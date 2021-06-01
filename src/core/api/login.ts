@@ -3,8 +3,8 @@ import { PRODUCT_ID } from '@product/utils/configration';
 import { AxiosPromise, AxiosResponse } from 'axios';
 import { Auth } from '@/utils/auth';
 import { eventHub } from '@/init/eventHub';
-import { EditModule } from "@/store/modules/edit";
 import { AjaxService } from '@/services/ajax';
+import { IAdminData ,IAdmin} from './types';
 export namespace Login {
 	export const login = (username: string, password: string): Promise<any> =>
 		new Promise(r => {
@@ -34,13 +34,11 @@ export namespace Login {
 
 	export const getInfo = async (
 		token: string,
-		id:string
-	): Promise<{
-		email: string;
-		id: string;
-		name: string;
-		token: string;
-	}> => {
+		id:number
+	): Promise<IAdmin|null> => {
+	if(id===-1){
+	return null;
+	}
 		const data: AxiosResponse<any> = await AjaxService.ajax.http({
 			url: `/admin/${id}`,
 			method: 'get',
@@ -52,17 +50,21 @@ export namespace Login {
 		});
 		console.log(data);
 		debugger;
-		const admin = {
+		const admin:IAdmin = {
 			id:data.data.id,
 			email:data.data.email,
 			name:data.data.name,
 			token:data.data.token,
+			role:0,
 		};
+		if(data.data.config?.role){
+			admin.role=data.data.config?.role;
+		}
 		return admin;
 	}
 	export const logout = () =>
     new Promise<void>(r => {
-      EditModule.editUnlock();
+      // EditModule.editUnlock();
 			Auth.removeToken();
 			// Auth.removeAdminUser();
 			r();

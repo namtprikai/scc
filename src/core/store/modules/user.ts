@@ -5,7 +5,7 @@ import store from '@/store';
 
 export interface IUserState {
 	email: string;
-	id: string;
+	id: number;
 	name: string;
 	product_id: string;
 	role: number;
@@ -14,7 +14,7 @@ export interface IUserState {
 
 @Module({ dynamic: true, store, name: 'user' })
 class User extends VuexModule implements IUserState {
-	public id = '';
+	public id = -1;
 	public token = '';
 	public name = '';
 	public role = 1;
@@ -45,21 +45,23 @@ class User extends VuexModule implements IUserState {
 	}
 
 	@MutationAction({
-		mutate: ['id', 'role', 'name', 'product_id', 'email', 'avatar', 'token'],
+		mutate: ['id', 'role', 'name', 'email', 'avatar', 'token'],
 	})
 	public async GetInfo() {
 		const token = await Auth.getToken();
 		if (token === undefined || token === '' || token === false) {
 			throw Error('GetInfo: token is undefined!');
 		}
-		const data: any = await Login.getInfo(token,UserModule.Id);
-		if (data.role) {
+		if(UserModule.Id===null){
+			throw Error('GetInfo: id is undefined!');
+		}
+		const data = await Login.getInfo(token,UserModule.Id);
+		if (data?.role) {
 			return {
 				id: data.id,
 				role: data.role,
 				name: data.name,
 				avatar: '',
-				product_id: data.product_id,
 				email: data.email,
 				token: data.token,
 			};
@@ -85,7 +87,7 @@ class User extends VuexModule implements IUserState {
 		return this.id;
 	}
 	@Mutation
-	private SET_TOKEN({id,token}:{id:string,token:string}) {
+	private SET_TOKEN({id,token}:{id:number,token:string}) {
 		this.token = token;
 		this.id = id;
 	}

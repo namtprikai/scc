@@ -63,7 +63,7 @@ export default class SidebarItem extends Vue {
 		return false;
 	}
 
-	private get UserId(): string {
+	private get UserId(): number {
 		return UserModule.id;
 	}
 

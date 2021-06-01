@@ -28,11 +28,10 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { eventHub } from '@/init/eventHub';
-import EditWrap from '@/components/EditWrap/index.vue';
 import { apiUrl, scriptUrl, PRODUCT_ID, subsystemUrl } from './../../utils/configration';
 import { Ajax, Message } from '@/utils/parts';
 @Component({
-	components: { EditWrap },
+	components: { },
 })
 export default class FeedbackAdmin extends Vue {
 	currentMessage: Message | null = null;

@@ -35,15 +35,6 @@
 					<div @click="removeNode">Remove</div>
 				</div>
 			</div>
-			<edit-wrap
-				:messages="[
-					'編集を開始すると、他のユーザーは編集できなくなります。 編集が終了したら「編集終了」をクリックして終了してください。',
-					'編集を行って保存すると編集前の状態は失われます。バックアップを取りたい場合は以下のチェックボックスを選択し、編集前の状態をCSVファイルで保存してください。',
-				]"
-				:editingmessage="''"
-				:callback-checks="callbackChecks"
-				:isEndbutton="false"
-			/>
 		</div>
 	</div>
 </template>
@@ -57,9 +48,6 @@ import { eventHub } from '@/init/eventHub';
 import QuestionParent from '@/views/question';
 import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
 import WrapSppiner from '@/components/WrapSinner/index.vue';
-import { CallbackChecks } from '@/components/EditWrap/csv.i';
-import EditWrap from '@/components/EditWrap/csv.vue';
-import EditEnd from '@/components/EditWrap/end.vue';
 
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 // @ts-ignore
@@ -76,21 +64,11 @@ import EditEnd from '@/components/EditWrap/end.vue';
 	},
 	components: {
 		SlVueTree,
-		EditWrap,
-		EditEnd,
 		WrapSppiner,
 	},
 })
 export default class QuestionComp extends QuestionParent {
 	public isShow = true;
-	public callbackChecks: CallbackChecks = [
-		{
-			message: '編集開始と同時にバックアップファイル（CSVファイル）を保存する（推奨）',
-			isCheck: true,
-			callback: () => {
-			},
-		},
-	];
 }
 </script>
 <style type="sass"></style>

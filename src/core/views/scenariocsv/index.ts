@@ -7,7 +7,6 @@ import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
 
 import ScenarioTemp from '@/components/ScenarioTemp/index.vue';
 import { ScenarioStep, ScenarioModule, ScenarioFlow } from '@/store/modules/scenario';
-import EditWrap from '@/components/EditWrap/index.vue';
 import csvSync from 'csv-parse/lib/sync';
 import { horizontaltojson, parseScenario, parseListToCsv } from '@/utils/scenarioParseCsv';
 import { UpdateServer } from '@/api/updateServer';

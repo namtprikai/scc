@@ -7,7 +7,7 @@ export interface SendMessage {
 	user_id: string;
 	type: string;
 	text: string;
-	assignee_id: string;
+	assignee_id: number;
 }
 
 export interface SearchMessage {
@@ -22,7 +22,7 @@ export interface SearchMessage {
 export interface UpdateMessage {
 	is_read?: boolean;
 	description?: any;
-	assignee_id?: string;
+	assignee_id?: number;
 }
 
 export namespace MessageList {

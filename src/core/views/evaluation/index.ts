@@ -3,7 +3,6 @@ import { eventHub } from '@/init/eventHub';
 import Tinymce from '@/components/Tinymce/index.vue';
 import InputTag from '@/components/InputTag/index.vue';
 import Synonym from '@/components/Synonym/index.vue';
-import EditWrap from '@/components/EditWrap/index.vue';
 import { Ajax, MessageObj, Message, MessageList } from '@/utils/parts';
 import { subsystemUrl, PRODUCT_ID, script_logUrl } from '@product/utils/configration';
 
@@ -35,7 +34,7 @@ class NoScriptMessageList extends MessageList {
 }
 // @ts-ignore
 @Component({
-	components: { Tinymce, InputTag, Synonym, EditWrap },
+	components: { Tinymce, InputTag, Synonym },
 })
 export default class EvaluationCompParent extends Vue {
 	protected ajax: Ajax = new Ajax();

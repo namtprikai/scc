@@ -7,7 +7,6 @@ import Frame4 from '@/frames/b_4.vue';
 import Frame5 from '@/frames/b_5.vue';
 import Frame6 from '@/frames/b_6.vue';
 import Frame7 from '@/frames/b_7.vue';
-import { EditModule } from '@/store/modules/edit';
 import moment from 'moment';
 import TicketCompParent, { Ticket, TicketData, TicketGroup, Condition, EnquateTicket } from '@/views/ticketTable';
 export const NoneString = 'なし';
@@ -403,7 +402,7 @@ export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vu
 										is: true,
 										message: '「反映ステップに進む」から内容を保存しないまま編集終了すると変更内容が失われます。本当に編集終了しますか？',
 										after: () => {
-											EditModule.editUnlock();
+											// EditModule.editUnlock();
 										},
 									},
 									v1: {
@@ -443,7 +442,7 @@ export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vu
 										is: true,
 										message: '「反映ステップに進む」から内容を保存しないまま編集終了すると変更内容が失われます。本当に編集終了しますか？',
 										after: () => {
-											EditModule.editUnlock();
+											// EditModule.editUnlock();
 										},
 									},
 									v1: {
@@ -743,11 +742,11 @@ export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vu
 									title: 'アカウント設定',
 									icon: 'table',
 									v1: {
-										default: 'AccountInfo',
+										default: 'AdminUser',
 										tabs: [
 											{
 												label: 'アカウント情報',
-												key: 'AccountInfo',
+												key: 'AdminUser',
 												roles: [4, 5, 999],
 											},
 											{

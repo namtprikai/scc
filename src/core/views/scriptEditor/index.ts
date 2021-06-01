@@ -3,7 +3,6 @@ import { eventHub } from '@/init/eventHub';
 import Tinymce from '@/components/Tinymce/index.vue';
 import InputTag from '@/components/InputTag/index.vue';
 import Synonym from '@/components/Synonym/index.vue';
-import EditWrap from '@/components/EditWrap/index.vue';
 import { Ajax } from '@/utils/parts';
 import _ from 'lodash';
 import { bartUrl } from '@product/utils/configration';
@@ -11,7 +10,7 @@ import { ScenarioModule } from '@/store/modules/scenario';
 
 // @ts-ignore
 @Component({
-	components: { Tinymce, InputTag, Synonym, EditWrap },
+	components: { Tinymce, InputTag, Synonym, },
 })
 export default class ScriptEditorCompParent extends Vue {
 	protected item: any = '';

@@ -8,7 +8,7 @@ const adminList: IAdminData[] = [
     password: 'Anyany',
     email: 'admin@test.com',
 				is_master:false,
-				config:{},
+				config:{role:5},
 				is_enabled:true,
 				is_lock:false,
   },
@@ -22,7 +22,7 @@ for (let i = 2; i < userCount; i++) {
     password: faker.random.alphaNumeric(20),
     email: faker.internet.email(),
 				is_master:false,
-				config:{},
+				config:{role:5},
 				is_enabled:true,
 				is_lock:false,
   })
@@ -62,9 +62,9 @@ export const getAdmins = (req: Request, res: Response) => {
   // })
   return res.json({
     code: 20000,
-    data: {
-      items: users
-    }
+    data: [...
+      users
+				]
   })
 }
 export const getAdminByToken = (token:string) => {

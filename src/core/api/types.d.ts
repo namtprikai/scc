@@ -27,7 +27,7 @@ export interface IUserData extends ISAIAPIData{
   password?: string;
   name: string;
   email: string;
-		config?: Object;
+		config?: any;
 		is_mailauth_completed?: boolean;
 		is_enabled?: boolean;
 		is_lock?: boolean;
@@ -37,7 +37,7 @@ export interface IAdminData extends ISAIAPIData{
 	name: string;
 	password: string;
 	email: string;
-	config: Object;
+	config?: any;
 	is_mailauth_completed?: boolean;
 	is_master: boolean;
 	is_enabled: boolean;
@@ -45,19 +45,26 @@ export interface IAdminData extends ISAIAPIData{
 	created?: Date;
 	modified?: Date;
 }
+export interface IAdmin{
+	id: number;
+	name: string;
+	email: string;
+	role:number;
+	token:string;
+}
 export interface ICategoryData extends ISAIAPIData{
 	id:number;
 	product_id:Array<number>;
 	parent_id: number;
 	label:string;
 	text:string;
-	config:Object;
+	config?: any;
 	created:Date;
 	modified: Date;
 }
 export interface IPolicyGroupData extends ISAIAPIData{
 	label:string;
-	created:Date;
+	config?: any;
 }
 export interface IPolicyData extends ISAIAPIData{
 	label:string;

@@ -103,11 +103,10 @@ import { eventHub } from '@/init/eventHub';
 import Tinymce from '@/components/Tinymce/index.vue';
 import InputTag from '@/components/InputTag/index.vue';
 import Synonym from '@/components/Synonym/index.vue';
-import EditWrap from '@/components/EditWrap/index.vue';
 import ScriptEditorCompParent from '@/views/scriptEditor/index';
 // @ts-ignore
 @Component({
-	components: { Tinymce, InputTag, Synonym, EditWrap, WrapMessage },
+	components: { Tinymce, InputTag, Synonym, WrapMessage },
 })
 export default class ScriptEditorComp extends ScriptEditorCompParent {
 	constructor() {

@@ -25,7 +25,6 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import Tinymce from '@/components/Tinymce/index.vue';
 import InputTag from '@/components/InputTag/index.vue';
 import Synonym from '@/components/Synonym/index.vue';
-import EditWrap from '@/components/EditWrap/index.vue';
 import AllInOneEditorCompParent from '@/views/allInOneEditor';
 // @ts-ignore
 @Component({
@@ -33,7 +32,6 @@ import AllInOneEditorCompParent from '@/views/allInOneEditor';
 		Tinymce,
 		InputTag,
 		Synonym,
-		EditWrap,
 		WrapMessage,
 	},
 })

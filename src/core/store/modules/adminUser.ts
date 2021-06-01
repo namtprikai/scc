@@ -28,7 +28,7 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 		commit: 'SET_ADMINLIST',
 	})
 	public async getAdminUserList() {
-		const adminList = await ajax.http({
+		const {data} = await ajax.http({
 			url: `/admin/`,
 			method: 'get',
 			headers: {
@@ -36,7 +36,7 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 			},
 			params: {},
 		});
-		return adminList;
+		return data;
 	}
 
 	@Action

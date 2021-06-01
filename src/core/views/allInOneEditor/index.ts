@@ -3,7 +3,6 @@ import { eventHub } from '@/init/eventHub';
 import Tinymce from '@/components/Tinymce/index.vue';
 import InputTag from '@/components/InputTag/index.vue';
 import Synonym from '@/components/Synonym/index.vue';
-import EditWrap from '@/components/EditWrap/index.vue';
 import _ from 'lodash';
 import { bartUrl } from '@product/utils/configration';
 import { ScenarioModule } from '@/store/modules/scenario';
@@ -13,7 +12,7 @@ import { Ajax, Wait } from '@/utils/parts';
 import WrapSppiner from '@/components/WrapSinner/index.vue';
 // @ts-ignore
 @Component({
-	components: { Tinymce, InputTag, Synonym, EditWrap ,WrapSppiner},
+	components: { Tinymce, InputTag, Synonym ,WrapSppiner},
 })
 export default class AllInOneEditorCompParent extends Vue {
 	public isLoading:boolean=false;

@@ -93,13 +93,6 @@
 				</BCardAccordion>
 			</div>
 		</div>
-		<edit-wrap
-			v-if="tabtype == 'dev'"
-			:messages="['編集を開始すると、他のユーザーは編集できなくなります。 編集が終了したら「編集終了」をクリックして終了してください。']"
-			:editingmessage="''"
-			:callback-checks="callbackChecks"
-			:isEndbutton="false"
-		/>
 		<wrap-sppiner v-if="isLoad" />
 	</div>
 </template>
@@ -115,12 +108,9 @@ import { Ajax } from '@/utils/parts';
 import { PRODUCT_ID, s3, subsystemUrl } from './../../utils/configration';
 import { UpdateServer } from '@/api/updateServer';
 import draggable from 'vuedraggable';
-import EditWrap from '@/components/EditWrap/csv.vue';
-import EditEnd from '@/components/EditWrap/end.vue';
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 import InputTag from '@/components/InputTag/index.vue';
 import { UserModule } from '@/store/modules/user';
-import { CallbackChecks } from '@/components/EditWrap/csv.i';
 const jpMapGroupList = [
 	{
 		label: '初期表示の文言',
@@ -544,7 +534,7 @@ const template = {
 // @ts-ignore
 @Component({
 	filters: {},
-	components: { draggable, WrapSppiner, EditWrap, EditEnd },
+	components: { draggable, WrapSppiner },
 })
 export default class DefaultChatMessage extends Vue {
 	private ajax: Ajax = new Ajax();
@@ -570,13 +560,6 @@ export default class DefaultChatMessage extends Vue {
 		return '';
 	}
 
-	public callbackChecks: CallbackChecks = [
-		// {
-		// 	message: "編集開始と同時にバックアップファイル（CSVファイル）を保存する（推奨）", isCheck: false, callback: () => {
-		// 		this.download();
-		// 	}
-		// }
-	];
   get Role(){
     return UserModule.role;
   }

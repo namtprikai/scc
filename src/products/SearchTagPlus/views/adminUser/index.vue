@@ -31,7 +31,6 @@
 						<template slot:contents>
 							権限が上がると、バッジが豪華になります。
 							<br />
-							<br />え、この機能の意味ですか？ <br />バッジが豪華になって気を悪くする人はいないでしょう
 						</template>
 					</b-popover>
 				</span>
@@ -64,7 +63,8 @@ import { mapGetters } from 'vuex';
 import DashboardParent from '@/views/dashboard/index';
 import PanThumb from '@/components/PanThumb/index.vue';
 import { PRODUCT_ID } from '../../utils/configration';
-import { Ajax, AndyPasswordValidator } from '@/utils/parts';
+import { AndyPasswordValidator } from '@/utils/parts';
+import {AjaxService} from '@/services/ajax';
 import { AdminUserModule } from '@/store/modules/adminUser';
 import Breadcrumb from '@/components/Breadcrumb/index.vue';
 const PasswordValidator = require('password-validator');
@@ -76,7 +76,6 @@ import {IAdminData} from "@/api/types";
 export default class AdminUser extends Vue {
 	private listLoading = true;
 	passwordValidator = new AndyPasswordValidator(PasswordValidator);
-	private ajax: Ajax = new Ajax();
 	private newAdminUser = {
 		name: '',
 		email: '',
@@ -91,7 +90,7 @@ export default class AdminUser extends Vue {
 	];
 
 	public addAdminUser() {
-		this.ajax
+		AjaxService.ajax
 			.http({
 				url: `product/${PRODUCT_ID}/admin_user/`,
 				method: 'POST',
@@ -150,7 +149,12 @@ export default class AdminUser extends Vue {
 				return true;
 			}
 			// return admin.role > 1;
-		});
+			return true;
+		})
+		.map((admin: IAdminData) => {
+			const {id,name,email,config} = admin;
+			return {id,name,email,role:config.role||0}
+		})
 	}
 
 	get stateName() {
@@ -250,7 +254,7 @@ export default class AdminUser extends Vue {
 		});
 	}
 
-	private isValid(id: string): boolean {
+	private isValid(id: number): boolean {
 		if (UserModule.role === 999) {
 			return true;
 		}
