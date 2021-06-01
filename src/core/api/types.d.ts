@@ -54,8 +54,7 @@ export interface IAdmin{
 }
 export interface ICategoryData extends ISAIAPIData{
 	id:number;
-	product_id:Array<number>;
-	parent_id: number;
+	parent_id: number|null;
 	label:string;
 	text:string;
 	config?: any;

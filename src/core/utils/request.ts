@@ -16,7 +16,7 @@ service.interceptors.request.use(
     console.log(UserModule.Token);
 		if (UserModule.Token) {
 			// config.headers['X-Token'] = token;
-			config.headers.Authorization = `Bearer ${token}`;
+			config.headers.Authorization = `${token}`;
 			config.headers['Content-type'] = 'application/json';
 		}
 		return config;
@@ -78,7 +78,7 @@ service.interceptors.response.use(
 		if (status === 500 || status === 400 || status === 401) {
 			console.log('logout');
 			UserModule.FedLogOut().then(() => {
-				// location.reload(); // To prevent bugs from vue-router
+				location.reload(); // To prevent bugs from vue-router
 			});
 		}
 		return Promise.reject(error);

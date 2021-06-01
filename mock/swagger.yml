@@ -274,7 +274,8 @@ paths:
           required: true
           description: The id that needs to be fetched.
           schema:
-            type: string
+            type: integer
+            format: int32
       responses:
         200:
           description: OK
@@ -372,7 +373,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         404:
           $ref: '#/components/responses/NotFound'
-  /admin/info:
+  /admininfo:
     get:
       tags:
         - admins
@@ -381,6 +382,7 @@ paths:
       operationId: getAdminInfo
       security:
         - AccessTokenAuth: []
+      parameters:
       responses:
         200:
           description: OK
@@ -395,7 +397,7 @@ paths:
                   data:
                     type: object
                     properties:
-                      user:
+                      admin:
                         $ref: '#/components/schemas/Admin'
         401:
           $ref: '#/components/responses/Unauthorized'

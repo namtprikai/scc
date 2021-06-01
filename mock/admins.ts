@@ -4,7 +4,7 @@ import { IAdminData } from '../src/core/api/types'
 const adminList: IAdminData[] = [
   {
     id: 0,
-    name: 'adminuser1',
+    name: 'サイシード西田',
     password: 'Anyany',
     email: 'admin@test.com',
 				is_master:false,
@@ -77,7 +77,8 @@ export const getAdminByToken = (token:string) => {
 }
 export const getAdminInfo = (req: Request, res: Response) => {
   // Mock data based on access token
-		const token = req.header('X-Access-Token');
+		const token = req.header('Authorization');
+		console.log(token);
 		for(const admin of adminList){
 			if(`${admin.email}-token`===token){
 				return res.json({

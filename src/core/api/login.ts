@@ -33,14 +33,10 @@ export namespace Login {
 		});
 
 	export const getInfo = async (
-		token: string,
-		id:number
+		token: string
 	): Promise<IAdmin|null> => {
-	if(id===-1){
-	return null;
-	}
 		const data: AxiosResponse<any> = await AjaxService.ajax.http({
-			url: `/admin/${id}`,
+			url: `/admininfo`,
 			method: 'get',
 			headers: {
 				'X-Requested-With': 'XMLHttpRequest',
@@ -48,8 +44,6 @@ export namespace Login {
 			},
 			params: {},
 		});
-		console.log(data);
-		debugger;
 		const admin:IAdmin = {
 			id:data.data.id,
 			email:data.data.email,
