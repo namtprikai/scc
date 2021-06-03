@@ -1,4 +1,4 @@
-export const answerConditions = [
+export const userConditions = [
 	{
 		id:0,
 		user_id:0,

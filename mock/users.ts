@@ -16,8 +16,8 @@ const userList: IUserData[] = [
     email: 'editor@test.com',
 				is_lock:false,
   }
-]
-const userCount = 100
+];
+const userCount = 100;
 
 for (let i = 2; i < userCount; i++) {
   userList.push({
@@ -37,7 +37,7 @@ export const register = (req: Request, res: IAPIResponce) => {
     status: 20000,
 				data:{}
   })
-}
+};
 
 export const loginUser = (req: Request, res: IAPIResponce) => {
   const { id } = req.body
@@ -59,14 +59,14 @@ export const loginUser = (req: Request, res: IAPIResponce) => {
 					]
 				}
   })
-}
+};
 
 export const logoutUser = (req: Request, res: IAPIResponce) => {
   return res.json({
     status: 20000,
 				data:{}
   })
-}
+};
 
 export const getUsers = (req: Request, res: IAPIResponce):Response => {
   const { name } = req.query
@@ -82,7 +82,7 @@ export const getUsers = (req: Request, res: IAPIResponce):Response => {
     status: 20000,
     data: [...users]
   })
-}
+};
 
 export const getUserInfo = (req: Request, res: IAPIResponce) => {
   // Mock data based on access token
@@ -92,7 +92,7 @@ export const getUserInfo = (req: Request, res: IAPIResponce) => {
       user: req.header('X-Access-Token') === 'admin-token' ? userList[0] : userList[1]
     }
   })
-}
+};
 export const getUserById = (req: Request, res: IAPIResponce) => {
 	const { id } = req.params
 	for (const user of userList) {
@@ -113,7 +113,7 @@ export const getUserById = (req: Request, res: IAPIResponce) => {
 				]
 			}
 	})
-}
+};
 export const getUserByName = (req: Request, res: IAPIResponce) => {
   const { name } = req.params
   for (const user of userList) {
@@ -134,8 +134,14 @@ export const getUserByName = (req: Request, res: IAPIResponce) => {
 					]
 				}
   })
-}
-
+};
+export const getUserByToken = (token:string) => {
+	for (const user of userList) {
+			if (String(user.id) === token.split('-')[0]) {
+					return user;
+	}
+	return null;
+};
 export const updateUser = (req: Request, res: IAPIResponce) => {
   const { name } = req.params
   const { user } = req.body
@@ -168,4 +174,6 @@ export const deleteUser = (req: Request, res: IAPIResponce) => {
 					]
 				}
   })
-}
+};
+
+

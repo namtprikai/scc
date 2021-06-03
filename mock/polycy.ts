@@ -12,10 +12,6 @@ const policys:Array<IPolicyData> =[
 export const getPolicyList = (req: Request, res: IAPIResponce):Response => {
 	const { parent_id } = req.query;
 
-	// const users = userList.filter(user => {
-	// 		const lowerCaseName = user.name.toLowerCase()
-	// 		return !(name && lowerCaseName.indexOf((name as string).toLowerCase()) < 0)
-	// })
 	return res.json({
 			status: 20000,
 			data: [...policys]
