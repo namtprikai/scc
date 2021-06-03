@@ -1,24 +1,25 @@
 import { Response, Request, NextFunction } from 'express'
+import { IAPIResponce} from '../src/core/api/types'
 const validList:Array<any> = [];
-export const validation = (req: Request, res: Response, next: NextFunction) => {
+export const validation = (req: Request, res: IAPIResponce, next: NextFunction) => {
 		//バリデーション処理
 		console.log(req.route.path);
 
   if (false) {
     // return res.status(401).json({
-    //   code: 50001,
+    //   status: 50001,
     //   messaege: 'Invalid Access Token'
     // })
   }
   next()
 }
 
-export const getValidation = (req: Request, res: Response) => {
+export const getValidation = (req: Request, res: IAPIResponce) => {
 	const { name } = req.params
 	for (const valid of validList) {
 			if (valid.name === name) {
 					return res.json({
-							code: 20000,
+							status: 20000,
 							data: {
 								valid
 							}
@@ -26,7 +27,11 @@ export const getValidation = (req: Request, res: Response) => {
 			}
 	}
 	return res.status(400).json({
-			code: 50004,
-			messaege: 'Invalid Valid'
+			status: 50004,
+			data:{
+				errors:[
+					{status: 'forbidden_error'}
+				]
+			}
 	})
 }

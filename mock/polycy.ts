@@ -1,6 +1,6 @@
 import faker from 'faker';
 import { Response, Request } from 'express';
-import { IPolicyData } from '../src/core/api/types';
+import { IPolicyData,IAPIResponce } from '../src/core/api/types';
 const policys:Array<IPolicyData> =[
 	{
 		id:0,
@@ -9,7 +9,7 @@ const policys:Array<IPolicyData> =[
 	}
 ];
 
-export const getPolicyList = (req: Request, res: Response):Response => {
+export const getPolicyList = (req: Request, res: IAPIResponce):Response => {
 	const { parent_id } = req.query;
 
 	// const users = userList.filter(user => {
@@ -17,7 +17,7 @@ export const getPolicyList = (req: Request, res: Response):Response => {
 	// 		return !(name && lowerCaseName.indexOf((name as string).toLowerCase()) < 0)
 	// })
 	return res.json({
-			code: 20000,
+			status: 20000,
 			data: [...policys]
 	})
 }

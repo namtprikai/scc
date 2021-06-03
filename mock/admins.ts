@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { IAdminData, } from '../src/core/api/types';
+import { IAdminData, ISAIAPIData,IAPIResponce } from '../src/core/api/types';
 const admin_polycyGropup = [];
 const adminList: IAdminData[] = [
   {
@@ -28,13 +28,13 @@ for (let i = 2; i < userCount; i++) {
 				is_lock:false,
   })
 }
-export const loginAdmin = (req: Request, res: Response) => {
+export const loginAdmin = (req: Request, res: IAPIResponce) => {
   const { email,password } = req.body;
   for (const user of adminList) {
     if (user.email === email&&user.password === password) {
 					const token = user.email + '-token';
       return res.json({
-        code: 20000,
+        status: 200,
         data: {
 									token,
 									user
@@ -43,18 +43,24 @@ export const loginAdmin = (req: Request, res: Response) => {
     }
   }
   return res.status(400).json({
-    code: 50004,
-    messaege: 'Invalid Admin'
+				status: 50004,
+    data:{
+					errors:[
+						{status: 'forbidden_error'}
+					]
+				}
   })
 }
 
-export const logoutAdmin = (req: Request, res: Response) => {
-  return res.json({
-    code: 20000
-  })
+export const logoutAdmin = (req: Request, res: IAPIResponce) => {
+	return res.json({
+		status: 200,
+		data: {
+		}
+})
 }
 
-export const getAdmins = (req: Request, res: Response) => {
+export const getAdmins = (req: Request, res: IAPIResponce) => {
   // const { name } = req.query
   const users = adminList
 		// .filter(user => {
@@ -62,7 +68,7 @@ export const getAdmins = (req: Request, res: Response) => {
   //   return !(name && lowerCaseName.indexOf((name as string).toLowerCase()) < 0)
   // })
   return res.json({
-    code: 20000,
+    status: 200,
     data: [...
       users
 				]
@@ -76,14 +82,14 @@ export const getAdminByToken = (token:string) => {
 	}
 	return null;
 }
-export const getAdminInfo = (req: Request, res: Response) => {
+export const getAdminInfo = (req: Request, res: IAPIResponce) => {
   // Mock data based on access token
 		const token = req.header('Authorization');
 		console.log(token);
 		for(const admin of adminList){
 			if(`${admin.email}-token`===token){
 				return res.json({
-					code: 20000,
+					status: 20000,
 					data: {...
 						admin
 					}
@@ -92,17 +98,21 @@ export const getAdminInfo = (req: Request, res: Response) => {
 
 		}
 		return res.status(400).json({
-			code: 403,
-			messaege: 'Invalid Token'
+			status: 403,
+			data:{
+				errors:[
+					{status: 'forbidden_error'}
+				]
+			}
 	})
 }
 
-export const getAdminById = (req: Request, res: Response) => {
+export const getAdminById = (req: Request, res: IAPIResponce) => {
   const { id } = req.params
   for (const admin of adminList) {
     if (String(admin.id) === id) {
       return res.json({
-        code: 20000,
+        status: 20000,
         data: {...
 									admin
         }
@@ -110,20 +120,24 @@ export const getAdminById = (req: Request, res: Response) => {
     }
   }
   return res.status(400).json({
-    code: 50004,
-    messaege: 'Invalid Admin'
+    status: 50004,
+    data:{
+					errors:[
+						{status: 'forbidden_error'}
+					]
+				}
   })
 }
 
 
-export const updateAdmin = (req: Request, res: Response) => {
+export const updateAdmin = (req: Request, res: IAPIResponce) => {
   const { name } = req.params
   const { user } = req.body
   for (const admin of adminList) {
     if (admin.name === name) {
 				Object.assign(admin,user);
       return res.json({
-        code: 20000,
+        status: 20000,
         data: {...
 									admin
         }
@@ -131,13 +145,18 @@ export const updateAdmin = (req: Request, res: Response) => {
     }
   }
   return res.status(400).json({
-    code: 50004,
-    messaege: 'Invalid Admin'
+    status: 50004,
+    data:{
+					errors:[
+						{status: 'forbidden_error'}
+					]
+				}
   })
 }
 
-export const deleteAdmin = (req: Request, res: Response) => {
+export const deleteAdmin = (req: Request, res: IAPIResponce) => {
   return res.json({
-    code: 20000
+    status: 20000,
+    data:{}
   })
 }

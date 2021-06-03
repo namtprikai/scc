@@ -1,7 +1,14 @@
+import { Response, Request } from 'express'
 interface ISAIAPIData{
 	id:number;
 	created?:Date;
 	modified?:Date;
+}
+export interface IAPIResponce extends Response{
+	json:(args:{
+		status:number;
+		data:{[key:string]:any}|Array<{[key:string]:any}>
+	})=>any;
 }
 export interface IRoleData{
 	[key:any]:any;
