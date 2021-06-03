@@ -1,6 +1,13 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { IPolicyGroupData } from '../src/core/api/types'
+import { IPolicyGroupData,IAdminPolicyGroupData } from '../src/core/api/types'
+const admin_policyGroup:Array<IAdminPolicyGroupData>=[
+{
+	id:0,
+	admin_id:0,
+	policy_group_id:0,
+}
+];
 const policyGroups:Array<IPolicyGroupData> =[
 	{
 		id:0,
@@ -11,12 +18,13 @@ const policyGroups:Array<IPolicyGroupData> =[
 	}
 ];
 export const getPolicyGroupByAdminId = (req: Request, res: Response) => {
-	const { id } = req.params
+	const { id } = req.params;
+	const policyGroupIdList = admin_policyGroup.filter(o=>o.admin_id===parseInt(id)).map(o=>o.policy_group_id);
 	// for (const admin of adminList) {
 	// 		if (String(admin.id) === id) {
 					return res.json({
 							code: 20000,
-							data: [...policyGroups]
+							data: [...policyGroups.filter(p=>policyGroupIdList.indexOf(p.id)!==-1)]
 					})
 	// 		}
 	// }

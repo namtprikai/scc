@@ -61,6 +61,10 @@ export interface ICategoryData extends ISAIAPIData{
 	created:Date;
 	modified: Date;
 }
+export interface IAdminPolicyGroupData extends ISAIAPIData{
+	admin_id:number;
+	policy_group_id:number;
+}
 export interface IPolicyGroupData extends ISAIAPIData{
 	label:string;
 	config?: any;

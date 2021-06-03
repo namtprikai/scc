@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { IAdminData } from '../src/core/api/types';
+import { IAdminData, } from '../src/core/api/types';
 const admin_polycyGropup = [];
 const adminList: IAdminData[] = [
   {
@@ -114,6 +114,7 @@ export const getAdminById = (req: Request, res: Response) => {
     messaege: 'Invalid Admin'
   })
 }
+
 
 export const updateAdmin = (req: Request, res: Response) => {
   const { name } = req.params
