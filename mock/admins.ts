@@ -32,7 +32,7 @@ export const loginAdmin = (req: Request, res: IAPIResponce) => {
   const { email,password } = req.body;
   for (const user of adminList) {
     if (user.email === email&&user.password === password) {
-					const token = user.email + '-token';
+					const token = `${user.id}-${user.email}-token`;
       return res.json({
         status: 200,
         data: {
@@ -76,7 +76,7 @@ export const getAdmins = (req: Request, res: IAPIResponce) => {
 }
 export const getAdminByToken = (token:string) => {
 	for(const admin of adminList){
-		if(`${admin.email}-token`===token){
+		if(`${admin.id}-${admin.email}-token`===token){
 			return admin
 		}
 	}
@@ -87,7 +87,7 @@ export const getAdminInfo = (req: Request, res: IAPIResponce) => {
 		const token = req.header('Authorization');
 		console.log(token);
 		for(const admin of adminList){
-			if(`${admin.email}-token`===token){
+			if(`${admin.id}-${admin.email}-token`===token){
 				return res.json({
 					status: 20000,
 					data: {...
