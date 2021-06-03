@@ -14,6 +14,16 @@ export const getConditionList = (req: Request, res: IAPIResponce):Response => {
 			id:1,
 			label:"女",
 			conditiongroup_id:0,
+		},
+		{
+			id:2,
+			label:"500万円未満",
+			conditiongroup_id:1,
+		},
+		{
+			id:3,
+			label:"500万円以上",
+			conditiongroup_id:1,
 		}
 	];
 	// const users = userList.filter(user => {

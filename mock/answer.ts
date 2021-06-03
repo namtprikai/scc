@@ -6,7 +6,7 @@ const answers:Array<IAnswerData> =[
 	{
 		id:0,
 		question_id:0,
-		text:"",
+		text:"それはプリウスです。何故ならば・・・",
 		is_public:true,
 		created:new Date(),
 		modified:new Date(),
@@ -14,14 +14,14 @@ const answers:Array<IAnswerData> =[
 	{
 		id:1,
 		question_id:0,
-		text:"",
+		text:"それはランクルです。何故ならば・・・",
 		is_public:true,
 		created:new Date(),
 		modified:new Date(),
 	}
 ];
-export const getCategoryList = (req: Request, res: IAPIResponce):Response => {
-	const { parent_id } = req.query;
+export const getAnser = (req: Request, res: IAPIResponce):Response => {
+	const { question_id } = req.params;
 
 	// const users = userList.filter(user => {
 	// 		const lowerCaseName = user.name.toLowerCase()

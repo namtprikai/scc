@@ -9,7 +9,13 @@ export const getConditionGroupList = (req: Request, res: IAPIResponce):Response 
 			label:"sex",
 			is_setting:true,
 			level:1,
-		}
+		},
+		{
+			id:1,
+			label:"収入",
+			is_setting:true,
+			level:2,
+		},
 	];
 	// const users = userList.filter(user => {
 	// 		const lowerCaseName = user.name.toLowerCase()
