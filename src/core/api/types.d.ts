@@ -85,14 +85,15 @@ export interface IPolicyData extends ISAIAPIData{
 export interface IQuestionData extends ISAIAPIData{
 	title:string;
 	label:string;
+	config?: any;
 	is_public:boolean;
 }
-export interface IAnswer extends ISAIAPIData{
+export interface IAnswerData extends ISAIAPIData{
 	question_id:number;
 	text:string;
 	is_public:boolean;
 }
-export interface IKeyword extends ISAIAPIData{
+export interface IKeywordData extends ISAIAPIData{
 	label:string;
 	weight:number;
 }
