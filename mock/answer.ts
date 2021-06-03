@@ -88,6 +88,7 @@ export const getAnser = (req: Request, res: IAPIResponce):Response => {
 					}
 				}
 			}
+			return true;
 		});
 	}
 	//ここまででユーザーに対して可能性のあるアンサーの絞り込み。
