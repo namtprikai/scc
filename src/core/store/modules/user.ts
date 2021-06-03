@@ -8,7 +8,7 @@ export interface IUserState {
 	id: number;
 	name: string;
 	product_id: string;
-	role: number;
+	role: Set<number>;
 	token: string;
 }
 
@@ -17,8 +17,9 @@ class User extends VuexModule implements IUserState {
 	public id = -1;
 	public token = '';
 	public name = '';
-	public role = 1;
+	public role:Set<number> = new Set();
 	public email = '';
+	public is_master:boolean=false;
 	public product_id = '';
 	public avatar = '';
 	public password = '';
@@ -42,7 +43,7 @@ class User extends VuexModule implements IUserState {
 	}
 
 	@MutationAction({
-		mutate: ['id', 'role', 'name', 'email', 'avatar', 'token'],
+		mutate: ['id', 'role', 'name', 'email', 'avatar', 'token','is_master'],
 	})
 	public async GetInfo() {
 		const token = await Auth.getToken();
@@ -58,6 +59,7 @@ class User extends VuexModule implements IUserState {
 				id: data.id,
 				role: data.role,
 				name: data.name,
+				is_master:true,
 				avatar: '',
 				email: data.email,
 				token: data.token,
@@ -79,6 +81,9 @@ class User extends VuexModule implements IUserState {
 			token: '',
 			role: -1,
 		};
+	}
+	get Role(){
+		return this.role;
 	}
 	get Id(){
 		return this.id;

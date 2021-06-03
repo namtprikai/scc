@@ -26,7 +26,7 @@ router.beforeEach(async (to: Route, from: Route, next: any) => {
 			next({ path: '/' });
 			NProgress.done(); // If current page is dashboard will not trigger afterEach hook, so manually handle it
 		} else {
-			if (UserModule.role <= 1) {
+			if (UserModule.Role.size===0) {
 				UserModule.GetInfo()
 					.then(() => {
 						next();

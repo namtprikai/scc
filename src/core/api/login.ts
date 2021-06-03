@@ -49,10 +49,26 @@ export namespace Login {
 			email:data.data.email,
 			name:data.data.name,
 			token:data.data.token,
-			role:0,
+			is_master:data.data.is_master,
+			role:new Set(),
 		};
-		if(data.data.config?.role){
-			admin.role=data.data.config?.role;
+		const roledata: AxiosResponse<any> = await AjaxService.ajax.http({
+			url: `/policygroup/${admin.id}`,
+			method: 'get',
+			headers: {
+				'X-Requested-With': 'XMLHttpRequest',
+				Authorization: token,
+			},
+		});
+		if(roledata.data){
+			for(const polycyGroup of roledata.data){
+				if(Array.isArray(polycyGroup.config.role)){
+					for(const _role of polycyGroup.config.role){
+						const role: number = _role;
+						admin.role.add(role);
+					}
+				}
+			}
 		}
 		return admin;
 	}

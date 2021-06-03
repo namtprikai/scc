@@ -156,6 +156,46 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         404:
           $ref: '#/components/responses/NotFound'
+  # getPolicyGroupByAdminId
+  /policygroup/{admin_id}:
+    get:
+      tags:
+        - policyGroup
+      summary: Get user by user name
+      description: Get user by user name.
+      operationId: getPolicyGroupByAdminId
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: admin_id
+          in: path
+          required: true
+          description: The id that needs to be fetched.
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/PolycyGroup'
+        400:
+          $ref: '#/components/responses/InvalidAdmin'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
   /admin:
     get:
       tags:
@@ -843,6 +883,18 @@ components:
         format: int64
       text:
         type: string
+      required:
+        - id
+        - title
+    PolycyGroup:
+      type: object
+      id:
+        type: integer
+        format: int64
+      label:
+        type: string
+      config:
+        type: object
       required:
         - id
         - title

@@ -56,7 +56,7 @@ export default class SidebarItem extends Vue {
 			return true;
 		}
 		for (const role of roles) {
-			if (role === UserModule.role) {
+			if (UserModule.Role.has(role)) {
 				return true;
 			}
 		}

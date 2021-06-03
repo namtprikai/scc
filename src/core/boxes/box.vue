@@ -88,7 +88,7 @@ export default class Box extends Vue {
 			const tabMapOptions = this.$route.meta[this.$attrs['data-name']].tabs || [];
 			this.tabMapOptions = tabMapOptions.filter((tab: any) => {
 				if (tab.roles) {
-					if (tab.roles.indexOf(UserModule.role) === -1) {
+					if (!tab.roles.find((r:number)=>UserModule.Role.has(r))) {
 						return false;
 					}
 				}

@@ -18,8 +18,8 @@ const policyGroups:Array<IPolicyGroupData> =[
 	}
 ];
 export const getPolicyGroupByAdminId = (req: Request, res: Response) => {
-	const { id } = req.params;
-	const policyGroupIdList = admin_policyGroup.filter(o=>o.admin_id===parseInt(id)).map(o=>o.policy_group_id);
+	const { admin_id } = req.params;
+	const policyGroupIdList = admin_policyGroup.filter(o=>o.admin_id===parseInt(admin_id)).map(o=>o.policy_group_id);
 	// for (const admin of adminList) {
 	// 		if (String(admin.id) === id) {
 					return res.json({

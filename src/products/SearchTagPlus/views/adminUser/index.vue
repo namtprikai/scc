@@ -20,7 +20,7 @@
 					</b-popover>
 				</span>
 				<template slot slot-scope="scope">
-					<b-form-select v-on:change="changeRole(scope.row)" v-model="scope.row.role" :options="roleOptions" size="sm" class="mt-3" :disabled="isValid(scope.row.id)"></b-form-select>
+					<b-form-select v-on:change="changeRole(scope.row)" v-model="scope.row.role" :options="roleOptions" size="sm" class="mt-3" :disabled="!isValid(scope.row.id)"></b-form-select>
 				</template>
 			</el-table-column>
 			<el-table-column align="center" label="バッジ">
@@ -49,7 +49,7 @@
 			</el-table-column>
 			<el-table-column align="center" label="操作">
 				<template slot-scope="scope">
-					<b-button v-on:click="deleateAdmin(scope.row)" :disabled="isValid(scope.row.id)">削除</b-button>
+					<b-button v-on:click="deleateAdmin(scope.row)" :disabled="!isValid(scope.row.id)">削除</b-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -145,7 +145,7 @@ export default class AdminUser extends Vue {
 
 	get AdminList() {
 		return AdminUserModule.AdminList.filter((admin: IAdminData) => {
-			if (UserModule.role === 999) {
+			if (UserModule.is_master) {
 				return true;
 			}
 			// return admin.role > 1;
@@ -255,10 +255,10 @@ export default class AdminUser extends Vue {
 	}
 
 	private isValid(id: number): boolean {
-		if (UserModule.role === 999) {
+		if (UserModule.is_master) {
 			return true;
 		}
-		return UserModule.id === id;
+		return UserModule.id !== id;
 	}
 }
 </script>

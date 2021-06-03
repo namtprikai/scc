@@ -49,7 +49,8 @@ export interface IAdmin{
 	id: number;
 	name: string;
 	email: string;
-	role:number;
+	role:Set<number>;
+	is_master?: boolean;
 	token:string;
 }
 export interface ICategoryData extends ISAIAPIData{
