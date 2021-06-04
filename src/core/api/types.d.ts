@@ -102,3 +102,10 @@ export interface ILog extends ISAIAPIData{
 	value: Object;
 	type:string;
 }
+
+export interface IScenarioTree{
+	condition?: IConditionData;
+	conditionList: Array<IConditionData>;
+	next?: { conditionGroup: IConditionGroupData, conditions: Array<IScenarioTree> };
+	anserIds: Array<number>;
+}
