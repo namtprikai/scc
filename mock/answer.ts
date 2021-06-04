@@ -216,10 +216,15 @@ export const test = () => {
 					},
 					conditions: [
 						{
+							id: 0,
+							label: "男",
+							conditiongroup_id: 0,
+						},{
 							id: 1,
 							label: "女",
 							conditiongroup_id: 0,
-						},]
+						},
+					]
 				}
 				],
 				[1, {
@@ -260,7 +265,12 @@ export const test = () => {
 							id: 0,
 							label: "男",
 							conditiongroup_id: 0,
-						},]
+						},{
+							id: 1,
+							label: "女",
+							conditiongroup_id: 0,
+						},
+					]
 				}
 				],
 				[1, {
@@ -283,6 +293,7 @@ export const test = () => {
 		}
 	]
 	const scenarioTree: IScenarioTree = { anserIds: anserList.map(a => a.id) ,conditionList:[]};
+	let anserSet:Set<IAnswerDataCondition> = new Set([...anserList]);
 	let scenarioTreeList = [scenarioTree];
 	let nextScenarioTreeList = [];
 	// while (que.length>0) {
@@ -290,22 +301,54 @@ export const test = () => {
 
 	// }
 
-	for (let i = 0; i < conditionList.length; i++) {
+	root:for (let i = 0; i < conditionList.length; i++) {
 
 		const { conditionGroup, conditions } = conditionList[i];
-		// while (que.length > 0) {
-		for (const scenarioTree of scenarioTreeList) {
-			if (scenarioTree == undefined) {
-				break;
+//ここでアンサーのコンディションの対照差が空集合か調べ、そうであればcontinue;
+		const _conditionIdSet: Set<number> = new Set();
+		let firestFlg = true;
+		let breakFlg = false;
+		for(const anser of anserSet){
+			const cl = anser.anserConditionMap?.get(conditionGroup.id)?.conditions;
+			if(firestFlg){
+				if(cl){
+					for(const c of cl){
+					_conditionIdSet.add(c.id);
+					}
+				}
+				firestFlg=false;
+				continue;
 			}
+			if(cl){
+				const __conditionIdSet = new Set(cl.map(c=>c.id));
+				const size = __conditionIdSet.size;
+				for(const c of _conditionIdSet){
+					__conditionIdSet.add(c);
+				}
+				if(__conditionIdSet.size!==size){
+					console.log("break");
+					console.log(conditionGroup);
+					breakFlg = true;
+					break;
+				}
+			}
+		}
+		if(breakFlg===false){
+			console.log("break");
+			continue root;
+		}
+		for (const scenarioTree of scenarioTreeList) {
 			scenarioTree.next = { conditionGroup, conditions: [] };
+			anserSet = AnserRefinedSearch(anserSet,scenarioTree.conditionList);
 			for (const condition of conditions) {
 				const cList = [...scenarioTree.conditionList, condition];
+				const _ansers = AnserRefinedSearch(anserSet,cList);
 				const next: IScenarioTree = {
 					condition,
 					conditionList:cList,
-					anserIds: [...AnserRefinedSearch(new Set([...anserList]),cList).values()].map(a=>a.id)
+					anserIds: [..._ansers.values()].map(a=>a.id)
 				};
+
 
 				scenarioTree.next.conditions.push(
 					next
