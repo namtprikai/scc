@@ -120,34 +120,10 @@ export const getAnser = (req: Request, res: IAPIResponce): Response => {
 		}
 		return 0;
 	});
-	const scenarioTree: IScenarioTree = { anserIds: anserList.map((a: any) => a.id) ,conditionList:[]};
-	let nextScenarioTree = scenarioTree;
-	const que: Array<IScenarioTree> = [nextScenarioTree];
-	// while (que.length>0) {
-	// 	const nextScenarioTree = que.shift();
 
-	// }
-	while (que.length > 0) {
-		const nextScenarioTree = que.shift();
-		if (nextScenarioTree == undefined) {
-			break;
-		}
-		for (let i = 0; i < conditionList.length; i++) {
-			const { conditionGroup, conditions } = conditionList[i];
-			nextScenarioTree.next = { conditionGroup, conditions: [] };
-			for (const condition of conditions) {
-				const next = {
-					condition,
-					anserIds: [],
-					conditionList:[]
-				};
-				nextScenarioTree.next.conditions.push(
-					next
-				);
-				que.push(next);
-			}
-		}
-	}
+
+
+
 	return res.json({
 		status: 20000,
 		data: [...answers]
@@ -197,6 +173,31 @@ export const test = () => {
 				}
 			]
 		},
+		{
+			conditionGroup: {
+				id: 2,
+				label: "家族構成",
+				is_setting: true,
+				level: 2,
+			},
+			conditions: [
+				{
+					id: 4,
+					label: "独身",
+					conditiongroup_id: 2,
+				},
+				{
+					id: 5,
+					label: "二人〜５",
+					conditiongroup_id: 2,
+				},
+				{
+					id: 6,
+					label: "5人以上",
+					conditiongroup_id: 2,
+				}
+			]
+		},
 	];
 	const anserList = [
 		{
@@ -216,10 +217,6 @@ export const test = () => {
 					},
 					conditions: [
 						{
-							id: 0,
-							label: "男",
-							conditiongroup_id: 0,
-						},{
 							id: 1,
 							label: "女",
 							conditiongroup_id: 0,
@@ -240,6 +237,27 @@ export const test = () => {
 							label: "500万円未満",
 							conditiongroup_id: 1,
 						}
+					],
+				}
+				],
+				[2, {
+					conditionGroup: {
+						id: 2,
+						label: "家族構成",
+						is_setting: true,
+						level: 3,
+					},
+					conditions: [
+						{
+							id: 4,
+							label: "独身",
+							conditiongroup_id: 2,
+						},
+						// {
+						// 	id: 5,
+						// 	label: "二人〜５",
+						// 	conditiongroup_id: 1,
+						// },
 					],
 				}
 				]
@@ -278,7 +296,7 @@ export const test = () => {
 						id: 1,
 						label: "収入",
 						is_setting: true,
-						level: 2,
+						level: 3,
 					},
 					conditions: [
 						{
@@ -288,81 +306,166 @@ export const test = () => {
 						}
 					],
 				}
+				],
+				[2, {
+					conditionGroup: {
+						id: 2,
+						label: "家族構成",
+						is_setting: true,
+						level: 2,
+					},
+					conditions: [
+						{
+							id: 4,
+							label: "独身",
+							conditiongroup_id: 2,
+						},
+						{
+							id: 5,
+							label: "二人〜５",
+							conditiongroup_id: 2,
+						},
+						{
+							id: 6,
+							label: "5人以上",
+							conditiongroup_id: 2,
+						}
+					],
+				}
+				]
+			])
+		},
+		{
+			id: 2,
+			question_id: 0,
+			text: "それはヴィッツです。何故ならば・・・",
+			is_public: true,
+			created: new Date(),
+			modified: new Date(),
+			anserConditionMap: new Map([
+				[0, {
+					conditionGroup: {
+						id: 0,
+						label: "sex",
+						is_setting: true,
+						level: 1,
+					},
+					conditions: [
+						{
+							id: 1,
+							label: "女",
+							conditiongroup_id: 0,
+						},
+					]
+				}
+				],
+				[1, {
+					conditionGroup: {
+						id: 1,
+						label: "収入",
+						is_setting: true,
+						level: 3,
+					},
+					conditions: [
+						{
+							id: 2,
+							label: "500万円未満",
+							conditiongroup_id: 1,
+						}
+					],
+				}
+				],
+				[2, {
+					conditionGroup: {
+						id: 2,
+						label: "家族構成",
+						is_setting: true,
+						level: 2,
+					},
+					conditions: [
+						{
+							id: 4,
+							label: "独身",
+							conditiongroup_id: 2,
+						},
+						{
+							id: 5,
+							label: "二人〜５",
+							conditiongroup_id: 2,
+						},
+					],
+				}
 				]
 			])
 		}
 	]
-	const scenarioTree: IScenarioTree = { anserIds: anserList.map(a => a.id) ,conditionList:[]};
+
 	let anserSet:Set<IAnswerDataCondition> = new Set([...anserList]);
-	let scenarioTreeList = [scenarioTree];
-	let nextScenarioTreeList = [];
-	// while (que.length>0) {
-	// 	const nextScenarioTree = que.shift();
-
-	// }
-
-	root:for (let i = 0; i < conditionList.length; i++) {
-
-		const { conditionGroup, conditions } = conditionList[i];
-//ここでアンサーのコンディションの対照差が空集合か調べ、そうであればcontinue;
-		const _conditionIdSet: Set<number> = new Set();
-		let firestFlg = true;
-		let breakFlg = false;
-		for(const anser of anserSet){
-			const cl = anser.anserConditionMap?.get(conditionGroup.id)?.conditions;
-			if(firestFlg){
-				if(cl){
-					for(const c of cl){
-					_conditionIdSet.add(c.id);
-					}
-				}
-				firestFlg=false;
-				continue;
-			}
-			if(cl){
-				const __conditionIdSet = new Set(cl.map(c=>c.id));
-				const size = __conditionIdSet.size;
-				for(const c of _conditionIdSet){
-					__conditionIdSet.add(c);
-				}
-				if(__conditionIdSet.size!==size){
-					console.log("break");
-					console.log(conditionGroup);
-					breakFlg = true;
-					break;
-				}
-			}
-		}
-		if(breakFlg===false){
-			console.log("break");
-			continue root;
-		}
-		for (const scenarioTree of scenarioTreeList) {
-			scenarioTree.next = { conditionGroup, conditions: [] };
-			anserSet = AnserRefinedSearch(anserSet,scenarioTree.conditionList);
-			for (const condition of conditions) {
-				const cList = [...scenarioTree.conditionList, condition];
-				const _ansers = AnserRefinedSearch(anserSet,cList);
-				const next: IScenarioTree = {
-					condition,
-					conditionList:cList,
-					anserIds: [..._ansers.values()].map(a=>a.id)
-				};
-
-
-				scenarioTree.next.conditions.push(
-					next
-				);
-								if (next.anserIds.length <= 1) {
-					continue;
-				}
-				nextScenarioTreeList.push(next);
-			}
-		}
-		scenarioTreeList = nextScenarioTreeList;
-		nextScenarioTreeList = [];
-	}
+	const scenarioTree: IScenarioTree = MakeFlow(conditionList,anserSet);
 	console.log(JSON.stringify(scenarioTree));
+}
+function MakeFlow(_conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }>,ansers: Set<IAnswerDataCondition>,conditionHistory: Array<IConditionData>=[]):IScenarioTree{
+	const conditionList = [..._conditionList];
+	console.log("ansers",ansers);
+	let conditionObj = conditionList.shift();
+	if(ansers.size>1){
+		loop1:while(conditionObj){
+			let beforeCons = null;
+			for(const anser of ansers){
+				// if(conditionObj.conditionGroup.id){
+					const aCon = anser.anserConditionMap?.get(conditionObj.conditionGroup.id);
+					const conditions = aCon?.conditions;
+					if(conditions){
+						console.log("conditions",conditions);
+						const conditionIds = conditions.map(c=>c.id);
+						if(beforeCons){
+							const bSize = beforeCons.size;
+							if(bSize!==conditionIds.length){
+								break loop1;
+							}
+							for(const c of conditionIds){
+								beforeCons.add(c);
+							}
+							if(bSize!==beforeCons.size){
+								break loop1;
+							}
+						}
+						beforeCons = new Set(conditionIds);
+					}
+				// }
+			}
+			conditionObj = conditionList.shift();
+		}
+		console.log("asdf",conditionObj);
+		if(conditionObj){
+			// data.next = {conditionGroup:condition?.conditionGroup,conditions:[]};
+			return {
+				conditionGroup:conditionObj.conditionGroup,
+				conditions:conditionObj.conditions.map(c=>{
+					const _ansers: Set<IAnswerDataCondition> = new Set();
+					for(const anser of ansers){
+						const _cObj = anser.anserConditionMap?.get(c.conditiongroup_id);
+						if(_cObj!==undefined&&!_cObj.conditions.find(d=>d.id === c.id)){
+							console.log(_cObj.conditions);
+							continue;
+						}
+						_ansers.add(anser);
+					}
+					console.log(_ansers);
+					return {
+						condition:c,
+						next:MakeFlow(conditionList,_ansers)
+					}
+				}),
+				conditionHistory:[...conditionHistory],
+				anserIds:[...ansers.values()].map(a=>a.id)
+			};
+		}
+	}
+		return {
+			conditionHistory:[...conditionHistory],
+			anserIds:[...ansers.values()].map(a=>a.id)
+		};
 }
 function AnserRefinedSearch(ansers: Set<IAnswerDataCondition>, conditionList: Array<IConditionData>): Set<IAnswerDataCondition> {
 	const anserSet: Set<IAnswerDataCondition> = new Set();
