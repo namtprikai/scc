@@ -10,6 +10,15 @@ interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupDat
 interface IAnswerDataCondition extends IAnswerData {
 	anserConditionMap?: IConditionMap;
 }
+interface IAnserAPIResponce extends Response{
+	json:(args:{
+		status:number;
+		data:{
+			ansers: Array<IAnswerData>;
+			flow?:IScenarioTree;
+		};
+	})=>any;
+}
 const answers: Array<IAnswerData> = [
 	{
 		id: 0,
@@ -28,14 +37,14 @@ const answers: Array<IAnswerData> = [
 		modified: new Date(),
 	}
 ];
-export const getAnser = (req: Request, res: IAPIResponce): Response => {
+export const getAnser = (req: Request, res: IAPIResponce): IAnserAPIResponce => {
 	const { question_id } = req.params;
 	const accessToken = req.header('Authorization');
 	let anserList: Array<IAnswerDataCondition> = answers.filter(a => String(a.question_id) === question_id);
 	if (anserList.length === 1) {
 		return res.json({
 			status: 20000,
-			data: { ...anserList[0] }
+			data: { ansers:anserList }
 		})
 	}
 	let conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> = [];
@@ -107,7 +116,7 @@ export const getAnser = (req: Request, res: IAPIResponce): Response => {
 	if (anserList.length === 1) {
 		return res.json({
 			status: 20000,
-			data: { ...anserList[0] }
+			data: { ansers:anserList }
 		})
 	}
 	// ここから複数アンサーをコンディションで絞り込むためのツリー構造JSONを作成する処理に入る
@@ -127,7 +136,10 @@ export const getAnser = (req: Request, res: IAPIResponce): Response => {
 
 	return res.json({
 		status: 20000,
-		data: {...scenarioTree}
+		data: {
+			ansers:anserList,
+			flow:scenarioTree
+		}
 	})
 }
 
