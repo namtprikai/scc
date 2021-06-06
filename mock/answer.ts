@@ -121,12 +121,13 @@ export const getAnser = (req: Request, res: IAPIResponce): Response => {
 		return 0;
 	});
 
-
+	let anserSet:Set<IAnswerDataCondition> = new Set([...anserList]);
+	const scenarioTree: IScenarioTree = MakeFlow(conditionList,anserSet);
 
 
 	return res.json({
 		status: 20000,
-		data: [...answers]
+		data: {...scenarioTree}
 	})
 }
 
@@ -456,7 +457,7 @@ function MakeFlow(_conditionList: Array<{ conditionGroup: IConditionGroupData, c
 						condition:c,
 						next:MakeFlow(conditionList,_ansers)
 					}
-				}),
+				}).filter(c=>c.next.anserIds.length>0),
 				conditionHistory:[...conditionHistory],
 				anserIds:[...ansers.values()].map(a=>a.id)
 			};
