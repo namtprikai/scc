@@ -7,7 +7,7 @@ import { getConditionGroupById } from "./conditionGroup";
 interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> {
 
 }
-interface IAnswerDataCondition extends IAnswerData {
+export interface IAnswerDataCondition extends IAnswerData {
 	anserConditionMap?: IConditionMap;
 }
 interface IAnserAPIResponce extends Response{
@@ -446,6 +446,8 @@ function MakeFlow(_conditionList: Array<{ conditionGroup: IConditionGroupData, c
 							}
 						}
 						beforeCons = new Set(conditionIds);
+					}else{
+						break;
 					}
 				// }
 			}
