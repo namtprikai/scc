@@ -528,6 +528,8 @@ function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 									}
 								}
 								beforeCons = new Set(conditionIds);
+							}else{
+								break;
 							}
 					}
 					conditionObj = conditionList[conditionIndex++];
