@@ -8,15 +8,16 @@ def make_flow(_condition_list,_ansers):
 	condition_list = _condition_list
 	while len(que)>0:
 		s= que.pop(0)
-		if s and s.ansers and s.condition_index:
-			condition_index = s.condition_index
+		if 'ansers' in s and 'condition_index' in s:
+			condition_index = s['condition_index']
 			conditionObj = condition_list[condition_index]
-			ansers = s.ansers
-			condition_index = s.condition_index
+			ansers = s['ansers']
+			condition_index = s['condition_index']
 			if len(ansers)>1:
-				sym_diff = {}
-				for index,anser in enumerate(ansers):
-					sym_diff = sym_diff^anser.anserConditionMap[conditionObj.conditionGroup.id]
+				sym_diff = set()
+				for anser in ansers:
+					print(list(map(lambda a:a['id'],anser['anserConditionMap'][conditionObj['conditionGroup']['id']]['conditions'])))
+					sym_diff = sym_diff^set(list(map(lambda a:a['id'],anser['anserConditionMap'][conditionObj['conditionGroup']['id']]['conditions'])))
 				print(sym_diff)
 def test():
 	anser_list = [
@@ -26,7 +27,7 @@ def test():
 			"text": "それはプリウスです。何故ならば・・・",
 			"is_public": True,
 			"anserConditionMap":{
-				0, {
+				0: {
 					"conditionGroup": {
 						"id": 0,
 						"label": "sex",
@@ -42,7 +43,7 @@ def test():
 					]
 				}
 				,
-				1, {
+				1: {
 					"conditionGroup": {
 						"id": 1,
 						"label": "収入",
@@ -58,7 +59,7 @@ def test():
 					],
 				}
 				,
-				2, {
+				2: {
 					"conditionGroup": {
 						"id": 2,
 						"label": "家族構成",
@@ -78,7 +79,7 @@ def test():
 						},
 					],
 				}
-				}
+			}
 		},
 		{
 			"id": 1,
@@ -86,7 +87,7 @@ def test():
 			"text": "それはランクルです。何故ならば・・・",
 			"is_public": True,
 			"anserConditionMap": {
-				0, {
+				0: {
 					"conditionGroup": {
 						"id": 0,
 						"label": "sex",
@@ -106,7 +107,7 @@ def test():
 					]
 				}
 				,
-				1, {
+				1: {
 					"conditionGroup": {
 						"id": 1,
 						"label": "収入",
@@ -122,7 +123,7 @@ def test():
 					],
 				}
 				,
-				2, {
+				2: {
 					"conditionGroup": {
 						"id": 2,
 						"label": "家族構成",
@@ -155,7 +156,7 @@ def test():
 			"text": "それはヴィッツです。何故ならば・・・",
 			"is_public": True,
 			"anserConditionMap": {
-				0, {
+				0: {
 					"conditionGroup": {
 						"id": 0,
 						"label": "sex",
@@ -171,7 +172,7 @@ def test():
 					]
 				}
 				,
-				1, {
+				1: {
 					"conditionGroup": {
 						"id": 1,
 						"label": "収入",
@@ -187,7 +188,7 @@ def test():
 					],
 				}
 				,
-				2, {
+				2: {
 					"conditionGroup": {
 						"id": 2,
 						"label": "家族構成",
@@ -278,5 +279,5 @@ def test():
 			]
 		},
 	]
-	make_flow(condition_list,set(anser_list))
+	make_flow(condition_list,anser_list)
 test()
