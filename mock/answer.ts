@@ -230,10 +230,10 @@ export const test = () => {
 					},
 					conditions: [
 						{
-							id: 1,
-							label: "女",
-							conditiongroup_id: 0,
-						},
+					id: 0,
+					label: "男",
+					conditiongroup_id: 0,
+				},
 					]
 				}
 				],
@@ -643,7 +643,7 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 	};
 	function getTScore(conditionSetList: Array<Set<number>>, allConditionSize: number): number {
 		const coeff = 0.9;
-		let countA = 0, countB = 0;
+		let countA = 0, countB = 1;
 		let beforeSet: Set<number> = new Set();
 		let zeroFlg: boolean = false;
 		for (const conditionSet of conditionSetList) {
@@ -660,6 +660,9 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 				}
 			}
 			beforeSet = conditionSet;
+		}
+		if ((countA - countB) === 0) {
+			return -1;
 		}
 		return ((countA - countB) / countA) * (coeff ** conditionSetList.length);
 	}
