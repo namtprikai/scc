@@ -611,13 +611,12 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 				maxScoreIndex = i;
 			}
 		}
+		const maxScore = conditionList[maxScoreIndex]?.score || -1;
 		const [conditionObj] = conditionList.splice(maxScoreIndex, 1);
 		if (condition) {
 			conditionHistory.push(condition);
 		}
-		const maxScore = conditionList[maxScoreIndex]?.score || -1;
-				console.log(maxScore);
-		if (conditionObj) {
+		if (conditionObj&&maxScore>0) {
 			// data.next = {conditionGroup:condition?.conditionGroup,conditions:[]};
 			return {
 				conditionGroup: conditionObj.conditionGroup,
@@ -646,18 +645,14 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 		anserIds: [...ansers.values()].map(a => a.id)
 	};
 	function getTScore(conditionSetList: Array<Set<number>>, allConditionSize: number): number {
-		console.log(conditionSetList);
-		const coeff = 1;
+		const coeff = 10;
 		let countA = 0, countB = 0;
 		let beforeSet: Set<number> = new Set(conditionSetList[conditionSetList.length-1]);
-		let zeroFlg: boolean = false;
 		for (const conditionSet of conditionSetList) {
-			if (conditionSet.size === 0) {
-				countA = allConditionSize;
-				zeroFlg = true;
-			}
-			if (zeroFlg === false) {
+			if (conditionSet.size > 0) {
 				countA += conditionSet.size;
+			}else{
+				countA += allConditionSize;
 			}
 			for (const b of beforeSet) {
 				if (conditionSet.has(b)) {
@@ -670,7 +665,7 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 		if ((countA - countB) === 0) {
 			return -1;
 		}
-		return ((countA - countB) / countA) * (coeff ** conditionSetList.length);
+		return ((countA - countB) / countA) * ((1-coeff*0.0001) ** conditionSetList.length);
 	}
 }
 function AnserRefinedSearch(ansers: Set<IAnswerDataCondition>, conditionList: Array<IConditionData>): Set<IAnswerDataCondition> {
