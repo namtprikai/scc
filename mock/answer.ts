@@ -590,7 +590,7 @@ function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 	}
 	return st;
 }
-function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData>, score?: number }>, ansers: Set<IAnswerDataCondition>, conditionHistory: Array<IConditionData> = []): IScenarioTree {
+function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData>, score?: number }>, ansers: Set<IAnswerDataCondition>, conditionHistory: Array<IConditionData> = [],condition?:IConditionData): IScenarioTree {
 	const conditionList = [..._conditionList];
 	let maxScoreIndex = 0;
 	if (ansers.size > 1) {
@@ -612,7 +612,9 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 			}
 		}
 		const [conditionObj] = conditionList.splice(maxScoreIndex, 1);
-
+		if (condition) {
+			conditionHistory.push(condition);
+		}
 		const maxScore = conditionList[maxScoreIndex]?.score || -1;
 				console.log(maxScore);
 		if (conditionObj) {
@@ -631,7 +633,7 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 					}
 					return {
 						condition: c,
-						next: MakeFlow3(conditionList, _ansers)
+						next: MakeFlow3(conditionList, _ansers,conditionHistory,c)
 					}
 				}).filter(c => c.next.anserIds.length > 0),
 				conditionHistory: [...conditionHistory],
