@@ -508,7 +508,7 @@ function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 	};
 	const que: Array<IM> = [st];
 	const conditionList = [..._conditionList];
-	while (que.length > 0) {
+	rootLoop:while (que.length > 0) {
 		const s = que.shift();
 
 		if (s && s.ansers && s.conditionIndex !== undefined) {
@@ -546,7 +546,11 @@ function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 					conditionObj = conditionList[conditionIndex++];
 				}
 				console.log(conditionIndex);
+				if (conditionObj==undefined) {
+					continue rootLoop;
+				}
 				s.conditions = [];
+				s.conditionGroup = conditionObj.conditionGroup;
 				for (const natCondition of conditionObj.conditions) {
 					const newAnsers: Set<IAnswerDataCondition> = new Set();
 					for (const anser of ansers) {
@@ -602,12 +606,14 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 			});
 			const score = getTScore(anserConditionList, allConditionSize);
 			conditionObj.score = score;
-			if (conditionList[maxScoreIndex].score||0<score) {
+			if ((conditionList[maxScoreIndex].score||0)<score) {
 				maxScoreIndex = i;
 			}
 		}
+		console.log(conditionList);
 		const [conditionObj] = conditionList.splice(maxScoreIndex, 1);
-		if (conditionObj) {
+		console.log(conditionObj);
+		if (conditionObj&&(conditionList[maxScoreIndex]?.score||0)>0.0) {
 			// data.next = {conditionGroup:condition?.conditionGroup,conditions:[]};
 			return {
 				conditionGroup: conditionObj.conditionGroup,
