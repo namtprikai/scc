@@ -19,7 +19,7 @@ interface IAnserAPIResponce extends Response {
 		};
 	}) => any;
 }
-const answers: Array<IAnswerData> = [
+export const answers: Array<IAnswerData> = [
 	{
 		id: 0,
 		question_id: 0,

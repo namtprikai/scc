@@ -2,7 +2,7 @@ import faker from 'faker'
 import { Response, Request } from 'express'
 import { IQuestionData } from '../src/core/api/types'
 import { IAPIResponce} from '../src/core/api/types'
-const questions:Array<IQuestionData> =[
+export const questions:Array<IQuestionData> =[
 	{
 		id:0,
 		label:"",
