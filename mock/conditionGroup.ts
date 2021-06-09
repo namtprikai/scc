@@ -1,7 +1,7 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
 import { IConditionGroupData ,IAPIResponce} from '../src/core/api/types'
-const conditionGroups:Array<IConditionGroupData> =[
+export const conditionGroups:Array<IConditionGroupData> =[
 	{
 		id:0,
 		label:"sex",

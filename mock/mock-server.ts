@@ -8,11 +8,11 @@ import yaml from 'yamljs'
 import * as api from './api'
 import { accessTokenAuth } from './security'
 import { connector, summarise } from 'swagger-routes-express';
-
+import {init} from './init';
 import {validation} from "./validate";
 const app = express()
 const port = 9528
-
+init();
 // Compression
 app.use(compression())
 // Logger

@@ -5,7 +5,7 @@ import { IAPIResponce} from '../src/core/api/types';
 import {getUserByToken} from "./users";
 import {userConditions} from "./user_conditions";
 import {answerConditions} from "./answer_conditions";
-const conditions:Array<IConditionData> =[
+export const conditions:Array<IConditionData> =[
 	{
 		id:0,
 		label:"男",
