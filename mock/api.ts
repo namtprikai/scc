@@ -1,9 +1,9 @@
 export * from './role'
 export {getAdminById,getAdminInfo,getAdmins,loginAdmin} from './admins'
 export { getUserById,getUsers} from './users'
-export * from './category';
-export * from './polycyGroup';
-export * from './question';
-export { getAnser} from './answer';
+export {getCategoryList} from './category';
+export {getPolicyGroup,getPolicyList} from './polycyGroup';
+export {getQuestionList} from './question';
+export { getAnsers } from './answer';
 import { test } from "./answer";
-test();
+// test();

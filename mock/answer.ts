@@ -2,7 +2,7 @@ import faker from 'faker'
 import { Response, Request } from 'express'
 import { IAnswerData, IConditionData, IConditionGroupData, IScenarioTree, IScenarioTreeCondition } from '../src/core/api/types'
 import { IAPIResponce } from '../src/core/api/types'
-import { getConditionListByUserToken, getConditionListByAnserId } from "./condition";
+import { getConditionListByUserToken, getConditionListByAnserId, getConditionList,getConditionListByConditionGroupId } from "./condition";
 import { getConditionGroupById } from "./conditionGroup";
 interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> {
 
@@ -37,9 +37,9 @@ export const answers: Array<IAnswerData> = [
 		modified: new Date(),
 	}
 ];
-export const getAnser = (req: Request, res: IAPIResponce): IAnserAPIResponce => {
+export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce => {
 	const { question_id } = req.params;
-	const accessToken = req.header('Authorization');
+	const accessToken = req.header('Authorization')||"";
 	let anserList: Array<IAnswerDataCondition> = answers.filter(a => String(a.question_id) === question_id);
 	if (anserList.length === 1) {
 		return res.json({
@@ -48,7 +48,8 @@ export const getAnser = (req: Request, res: IAPIResponce): IAnserAPIResponce => 
 		})
 	}
 	let conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> = [];
-	if (accessToken) {
+	const conditionGroupKeyConditionMap:Map<number,{conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> = new Map();
+	if (accessToken||true) {
 		const userConditionList = getConditionListByUserToken(accessToken);
 		const userConditionMap: IConditionMap = new Map();
 		//userConditionMap作成開始
@@ -65,9 +66,12 @@ export const getAnser = (req: Request, res: IAPIResponce): IAnserAPIResponce => 
 				}
 			}
 		}
+		const anserKeyConditionMap:Map<number,{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> = new Map();
+
 		//userConditionMap作成完了
 		anserList = anserList.filter((anser: IAnswerDataCondition) => {
 			const conditions = getConditionListByAnserId(anser.id);
+			console.log('conditions',conditions);
 			const anserConditionMap: IConditionMap = new Map();
 			//anserConditionMap作成開始
 			for (const condition of conditions) {
@@ -75,22 +79,27 @@ export const getAnser = (req: Request, res: IAPIResponce): IAnserAPIResponce => 
 				if (anserConditionGroup) {
 					if (!anserConditionMap.has(anserConditionGroup.id)) {
 						anserConditionMap.set(anserConditionGroup.id, { conditionGroup: anserConditionGroup, conditions: [] });
+
 					}
 					const conditionObj = anserConditionMap.get(anserConditionGroup.id);
 					if (conditionObj) {
 						const { conditionGroup, conditions } = conditionObj;
 						conditions.push(condition);
 					}
+					if(!conditionGroupKeyConditionMap.has(condition.conditiongroup_id)){
+						conditionGroupKeyConditionMap.set(condition.conditiongroup_id, { conditionGroup:anserConditionGroup,conditions: getConditionListByConditionGroupId(condition.conditiongroup_id) });
+					}
 				}
+
 			}
 			//anserConditionMap作成完了
 
 
-			for (const userCGroupId of userConditionMap.keys()) {
-				if (anserConditionMap.has(userCGroupId)) {
+			for (const anserCGroupId of anserConditionMap.keys()) {
+				if (userConditionMap.has(anserCGroupId)) {
 					//共通のconditionGroupだということ
-					const anserConditions = anserConditionMap.get(userCGroupId)?.conditions;
-					const userConditions = userConditionMap.get(userCGroupId)?.conditions;
+					const anserConditions = anserConditionMap.get(anserCGroupId)?.conditions;
+					const userConditions = userConditionMap.get(anserCGroupId)?.conditions;
 					if (anserConditions && userConditions) {
 						//共通のコンディショングループのコンディションを保持していながら、積集合が空集合だということは対象のアンサーではないので除外
 						const intersectionAUCondition = anserConditions.filter(ac => !new Set([...userConditions.map(u => u.id)]).has(ac.id));
@@ -100,14 +109,15 @@ export const getAnser = (req: Request, res: IAPIResponce): IAnserAPIResponce => 
 						//対象差のコンディションをアンサーをキーに収納しておく
 						const symDiffCondition = [...userConditions.filter(uc => !new Set([...anserConditions.map(a => a.id)]).has(uc.id)), ...anserConditions.filter(ac => !new Set([...userConditions.map(u => u.id)]).has(ac.id))];
 						//　ここに対象差のコンディションをアンサーをキーに収納しておくロジック
-						const conditionGroup = userConditionMap.get(userCGroupId)?.conditionGroup;
+						const conditionGroup = userConditionMap.get(anserCGroupId)?.conditionGroup;
 						if (conditionGroup) {
-							conditionList.push({ conditionGroup, conditions: symDiffCondition });
+							anserKeyConditionMap.set(anser.id,{conditionGroup,conditions:symDiffCondition});
 						}
-						anser.anserConditionMap = anserConditionMap;
 					}
 				}
 			}
+			anser.anserConditionMap = anserConditionMap;
+
 			return true;
 		});
 	}
@@ -118,6 +128,11 @@ export const getAnser = (req: Request, res: IAPIResponce): IAnserAPIResponce => 
 			status: 20000,
 			data: { ansers: anserList }
 		})
+	}
+	//絞り込まれていないアンサーを絞り込むのに必要なコンディションを作る処理
+	for(const [gid,conditionObj] of conditionGroupKeyConditionMap.entries()) {
+		getConditionGroupById(gid);
+		conditionList.push({ conditionGroup:conditionObj.conditionGroup, conditions: conditionObj.conditions });
 	}
 	// ここから複数アンサーをコンディションで絞り込むためのツリー構造JSONを作成する処理に入る
 	conditionList = conditionList.sort((a, b) => {
@@ -131,7 +146,7 @@ export const getAnser = (req: Request, res: IAPIResponce): IAnserAPIResponce => 
 	});
 
 	let anserSet: Set<IAnswerDataCondition> = new Set([...anserList]);
-	const scenarioTree: IScenarioTree = MakeFlow(conditionList, anserSet);
+	const scenarioTree: IScenarioTree = MakeFlow3(conditionList, anserSet);
 
 
 	return res.json({
@@ -566,15 +581,15 @@ function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 					if (newAnsers.size <= 0) {
 						continue;
 					}
-					const { conditionHistory } = s;
+					// const { conditionHistory } = s;
 					console.log("anser",newAnsers);
 					const next: IM = {
 						conditionIndex: conditionIndex + 1,
 						anserIds: [...newAnsers.values()].map(a => a.id),
-						conditionHistory: [...conditionHistory],
+						// conditionHistory: [...conditionHistory],
 						ansers: newAnsers
 					};
-					next.conditionHistory.push(natCondition);
+					// next.conditionHistory.push(natCondition);
 					const condition = {
 						condition: natCondition,
 						next
@@ -590,10 +605,11 @@ function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 	}
 	return st;
 }
-function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData>, score?: number }>, ansers: Set<IAnswerDataCondition>, conditionHistory: Array<IConditionData> = [],condition?:IConditionData): IScenarioTree {
+function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData>, score?: number }>, ansers: Set<IAnswerDataCondition>,deep:number=0, conditionHistory: Array<IConditionData> = [],condition?:IConditionData): IScenarioTree {
 	const conditionList = [..._conditionList];
+	console.log(conditionList);
 	let maxScoreIndex = 0;
-	if (ansers.size > 1) {
+	if (ansers.size > 1&&deep<5) {
 		loop1: for (let i = 0; i < conditionList.length; i++) {
 			const conditionObj = conditionList[i];
 			const allConditionSize = conditionObj.conditions.length;
@@ -605,18 +621,22 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 				return new Set(conditions.conditions.map(c => c.id));
 			});
 			const score = getTScore(anserConditionList, allConditionSize);
+			console.log("anserConditionList",anserConditionList);
 			console.log(score);
 			conditionObj.score = score;
 			if ((conditionList[maxScoreIndex].score||0)<score) {
 				maxScoreIndex = i;
 			}
+			if(score>0.9){
+				break loop1;
+			}
 		}
 		const maxScore = conditionList[maxScoreIndex]?.score || -1;
 		const [conditionObj] = conditionList.splice(maxScoreIndex, 1);
-		if (condition) {
-			conditionHistory.push(condition);
-		}
-		if (conditionObj&&maxScore>0) {
+		// if (condition) {
+		// 	conditionHistory.push(condition);
+		// }
+		if (conditionObj&&maxScore>0.7) {
 			// data.next = {conditionGroup:condition?.conditionGroup,conditions:[]};
 			return {
 				conditionGroup: conditionObj.conditionGroup,
@@ -630,18 +650,23 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 						}
 						_ansers.add(anser);
 					}
+					if(_ansers.size===0){
+						return {
+							condition: c,
+						}
+					}
 					return {
 						condition: c,
-						next: MakeFlow3(conditionList, _ansers,conditionHistory,c)
+						next: MakeFlow3(conditionList, _ansers,deep+1,conditionHistory,c)
 					}
-				}).filter(c => c.next.anserIds.length > 0),
-				conditionHistory: [...conditionHistory],
+				}).filter(c => c.next&&c.next.anserIds.length > 0),
+				// conditionHistory: [...conditionHistory],
 				anserIds: [...ansers.values()].map(a => a.id)
 			};
 		}
 	}
 	return {
-		conditionHistory: [...conditionHistory],
+		// conditionHistory: [...conditionHistory],
 		anserIds: [...ansers.values()].map(a => a.id)
 	};
 	function getTScore(conditionSetList: Array<Set<number>>, allConditionSize: number): number {

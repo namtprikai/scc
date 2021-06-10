@@ -105,7 +105,7 @@ export interface ILog extends ISAIAPIData{
 export interface IScenarioTree{
 	conditionGroup?: IConditionGroupData;
 	conditions?: Array<IScenarioTreeCondition>;
-	conditionHistory: Array<IConditionData>;
+	conditionHistory?: Array<IConditionData>;
 	anserIds: Array<number>;
 }
 export interface IScenarioTreeCondition{

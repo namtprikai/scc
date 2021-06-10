@@ -53,3 +53,6 @@ export const getConditionListByAnserId = (anserId:number):Array<IConditionData> 
 	const conditionIds = answerConditions.filter(a=>a.answer_id === anserId).map(a=>a.condition_id);
 	return conditions.filter(c=>new Set(conditionIds).has(c.id));
 }
+export const getConditionListByConditionGroupId = (conditionGroupId:number):Array<IConditionData> => {
+	return conditions.filter(a=>a.conditiongroup_id=== conditionGroupId);
+}

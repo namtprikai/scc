@@ -6,7 +6,7 @@ import {conditions} from "./condition";
 import {conditionGroups} from "./conditionGroup";
 import { IConditionGroupData } from '../src/core/api/types';
 export const init = ()=>{
-	const N = getRandomInt(10,100);
+	const N = 100;//getRandomInt(60,100);
 
 	let conditionIdCount = conditions[conditions.length-1].id+1;
 	for(let i=questions[questions.length-1].id+1;i<N;i++){
@@ -41,6 +41,7 @@ export const init = ()=>{
 	let questionIdCount = 0;
 	let anserConditionsIdCount = 0;
 	while(questions.length>questionIdCount){
+		console.log("QuestionId",questionIdCount);
 		answers.push(
 			{
 				id: count,
@@ -51,16 +52,18 @@ export const init = ()=>{
 				modified: new Date(),
 			},
 		);
-		if(Math.random()*10<2){
+		if(Math.random()*20<1){
 			questionIdCount++;
 		}
-		const M =getRandomInt(2,10);
+		const M =getRandomInt(2,20);
 		const conditionIdSet = new Set();
 		for(let j=0;j<M;j++){
 			let cid = 0;
+
 			do{
-				cid = getRandomInt(2,10);
-			}while(!conditionIdSet.has(cid));
+				cid = getRandomInt(2,conditionIdCount);
+				console.log(cid);
+			}while(conditionIdSet.has(cid));
 			conditionIdSet.add(cid)
 			answerConditions.push({
 				id:anserConditionsIdCount++,
