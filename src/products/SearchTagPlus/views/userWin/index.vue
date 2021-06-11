@@ -18,7 +18,7 @@ import Breadcrumb from '@/components/Breadcrumb/index.vue';
 import { TagService } from '../../services/tag';
 import VueTagsInput from '@johmun/vue-tags-input';
 import WrapMessage from '@/components/WrapMessage/index.vue';
-import UserWinDemo from '@/views/UserWinDemo/index.vue';
+import UserWinDemo from '@/components/UserWinDemo/index.vue';
 // @ts-ignore
 @Component({
 	components: { UserWinDemo },

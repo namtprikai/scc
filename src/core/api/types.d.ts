@@ -1,5 +1,5 @@
 import { Response, Request } from 'express'
-interface ISAIAPIData{
+export interface ISAIAPIData{
 	id:number;
 	created?:Date;
 	modified?:Date;

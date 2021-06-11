@@ -4,8 +4,8 @@ import { IAnswerData, IConditionData, IConditionGroupData, IScenarioTree, IScena
 import { IAPIResponce } from '../src/core/api/types'
 import { getConditionListByUserToken, getConditionListByAnserId, getConditionList,getConditionListByConditionGroupId } from "./condition";
 import { getConditionGroupById } from "./conditionGroup";
-import { getUserByToken } from 'users';
-import { auth, secureObjectCreate } from 'security';
+import { getUserByToken } from './users';
+import { auth, secureObjectCreate } from './security';
 import { getAnswerRolesByAnswer,answerRoles } from 'answer_roles';
 interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> {
 
@@ -52,7 +52,7 @@ export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce =>
 	if (accessToken&&user) {
 
 		let anserList: Array<IAnswerDataCondition> = Ansers.getData(user,(d)=>{
-			return d.question_id === question_id;
+			return d.question_id === parseInt(question_id);
 		});
 		if (anserList.length === 1) {
 			return res.json({
