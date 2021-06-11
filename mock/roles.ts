@@ -4,6 +4,14 @@ export const roles:Array<IRoleData> = [
 	{
 		id:0,
 		label:"ゲスト",
+	},
+	{
+		id:2,
+		label:"会員",
+	},
+	{
+		id:2,
+		label:"VIP会員",
 	}
 ];
 

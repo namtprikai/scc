@@ -5,6 +5,8 @@ import {answerConditions} from './answer_conditions';
 import {conditions} from "./condition";
 import {conditionGroups} from "./conditionGroup";
 import { IConditionGroupData } from '../src/core/api/types';
+import {addAnswer, answerRoles} from "./answer_roles";
+import { roles } from 'roles';
 export const init = ()=>{
 	const N = 100;//getRandomInt(60,100);
 
@@ -52,6 +54,10 @@ export const init = ()=>{
 				modified: new Date(),
 			},
 		);
+		const R = getRandomInt(1,roles.length);
+		for(let j = 0;j<R;j++){
+			addAnswer(count,j);
+		}
 		if(Math.random()*20<1){
 			questionIdCount++;
 		}
