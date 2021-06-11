@@ -113,6 +113,16 @@ export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce =>
 	//ここまででユーザーに対して可能性のあるアンサーの絞り込み。
 	//この時点で可能性のあるアンサーが一つに絞り込まれたならそれを返す。
 	if (anserList.length === 1) {
+		anserList.map(a=>{
+			const o:any = {};
+			if(a.anserConditionMap){
+				for(const [k,v] of a.anserConditionMap){
+					o[k] = v;
+				}
+			}
+			a.anserConditionMap=o;
+			return a;
+		});
 		return res.json({
 			status: 20000,
 			data: { ansers: anserList }
