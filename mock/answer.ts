@@ -6,7 +6,7 @@ import { getConditionListByUserToken, getConditionListByAnserId, getConditionLis
 import { getConditionGroupById } from "./conditionGroup";
 import { getUserByToken } from './users';
 import { auth, secureObjectCreate } from './security';
-import { getAnswerRolesByAnswer,answerRoles } from 'answer_roles';
+import { getAnswerRolesByAnswer,answerRoles } from './answer_roles';
 interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> {
 
 }

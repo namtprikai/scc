@@ -12,6 +12,7 @@ export interface IAPIResponce extends Response{
 }
 export interface IRoleData extends ISAIAPIData{
 	[key:any]:any;
+	label:string;
 }
 export interface IProductData extends ISAIAPIData{
 	name:string;

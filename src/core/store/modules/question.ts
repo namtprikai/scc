@@ -10,13 +10,14 @@ class QuestionStore extends VuexModule {
 	}
 	@Mutation
 	public async GetQuestions() {
-		const data: any = await AjaxService.ajax.http({
-			url: `question/`,
+		const {data}: any = await AjaxService.ajax.http({
+			url: `questions/`,
 			method: 'get',
 			params: {
 			},
 		});
 		console.log(data);
+		this.questions = data;
 	}
 
 }

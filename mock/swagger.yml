@@ -228,9 +228,7 @@ paths:
                     format: int32
                   data:
                     type: object
-                    properties:
-                      user:
-                        $ref: '#/components/schemas/PolycyGroup'
+
         400:
           $ref: '#/components/responses/InvalidAdmin'
         401:
@@ -520,6 +518,32 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Category'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+  /questions:
+    get:
+      tags:
+        - question
+      summary: Get users list
+      description: Return a list of users
+      operationId: getQuestionList
+      security:
+        - AccessTokenAuth: []
+      parameters:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
         401:
           $ref: '#/components/responses/Unauthorized'
   /users:

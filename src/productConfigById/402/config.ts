@@ -446,8 +446,8 @@ export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vu
 										},
 									},
 									v1: {
-										default: 'Talkscript',
-										tabs: [{ label: 'FAQ一覧', key: 'Talkscript' }],
+										default: 'Question',
+										tabs: [{ label: 'FAQ一覧', key: 'Question' }],
 									},
 									v2: {
 										default: 'AllInOneEditor',

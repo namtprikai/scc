@@ -19,6 +19,8 @@ const policyGroups:Array<IPolicyGroupData> =[
 ];
 export const getPolicyGroupByAdminId = (req: Request, res: IAPIResponce) => {
 	const { admin_id } = req.params;
+	console.log(admin_id);
+	if(typeof admin_id === 'string'){
 	const policyGroupIdList = admin_policyGroup.filter(o=>o.admin_id===parseInt(admin_id)).map(o=>o.policy_group_id);
 	// for (const admin of adminList) {
 	// 		if (String(admin.id) === id) {
@@ -26,6 +28,7 @@ export const getPolicyGroupByAdminId = (req: Request, res: IAPIResponce) => {
 							status: 20000,
 							data: [...policyGroups.filter(p=>policyGroupIdList.indexOf(p.id)!==-1)]
 					})
+				}
 	// 		}
 	// }
 	return res.status(400).json({

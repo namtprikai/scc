@@ -24,7 +24,7 @@ export const questions:Array<IQuestionData> =[
 ];
 export const getQuestionList = (req: Request, res: IAPIResponce):Response => {
 	const { category_id,text } = req.params;
-
+console.log("question");
 	// const users = userList.filter(user => {
 	// 		const lowerCaseName = user.name.toLowerCase()
 	// 		return !(name && lowerCaseName.indexOf((name as string).toLowerCase()) < 0)
