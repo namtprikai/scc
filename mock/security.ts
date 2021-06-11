@@ -24,12 +24,11 @@ export const auth = (user:IUserData,roles:Array<IRoleData>)=>{
 	}
 	return false;
 }
-
-export class RoleFilter<T>{
-	protected dataList:Array<T> =[];
-	constructor(protected getDataList:()=>Array<T>,protected getRoleFunc:(data:T)=>Array<IRoleData>){
-
-	}
+export const secureObjectCreate = <T>(getDataList:()=>Array<T>,getRoleFunc:(data:T)=>Array<IRoleData>):RoleFilter<T> =>{
+	return new RoleFilter<T>(getDataList,getRoleFunc);
+}
+class RoleFilter<T>{
+	constructor(protected getDataList:()=>Array<T>,protected getRoleFunc:(data:T)=>Array<IRoleData>){}
 	public getData(user:IUserData,filter?:(d:T)=>boolean):Array<T>{
 		return this.getDataList().filter(a => {
 			if(filter&&!filter(a)){
