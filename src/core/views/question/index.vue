@@ -11,9 +11,13 @@
 				<b-button class="addButton" @click="addRoot()" variant="outline-secondary">新規追加</b-button>
 			</b-col>
 		</b-row>
-		<b-list-group>
-  <b-list-group-item v-for="(question,index) in Questions" :key="index">{{question.title}}</b-list-group-item>
-</b-list-group>
+				<div v-for="(question,index) in Questions" :key="index">
+					<BCardAccordion :title="question.title" class="bot-message-config_editor_group section" :visible="false">
+					<template slot="body">
+						ここにアンサー
+					</template>
+				</BCardAccordion>
+</div>
 		<div class="contextmenu" ref="contextmenu" v-show="contextMenuIsVisible">
 			<div @click="removeNode">Remove</div>
 		</div>

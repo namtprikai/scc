@@ -8,10 +8,10 @@ import {AjaxService} from "@/services/ajax";
 import { QuestionModule } from '@/store/modules/question';
 import { UpdateServer } from '@/api/updateServer';
 import WrapSppiner from '@/components/WrapSinner/index.vue';
-
+import { BCardAccordion } from '@/components/BCardAccodion';
 // @ts-ignore
 @Component({
-	components: { WrapSppiner },
+	components: { WrapSppiner, BCardAccordion },
 })
 export default class QuestionParent extends Vue {
 	protected isLoad = false;

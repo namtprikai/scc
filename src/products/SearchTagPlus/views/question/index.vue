@@ -20,11 +20,15 @@
 			</div>
 			<div>
 				<wrap-sppiner v-if="isLoad" />
-				<b-list-group>
-					<b-list-group-item v-for="(question, index) in Questions" :key="index">{{
-						question.title
-					}}</b-list-group-item>
-				</b-list-group>
+				<div v-for="(question, index) in Questions" :key="index">
+					<BCardAccordion
+						:title="question.title"
+						class="bot-message-config_editor_group section"
+						:visible="false"
+					>
+						<template slot="body"> ここにアンサー </template>
+					</BCardAccordion>
+				</div>
 				<div id="End"></div>
 				<div class="mt-3">
 					<b-button block class @click="addRoot()" variant="secondary">
