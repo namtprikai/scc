@@ -10,7 +10,7 @@ export interface IAPIResponce extends Response{
 		data:{[key:string]:any}|Array<{[key:string]:any}>
 	})=>any;
 }
-export interface IRoleData{
+export interface IRoleData extends ISAIAPIData{
 	[key:any]:any;
 }
 export interface IProductData extends ISAIAPIData{

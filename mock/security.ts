@@ -1,5 +1,6 @@
 import { Response, Request, NextFunction } from 'express'
-import { IPolicyData,IAPIResponce } from '../src/core/api/types';
+import { IPolicyData,IAPIResponce, IUserData, IRoleData } from '../src/core/api/types';
+import {getUserRolesByUserId} from "./user_roles";
 export const accessTokenAuth = (req: Request, res: IAPIResponce, next: NextFunction) => {
   const accessToken = req.header('Authorization')
   if (!accessToken&&false) {
@@ -13,4 +14,13 @@ export const accessTokenAuth = (req: Request, res: IAPIResponce, next: NextFunct
     })
   }
   next()
+}
+export const auth = (user:IUserData,roles:Array<IRoleData>)=>{
+	const userRoles = getUserRolesByUserId(user.id);
+	for(const userRole of userRoles){
+		if(roles.find(r=>r.id === userRole.id)){
+			return true;
+		}
+	}
+	return false;
 }
