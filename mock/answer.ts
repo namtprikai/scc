@@ -5,8 +5,8 @@ import { IAPIResponce } from '../src/core/api/types'
 import { getConditionListByUserToken, getConditionListByAnserId, getConditionList,getConditionListByConditionGroupId } from "./condition";
 import { getConditionGroupById } from "./conditionGroup";
 import { getUserByToken } from 'users';
-import { auth } from 'security';
-import { getAnswerRolesByAnswerId } from 'answer_roles';
+import { auth, RoleFilter } from 'security';
+import { getAnswerRolesByAnswer,answerRoles } from 'answer_roles';
 interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> {
 
 }
@@ -40,6 +40,8 @@ export const answers: Array<IAnswerData> = [
 		modified: new Date(),
 	}
 ];
+const Ansers = new RoleFilter<IAnswerData>(()=>{return answers},getAnswerRolesByAnswer);
+
 export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce => {
 	const { question_id } = req.params;
 	const accessToken = req.header('Authorization')||"";
@@ -49,13 +51,8 @@ export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce =>
 	const user = getUserByToken(accessToken);
 	if (accessToken&&user) {
 
-		let anserList: Array<IAnswerDataCondition> = answers
-		.filter(a => {
-			if(String(a.question_id) === question_id){
-				const aRoles = getAnswerRolesByAnswerId(a.id);
-				return auth(user,aRoles);
-			}
-			return false;
+		let anserList: Array<IAnswerDataCondition> = Ansers.getData(user,(d)=>{
+			return d.question_id === question_id;
 		});
 		if (anserList.length === 1) {
 			return res.json({

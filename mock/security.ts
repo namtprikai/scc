@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from 'express'
-import { IPolicyData,IAPIResponce, IUserData, IRoleData } from '../src/core/api/types';
+import { IPolicyData,IAPIResponce, IUserData, IRoleData,ISAIAPIData } from '../src/core/api/types';
 import {getUserRolesByUserId} from "./user_roles";
 export const accessTokenAuth = (req: Request, res: IAPIResponce, next: NextFunction) => {
   const accessToken = req.header('Authorization')
@@ -23,4 +23,20 @@ export const auth = (user:IUserData,roles:Array<IRoleData>)=>{
 		}
 	}
 	return false;
+}
+
+export class RoleFilter<T>{
+	protected dataList:Array<T> =[];
+	constructor(protected getDataList:()=>Array<T>,protected getRoleFunc:(data:T)=>Array<IRoleData>){
+
+	}
+	public getData(user:IUserData,filter?:(d:T)=>boolean):Array<T>{
+		return this.getDataList().filter(a => {
+			if(filter&&!filter(a)){
+				return false;
+			}
+				const aRoles = this.getRoleFunc(a);
+				return auth(user,aRoles);
+		});
+	}
 }
