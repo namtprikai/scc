@@ -1,3 +1,5 @@
+import { IRoleData } from "../src/core/api/types";
+import {roles} from "./roles";
 export const answerRoles = [
 	{
 		id:0,
@@ -13,4 +15,9 @@ id,
 answer_id,
 role_id
 	});
+}
+export const getAnswerRolesByAnswerId = (answer_id:number):Array<IRoleData>=>{
+	// @ts-ignore
+	return answerRoles.filter(ur=>ur.answer_id === answer_id).map(ur=>roles.find(r=>ur.role_id===r.id))
+	.filter(o=>o!=undefined);
 }

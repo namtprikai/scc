@@ -4,6 +4,9 @@ import { IAnswerData, IConditionData, IConditionGroupData, IScenarioTree, IScena
 import { IAPIResponce } from '../src/core/api/types'
 import { getConditionListByUserToken, getConditionListByAnserId, getConditionList,getConditionListByConditionGroupId } from "./condition";
 import { getConditionGroupById } from "./conditionGroup";
+import { getUserByToken } from 'users';
+import { auth } from 'security';
+import { getAnswerRolesByAnswerId } from 'answer_roles';
 interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> {
 
 }
@@ -40,16 +43,26 @@ export const answers: Array<IAnswerData> = [
 export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce => {
 	const { question_id } = req.params;
 	const accessToken = req.header('Authorization')||"";
-	let anserList: Array<IAnswerDataCondition> = answers.filter(a => String(a.question_id) === question_id);
-	if (anserList.length === 1) {
-		return res.json({
-			status: 20000,
-			data: { ansers: anserList }
-		})
-	}
+
 	let conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> = [];
 	const conditionGroupKeyConditionMap:Map<number,{conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> = new Map();
-	if (accessToken||true) {
+	const user = getUserByToken(accessToken);
+	if (accessToken&&user) {
+
+		let anserList: Array<IAnswerDataCondition> = answers
+		.filter(a => {
+			if(String(a.question_id) === question_id){
+				const aRoles = getAnswerRolesByAnswerId(a.id);
+				return auth(user,aRoles);
+			}
+			return false;
+		});
+		if (anserList.length === 1) {
+			return res.json({
+				status: 20000,
+				data: { ansers: anserList }
+			})
+		}
 		const userConditionList = getConditionListByUserToken(accessToken);
 		const userConditionMap: IConditionMap = new Map();
 		//userConditionMap作成開始
@@ -109,7 +122,6 @@ export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce =>
 			anser.anserConditionMap = anserConditionMap;
 			return true;
 		});
-	}
 	//ここまででユーザーに対して可能性のあるアンサーの絞り込み。
 	//この時点で可能性のあるアンサーが一つに絞り込まれたならそれを返す。
 	if (anserList.length === 1) {
@@ -164,6 +176,15 @@ export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce =>
 			conditionList
 		}
 	})
+}
+return res.status(400).json({
+	status: 50004,
+	data:{
+		errors:[
+			{status: 'forbidden_error'}
+		]
+	}
+})
 }
 
 export const test = () => {
