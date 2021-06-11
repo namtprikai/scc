@@ -40,7 +40,7 @@ export const answers: Array<IAnswerData> = [
 		modified: new Date(),
 	}
 ];
-const Ansers = secureObjectCreate<IAnswerData>(()=>{return answers},getAnswerRolesByAnswer);
+const Ansers = secureObjectCreate<IAnswerData>(()=>answers,getAnswerRolesByAnswer);
 
 export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce => {
 	const { question_id } = req.params;

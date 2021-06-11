@@ -453,9 +453,7 @@ export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vu
 										default: 'AllInOneEditor',
                     tabs: [
                       { label: 'FAQ編集', key: 'AllInOneEditor' },
-                    { label: "よくある質問", key: "Yokuaru", discription: `・追加するには、FAQ一覧からQ&Aを選択して「選択したQ&Aをよくある質問に追加」をクリックしてください。削除するには「-」ボタンをクリックしてください。
-                    <br>・編集内容を反映するには、右上の「反映」ボタンをクリックしてください。本番環境に反映されます。<br>
-                    ※「反映ステップから進む」ボタンでは反映されないためご注意ください` },
+                    { label: "ユーザー画面でも", key: "UserWin", discription: `` },
                   ],
 									},
 								},
