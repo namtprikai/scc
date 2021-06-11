@@ -66,8 +66,6 @@ export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce =>
 				}
 			}
 		}
-		const anserKeyConditionMap:Map<number,{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> = new Map();
-
 		//userConditionMap作成完了
 		anserList = anserList.filter((anser: IAnswerDataCondition) => {
 			const conditions = getConditionListByAnserId(anser.id);
@@ -94,7 +92,6 @@ export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce =>
 			}
 			//anserConditionMap作成完了
 
-
 			for (const anserCGroupId of anserConditionMap.keys()) {
 				if (userConditionMap.has(anserCGroupId)) {
 					//共通のconditionGroupだということ
@@ -106,18 +103,10 @@ export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce =>
 						if (intersectionAUCondition.length === 0) {
 							return false;
 						}
-						//対象差のコンディションをアンサーをキーに収納しておく
-						const symDiffCondition = [...userConditions.filter(uc => !new Set([...anserConditions.map(a => a.id)]).has(uc.id)), ...anserConditions.filter(ac => !new Set([...userConditions.map(u => u.id)]).has(ac.id))];
-						//　ここに対象差のコンディションをアンサーをキーに収納しておくロジック
-						const conditionGroup = userConditionMap.get(anserCGroupId)?.conditionGroup;
-						if (conditionGroup) {
-							anserKeyConditionMap.set(anser.id,{conditionGroup,conditions:symDiffCondition});
-						}
 					}
 				}
 			}
 			anser.anserConditionMap = anserConditionMap;
-
 			return true;
 		});
 	}
@@ -145,15 +134,24 @@ export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce =>
 		return 0;
 	});
 
-	let anserSet: Set<IAnswerDataCondition> = new Set([...anserList]);
-	const scenarioTree: IScenarioTree = MakeFlow3(conditionList, anserSet);
-
+	// let anserSet: Set<IAnswerDataCondition> = new Set([...anserList]);
+	// const scenarioTree: IScenarioTree = MakeFlow3(conditionList, anserSet);
+	anserList.map(a=>{
+		const o:any = {};
+		if(a.anserConditionMap){
+			for(const [k,v] of a.anserConditionMap){
+				o[k] = v;
+			}
+		}
+		a.anserConditionMap=o;
+		return a;
+	});
 
 	return res.json({
 		status: 20000,
 		data: {
 			ansers: anserList,
-			flow: scenarioTree
+			conditionList
 		}
 	})
 }
@@ -607,7 +605,6 @@ function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 }
 function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData>, score?: number }>, ansers: Set<IAnswerDataCondition>,deep:number=0, conditionHistory: Array<IConditionData> = [],condition?:IConditionData): IScenarioTree {
 	const conditionList = [..._conditionList];
-	console.log(conditionList);
 	let maxScoreIndex = 0;
 	if (ansers.size > 1&&deep<5) {
 		loop1: for (let i = 0; i < conditionList.length; i++) {
@@ -621,8 +618,6 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 				return new Set(conditions.conditions.map(c => c.id));
 			});
 			const score = getTScore(anserConditionList, allConditionSize);
-			console.log("anserConditionList",anserConditionList);
-			console.log(score);
 			conditionObj.score = score;
 			if ((conditionList[maxScoreIndex].score||0)<score) {
 				maxScoreIndex = i;
@@ -636,7 +631,7 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 		// if (condition) {
 		// 	conditionHistory.push(condition);
 		// }
-		if (conditionObj&&maxScore>0.7) {
+		if (conditionObj&&maxScore>0.3) {
 			// data.next = {conditionGroup:condition?.conditionGroup,conditions:[]};
 			return {
 				conditionGroup: conditionObj.conditionGroup,
