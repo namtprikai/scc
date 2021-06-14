@@ -26,6 +26,7 @@ import Tinymce from '@/components/Tinymce/index.vue';
 import InputTag from '@/components/InputTag/index.vue';
 import Synonym from '@/components/Synonym/index.vue';
 import AllInOneEditorCompParent from '@/views/allInOneEditor';
+import AnsewerEditor from "@/components/AnsewerEditor/index.vue";
 // @ts-ignore
 @Component({
 	components: {
@@ -33,6 +34,7 @@ import AllInOneEditorCompParent from '@/views/allInOneEditor';
 		InputTag,
 		Synonym,
 		WrapMessage,
+		AnsewerEditor,
 	},
 })
 export default class AllInOneEditorComp extends AllInOneEditorCompParent {}

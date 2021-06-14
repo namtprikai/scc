@@ -1,11 +1,8 @@
 <div>
 	<!-- <wrap-message v-if="isMessage" :message="message" /> -->
 	<WrapSppiner v-if="isLoading" />
-	<wrap-message v-else-if="!Is_ScriptShow&&!Is_BotShow" message="選択してください" />
-	<div v-if="Is_ScriptShow">
-		<ScriptEditor :scriptData="script" />
-	</div>
-	<div v-if="Is_BotShow">
-		<BotEditor :botFlow="botConfig" />
+	<wrap-message v-else-if="!Is_AnswerShow" message="選択してください" />
+	<div v-if="Is_AnswerShow">
+		<AnsewerEditor :answerData="answer" />
 	</div>
 </div>

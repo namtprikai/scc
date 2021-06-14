@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div v-for="(anser) in answers" :key="anser.id">
+		<div v-for="(anser) in answers" :key="anser.id" @click="setAnswer(anser)">
 			{{anser.text}}
 		</div>
 	</div>
@@ -8,6 +8,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
+import { eventHub } from '@/init/eventHub';
 import {AjaxService} from '../../services/ajax';
 import {IAnswerData} from '../../api/types';
 @Component
@@ -26,6 +27,9 @@ export default class AnswerComp extends Vue {
 		}
 	}
 	answers:Array<IAnswerData> = [];
+	setAnswer(item:IAnswerData){
+		eventHub.$emit('setAnswer', item);
+	}
 	async created(){
 
 	}
