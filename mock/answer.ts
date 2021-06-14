@@ -1,18 +1,14 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
 import { IAnswerData, IConditionData, IConditionGroupData, IScenarioTree, IScenarioTreeCondition } from '../src/core/api/types'
-import { IAPIResponce } from '../src/core/api/types'
+import { IAPIResponce,IAnswerDataCondition,IConditionMap } from '../src/core/api/types'
 import { getConditionListByUserToken, getConditionListByAnserId, getConditionList,getConditionListByConditionGroupId } from "./condition";
 import { getConditionGroupById } from "./conditionGroup";
 import { getUserByToken } from './users';
 import { auth, secureObjectCreate } from './security';
 import { getAnswerRolesByAnswer,answerRoles } from './answer_roles';
-interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> {
 
-}
-export interface IAnswerDataCondition extends IAnswerData {
-	anserConditionMap?: IConditionMap;
-}
+
 interface IAnserAPIResponce extends Response {
 	json: (args: {
 		status: number;

@@ -2,7 +2,6 @@
 	<div class="tab-body">
 		{{answerData}}
 		<div v-if="Is_show">
-			{{answerData}}
 			<div class="section">
 				<b-card no-body>
 					<b-card-header>
@@ -100,7 +99,7 @@
 						<b-card no-body>
 							<b-card-header>A.</b-card-header>
 							<b-card-body>
-								<b-button @click="openImageModal" size="sm">画像挿入</b-button>
+								<!-- <b-button @click="openImageModal" size="sm">画像挿入</b-button> -->
 								<editor
 									v-model="answerData.text"
 									:height="300"
@@ -168,7 +167,7 @@ export default class ScriptEditorComp extends Vue {
 
 	}
 	get Id(){
-		return this.answerData.id;
+		return String(this.answerData.id);
 	}
 		get Is_show() {
 		if (this.isShow && this.answerData && this.answerData.hasOwnProperty('id')) {
