@@ -1,7 +1,6 @@
 <template>
 	<div>
 		<TabHeader>
-			<EditEnd />
 			<b-button
 				class="ml-2"
 				size="sm"
@@ -26,7 +25,7 @@
 						class="bot-message-config_editor_group section"
 						:visible="false"
 					>
-						<template slot="body"> ここにアンサー </template>
+						<template v-slot:body="body"><Answer :questionId="question.id" :is_show="body.isShow" /> </template>
 					</BCardAccordion>
 				</div>
 				<div id="End"></div>
@@ -52,7 +51,7 @@ import { eventHub } from '@/init/eventHub';
 import QuestionParent from '@/views/question';
 import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
 import WrapSppiner from '@/components/WrapSinner/index.vue';
-
+import Answer from '@/components/Answer/index.vue';
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 // @ts-ignore
 @Component({
@@ -69,6 +68,7 @@ import WrapSppiner from '@/components/WrapSinner/index.vue';
 	components: {
 		SlVueTree,
 		WrapSppiner,
+		Answer,
 	},
 })
 export default class QuestionComp extends QuestionParent {

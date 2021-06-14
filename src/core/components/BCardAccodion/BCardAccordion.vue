@@ -10,7 +10,7 @@
 			</b-card-header>
 			<b-collapse v-model="isShow">
 				<b-card-body>
-					<slot name="body" />
+					<slot name="body" v-bind:isShow="isShow" />
 				</b-card-body>
 			</b-collapse>
 		</b-card>
@@ -19,13 +19,13 @@
 <script lang="ts">
 import { Vue, Component, Prop, PropSync } from 'vue-property-decorator';
 import { Type } from '@/components/Charts';
-// @ts-ignore
 @Component({ name: 'BCardAccordion' })
 export default class BCardAccordion extends Vue {
-	private isShow = true;
+	private isShow=true;
 	private get rotate(): number {
 		return this.isShow ? 0 : 90;
 	}
+
 
 	@Prop({ type: String, default: '' })
 	title!: string;
