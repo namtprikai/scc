@@ -1,6 +1,5 @@
 <template>
 	<div class="tab-body">
-		{{answerData}}
 		<div v-if="Is_show">
 			<div class="section">
 				<b-card no-body>
@@ -48,33 +47,43 @@
 				</b-card>
 			</div> -->
 			<div>
+				{{ Conditions }}
 				<!-- <b-button v-if="!isEdit" v-on:click="isEdit=true">リッチテキスト編集</b-button>
 				<b-button v-if="isEdit" v-on:click="isEdit=false">リッチテキスト編集を閉じる</b-button>-->
-				<div class="section" v-if="Keywords">
+				<div class="section" v-if="Conditions">
 					<b-card no-body>
 						<b-card-header>
-							キーワード
+							コンディション
 							<b-icon icon="info-circle" id="popover-target-keyword"></b-icon>
 							<b-popover
 								target="popover-target-keyword"
 								triggers="hover"
 								placement="top"
 							>
-								キーワードとは、ユーザーの想定質問から重要単語を抽出したものです。
+								コンディションとは、xxxです。
 								<br />詳しくは担当者からお送りするマニュアルをご覧ください。
 							</b-popover>
 						</b-card-header>
 						<b-card-body>
 							<b-input-group
-								v-for="(question, index) in Keywords"
-								:key="index"
+								v-for="(condition, k) in Conditions"
+								:key="k"
 								class="question"
 							>
+								<div>
+									{{ condition.conditionGroup.label }}<br />
+									{{ condition.conditions[0] }}
+								</div>
 								<div class="input">
-									<input-tag
-										v-model="answerData.data.questions[index]"
-										:item-click="tagClick"
-									></input-tag>
+									<vue-tags-input :tags="condition.conditions">
+										<div
+											slot="tag-center"
+											slot-scope="props"
+											class="my-item"
+										>
+											{{ props.tag.text.label }}
+										</div>
+									</vue-tags-input>
 									<b-button v-on:click="removeQuestion(index)">-</b-button>
 								</div>
 							</b-input-group>
@@ -146,23 +155,27 @@
 <script lang="ts">
 import { v4 } from 'uuid';
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
-import {IAnswerData} from '../../api/types';
+import {IAnswerDataCondition} from '../../api/types';
 import Editor from '@tinymce/tinymce-vue';
 import Plugins from '@/components/Tinymce/plugins';
 import Toolbar from '@/components/Tinymce/toolbar';
+import VueTagsInput from '@johmun/vue-tags-input';
 // @ts-ignore
 @Component({
-	components: {Editor},
+	components: {Editor,VueTagsInput},
 })
 export default class ScriptEditorComp extends Vue {
 	protected isShow = true;
 	protected toolbar = Toolbar;
 	protected plugins = Plugins;
-	get Keywords(){
+	get Conditions(){
+		if(this.answerData.anserConditionMap){
+			return this.answerData.anserConditionMap;
+		}
 		return false;
 	}
 	@Prop()
-	public answerData!:IAnswerData;
+	public answerData!:IAnswerDataCondition;
 	Edit(){
 
 	}
