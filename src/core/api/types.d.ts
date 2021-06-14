@@ -56,6 +56,7 @@ export interface IAdminData extends ISAIAPIData{
 export interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> {
 
 }
+export type IConditionObj = {[key:number]: { conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }} ;
 export interface IAdmin{
 	id: number;
 	name: string;
@@ -99,6 +100,9 @@ export interface IAnswerData extends ISAIAPIData{
 }
 export interface IAnswerDataCondition extends IAnswerData {
 	anserConditionMap?: IConditionMap;
+}
+export interface IAnswerDataConditionJson extends IAnswerData {
+	anserConditionMap?: IConditionObj;
 }
 export interface IKeywordData extends ISAIAPIData{
 	label:string;

@@ -6,7 +6,7 @@ import Synonym from '@/components/Synonym/index.vue';
 import _ from 'lodash';
 import { Ajax, Wait } from '@/utils/parts';
 import WrapSppiner from '@/components/WrapSinner/index.vue';
-import { IAnswerData } from '@/api/types';
+import { IAnswerData, IConditionData, IConditionGroupData } from '@/api/types';
 import AnsewerEditor from "@/components/AnsewerEditor/index.vue";
 // @ts-ignore
 @Component({
@@ -21,13 +21,14 @@ export default class AllInOneEditorCompParent extends Vue {
 		this.answer = {};
 		this.currentType = '';
 	}
+	public conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> = [];
 
-
-	public async setAnswer(item: IAnswerData) {
+	public async setAnswer(data:{answer: IAnswerData,conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }>}) {
 		this.isLoading=true;
 		this.currentType = '';
 		await Wait();
-		this.answer = item;
+		this.answer = data.answer;
+		this.conditionList = data.conditionList;
 		this.currentType = 'answer';
 		this.isLoading=false;
 	}

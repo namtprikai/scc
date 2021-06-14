@@ -1,8 +1,13 @@
 <template>
 	<div>
-		<div v-for="(anser) in answers" :key="anser.id" @click="setAnswer(anser)">
-			{{anser.text}}
-		</div>
+		<b-list-group>
+		<b-list-group-item v-for="(anser) in answers" :key="anser.id" @click="setAnswer(anser)" class="d-block">
+			<p> <span v-for="(conditionObj,key) in anser.anserConditionMap" :key="key">
+				<b-badge v-for="(condition,index) in conditionObj.conditions" :key="index">{{condition.label}}</b-badge>
+				</span></p>
+			<p class="text-truncate text-nowrap d-block">{{anser.text}}</p>
+		</b-list-group-item>
+		</b-list-group>
 	</div>
 </template>
 
@@ -10,7 +15,7 @@
 import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
 import { eventHub } from '@/init/eventHub';
 import {AjaxService} from '../../services/ajax';
-import {IAnswerData} from '../../api/types';
+import {IAnswerData,IConditionGroupData,IConditionData} from '../../api/types';
 @Component
 export default class AnswerComp extends Vue {
 	fetchTime:number|null=null;
@@ -27,8 +32,9 @@ export default class AnswerComp extends Vue {
 		}
 	}
 	answers:Array<IAnswerData> = [];
+	conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> = [];
 	setAnswer(item:IAnswerData){
-		eventHub.$emit('setAnswer', item);
+		eventHub.$emit('setAnswer',{ answer:item,conditionList:this.conditionList});
 	}
 	async created(){
 
@@ -41,6 +47,7 @@ export default class AnswerComp extends Vue {
 			},
 		});
 		this.answers = data.ansers;
+		this.conditionList = data.conditionList;
 	}
 }
 </script>
