@@ -15,8 +15,8 @@ export const init = ()=>{
 		questions.push(
 			{
 				id: i,
-				title: faker.hacker.noun(),
-				label: faker.hacker.noun(),
+				title: faker.hacker.noun()+"ってなんですか？",
+				label: faker.hacker.noun()+"ってなんですか？",
 				is_public: true,
 				config:{},
 				created: new Date(),
@@ -25,7 +25,7 @@ export const init = ()=>{
 		);
 		const CGroup:IConditionGroupData = {
 			id: i,
-			label: faker.hacker.noun(),
+			label: `あなたの情報を${faker.hacker.noun()}を以下から選択してね！`,
 			level:i,
 			is_setting:true,
 		}
@@ -34,7 +34,7 @@ export const init = ()=>{
 		for(let j=0;j<M;j++){
 			conditions.push({
 				id:conditionIdCount++,
-				label: faker.hacker.noun(),
+				label: `${faker.hacker.noun()}`,
 				conditiongroup_id:i
 			});
 		}
@@ -48,7 +48,7 @@ export const init = ()=>{
 			{
 				id: count,
 				question_id: questionIdCount,
-				text: faker.hacker.noun(),
+				text: `それはつまりね、${faker.hacker.noun()}ということだよ`,
 				is_public: true,
 				created: new Date(),
 				modified: new Date(),

@@ -47,7 +47,6 @@
 				</b-card>
 			</div> -->
 			<div>
-				{{ Conditions }}
 				<!-- <b-button v-if="!isEdit" v-on:click="isEdit=true">リッチテキスト編集</b-button>
 				<b-button v-if="isEdit" v-on:click="isEdit=false">リッチテキスト編集を閉じる</b-button>-->
 				<div class="section" v-if="Conditions">
@@ -71,8 +70,7 @@
 								class="question"
 							>
 								<div>
-									{{ condition.conditionGroup.label }}<br />
-									{{ condition.conditions[0] }}
+									{{ condition.conditionGroup.label }}
 								</div>
 								<div class="input">
 									<vue-tags-input :tags="condition.conditions">
