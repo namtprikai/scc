@@ -103,7 +103,7 @@
 										<div class="input">
 											{{ condition.isFocus }}
 											<vue-tags-input
-												:tags="getAnserCondition(k, condition.conditionGroup).conditions"
+												:tags="getAnserCondition(condition.conditionGroup).conditions"
 												:autocomplete-items="condition.conditions"
 												:add-only-from-autocomplete="true"
 												:autocomplete-always-open="
@@ -199,15 +199,16 @@ export default class ScriptEditorComp extends Vue {
 		}
 		return false;
 	}
-	getAnserCondition(groupId:number,conditionGroup:IConditionGroupData){
+	getAnserCondition(conditionGroup:IConditionGroupData){
+		const groupId = conditionGroup.id;
 		if(this.answerData.anserConditionMap){
 		if(groupId in this.anserConditionMap){
 			return this.anserConditionMap[groupId];
 		}
-		else if(groupId in this.answerData.anserConditionMap){
+		else if(this.answerData.anserConditionMap.hasOwnProperty(groupId)){
 			const aConObj = this.answerData.anserConditionMap[groupId];
-			return this.anserConditionMap[groupId] = {conditionGroup:aConObj.conditionGroup,conditions:aConObj.conditions.map(c=>({id:c.id,text:c.label,conditiongroup_id:c.conditiongroup_id}))};
-		}else{
+			return this.anserConditionMap[groupId] = {conditionGroup:aConObj.conditionGroup,conditions:aConObj.conditions.map(c=>({id:c.id,text:c.label,label:c.label,conditiongroup_id:c.conditiongroup_id}))};
+		}else if(!this.answerData.anserConditionMap.hasOwnProperty(groupId)){
 			this.anserConditionMap[groupId] = {conditionGroup:conditionGroup,conditions:[]};
 		}
 		return this.anserConditionMap[groupId];
