@@ -217,7 +217,6 @@ export default class ScriptEditorComp extends Vue {
 	focusin(item: any) {
 			item.isFocus = true;
 		this.$forceUpdate();
-			debugger;
 	}
 		private focusout(item: any) {
 		setTimeout(() => {
