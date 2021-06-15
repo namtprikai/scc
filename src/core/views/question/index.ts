@@ -14,6 +14,7 @@ import { BCardAccordion } from '@/components/BCardAccodion';
 	components: { WrapSppiner, BCardAccordion },
 })
 export default class QuestionParent extends Vue {
+	protected searchText: string = '';
 	protected isLoad = false;
 	protected contextMenuIsVisible = false;
 	protected created() {
@@ -24,7 +25,9 @@ export default class QuestionParent extends Vue {
 	protected destroyed() {
 		eventHub.$off('scriptCsvUploadDone', this.fetchData);
 	}
+	public search() {
 
+	}
 	private async fetchData() {
 		this.isLoad = true;
 		await QuestionModule.GetQuestions();
@@ -32,8 +35,15 @@ export default class QuestionParent extends Vue {
 
 	}
 
-	get Questions(){
-		return QuestionModule.Questions;
+	get Questions() {
+		if (this.searchText === '') {
+			return QuestionModule.Questions;
+		} else {
+			return QuestionModule.Questions
+				.filter(q => {
+					return q.title.match(new RegExp(this.searchText,'g'));
+				});
+		}
 	}
 	isSave = false;
 	async save() {

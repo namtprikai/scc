@@ -6,7 +6,11 @@
 					<b-card-header>
 						公開設定
 						<b-icon icon="info-circle" id="popover-target-kokai"></b-icon>
-						<b-popover target="popover-target-kokai" triggers="hover" placement="top">
+						<b-popover
+							target="popover-target-kokai"
+							triggers="hover"
+							placement="top"
+						>
 							公開設定を「公開」にすると、Q&amp;Aがユーザー画面上で公開されます。
 							<br />公開設定を「非公開」にすると、Q&amp;Aがユーザー画面上で非公開となり、
 							<br />管理画面からしか閲覧できなくなります。
@@ -86,13 +90,13 @@
 							</b-popover>
 						</b-card-header>
 						<b-card-body>
-							<b-list-group>
-								<b-list-group-item
+							<!-- <b-card-group  columns> -->
+								<b-card
 									v-for="(condition, k) in ConditionList"
 									:key="k"
 									class=""
 								>
-									<b-input-group>
+									<b-card-body>
 										<div>
 											コンディショングループテキスト
 											<b-form-textarea
@@ -100,10 +104,12 @@
 												v-model="condition.conditionGroup.label"
 											/>
 										</div>
+
 										<div class="input">
-											{{ condition.isFocus }}
 											<vue-tags-input
-												:tags="getAnserCondition(condition.conditionGroup).conditions"
+												:tags="
+													getAnserCondition(condition.conditionGroup).conditions
+												"
 												:autocomplete-items="condition.conditions"
 												:add-only-from-autocomplete="true"
 												:autocomplete-always-open="
@@ -113,20 +119,29 @@
 												@blur="focusout(condition)"
 												:value="''"
 											>
-												<div slot="tag-center" slot-scope="props" class="my-item">
+												<div
+													slot="tag-center"
+													slot-scope="props"
+													class="my-item"
+												>
 													{{ props.tag.text }}
 												</div>
-												<div slot="autocomplete-item" slot-scope="props" class="my-item">
+												<div
+													slot="autocomplete-item"
+													slot-scope="props"
+													class="my-item"
+												>
 													{{ props.item.text }}
 												</div>
 											</vue-tags-input>
-											<b-button v-on:click="removeConditions(condition.conditions)"
+											<b-button
+												v-on:click="removeConditions(condition.conditions)"
 												>-</b-button
 											>
 										</div>
-									</b-input-group>
-								</b-list-group-item>
-							</b-list-group>
+									</b-card-body>
+								</b-card>
+							<!-- </b-card-group> -->
 							<b-container class="bv-example-row mb-3">
 								<b-row class="justify-content-md-center">
 									<b-button
@@ -170,57 +185,77 @@
 </style>
 
 <script lang="ts">
-import { v4 } from 'uuid';
-import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
-import {IAnswerDataCondition, IConditionData,IAnswerDataConditionJson, IConditionGroupData,IConditionObj} from '../../api/types';
-import Editor from '@tinymce/tinymce-vue';
-import Plugins from '@/components/Tinymce/plugins';
-import Toolbar from '@/components/Tinymce/toolbar';
-import VueTagsInput from '@johmun/vue-tags-input';
+import { v4 } from "uuid";
+import { Component, Vue, Watch, Prop } from "vue-property-decorator";
+import {
+	IAnswerDataCondition,
+	IConditionData,
+	IAnswerDataConditionJson,
+	IConditionGroupData,
+	IConditionObj,
+} from "../../api/types";
+import Editor from "@tinymce/tinymce-vue";
+import Plugins from "@/components/Tinymce/plugins";
+import Toolbar from "@/components/Tinymce/toolbar";
+import VueTagsInput from "@johmun/vue-tags-input";
 export interface IConditionTagData {
-	id:number;
-	conditiongroup_id:number;
-	text:string;
+	id: number;
+	conditiongroup_id: number;
+	text: string;
 }
-type IConditionTagObj = {[key:number]: { conditionGroup: IConditionGroupData, conditions: Array<IConditionTagData> }} ;
+type IConditionTagObj = {
+	[key: number]: {
+		conditionGroup: IConditionGroupData;
+		conditions: Array<IConditionTagData>;
+	};
+};
 // @ts-ignore
 @Component({
-	components: {Editor,VueTagsInput},
+	components: { Editor, VueTagsInput },
 })
 export default class ScriptEditorComp extends Vue {
 	protected isShow = true;
 	protected toolbar = Toolbar;
 	protected plugins = Plugins;
-	protected anserConditionMap:IConditionTagObj = {};
-	get Conditions(){
-		if(this.answerData.anserConditionMap&& this.conditionList){
-
+	protected anserConditionMap: IConditionTagObj = {};
+	get Conditions() {
+		if (this.answerData.anserConditionMap && this.conditionList) {
 			return this.answerData.anserConditionMap;
 		}
 		return false;
 	}
-	getAnserCondition(conditionGroup:IConditionGroupData){
+	getAnserCondition(conditionGroup: IConditionGroupData) {
 		const groupId = conditionGroup.id;
-		if(this.answerData.anserConditionMap){
-		if(groupId in this.anserConditionMap){
+		if (this.answerData.anserConditionMap) {
+			if (groupId in this.anserConditionMap) {
+				return this.anserConditionMap[groupId];
+			} else if (this.answerData.anserConditionMap.hasOwnProperty(groupId)) {
+				const aConObj = this.answerData.anserConditionMap[groupId];
+				return (this.anserConditionMap[groupId] = {
+					conditionGroup: aConObj.conditionGroup,
+					conditions: aConObj.conditions.map((c) => ({
+						id: c.id,
+						text: c.label,
+						label: c.label,
+						conditiongroup_id: c.conditiongroup_id,
+					})),
+				});
+			} else if (!this.answerData.anserConditionMap.hasOwnProperty(groupId)) {
+				this.anserConditionMap[groupId] = {
+					conditionGroup: conditionGroup,
+					conditions: [],
+				};
+			}
 			return this.anserConditionMap[groupId];
-		}
-		else if(this.answerData.anserConditionMap.hasOwnProperty(groupId)){
-			const aConObj = this.answerData.anserConditionMap[groupId];
-			return this.anserConditionMap[groupId] = {conditionGroup:aConObj.conditionGroup,conditions:aConObj.conditions.map(c=>({id:c.id,text:c.label,label:c.label,conditiongroup_id:c.conditiongroup_id}))};
-		}else if(!this.answerData.anserConditionMap.hasOwnProperty(groupId)){
-			this.anserConditionMap[groupId] = {conditionGroup:conditionGroup,conditions:[]};
-		}
-		return this.anserConditionMap[groupId];
 		}
 		return null;
 	}
 	focusin(item: any) {
-			item.isFocus = true;
+		item.isFocus = true;
 		this.$forceUpdate();
 		// this.$nextTick();
 	}
-		private focusout(item: any) {
+	private focusout(item: any) {
 		setTimeout(() => {
 			item.isFocus = false;
 			this.$forceUpdate();
@@ -228,32 +263,42 @@ export default class ScriptEditorComp extends Vue {
 		}, 380);
 	}
 	@Prop()
-	public answerData!:IAnswerDataConditionJson;
+	public answerData!: IAnswerDataConditionJson;
 	@Prop()
-	public conditionList!:Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }>;
-	get ConditionList(){
-		return this.conditionList.map(co=>({isFocus:false,conditionGroup:co.conditionGroup,conditions:co.conditions.map(c=>({id:c.id,text:c.label,conditiongroup_id:c.conditiongroup_id,name:c.label,value:c.label}))}));
+	public conditionList!: Array<{
+		conditionGroup: IConditionGroupData;
+		conditions: Array<IConditionData>;
+	}>;
+	get ConditionList() {
+		return this.conditionList.map((co) => ({
+			isFocus: false,
+			conditionGroup: co.conditionGroup,
+			conditions: co.conditions.map((c) => ({
+				id: c.id,
+				text: c.label,
+				conditiongroup_id: c.conditiongroup_id,
+				name: c.label,
+				value: c.label,
+			})),
+		}));
 	}
-	Edit(){
-
-	}
-	get Id(){
+	Edit() {}
+	get Id() {
 		return String(this.answerData.id);
 	}
-		get Is_show() {
-		if (this.isShow && this.answerData && this.answerData.hasOwnProperty('id')) {
+	get Is_show() {
+		if (
+			this.isShow &&
+			this.answerData &&
+			this.answerData.hasOwnProperty("id")
+		) {
 			return true;
 		}
 		return false;
 	}
-	public addConditionGroup(){}
-	protected created() {
+	public addConditionGroup() {}
+	protected created() {}
 
-	}
-
-	protected destroyed() {
-
-	}
-
+	protected destroyed() {}
 }
 </script>

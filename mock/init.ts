@@ -30,7 +30,7 @@ export const init = ()=>{
 			is_setting:true,
 		}
 		conditionGroups.push(CGroup);
-		const M =getRandomInt(2,10);
+		const M =getRandomInt(2,8);
 		for(let j=0;j<M;j++){
 			conditions.push({
 				id:conditionIdCount++,
@@ -58,10 +58,10 @@ export const init = ()=>{
 		for(let j = 0;j<R;j++){
 			addAnswer(count,j);
 		}
-		if(Math.random()*20<1){
+		if(Math.random()*6<1){
 			questionIdCount++;
 		}
-		const M =getRandomInt(2,20);
+		const M =getRandomInt(2,5);
 		const conditionIdSet = new Set();
 		for(let j=0;j<M;j++){
 			let cid = 0;

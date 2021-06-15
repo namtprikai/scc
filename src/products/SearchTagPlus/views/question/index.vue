@@ -12,6 +12,9 @@
 		</TabHeader>
 
 		<div class="tab-body">
+<div>
+<b-form-input type="text" placeholder="検索文" v-model="searchText"></b-form-input>
+</div>
 			<div class="text-right mt-3">
 				<b-button class @click="addRoot()" variant="secondary">
 					<svg-icon name="arrows_plus" />
