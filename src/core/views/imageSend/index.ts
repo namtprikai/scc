@@ -5,7 +5,7 @@ import { UserModule } from '@/store/modules/user';
 import { Ajax } from '@/utils/parts';
 import WrapMessage from '@/components/WrapMessage/index.vue';
 import { Component, Vue } from 'vue-property-decorator';
-import { CLIENT_ID, subsystemUrl } from 'src/consoleTypes/SearchTagPlus/utils/configration';
+import { CLIENT_ID, subsystemUrl } from '@consoletype/utils/configration';
 import { AdminUserModule } from '@/store/modules/adminUser';
 import axios from 'axios';
 // @ts-ignore
