@@ -17,7 +17,7 @@
 		"paths": {
 			"*": ["types/*"],
 			"@/*": ["src/core/*"],
-			"@product/*": [],
+			"@consoletype/*": [],
 			"@pconfig/*": []
 		},
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"]

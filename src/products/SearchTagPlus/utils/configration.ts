@@ -3,7 +3,7 @@ import { ChildConf } from '../env/env';
 const Env: any = process.env.NODE_ENV;
 console.log(Conf);
 console.log(Env);
-export const PRODUCT_ID = process.env.API_PRODUCT_ID || process.env.PRODUCT_ID || '4';
+export const CLIENT_ID = process.env.API_CLIENT_ID || process.env.CLIENT_ID || '4';
 export const apiUrl = ChildConf[Env].ApiUrl || Conf[Env].ApiUrl;
 
 export const subsystemUrl = ChildConf[Env].subsystemUrl || Conf[Env].subsystemUrl;

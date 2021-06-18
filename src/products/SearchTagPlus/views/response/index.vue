@@ -33,7 +33,7 @@ import { MessageList } from '@/api/messageList';
 import { eventHub } from '@/init/eventHub';
 import { MessageListModule } from '@/store/modules/messageList';
 import { UserModule } from '@/store/modules/user';
-import { PRODUCT_ID } from './../../utils/configration';
+import { CLIENT_ID } from './../../utils/configration';
 import { Ajax } from '@/utils/parts';
 import WrapMessage from '@/components/WrapMessage/index.vue';
 import ResponseParent from '@/views/response';

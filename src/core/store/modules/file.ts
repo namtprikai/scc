@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
 import store from '@/store';
 import { Ajax } from '@/utils/parts';
-import { PRODUCT_ID, subsystemUrl } from '@product/utils/configration';
+import { CLIENT_ID, subsystemUrl } from '@consoletype/utils/configration';
 import { v4 } from 'uuid';
 const ajax: Ajax = new Ajax();
 export interface IScenarioState {
@@ -41,7 +41,7 @@ class FileStore extends VuexModule implements IScenarioState {
 		const { parent, type } = ob;
 		const data: any = await ajax.http({
 			baseURL: subsystemUrl,
-			url: `product/${PRODUCT_ID}/download`,
+			url: `product/${CLIENT_ID}/download`,
 			method: 'get',
 			params: { parent, type },
 		});
@@ -56,7 +56,7 @@ class FileStore extends VuexModule implements IScenarioState {
 		const file = `${parent}/${fileName}`;
 		const setData: any = await ajax.http({
 			baseURL: subsystemUrl,
-			url: `product/${PRODUCT_ID}/upload`,
+			url: `product/${CLIENT_ID}/upload`,
 			method: 'post',
 			data: {
 				type: 'deleate',
@@ -66,7 +66,7 @@ class FileStore extends VuexModule implements IScenarioState {
 
 		const data: any = await ajax.http({
 			baseURL: subsystemUrl,
-			url: `product/${PRODUCT_ID}/download`,
+			url: `product/${CLIENT_ID}/download`,
 			method: 'get',
 			params: { parent, type: 'list' },
 		});
@@ -81,7 +81,7 @@ class FileStore extends VuexModule implements IScenarioState {
 		const file = `${parent}/${fileName}`;
 		const setData: any = await ajax.http({
 			baseURL: subsystemUrl,
-			url: `product/${PRODUCT_ID}/upload`,
+			url: `product/${CLIENT_ID}/upload`,
 			method: 'post',
 			data: {
 				fileName: `${parent}/${fileName}`,
@@ -91,7 +91,7 @@ class FileStore extends VuexModule implements IScenarioState {
 
 		const data: any = await ajax.http({
 			baseURL: subsystemUrl,
-			url: `product/${PRODUCT_ID}/download`,
+			url: `product/${CLIENT_ID}/download`,
 			method: 'get',
 			params: { parent, type },
 		});

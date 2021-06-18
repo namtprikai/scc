@@ -80,7 +80,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { MessageListModule } from '@/store/modules/messageList';
 import { eventHub } from '@/init/eventHub';
 import { MessageObj, Ajax, VirtualStreamData } from '@/utils/parts';
-import { PRODUCT_ID, subsystemUrl } from './../../utils/configration';
+import { CLIENT_ID, subsystemUrl } from './../../utils/configration';
 // @ts-ignore
 @Component({
 	filters: {
@@ -155,7 +155,7 @@ export default class MessageHistory extends Vue {
 			this.ajax
 				.http({
 					baseURL: subsystemUrl,
-					url: `product/${PRODUCT_ID}/data_get`,
+					url: `product/${CLIENT_ID}/data_get`,
 					method: 'get',
 					params: { type: 'ticket', rangeKey, partitionKey },
 				})
@@ -217,7 +217,7 @@ export default class MessageHistory extends Vue {
 
 	public async setMessages(userId: string) {
 		const data: any = await this.ajax.http({
-			url: `product/${PRODUCT_ID}/user/${userId}/message`,
+			url: `product/${CLIENT_ID}/user/${userId}/message`,
 			method: 'get',
 			data: {
 				limit: 100,
@@ -292,7 +292,7 @@ export default class MessageHistory extends Vue {
 	doDelete(message: MessageObj) {
 		this.ajax
 			.http({
-				url: `product/${PRODUCT_ID}/draft/${message.id}`,
+				url: `product/${CLIENT_ID}/draft/${message.id}`,
 				method: 'DELETE',
 				data: {
 					type: 'text',

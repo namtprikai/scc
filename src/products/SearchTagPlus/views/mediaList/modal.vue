@@ -88,7 +88,7 @@
 import { v4 } from 'uuid';
 import { Component, Vue } from 'vue-property-decorator';
 import { eventHub } from '@/init/eventHub';
-import { PRODUCT_ID } from '../../utils/configration';
+import { CLIENT_ID } from '../../utils/configration';
 import { FileModule } from '@/store/modules/file';
 // import { debug } from 'util';
 import { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
@@ -120,7 +120,7 @@ export default class MediaListComp extends FileuploadCompParent {
 			solid: true,
 			appendToast: true,
 		});
-		eventHub.$emit('selectImage', `https://file.ai-x-supporter.com/${PRODUCT_ID}/${fileName}`);
+		eventHub.$emit('selectImage', `https://file.ai-x-supporter.com/${CLIENT_ID}/${fileName}`);
 	}
 }
 </script>

@@ -52,12 +52,12 @@ import { Component, Vue } from 'vue-property-decorator';
 import { AppModule } from '@/store/modules/app';
 import { UserModule } from '@/store/modules/user';
 
-import { PRODUCT_ID } from '../../../utils/configration';
+import { CLIENT_ID } from '../../../utils/configration';
 import { Ajax } from '@/utils/parts';
 import { url } from 'inspector';
 import axios from 'axios';
 import { eventHub } from '@/init/eventHub';
-import { WindowTestPageUrl, WindowPageUrl } from '@pconfig/config';
+import { WindowTestPageUrl, WindowPageUrl } from '../../../config';
 // @ts-ignore
 @Component({
 	components: {
@@ -72,7 +72,7 @@ export default class Navbar extends Vue {
 	}
 
 	get avatar() {
-		return `https://file.ai-x-supporter.com/${PRODUCT_ID}/${UserModule.id}.gif`;
+		return `https://file.ai-x-supporter.com/${CLIENT_ID}/${UserModule.id}.gif`;
 	}
 
 	oshirase = '';
@@ -120,7 +120,7 @@ export default class Navbar extends Vue {
 
 	async updateOshirase() {
 		try {
-			const { data } = await axios.get(`https://file.ai-x-supporter.com/${PRODUCT_ID}/oshirase.json`, {
+			const { data } = await axios.get(`https://file.ai-x-supporter.com/${CLIENT_ID}/oshirase.json`, {
 				params: {
 					h: Date.now(),
 				},
@@ -151,7 +151,7 @@ export default class Navbar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '@product/styles/_variables.scss';
+@import '@consoletype/styles/_variables.scss';
 $navHeight: 50px;
 .relative {
 	position: relative;

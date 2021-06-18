@@ -44,7 +44,7 @@ import locale from 'element-ui/lib/locale/lang/ja';
 import VueGoodTablePlugin from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css';
 // import {Moment,Moment} from 'moment';
-import { updateServerParams } from '@pconfig/config';
+import { updateServerParams } from './config';
 declare module 'vue/types/vue' {
 	interface Vue {
 		$moment: any;

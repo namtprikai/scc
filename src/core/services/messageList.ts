@@ -4,7 +4,7 @@ import { MessageListModule } from '../store/modules/messageList';
 import { UserModule } from '@/store/modules/user';
 import io from 'socket.io-client';
 import { Auth } from '@/utils/auth';
-import { apiUrl } from '@product/utils/configration';
+import { apiUrl } from '@consoletype/utils/configration';
 const sound = require('./sound/sound02.wav');
 const Push = require('push.js');
 export namespace MessageListService {

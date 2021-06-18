@@ -3,7 +3,7 @@ import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-dec
 import store from '@/store';
 
 import { Ajax, RequeuestWokersService } from '@/utils/parts';
-import { PRODUCT_ID, subsystemUrl, apiUrl } from '@product/utils/configration';
+import { CLIENT_ID, subsystemUrl, apiUrl } from '@consoletype/utils/configration';
 import { v4 } from 'uuid';
 import { MessageList } from '@/api/messageList';
 import axios from 'axios';
@@ -199,7 +199,7 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 	})
 	public async getScenario() {
 		const data: any = await ajax.http({
-			url: `product/${PRODUCT_ID}/scenario?${Math.floor(Math.random() * 100)}`,
+			url: `product/${CLIENT_ID}/scenario?${Math.floor(Math.random() * 100)}`,
 			method: 'get',
 		});
 		return data;
@@ -274,7 +274,7 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 			const newScenario = this.defaultScenario;
 			// this.scenarioList.push(newScenario);
 			await ajax.http({
-				url: `product/${PRODUCT_ID}/scenario`,
+				url: `product/${CLIENT_ID}/scenario`,
 				method: 'POST',
 				headers: {
 					'Content-type': 'application/json',
@@ -291,9 +291,9 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 		commit: 'SET_SCENARIOLIST',
 	})
 	public async deleteScenario(id: string) {
-		await axios.delete(`${apiUrl}/product/${PRODUCT_ID}/scenario/${id}`, {
+		await axios.delete(`${apiUrl}/product/${CLIENT_ID}/scenario/${id}`, {
 			baseURL: apiUrl,
-			url: `product/${PRODUCT_ID}/scenario/${id}`,
+			url: `product/${CLIENT_ID}/scenario/${id}`,
 			method: 'DELETE',
 			headers: {
 				'Content-type': 'application/json',
@@ -320,9 +320,9 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 		const currentScenario = cleanFixScenario(Object.assign({}, scenario || this.CurrentScenario));
 		console.log(currentScenario);
 		if (currentScenario) {
-			await axios.delete(`${apiUrl}/product/${PRODUCT_ID}/scenario/${currentScenario.id}`, {
+			await axios.delete(`${apiUrl}/product/${CLIENT_ID}/scenario/${currentScenario.id}`, {
 				baseURL: apiUrl,
-				url: `product/${PRODUCT_ID}/scenario/${currentScenario.id}`,
+				url: `product/${CLIENT_ID}/scenario/${currentScenario.id}`,
 				method: 'DELETE',
 				headers: {
 					'Content-type': 'application/json',
@@ -331,7 +331,7 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 				},
 			});
 			// this.scenarioList.push(newScenario);
-			await axios.post(`${apiUrl}/product/${PRODUCT_ID}/scenario`, JSON.stringify(currentScenario), {
+			await axios.post(`${apiUrl}/product/${CLIENT_ID}/scenario`, JSON.stringify(currentScenario), {
 				headers: {
 					'Content-type': 'application/json',
 					'If-Modified-Since': 'null',
@@ -367,7 +367,7 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 			worker.setQueue(
 				{
 					baseURL: apiUrl,
-					url: `product/${PRODUCT_ID}/scenario/${scenario.id}`,
+					url: `product/${CLIENT_ID}/scenario/${scenario.id}`,
 					method: 'DELETE',
 					headers: {
 						'Content-type': 'application/json',
@@ -391,7 +391,7 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 			worker2.setQueue(
 				{
 					baseURL: apiUrl,
-					url: `product/${PRODUCT_ID}/scenario`,
+					url: `product/${CLIENT_ID}/scenario`,
 					method: 'POST',
 					headers: {
 						'Content-type': 'application/json',

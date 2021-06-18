@@ -2,7 +2,7 @@ import { v4 } from 'uuid';
 import { Component, Vue } from 'vue-property-decorator';
 import { eventHub } from '@/init/eventHub';
 import { FileModule } from '@/store/modules/file';
-import { PRODUCT_ID } from '@product/utils/configration';
+import { CLIENT_ID } from '@consoletype/utils/configration';
 // import { debug } from 'util';
 import { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
 import clipboard from 'clipboard';
@@ -42,7 +42,7 @@ export default class FileuploadCompParent extends Vue {
 	}
 
 	getTag(fileName: string) {
-		return `<a href="https://file.ai-x-supporter.com/${PRODUCT_ID}/${fileName}" target="_blank" style="width:100%;max-width:100%;height:auto;display:block;"><img style="width:90%;max-width:90%;height:auto;" src="https://file.ai-x-supporter.com/${PRODUCT_ID}/${fileName}" /></a>`;
+		return `<a href="https://file.ai-x-supporter.com/${CLIENT_ID}/${fileName}" target="_blank" style="width:100%;max-width:100%;height:auto;display:block;"><img style="width:90%;max-width:90%;height:auto;" src="https://file.ai-x-supporter.com/${CLIENT_ID}/${fileName}" /></a>`;
 	}
 
 	public created() {

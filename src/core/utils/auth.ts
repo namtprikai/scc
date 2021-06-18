@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import { UserModule } from '@/store/modules/user';
-import { PRODUCT_ID } from '@product/utils/configration';
+import { CLIENT_ID } from '@consoletype/utils/configration';
 class AdminUser {
 	constructor(private id: string = '', private name: string = '', private pw: string = '', private product_id: string, private email: string, private role?: number) {}
 
@@ -52,8 +52,8 @@ class AdminUser {
 		this.email = email;
 	}
 }
-console.log(PRODUCT_ID);
-const TokenKey = `token_${PRODUCT_ID}`;
+console.log(CLIENT_ID);
+const TokenKey = `token_${CLIENT_ID}`;
 interface LoginResponceData {
 	id: string;
 	name: string;

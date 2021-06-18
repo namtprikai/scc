@@ -21,7 +21,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { MaxFaqFile } from '@pconfig/config';
+import { MaxFaqFile } from '../../config';
 // @ts-ignore
 @Component({ name: 'DataSizeInfo' })
 export default class DataSizeInfo extends Vue {

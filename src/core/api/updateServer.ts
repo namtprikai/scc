@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { PRODUCT_ID, scriptUrl } from '@product/utils/configration';
+import { CLIENT_ID, scriptUrl } from '@consoletype/utils/configration';
 import axios from 'axios';
 import {AjaxService} from "@/services/ajax";
 export namespace UpdateServer {
@@ -15,7 +15,7 @@ export namespace UpdateServer {
 			params: Object.assign(
 				{},
 				{
-					product_id: parseInt(PRODUCT_ID),
+					product_id: parseInt(CLIENT_ID),
 					with_package: true,
 					with_bot_package: true,
 					with_tag_package: true,
@@ -33,7 +33,7 @@ export namespace UpdateServer {
 			params: Object.assign(
 				{},
 				{
-					product_id: parseInt(PRODUCT_ID),
+					product_id: parseInt(CLIENT_ID),
 					env: 'test',
 					with_package: true,
 					with_bot_package: true,
@@ -58,7 +58,7 @@ export namespace UpdateServer {
 				data: {},
 				params: Object.assign(
 					{
-						product_id: PRODUCT_ID,
+						product_id: CLIENT_ID,
 						with_bot_package: true,
 						with_package: true,
 						public: false,

@@ -62,7 +62,7 @@ import { UserModule } from '@/store/modules/user';
 import { mapGetters } from 'vuex';
 import DashboardParent from '@/views/dashboard/index';
 import PanThumb from '@/components/PanThumb/index.vue';
-import { PRODUCT_ID } from '../../utils/configration';
+import { CLIENT_ID } from '../../utils/configration';
 import { AndyPasswordValidator } from '@/utils/parts';
 import {AjaxService} from '@/services/ajax';
 import { AdminUserModule } from '@/store/modules/adminUser';
@@ -92,7 +92,7 @@ export default class AdminUser extends Vue {
 	public addAdminUser() {
 		AjaxService.ajax
 			.http({
-				url: `product/${PRODUCT_ID}/admin_user/`,
+				url: `product/${CLIENT_ID}/admin_user/`,
 				method: 'POST',
 				data: {
 					name: this.newAdminUser.name,

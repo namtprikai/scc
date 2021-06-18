@@ -77,7 +77,7 @@ import { MessageListModule } from '@/store/modules/messageList';
 import { UserModule } from '@/store/modules/user';
 import { eventHub } from '@/init/eventHub';
 import { Ajax, MessageObj } from '@/utils/parts';
-import { PRODUCT_ID } from './../../utils/configration';
+import { CLIENT_ID } from './../../utils/configration';
 import { Message, MessageBox } from 'element-ui';
 import { AdminUserModule } from '@/store/modules/adminUser';
 import MessageListCompParent from '@/views/messageList/index';

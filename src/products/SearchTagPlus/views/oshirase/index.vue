@@ -43,7 +43,7 @@
 import { v4 } from 'uuid';
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { eventHub } from '@/init/eventHub';
-import { PRODUCT_ID } from '../../utils/configration';
+import { CLIENT_ID } from '../../utils/configration';
 // import { debug } from 'util';
 import { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
 import clipboard from 'clipboard';
@@ -117,7 +117,7 @@ export default class Oshirase extends Vue {
 
 	async updateOshirase() {
 		try {
-			const { data } = await axios.get(`https://file.ai-x-supporter.com/${PRODUCT_ID}/oshirase.json`, {
+			const { data } = await axios.get(`https://file.ai-x-supporter.com/${CLIENT_ID}/oshirase.json`, {
 				params: {
 					h: Date.now(),
 				},

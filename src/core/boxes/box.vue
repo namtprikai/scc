@@ -24,10 +24,10 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import Panels from '@product/panels.vue';
+import Panels from '@consoletype/panels.vue';
 import { eventHub } from '@/init/eventHub';
 import { UserModule } from '@/store/modules/user';
-import MediaList from '@product/views/mediaList/modal.vue';
+import MediaList from '@consoletype/views/mediaList/modal.vue';
 import Modal from '@/components/ModalComp/index.vue';
 // @ts-ignore
 @Component({

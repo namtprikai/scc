@@ -3,7 +3,7 @@ import { UserModule } from '@/store/modules/user';
 import { mapGetters } from 'vuex';
 import { UpdateServer } from '@/api/updateServer';
 import { Ajax } from '@/utils/parts';
-import { PRODUCT_ID } from '@product/utils/configration';
+import { CLIENT_ID } from '@consoletype/utils/configration';
 import { eventHub } from '@/init/eventHub';
 import { v4 } from 'uuid';
 import { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
@@ -216,7 +216,7 @@ export default class ScenarioParent extends Vue {
 
 		// console.log(this.ajax);
 		// return this.ajax.http({
-		// 	url: `product/${PRODUCT_ID}/scenario`,
+		// 	url: `product/${CLIENT_ID}/scenario`,
 		// 	method: "POST",
 		// 	data: JSON.stringify(this.scenario)
 		// });
@@ -258,7 +258,7 @@ export default class ScenarioParent extends Vue {
 			text: '削除しています',
 		});
 		await this.ajax.http({
-			url: `product/${PRODUCT_ID}/scenario/${id}`,
+			url: `product/${CLIENT_ID}/scenario/${id}`,
 			method: 'DELETE',
 			data: {},
 		});

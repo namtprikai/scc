@@ -57,7 +57,7 @@
 
 <script lang="ts">
 import { v4 } from 'uuid';
-import { apiUrl, scriptUrl, PRODUCT_ID, packageUrl } from './../../utils/configration';
+import { apiUrl, scriptUrl, CLIENT_ID, packageUrl } from './../../utils/configration';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { eventHub } from '@/init/eventHub';
 import { Ajax } from '@/utils/parts';
@@ -153,7 +153,7 @@ export default class KeywordShowComp extends Vue {
 				url: `update_inverted_index?${new Date().getTime()}`,
 				method: 'PUT',
 				data: {
-					product_id: parseInt(PRODUCT_ID),
+					product_id: parseInt(CLIENT_ID),
 					inverted_index: this.inverted_index,
 				},
 			})
@@ -189,7 +189,7 @@ export default class KeywordShowComp extends Vue {
 			this.ajax
 				.http({
 					baseURL: `${packageUrl}`,
-					url: `${PRODUCT_ID}/tag_package_test.json?${time}`,
+					url: `${CLIENT_ID}/tag_package_test.json?${time}`,
 					method: 'GET',
 				})
 				.then((res: any) => {

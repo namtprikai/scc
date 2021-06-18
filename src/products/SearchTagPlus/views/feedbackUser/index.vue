@@ -15,7 +15,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { eventHub } from '@/init/eventHub';
-import { apiUrl, scriptUrl, PRODUCT_ID, subsystemUrl } from './../../utils/configration';
+import { apiUrl, scriptUrl, CLIENT_ID, subsystemUrl } from './../../utils/configration';
 import { Ajax, Message } from '@/utils/parts';
 import { UserModule } from '@/store/modules/user';
 // @ts-ignore
@@ -32,7 +32,7 @@ export default class FeedBackUser extends Vue {
 		this.show = false;
 		this.ajax
 			.http({
-				url: `product/${PRODUCT_ID}/message_feedback`,
+				url: `product/${CLIENT_ID}/message_feedback`,
 				method: 'GET',
 			})
 			.then(

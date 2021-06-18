@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '~@product/styles/_variables.scss';
+@import '~@consoletype/styles/_variables.scss';
 .pan-item {
 	width: 200px;
 	height: 200px;

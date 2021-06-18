@@ -5,7 +5,7 @@ import { UserModule } from '@/store/modules/user';
 import { Ajax } from '@/utils/parts';
 import WrapMessage from '@/components/WrapMessage/index.vue';
 import { Component, Vue } from 'vue-property-decorator';
-import { PRODUCT_ID, subsystemUrl } from '@product/utils/configration';
+import { CLIENT_ID, subsystemUrl } from '@consoletype/utils/configration';
 import { AdminUserModule } from '@/store/modules/adminUser';
 import { Teikeibun } from '@/utils/teikeibun';
 import { FileModule } from '@/store/modules/file';
@@ -15,7 +15,7 @@ import axios from 'axios';
 	components: { WrapMessage },
 })
 export default class ResponseParent extends Vue {
-	protected teikeibun: Teikeibun = new Teikeibun(axios, PRODUCT_ID, UserModule.name, FileModule);
+	protected teikeibun: Teikeibun = new Teikeibun(axios, CLIENT_ID, UserModule.name, FileModule);
 
 	protected isHikitsugu = false;
 	protected header = '';
@@ -84,7 +84,7 @@ export default class ResponseParent extends Vue {
 		const { currentMessageId, currentScriptId, related_message_id } = attr;
 		this.ajax
 			.http({
-				url: `product/${PRODUCT_ID}/message/${currentMessageId}/reply/`,
+				url: `product/${CLIENT_ID}/message/${currentMessageId}/reply/`,
 				method: 'PATCH',
 				data: {
 					talk_script_id: currentScriptId == null ? 'NONE' : currentScriptId,
@@ -151,7 +151,7 @@ export default class ResponseParent extends Vue {
 		const userName = this.userName;
 		const userDisplayName = this.userDisplayName;
 		const data: any = await this.ajax.http({
-			url: `product/${PRODUCT_ID}/user/${this.userId}/message`,
+			url: `product/${CLIENT_ID}/user/${this.userId}/message`,
 			method: 'get',
 			data: {
 				limit: 1000,
@@ -188,7 +188,7 @@ export default class ResponseParent extends Vue {
 			this.reply({ currentMessageId, currentScriptId, related_message_id });
 			const ticketData: any = await this.ajax.http({
 				baseURL: subsystemUrl,
-				url: `product/${PRODUCT_ID}/data_get`,
+				url: `product/${CLIENT_ID}/data_get`,
 				method: 'get',
 				params: {
 					type: 'ticket',
@@ -199,7 +199,7 @@ export default class ResponseParent extends Vue {
 			console.log(ticketData);
 			this.ajax.http({
 				baseURL: subsystemUrl,
-				url: `product/${PRODUCT_ID}/data_post`,
+				url: `product/${CLIENT_ID}/data_post`,
 				method: 'POST',
 				data: {
 					type: 'ticket',
@@ -222,7 +222,7 @@ export default class ResponseParent extends Vue {
 	process(attr: { related_message_id: string; messageId: any; scriptId: any }) {
 		this.ajax
 			.http({
-				url: `product/${PRODUCT_ID}/message/${attr.messageId}/process/`,
+				url: `product/${CLIENT_ID}/message/${attr.messageId}/process/`,
 				method: 'PATCH',
 				data: {
 					// "talk_script_id":this.is_talkscriptNone?"NONE":currentScriptId,
@@ -239,7 +239,7 @@ export default class ResponseParent extends Vue {
 
 	protected async doSetDraft(attr: { messageId: string; scriptId: string; text: string }) {
 		const data: any = await this.ajax.http({
-			url: `product/${PRODUCT_ID}/draft`,
+			url: `product/${CLIENT_ID}/draft`,
 			method: 'POST',
 			data: {
 				talk_script_id: attr.scriptId,

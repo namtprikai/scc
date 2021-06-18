@@ -105,7 +105,7 @@ import { getList } from '@/api/table';
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { eventHub } from '@/init/eventHub';
 import { Ajax } from '@/utils/parts';
-import { PRODUCT_ID, s3, subsystemUrl } from './../../utils/configration';
+import { CLIENT_ID, s3, subsystemUrl } from './../../utils/configration';
 import { UpdateServer } from '@/api/updateServer';
 import draggable from 'vuedraggable';
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
@@ -637,7 +637,7 @@ export default class DefaultChatMessage extends Vue {
 	public pullScript() {
 		this.isLoad = true;
 		axios({
-			baseURL: `${s3}/${PRODUCT_ID}`,
+			baseURL: `${s3}/${CLIENT_ID}`,
 			url: `${this.FileName}?version=${new Date().getTime()}`,
 			method: 'GET',
 		}).then(
@@ -749,7 +749,7 @@ export default class DefaultChatMessage extends Vue {
 		const base64Str = await this.loadFileAsBase64(blob);
 		this.ajax
 			.http({
-				baseURL: `${subsystemUrl}/product/${PRODUCT_ID}`,
+				baseURL: `${subsystemUrl}/product/${CLIENT_ID}`,
 				url: 'upload',
 				method: 'POST',
 				headers: {

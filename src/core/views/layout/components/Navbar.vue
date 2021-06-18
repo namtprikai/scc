@@ -37,7 +37,7 @@ import Hamburger from '@/components/Hamburger/index.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import { AppModule } from '@/store/modules/app';
 import { UserModule } from '@/store/modules/user';
-import { PRODUCT_ID } from '@product/utils/configration';
+import { CLIENT_ID } from '@consoletype/utils/configration';
 import { Ajax } from '../../../utils/parts';
 import { url } from 'inspector';
 import axios from 'axios';
@@ -57,7 +57,7 @@ export default class Navbar extends Vue {
 	}
 
 	get avatar() {
-		return `https://file.ai-x-supporter.com/${PRODUCT_ID}/${UserModule.id}.gif`;
+		return `https://file.ai-x-supporter.com/${CLIENT_ID}/${UserModule.id}.gif`;
 	}
 
 	oshirase = '';
@@ -93,7 +93,7 @@ export default class Navbar extends Vue {
 
 	async updateOshirase() {
 		try {
-			const { data } = await axios.get(`https://file.ai-x-supporter.com/${PRODUCT_ID}/oshirase.json`, {
+			const { data } = await axios.get(`https://file.ai-x-supporter.com/${CLIENT_ID}/oshirase.json`, {
 				params: {
 					h: Date.now(),
 				},

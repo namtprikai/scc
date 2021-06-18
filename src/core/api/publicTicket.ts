@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { PRODUCT_ID, subsystemUrl } from '@product/utils/configration';
+import { CLIENT_ID, subsystemUrl } from '@consoletype/utils/configration';
 import axios from 'axios';
 
 export namespace PublicTicket {
@@ -68,7 +68,7 @@ export namespace PublicTicket {
 			ticketData = data;
 			if (isPost) {
 				axios({
-					url: `${subsystemUrl}/product/${PRODUCT_ID}/public-ticket`,
+					url: `${subsystemUrl}/product/${CLIENT_ID}/public-ticket`,
 					headers: {},
 					method: 'post',
 					data: {

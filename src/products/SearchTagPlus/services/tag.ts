@@ -4,7 +4,7 @@ import { MessageListModule } from '@/store/modules/messageList';
 import { UserModule } from '@/store/modules/user';
 import io from 'socket.io-client';
 import { Auth } from '@/utils/auth';
-import { apiUrl, PRODUCT_ID } from '../utils/configration';
+import { apiUrl, CLIENT_ID } from '../utils/configration';
 import { Ajax } from '@/utils/parts';
 export namespace TagService {
 	export class Tag {

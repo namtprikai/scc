@@ -5,7 +5,7 @@ import { MessageListModule } from '@/store/modules/messageList';
 import { UserModule } from '@/store/modules/user';
 import { eventHub } from '@/init/eventHub';
 import { Ajax, MessageObj } from '@/utils/parts';
-import { PRODUCT_ID } from '@product/utils/configration';
+import { CLIENT_ID } from '@consoletype/utils/configration';
 import { Message, MessageBox } from 'element-ui';
 import { AdminUserModule } from '@/store/modules/adminUser';
 
@@ -129,7 +129,7 @@ export default class MessageListCompParent extends Vue {
 
 	doDelete(messageId: any) {
 		this.ajax.http({
-			url: `product/${PRODUCT_ID}/message/${messageId}/suspend/`,
+			url: `product/${CLIENT_ID}/message/${messageId}/suspend/`,
 			method: 'PATCH',
 			data: {},
 		});
@@ -183,7 +183,7 @@ export default class MessageListCompParent extends Vue {
 	public async setResponse(message: MessageObj) {
 		await this.ajax
 			.http({
-				url: `product/${PRODUCT_ID}/message/${message.id}/read`,
+				url: `product/${CLIENT_ID}/message/${message.id}/read`,
 				method: 'PATCH',
 			})
 			.then(

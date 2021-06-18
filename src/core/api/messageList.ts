@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { PRODUCT_ID } from '@product/utils/configration';
+import { CLIENT_ID } from '@consoletype/utils/configration';
 import { AxiosPromise } from 'axios';
 import { Auth } from '@/utils/auth';
 
@@ -30,7 +30,7 @@ export namespace MessageList {
 		new Promise(async r => {
 			const token = await Auth.getToken();
 			request({
-				url: `product/${PRODUCT_ID}/message/unread`,
+				url: `product/${CLIENT_ID}/message/unread`,
 				method: 'get',
 				headers: {
 					Authorization: token,
@@ -56,7 +56,7 @@ export namespace MessageList {
 			apiName = 'ai_chat_window/send';
 		}
 		return request({
-			url: `product/${PRODUCT_ID}/${apiName}`,
+			url: `product/${CLIENT_ID}/${apiName}`,
 			method: 'post',
 			data: JSON.stringify(data),
 			headers: {
@@ -68,7 +68,7 @@ export namespace MessageList {
 	export const updateMessage = async (id: string, data: UpdateMessage): Promise<any> => {
 		const token = await Auth.getToken();
 		return request({
-			url: `product/${PRODUCT_ID}/message/${id}`,
+			url: `product/${CLIENT_ID}/message/${id}`,
 			method: 'patch',
 			data: JSON.stringify(data),
 			headers: {
@@ -80,7 +80,7 @@ export namespace MessageList {
 	export const readMessage = async (id: string): Promise<any> => {
 		const token = await Auth.getToken();
 		return request({
-			url: `product/${PRODUCT_ID}/message/${id}/read`,
+			url: `product/${CLIENT_ID}/message/${id}/read`,
 			method: 'patch',
 			headers: {
 				Authorization: token,
@@ -94,7 +94,7 @@ export namespace MessageList {
 		const impl = async (data: SearchMessage, list: object[] = []): Promise<object[]> => {
 			const { q, limit, page, st, en } = data;
 			const next: any = await request({
-				url: `product/${PRODUCT_ID}/search_message`,
+				url: `product/${CLIENT_ID}/search_message`,
 				method: 'get',
 				headers: {
 					Authorization: token,

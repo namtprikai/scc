@@ -27,7 +27,7 @@ import { MessageList } from '@/api/messageList';
 import { eventHub } from '@/init/eventHub';
 import { MessageListModule } from '@/store/modules/messageList';
 import { UserModule } from '@/store/modules/user';
-import { PRODUCT_ID } from './../../utils/configration';
+import { CLIENT_ID } from './../../utils/configration';
 import { Ajax, MessageObj } from '@/utils/parts';
 import WrapMessage from '@/components/WrapMessage/index.vue';
 import { AdminUserModule } from '@/store/modules/adminUser';
@@ -94,7 +94,7 @@ export default class RecentAdminMessage extends Vue {
 	doSend(messageId: string, score: string, comment: string) {
 		this.ajax
 			.http({
-				url: `product/${PRODUCT_ID}/message_feedback`,
+				url: `product/${CLIENT_ID}/message_feedback`,
 				method: 'POST',
 				data: {
 					message_id: messageId,

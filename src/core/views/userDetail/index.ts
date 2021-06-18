@@ -3,7 +3,7 @@ import { UserModule } from '@/store/modules/user';
 import { mapGetters } from 'vuex';
 import DashboardParent from '@/views/dashboard/index';
 import PanThumb from '@/components/PanThumb/index.vue';
-import { PRODUCT_ID } from '@product/utils/configration';
+import { CLIENT_ID } from '@consoletype/utils/configration';
 import { Ajax } from '@/utils/parts';
 import { eventHub } from '@/init/eventHub';
 import { AdminUserModule } from '@/store/modules/adminUser';
@@ -197,7 +197,7 @@ export default class UserDetailParent extends Vue {
 		const attribute = JSON.stringify(this.attr) || '';
 		const status = this.user.status;
 		this.ajax.http({
-			url: `product/${PRODUCT_ID}/user/${id}`,
+			url: `product/${CLIENT_ID}/user/${id}`,
 			method: 'PATCH',
 			data: {
 				tags,

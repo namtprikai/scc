@@ -55,7 +55,7 @@ import { UserModule } from '@/store/modules/user';
 import { mapGetters } from 'vuex';
 import DashboardParent from '@/views/dashboard/index';
 import PanThumb from '@/components/PanThumb/index.vue';
-import { PRODUCT_ID } from '../../utils/configration';
+import { CLIENT_ID } from '../../utils/configration';
 import { Ajax, AndyPasswordValidator } from '@/utils/parts';
 import { valid } from 'mockjs';
 // tslint:disable-next-line:no-var-requires
@@ -149,7 +149,7 @@ export default class Password extends Vue {
 		}
 		this.ajax
 			.http({
-				url: `product/${PRODUCT_ID}/admin_user/${UserModule.id}`,
+				url: `product/${CLIENT_ID}/admin_user/${UserModule.id}`,
 				method: 'PATCH',
 				data: {
 					old_password: this.oldpw,

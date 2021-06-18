@@ -103,12 +103,12 @@
 
 <script lang="ts">
 import { v4 } from 'uuid';
-import { apiUrl, scriptUrl, PRODUCT_ID, packageUrl } from './../../utils/configration';
+import { apiUrl, scriptUrl, CLIENT_ID, packageUrl } from './../../utils/configration';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { UpdateServer } from '@/api/updateServer';
 import { eventHub } from '@/init/eventHub';
 import { Ajax, Wait } from '@/utils/parts';
-import { KeywordEditorButtons } from '@pconfig/config';
+import { KeywordEditorButtons } from '../../config';
 import Pagination from "vue-pagination-2";
 
 interface InvertedObj {
@@ -230,7 +230,7 @@ export default class KeywordEditorComp extends Vue {
 			url: `update_inverted_index?time=${new Date().getTime()}`,
 			method: 'PUT',
 			data: {
-				product_id: parseInt(PRODUCT_ID),
+				product_id: parseInt(CLIENT_ID),
 				inverted_index: this.inverted_index,
 			},
 		});
@@ -274,7 +274,7 @@ export default class KeywordEditorComp extends Vue {
 				url: `update_inverted_index?time=${new Date().getTime()}`,
 				method: 'PUT',
 				data: {
-					product_id: parseInt(PRODUCT_ID),
+					product_id: parseInt(CLIENT_ID),
 					inverted_index: this.inverted_index,
 				},
 			})
@@ -319,7 +319,7 @@ export default class KeywordEditorComp extends Vue {
 	// 		this.ajax
 	// 			.http({
 	// 				baseURL: `${packageUrl}`,
-	// 				url: `${PRODUCT_ID}/bot_package_test.json?${new Date().getTime()}`,
+	// 				url: `${CLIENT_ID}/bot_package_test.json?${new Date().getTime()}`,
 	// 				method: "GET"
 	// 			})
 	// 			.then((res: any) => {
@@ -332,7 +332,7 @@ export default class KeywordEditorComp extends Vue {
 			this.ajax
 				.http({
 					baseURL: `${scriptUrl}`,
-					url: `inverted_index_data/?product_id=${PRODUCT_ID}&time=${new Date().getTime()}`,
+					url: `inverted_index_data/?product_id=${CLIENT_ID}&time=${new Date().getTime()}`,
 					method: 'GET',
 				})
 				.then((res: any) => {

@@ -1,4 +1,4 @@
-import { PRODUCT_ID, apiUrl } from '@product/utils/configration';
+import { CLIENT_ID, apiUrl } from '@consoletype/utils/configration';
 import Cookies from 'js-cookie';
 import request from '@/utils/request';
 import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
@@ -583,7 +583,7 @@ export class Ajax {
 		if (headers) {
 			this.defObj.headers = headers;
 		}
-		const token = Cookies.get(`token_${PRODUCT_ID}`);
+		const token = Cookies.get(`token_${CLIENT_ID}`);
 		if (token != null) {
 			this.updateToken(token);
 		}
@@ -594,7 +594,7 @@ export class Ajax {
 	}
 
 	public getToken() {
-		const token = Cookies.get(`token_${PRODUCT_ID}`);
+		const token = Cookies.get(`token_${CLIENT_ID}`);
 		if (!this.token && token) {
 			this.token = token;
 		}
@@ -603,7 +603,7 @@ export class Ajax {
 
 	public resetToken() {
 		this.token = '';
-		Cookies.remove(`token_${PRODUCT_ID}`);
+		Cookies.remove(`token_${CLIENT_ID}`);
 	}
 
 	public updateToken(token: string) {
@@ -622,7 +622,7 @@ export class Ajax {
 				Promise.reject(error);
 			},
 		);
-		Cookies.set(`token_${PRODUCT_ID}`, token);
+		Cookies.set(`token_${CLIENT_ID}`, token);
 	}
 
 	public http = (obj: AxiosRequestConfig) => {

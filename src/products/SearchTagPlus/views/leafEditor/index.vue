@@ -97,7 +97,7 @@ import Tinymce from '@/components/Tinymce/index.vue';
 import InputTag from '@/components/InputTag/index.vue';
 import Synonym from '@/components/Synonym/index.vue';
 import { Ajax, MessageObj, Message, MessageList } from '@/utils/parts';
-import { subsystemUrl, PRODUCT_ID, script_logUrl } from './../../utils/configration';
+import { subsystemUrl, CLIENT_ID, script_logUrl } from './../../utils/configration';
 // @ts-ignore
 @Component({
 	components: { Tinymce, InputTag, Synonym },
@@ -160,7 +160,7 @@ export default class LeafEditorComp extends Vue {
 		this.ajax
 			.http({
 				baseURL: `${subsystemUrl}`,
-				url: `product/${PRODUCT_ID}/data_get`,
+				url: `product/${CLIENT_ID}/data_get`,
 				method: 'GET',
 				params: {
 					script_id: script.id,

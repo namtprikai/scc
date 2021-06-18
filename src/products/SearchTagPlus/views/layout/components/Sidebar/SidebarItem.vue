@@ -33,7 +33,7 @@ import { Route } from 'vue-router';
 import { isExternal } from '@/utils/validate';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import AppLink from './Link.vue';
-import { s3, PRODUCT_ID } from '../../../../utils/configration';
+import { s3, CLIENT_ID } from '../../../../utils/configration';
 import { UserModule } from '@/store/modules/user';
 // @ts-ignore
 @Component({
@@ -68,7 +68,7 @@ export default class SidebarItem extends Vue {
 	}
 
 	private get UserThumbnailUrl(): string {
-		return `${s3}/${PRODUCT_ID}/${this.UserThumbFileName}`;
+		return `${s3}/${CLIENT_ID}/${this.UserThumbFileName}`;
 	}
 
 	private get UserThumbFileName(): string {

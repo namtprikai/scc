@@ -5,7 +5,7 @@ import InputTag from '@/components/InputTag/index.vue';
 import Synonym from '@/components/Synonym/index.vue';
 import { Ajax } from '@/utils/parts';
 import _ from 'lodash';
-import { bartUrl } from '@product/utils/configration';
+import { bartUrl } from '@consoletype/utils/configration';
 import { ScenarioModule } from '@/store/modules/scenario';
 
 // @ts-ignore

@@ -45,7 +45,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Ajax, AndyPasswordValidator } from '@/utils/parts';
 import { Type } from '@/components/Charts';
 
-import { PRODUCT_ID } from '../../utils/configration';
+import { CLIENT_ID } from '../../utils/configration';
 const PasswordValidator = require('password-validator');
 
 // @ts-ignore
@@ -88,7 +88,7 @@ export default class AddUser extends Vue {
 		}
 		this.ajax
 			.http({
-				url: `product/${PRODUCT_ID}/admin_user/`,
+				url: `product/${CLIENT_ID}/admin_user/`,
 				method: 'POST',
 				data: {
 					name: this.name,

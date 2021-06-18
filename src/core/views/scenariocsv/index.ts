@@ -12,7 +12,7 @@ import { horizontaltojson, parseScenario, parseListToCsv } from '@/utils/scenari
 import { UpdateServer } from '@/api/updateServer';
 import WrapMessage from '@/components/WrapMessage/index.vue';
 import { RequeuestWokersService, Ajax } from '@/utils/parts';
-import { PRODUCT_ID } from '@product/utils/configration';
+import { CLIENT_ID } from '@consoletype/utils/configration';
 const Encoding = require('encoding-japanese');
 declare let window: any;
 // @ts-ignore
@@ -51,7 +51,7 @@ export default class BotcsvParent extends Vue {
 		const blob = new Blob([bom, data], { type: 'text/csv' });
 		const url = (window.URL || window.webkitURL).createObjectURL(blob);
 		const link = document.createElement('a');
-		link.download = `${PRODUCT_ID}_scenario_${this.$moment().format('YYYYMMDD_HHmm')}.csv`;
+		link.download = `${CLIENT_ID}_scenario_${this.$moment().format('YYYYMMDD_HHmm')}.csv`;
 		link.href = url;
 		document.body.appendChild(link);
 		link.click();
@@ -59,10 +59,10 @@ export default class BotcsvParent extends Vue {
 	}
 
 	public async save() {
-		if (!new RegExp(`^${PRODUCT_ID}_`).test(this.file.name)) {
+		if (!new RegExp(`^${CLIENT_ID}_`).test(this.file.name)) {
 			this.$modal.show('dialog', {
 				title: 'ファイル名の先頭のプロダクトIDが一致しません',
-				text: `${PRODUCT_ID}_ファイル名.csvのようにしてください`,
+				text: `${CLIENT_ID}_ファイル名.csvのようにしてください`,
 				buttons: [
 					{
 						title: 'はい',

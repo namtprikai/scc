@@ -13,7 +13,7 @@ import TicketCompParent, {
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 import TicketGrafh from "../../components/TicketSearch/index.vue";
 import { AdminUserModule } from "@/store/modules/adminUser";
-import { NoneString, conditionList, tableKeyList } from "@pconfig/config";
+import { NoneString, conditionList, tableKeyList } from "../../config";
 const noneString = NoneString || "なし";
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 

@@ -2,7 +2,7 @@ import { v4 } from 'uuid';
 import { Component, Vue } from 'vue-property-decorator';
 import { eventHub } from '@/init/eventHub';
 
-import { PRODUCT_ID, subsystemUrl } from '@product/utils/configration';
+import { CLIENT_ID, subsystemUrl } from '@consoletype/utils/configration';
 import { Ajax } from '@/utils/parts';
 import type { KeyData, TableKeyList, TicketData, EnquateTicket, Condition } from './index.i';
 import { AdminUserModule } from '@/store/modules/adminUser';
@@ -342,7 +342,7 @@ export default class TicketCompParent extends Vue {
 		};
 		const data: any = await this.ajax.http({
 			baseURL: subsystemUrl,
-			url: `product/${PRODUCT_ID}/data_get`,
+			url: `product/${CLIENT_ID}/data_get`,
 			method: 'get',
 			params: { type: 'ticket', en, st },
 		});

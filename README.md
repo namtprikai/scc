@@ -29,31 +29,31 @@ nodejs v12
 
 ```bash
 npm i
-PRODUCT_ID=7 PRODUCT=SearchWindow NODE_ENV=development npm start
+CLIENT_ID=7 PRODUCT=SearchWindow NODE_ENV=development npm start
 ```
 
 ### Compiles and hot-reloads for development
 
 ```bash
-PRODUCT_ID=7 PRODUCT=SearchWindow NODE_ENV=development npm run serve
+CLIENT_ID=7 PRODUCT=SearchWindow NODE_ENV=development npm run serve
 ```
 
 ### Compiles and minifies for production
 
 ```bash
-PRODUCT_ID=7 PRODUCT=SearchWindow NODE_ENV=development npm run build
+CLIENT_ID=7 PRODUCT=SearchWindow NODE_ENV=development npm run build
 ```
 
 ### Lints and fixes files
 
 ```bash
-PRODUCT_ID=7 PRODUCT=SearchWindow NODE_ENV=development yarn lint
+CLIENT_ID=7 PRODUCT=SearchWindow NODE_ENV=development yarn lint
 ```
 
 ### Run your unit tests
 
 ```bash
-PRODUCT_ID=7 PRODUCT=SearchWindow NODE_ENV=development npm run test:unit
+CLIENT_ID=7 PRODUCT=SearchWindow NODE_ENV=development npm run test:unit
 ```
 
 ### Run your end-to-end tests

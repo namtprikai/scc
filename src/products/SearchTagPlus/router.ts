@@ -9,7 +9,7 @@ import Frame5 from '@/frames/b_5.vue';
 import Frame6 from '@/frames/b_6.vue';
 import Frame7 from '@/frames/b_7.vue';
 import Box from '@/boxes/box.vue';
-import { RouterConfig } from '@pconfig/config';
+import { RouterConfig } from './config';
 Vue.use(Router);
 
 /*

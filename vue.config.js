@@ -2,12 +2,12 @@ const webpack = require('webpack');
 const path = require('path');
 // const { VueLoaderPlugin } = require('vue-loader');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const PRODUCT_ID = (process.env.PRODUCT_ID || '392').trim();
-const API_PRODUCT_ID = (process.env.API_PRODUCT_ID || PRODUCT_ID || '392').trim();
-console.log('API_PRODUCT_ID', API_PRODUCT_ID);
-const CONFIG_PRODUCT_ID = (process.env.CONFIG_PRODUCT_ID||'').trim();
-const PRODUCT_FOLDER = process.env.FOLDER || 'test';
-const PRODUCT = (process.env.PRODUCT || '').trim();
+const CLIENT_ID = (process.env.CLIENT_ID || '392').trim();
+const API_CLIENT_ID = (process.env.API_CLIENT_ID || CLIENT_ID || '392').trim();
+console.log('API_CLIENT_ID', API_CLIENT_ID);
+const CONFIG_CLIENT_ID = (process.env.CONFIG_CLIENT_ID||'').trim();
+const FOLDER = process.env.FOLDER || 'test';
+const CONSOLE_TYPE = (process.env.CONSOLE_TYPE || '').trim();
 const PRODUCT_WINDOW_URL = (process.env.PRODUCT_WINDOW_URL || '').trim();
 const DEV_WINDOW_URL = (process.env.DEV_WINDOW_URL || '').trim();
 const SILENT = process.env.SILENT !== undefined;
@@ -15,17 +15,17 @@ const fs = require('fs');
 const TerserPlugin = require('terser-webpack-plugin');
 const mockServerPort = 9528 // TODO: get this variable from setting.ts
 const tsconfig = JSON.parse(fs.readFileSync('./tsconfigrc.json', 'utf-8'));
-let pconfigPath = `src/productConfigById/${CONFIG_PRODUCT_ID||PRODUCT_ID}/*`;
-tsconfig['compilerOptions']['paths']['@product/*'] = [`src/products/${PRODUCT}/*`];
+let pconfigPath = `src/productConfigById/${CONFIG_CLIENT_ID||CLIENT_ID}/*`;
+tsconfig['compilerOptions']['paths']['@consoletype/*'] = [`src/products/${CONSOLE_TYPE}/*`];
 tsconfig['compilerOptions']['paths']['@pconfig/*'] = [pconfigPath];
 // exclude
 console.log(tsconfig['exclude']);
-console.log(PRODUCT);
-if (PRODUCT && Array.isArray(tsconfig['exclude'])) {
+console.log(CONSOLE_TYPE);
+if (CONSOLE_TYPE && Array.isArray(tsconfig['exclude'])) {
 	const exclude = tsconfig['exclude'];
 	const dirs = fs.readdirSync('src/products');
 	for (const dir of dirs) {
-		if (dir !== PRODUCT && dirs.indexOf(dir) !== -1) {
+		if (dir !== CONSOLE_TYPE && dirs.indexOf(dir) !== -1) {
 			exclude.push(`src/products/${dir}/**`);
 		}
 	}
@@ -53,7 +53,7 @@ module.exports = {
 	lintOnSave: false, //process.env.NODE_ENV !== "production",
 	parallel: false,
 	productionSourceMap: false,
-	publicPath: process.env.NODE_ENV === 'production' ? `/${PRODUCT_FOLDER}/` : '/',
+	publicPath: process.env.NODE_ENV === 'production' ? `/${FOLDER}/` : '/',
 	pwa: {
 		name: 'vue-typescript-admin-template',
 	},
@@ -82,7 +82,7 @@ module.exports = {
 	},
 	configureWebpack: {
 		entry: {
-			app: `./src/products/${PRODUCT}/main.ts`,
+			app: `./src/products/${CONSOLE_TYPE}/main.ts`,
 		},
 		module: {
 			rules: [
@@ -140,9 +140,9 @@ module.exports = {
 		plugins: [
 			new webpack.DefinePlugin({
 				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || ''),
-				'process.env.PRODUCT_ID': JSON.stringify(PRODUCT_ID || ''),
-				'process.env.API_PRODUCT_ID': JSON.stringify(API_PRODUCT_ID || ''),
-        'process.env.PRODUCT': JSON.stringify(process.env.PRODUCT || ''),
+				'process.env.CLIENT_ID': JSON.stringify(CLIENT_ID || ''),
+				'process.env.API_CLIENT_ID': JSON.stringify(API_CLIENT_ID || ''),
+        'process.env.CONSOLE_TYPE': JSON.stringify(process.env.CONSOLE_TYPE || ''),
         'process.env.PRODUCT_WINDOW_URL': JSON.stringify(process.env.PRODUCT_WINDOW_URL || ''),
         'process.env.DEV_WINDOW_URL': JSON.stringify(process.env.DEV_WINDOW_URL || ''),
 			}),
@@ -157,13 +157,13 @@ module.exports = {
 				vue$: 'vue/dist/vue.esm.js',
 				'@': path.resolve(__dirname, `src/core`),
 				'~': path.resolve(__dirname, 'src/'),
-				'@pconfig': path.resolve(__dirname, `src/productConfigById/${CONFIG_PRODUCT_ID||PRODUCT_ID}`),
-				'@product': path.resolve(__dirname, `src/products/${PRODUCT}`),
+				'@pconfig': path.resolve(__dirname, `src/productConfigById/${CONFIG_CLIENT_ID||CLIENT_ID}`),
+				'@consoletype': path.resolve(__dirname, `src/products/${CONSOLE_TYPE}`),
 				'bootstrap-components': path.resolve(__dirname, 'node_modules/bootstrap-vue/es/components'),
 			},
 			modules: [
-				path.resolve(__dirname, `src/productConfigById/${CONFIG_PRODUCT_ID||PRODUCT_ID}`),
-				path.resolve(__dirname, `src/products/${PRODUCT}`),
+				path.resolve(__dirname, `src/productConfigById/${CONFIG_CLIENT_ID||CLIENT_ID}`),
+				path.resolve(__dirname, `src/products/${CONSOLE_TYPE}`),
 				path.resolve(__dirname, `./src`),
 				path.resolve(__dirname, `./`),
 				path.resolve(__dirname, `./src/core`),

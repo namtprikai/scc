@@ -56,12 +56,12 @@
 
 <script lang="ts">
 import { v4 } from 'uuid';
-import { apiUrl, scriptUrl, PRODUCT_ID, packageUrl } from './../../utils/configration';
+import { apiUrl, scriptUrl, CLIENT_ID, packageUrl } from './../../utils/configration';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { UpdateServer } from '@/api/updateServer';
 import { eventHub } from '@/init/eventHub';
 import { Ajax, Wait } from '@/utils/parts';
-import { KeywordEditorButtons } from '@pconfig/config';
+import { KeywordEditorButtons } from '../../config';
 interface InvertedObj {
 	key: string;
 	manual_weight: number;

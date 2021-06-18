@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { PRODUCT_ID } from '@product/utils/configration';
+import { CLIENT_ID } from '@consoletype/utils/configration';
 import { AxiosPromise, AxiosResponse } from 'axios';
 import { Auth } from '@/utils/auth';
 import { eventHub } from '@/init/eventHub';
@@ -15,7 +15,7 @@ export namespace Login {
 				data: {
 					email: username,
 					password,
-					product_id: PRODUCT_ID,
+					product_id: CLIENT_ID,
 				},
 			})
 				.then((res: any) => {

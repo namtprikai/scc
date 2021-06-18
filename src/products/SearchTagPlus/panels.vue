@@ -20,7 +20,7 @@
 
 <script lang="ts">
 // asdf
-import { PRODUCT_ID } from './utils/configration';
+import { CLIENT_ID } from './utils/configration';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';

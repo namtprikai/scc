@@ -4,7 +4,7 @@ import { mapGetters } from 'vuex';
 import { UpdateServer } from '@/api/updateServer';
 import { Ajax } from '@/utils/parts';
 import { eventHub } from '@/init/eventHub';
-import { PRODUCT_ID, subsystemUrl, scriptUrl } from '@product/utils/configration';
+import { CLIENT_ID, subsystemUrl, scriptUrl } from '@consoletype/utils/configration';
 import { v4 } from 'uuid';
 import { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
 import { Scenario, ScenarioModule } from '@/store/modules/scenario';
@@ -20,10 +20,10 @@ export default class ScriptcsvParent extends Vue {
 	protected synonymFile: any = null;
 	protected ajax = new Ajax();
 	public async saveSynonymCsv(_file: File) {
-		if (!new RegExp(`^${PRODUCT_ID}_`).test(_file.name)) {
+		if (!new RegExp(`^${CLIENT_ID}_`).test(_file.name)) {
 			this.$modal.show('dialog', {
 				title: 'ファイル名の先頭のプロダクトIDが一致しません',
-				text: `${PRODUCT_ID}_ファイル名.csvのようにしてください`,
+				text: `${CLIENT_ID}_ファイル名.csvのようにしてください`,
 				buttons: [
 					{
 						title: 'はい',
@@ -55,7 +55,7 @@ export default class ScriptcsvParent extends Vue {
 		}
 		const file: any = new Blob([fileText.buffer], { type: 'text/csv' }); // await getText(_file);
 		const formData = new FormData();
-		formData.append('product_id', PRODUCT_ID);
+		formData.append('product_id', CLIENT_ID);
 		formData.append('file', file);
 		await this.ajax.http({
 			baseURL: `${scriptUrl}`,
@@ -83,10 +83,10 @@ export default class ScriptcsvParent extends Vue {
 	}
 
 	public async sendScriptCsv(_file: File) {
-		if (!new RegExp(`^${PRODUCT_ID}_`).test(_file.name)) {
+		if (!new RegExp(`^${CLIENT_ID}_`).test(_file.name)) {
 			this.$modal.show('dialog', {
 				title: 'ファイル名の先頭のプロダクトIDが一致しません',
-				text: `${PRODUCT_ID}_ファイル名.csvのようにしてください`,
+				text: `${CLIENT_ID}_ファイル名.csvのようにしてください`,
 				buttons: [
 					{
 						title: 'はい',
@@ -118,7 +118,7 @@ export default class ScriptcsvParent extends Vue {
 		}
 		const file: any = new Blob([fileText.buffer], { type: 'text/csv' }); // await getText(_file);
 		const formData = new FormData();
-		formData.append('product_id', PRODUCT_ID);
+		formData.append('product_id', CLIENT_ID);
 		formData.append('file', file);
 		await this.ajax.http({
 			baseURL: `${scriptUrl}`,
@@ -151,7 +151,7 @@ export default class ScriptcsvParent extends Vue {
 			url: `download_${type}`,
 			method: 'GET',
 			params: {
-				product_id: PRODUCT_ID,
+				product_id: CLIENT_ID,
 				password: 8671,
 			},
 		});
@@ -168,7 +168,7 @@ export default class ScriptcsvParent extends Vue {
 		// }
 		const url = URL.createObjectURL(blob);
 		element.href = url;
-		element.setAttribute('download', `${PRODUCT_ID}_${type}_${this.$moment().format('YYYYMMDD_HHmm')}.csv`);
+		element.setAttribute('download', `${CLIENT_ID}_${type}_${this.$moment().format('YYYYMMDD_HHmm')}.csv`);
 		document.body.appendChild(element); // Append the element to work in firefox
 		element.click();
 	}

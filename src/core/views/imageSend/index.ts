@@ -5,7 +5,7 @@ import { UserModule } from '@/store/modules/user';
 import { Ajax } from '@/utils/parts';
 import WrapMessage from '@/components/WrapMessage/index.vue';
 import { Component, Vue } from 'vue-property-decorator';
-import { PRODUCT_ID, subsystemUrl } from '@product/utils/configration';
+import { CLIENT_ID, subsystemUrl } from '@consoletype/utils/configration';
 import { AdminUserModule } from '@/store/modules/adminUser';
 import axios from 'axios';
 // @ts-ignore
@@ -80,12 +80,12 @@ export default class ImageSendParent extends Vue {
 		}
 		this.isSend = true;
 		const data: any = await this.ajax.http({
-			url: `product/${PRODUCT_ID}/message_data/upload`,
+			url: `product/${CLIENT_ID}/message_data/upload`,
 			method: 'GET',
 		});
 		console.log(data);
 		// const formData = new FormData();
-		// formData.append("product_id", PRODUCT_ID);
+		// formData.append("product_id", CLIENT_ID);
 		// formData.append("file", file);
 		const res = await axios({
 			url: data.url,
@@ -97,7 +97,7 @@ export default class ImageSendParent extends Vue {
 		});
 		console.log(res);
 		await this.ajax.http({
-			url: `product/${PRODUCT_ID}/line/send_message`,
+			url: `product/${CLIENT_ID}/line/send_message`,
 			method: 'POST',
 			data: {
 				user_id: userId,

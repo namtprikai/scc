@@ -4,7 +4,7 @@ import Tinymce from '@/components/Tinymce/index.vue';
 import InputTag from '@/components/InputTag/index.vue';
 import Synonym from '@/components/Synonym/index.vue';
 import { Ajax, MessageObj, Message, MessageList } from '@/utils/parts';
-import { subsystemUrl, PRODUCT_ID, script_logUrl } from '@product/utils/configration';
+import { subsystemUrl, CLIENT_ID, script_logUrl } from '@consoletype/utils/configration';
 
 import { TicketModule, ticketMapper, ticketLabelsGenerator, Ticket, RawTicket } from '@/store/modules/ticket';
 
@@ -78,7 +78,7 @@ export default class EvaluationCompParent extends Vue {
 		// this.ajax
 		// 	.http({
 		// 		baseURL: `${subsystemUrl}`,
-		// 		url: `product/${PRODUCT_ID}/data_get`,
+		// 		url: `product/${CLIENT_ID}/data_get`,
 		// 		method: "GET",
 		// 		params: {
 		// 			script_id: "none",
@@ -113,7 +113,7 @@ export default class EvaluationCompParent extends Vue {
 		console.log(item);
 		item = Object.assign({}, item || {}, { is_processed: '1' });
 		axios({
-			url: `${subsystemUrl}/product/${PRODUCT_ID}/public-ticket`,
+			url: `${subsystemUrl}/product/${CLIENT_ID}/public-ticket`,
 			headers: {},
 			method: 'post',
 			data: {
@@ -141,7 +141,7 @@ export default class EvaluationCompParent extends Vue {
 		// 			data: JSON.stringify({
 		// 				TableName: "script_query_log",
 		// 				Key: {
-		// 					product_id: { S: PRODUCT_ID },
+		// 					product_id: { S: CLIENT_ID },
 		// 					timestamp: { N: String(item.timestamp) } // Hashキー
 		// 				},
 		// 				AttributeUpdates: {

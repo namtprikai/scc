@@ -54,7 +54,7 @@ import Tinymce from '@/components/Tinymce/index.vue';
 import InputTag from '@/components/InputTag/index.vue';
 import Synonym from '@/components/Synonym/index.vue';
 import { Ajax, MessageObj, Message, MessageList } from '@/utils/parts';
-import { subsystemUrl, PRODUCT_ID, script_logUrl } from './../../utils/configration';
+import { subsystemUrl, CLIENT_ID, script_logUrl } from './../../utils/configration';
 import axios from 'axios';
 import EvaluationCompParent from '../../../../core/views/evaluation/index';
 // @ts-ignore

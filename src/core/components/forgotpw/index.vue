@@ -12,7 +12,7 @@ import { RouteRecord } from 'vue-router';
 import pathToRegexp from 'path-to-regexp';
 import { eventHub } from '@/init/eventHub';
 import { Ajax } from '@/utils/parts';
-import { PRODUCT_ID } from '@product/utils/configration';
+import { CLIENT_ID } from '@consoletype/utils/configration';
 // @ts-ignore
 @Component
 export default class ForgotpwComp extends Vue {
@@ -24,7 +24,7 @@ export default class ForgotpwComp extends Vue {
 				url: 'remind',
 				method: 'POST',
 				data: {
-					product_id: PRODUCT_ID,
+					product_id: CLIENT_ID,
 					email: this.mail,
 				},
 			})

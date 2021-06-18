@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Message, MessageBox } from 'element-ui';
 import { Auth } from '@/utils/auth';
 import { UserModule } from '@/store/modules/user';
-import { apiUrl } from '@product/utils/configration';
+import { apiUrl } from '@consoletype/utils/configration';
 const service = axios.create({
 	baseURL: apiUrl,
 	timeout: 15000,

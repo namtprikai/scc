@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
 import store from '@/store';
 import { Ajax } from '@/utils/parts';
-import { PRODUCT_ID, subsystemUrl } from '@product/utils/configration';
+import { CLIENT_ID, subsystemUrl } from '@consoletype/utils/configration';
 import moment from 'moment';
 import { v4 } from 'uuid';
 import { start } from 'repl';
@@ -439,7 +439,7 @@ class TicketStore extends VuexModule implements IScenarioState {
 		const { st, en, startdate, enddate } = ob;
 		const data: any = await ajax.http({
 			baseURL: subsystemUrl,
-			url: `product/${PRODUCT_ID}/data_get`,
+			url: `product/${CLIENT_ID}/data_get`,
 			method: 'get',
 			params: { type: 'ticket', en, st },
 		});

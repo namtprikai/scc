@@ -28,7 +28,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { eventHub } from '@/init/eventHub';
-import { apiUrl, scriptUrl, PRODUCT_ID, subsystemUrl } from './../../utils/configration';
+import { apiUrl, scriptUrl, CLIENT_ID, subsystemUrl } from './../../utils/configration';
 import { Ajax, Message } from '@/utils/parts';
 @Component({
 	components: { },
@@ -64,7 +64,7 @@ export default class FeedbackAdmin extends Vue {
 		// let utcDate=new Date(Date.UTC(nowDate.getFullYear(),nowDate.getMonth()+1,nowDate.getDay()));
 		this.ajax
 			.http({
-				url: `product/${PRODUCT_ID}/search_message`,
+				url: `product/${CLIENT_ID}/search_message`,
 				method: 'GET',
 				params: {
 					mode: 'and',
@@ -102,7 +102,7 @@ export default class FeedbackAdmin extends Vue {
 	getMessages() {
 		this.ajax
 			.http({
-				url: `product/${PRODUCT_ID}/message_feedback`,
+				url: `product/${CLIENT_ID}/message_feedback`,
 				method: 'GET',
 			})
 			.then(

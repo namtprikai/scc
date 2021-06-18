@@ -31,7 +31,7 @@ export default class BCardAccordion extends Vue {
 }
 </script>
 <style lang="scss" type="scss" scoped>
-@import '~@product/styles/_variables.scss';
+@import '~@consoletype/styles/_variables.scss';
 $TabHeaderHeitht: 44px;
 // .TabHeaderWrap {
 // 	position: relative;

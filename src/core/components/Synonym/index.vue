@@ -19,7 +19,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
-import { apiUrl, scriptUrl, PRODUCT_ID } from '@product/utils/configration';
+import { apiUrl, scriptUrl, CLIENT_ID } from '@consoletype/utils/configration';
 import { UpdateServer } from '@/api/updateServer';
 import { Ajax } from '@/utils/parts';
 // @ts-ignore
@@ -80,7 +80,7 @@ export default class Synonym extends Vue {
 			this.ajax
 				.http({
 					baseURL: `${scriptUrl}`,
-					url: `get_script/?path=${PRODUCT_ID}/synonym_dict.json`,
+					url: `get_script/?path=${CLIENT_ID}/synonym_dict.json`,
 					method: 'GET',
 				})
 				.then(
@@ -111,7 +111,7 @@ export default class Synonym extends Vue {
 				method: 'GET',
 				params: {
 					q: text,
-					product_id: PRODUCT_ID,
+					product_id: CLIENT_ID,
 				},
 			})
 			.then(
@@ -182,7 +182,7 @@ export default class Synonym extends Vue {
 					url: 'update_synonym/',
 					method: 'PUT',
 					data: {
-						product_id: PRODUCT_ID,
+						product_id: CLIENT_ID,
 						word: key,
 						synonyms: cans,
 					},

@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
 import store from '@/store';
 import { Ajax } from '@/utils/parts';
-import { PRODUCT_ID } from '@product/utils/configration';
+import { CLIENT_ID } from '@consoletype/utils/configration';
 import {ICategoryData} from "@/api/types";
 import { v4 } from 'uuid';
 const ajax: Ajax = new Ajax();

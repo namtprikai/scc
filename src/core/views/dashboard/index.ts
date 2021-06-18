@@ -1,7 +1,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { UserModule } from '@/store/modules/user';
 import { mapGetters } from 'vuex';
-import { PRODUCT_ID } from '@product/utils/configration';
+import { CLIENT_ID } from '@consoletype/utils/configration';
 import { ImageChack } from '../../utils/parts';
 // @ts-ignore
 @Component
@@ -17,7 +17,7 @@ export default class DashboardParent extends Vue {
 	}
 
 	public roleGif(role: number) {
-		// const imageUrl = `https://file.ai-x-supporter.com/${PRODUCT_ID}/${role}_role_theme.gif`;
+		// const imageUrl = `https://file.ai-x-supporter.com/${CLIENT_ID}/${role}_role_theme.gif`;
 		// if (this.imageChack.safeList.has(imageUrl)) {
 		// 	return imageUrl;
 		// }
@@ -28,7 +28,7 @@ export default class DashboardParent extends Vue {
 	}
 
 	get avatar() {
-		const imageUrl = `https://file.ai-x-supporter.com/${PRODUCT_ID}/${UserModule.id}_thumb.gif`;
+		const imageUrl = `https://file.ai-x-supporter.com/${CLIENT_ID}/${UserModule.id}_thumb.gif`;
 		// if (this.imageChack.safeList.has(imageUrl)) {
 		// 	return imageUrl;
 		// }
@@ -38,7 +38,7 @@ export default class DashboardParent extends Vue {
 	}
 
 	get emptyGif() {
-		const imageUrl = `https://file.ai-x-supporter.com/${PRODUCT_ID}/${UserModule.id}_theme.gif`;
+		const imageUrl = `https://file.ai-x-supporter.com/${CLIENT_ID}/${UserModule.id}_theme.gif`;
 		// if (this.imageChack.safeList.has(imageUrl)) {
 		return imageUrl;
 		// }

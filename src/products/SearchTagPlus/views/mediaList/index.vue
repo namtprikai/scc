@@ -104,7 +104,7 @@ import { v4 } from 'uuid';
 import { Component, Vue } from 'vue-property-decorator';
 import { eventHub } from '@/init/eventHub';
 import { FileModule } from '@/store/modules/file';
-import { PRODUCT_ID } from '../../utils/configration';
+import { CLIENT_ID } from '../../utils/configration';
 // import { debug } from 'util';
 import { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
 import clipboard from 'clipboard';
@@ -130,7 +130,7 @@ import { UserModule } from '@/store/modules/user';
 export default class MediaListComp extends FileuploadCompParent {
 
 	public getUrl(fileName: string) {
-		return `https://file.ai-x-supporter.com/${PRODUCT_ID}/${fileName}`;
+		return `https://file.ai-x-supporter.com/${CLIENT_ID}/${fileName}`;
 	}
 }
 </script>
