@@ -17,6 +17,7 @@ export default class QuestionParent extends Vue {
 	protected searchText: string = '';
 	protected isLoad = false;
 	protected contextMenuIsVisible = false;
+	public currentProducts:Array<any> = [];
 	protected created() {
 		this.fetchData();
 		eventHub.$on('scriptCsvUploadDone', this.fetchData);
