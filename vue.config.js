@@ -16,17 +16,17 @@ const TerserPlugin = require('terser-webpack-plugin');
 const mockServerPort = 9528 // TODO: get this variable from setting.ts
 const tsconfig = JSON.parse(fs.readFileSync('./tsconfigrc.json', 'utf-8'));
 let pconfigPath = `src/productConfigById/${CONFIG_CLIENT_ID||CLIENT_ID}/*`;
-tsconfig['compilerOptions']['paths']['@consoletype/*'] = [`src/products/${CONSOLE_TYPE}/*`];
+tsconfig['compilerOptions']['paths']['@consoletype/*'] = [`src/consoleTypes/${CONSOLE_TYPE}/*`];
 tsconfig['compilerOptions']['paths']['@pconfig/*'] = [pconfigPath];
 // exclude
 console.log(tsconfig['exclude']);
 console.log(CONSOLE_TYPE);
 if (CONSOLE_TYPE && Array.isArray(tsconfig['exclude'])) {
 	const exclude = tsconfig['exclude'];
-	const dirs = fs.readdirSync('src/products');
+	const dirs = fs.readdirSync('src/consoleTypes');
 	for (const dir of dirs) {
 		if (dir !== CONSOLE_TYPE && dirs.indexOf(dir) !== -1) {
-			exclude.push(`src/products/${dir}/**`);
+			exclude.push(`src/consoleTypes/${dir}/**`);
 		}
 	}
 	tsconfig['exclude'] = exclude;
@@ -39,9 +39,9 @@ console.log(process.env.BASE_URL);
 // const tslintconfig = require('.eslintrc.js');
 // let tslintexc = ["node_modules/**"];
 // if (!SILENT) {
-// 	const dirs = fs.readdirSync("src/products");
+// 	const dirs = fs.readdirSync("src/consoleTypes");
 // 	for (const dir of dirs) {
-// 		if (dir !== PRODUCT) tslintexc.push(`src/products/${dir}/**`);
+// 		if (dir !== PRODUCT) tslintexc.push(`src/consoleTypes/${dir}/**`);
 // 	}
 // } else {
 // 	tslintexc.push("src/**");
@@ -82,7 +82,7 @@ module.exports = {
 	},
 	configureWebpack: {
 		entry: {
-			app: `./src/products/${CONSOLE_TYPE}/main.ts`,
+			app: `./src/consoleTypes/${CONSOLE_TYPE}/main.ts`,
 		},
 		module: {
 			rules: [
@@ -158,12 +158,12 @@ module.exports = {
 				'@': path.resolve(__dirname, `src/core`),
 				'~': path.resolve(__dirname, 'src/'),
 				'@pconfig': path.resolve(__dirname, `src/productConfigById/${CONFIG_CLIENT_ID||CLIENT_ID}`),
-				'@consoletype': path.resolve(__dirname, `src/products/${CONSOLE_TYPE}`),
+				'@consoletype': path.resolve(__dirname, `src/consoleTypes/${CONSOLE_TYPE}`),
 				'bootstrap-components': path.resolve(__dirname, 'node_modules/bootstrap-vue/es/components'),
 			},
 			modules: [
 				path.resolve(__dirname, `src/productConfigById/${CONFIG_CLIENT_ID||CLIENT_ID}`),
-				path.resolve(__dirname, `src/products/${CONSOLE_TYPE}`),
+				path.resolve(__dirname, `src/consoleTypes/${CONSOLE_TYPE}`),
 				path.resolve(__dirname, `./src`),
 				path.resolve(__dirname, `./`),
 				path.resolve(__dirname, `./src/core`),
