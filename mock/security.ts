@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from 'express'
-import { IPolicyData,IAPIResponce, IUserData, IRoleData,ISAIAPIData } from '../src/core/api/types';
+import { IPolicyData,IAPIResponce, IUserData, IRoleData,ISAIAPIData,IAdminData, IProductData } from '../src/core/api/types';
 import {getUserRolesByUserId} from "./user_roles";
+import {getAdminProductsByAdminId} from './product_admins';
 export const accessTokenAuth = (req: Request, res: IAPIResponce, next: NextFunction) => {
   const accessToken = req.header('Authorization')
   if (!accessToken&&false) {
@@ -22,6 +23,16 @@ export const auth = (user:IUserData,roles:Array<IRoleData>)=>{
 			return true;
 		}
 	}
+	return false;
+}
+export const authAdmin = (admin:IAdminData,products:Array<IProductData>,roles:Array<IRoleData>)=>{
+	const adminProducts = getAdminProductsByAdminId(admin.id);
+	for(const adminProduct of adminProducts){
+
+	}
+	// if(roles.find(r=>r.id === adminRoles.id)){
+	// 	return true;
+	// }
 	return false;
 }
 export const secureObjectCreate = <T>(getDataList:()=>Array<T>,getRoleFunc:(data:T)=>Array<IRoleData>):RoleFilter<T> =>{
