@@ -16,7 +16,7 @@ export interface IRoleData extends ISAIAPIData{
 }
 export interface IProductData extends ISAIAPIData{
 	name:string;
-	confing:Object;
+	config:any;
 	max_failure_count_user:number;
 	max_failure_time_user:number;
 }
