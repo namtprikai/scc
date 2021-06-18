@@ -24,10 +24,13 @@
 				<wrap-sppiner v-if="isLoad" />
 				<div v-for="(question, index) in Questions" :key="index">
 					<BCardAccordion
-						:title="question.title"
 						class="bot-message-config_editor_group section"
 						:visible="false"
 					>
+					<template v-slot:header>
+						<b-breadcrumb :items="[{text:'親カテ'},{text:'子カテ'}]"></b-breadcrumb>
+						{{question.title}}
+					</template>
 						<template v-slot:body="body"><Answer :questionId="question.id" :is_show="body.isShow" /> </template>
 					</BCardAccordion>
 				</div>
