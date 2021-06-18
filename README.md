@@ -25,35 +25,35 @@
 
 ## Project setup
 
-nodejs v12
+nodejs v14
 
 ```bash
 npm i
-CLIENT_ID=7 PRODUCT=SearchWindow NODE_ENV=development npm start
+CLIENT_ID=7 CONSOLE_TYPE=SearchWindow NODE_ENV=development npm start
 ```
 
 ### Compiles and hot-reloads for development
 
 ```bash
-CLIENT_ID=7 PRODUCT=SearchWindow NODE_ENV=development npm run serve
+CLIENT_ID=7 CONSOLE_TYPE=SearchWindow NODE_ENV=development npm run serve
 ```
 
 ### Compiles and minifies for production
 
 ```bash
-CLIENT_ID=7 PRODUCT=SearchWindow NODE_ENV=development npm run build
+CLIENT_ID=7 CONSOLE_TYPE=SearchWindow NODE_ENV=development npm run build
 ```
 
 ### Lints and fixes files
 
 ```bash
-CLIENT_ID=7 PRODUCT=SearchWindow NODE_ENV=development yarn lint
+CLIENT_ID=7 CONSOLE_TYPE=SearchWindow NODE_ENV=development yarn lint
 ```
 
 ### Run your unit tests
 
 ```bash
-CLIENT_ID=7 PRODUCT=SearchWindow NODE_ENV=development npm run test:unit
+CLIENT_ID=7 CONSOLE_TYPE=SearchWindow NODE_ENV=development npm run test:unit
 ```
 
 ### Run your end-to-end tests

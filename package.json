@@ -1,7 +1,11 @@
 {
-  "name": "sai-console-plus",
-  "version": "0.1.0",
+  "name": "sai-console-allinone",
+  "version": "0.1.1",
   "private": true,
+  "engineStrict": true,
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "npm run icon && vue-cli-service build",
