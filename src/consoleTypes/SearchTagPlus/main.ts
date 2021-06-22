@@ -85,7 +85,7 @@ Vue.use(SvgIcon, {
 });
 router.beforeEach((to, from, next) => {
 	console.log(to);
-	if (from.meta.confirmation?.is) {
+	if (from.meta?.confirmation?.is) {
 		Vue.prototype.$modal.show('dialog', {
 			title: from.meta.confirmation.message,
 			buttons: [
@@ -93,7 +93,7 @@ router.beforeEach((to, from, next) => {
 					title: '編集終了',
 					handler: () => {
 						next();
-						if (from.meta.confirmation.after) {
+						if (from.meta?.confirmation.after) {
 							from.meta.confirmation.after();
 						}
 						Vue.prototype.$modal.hide('dialog');

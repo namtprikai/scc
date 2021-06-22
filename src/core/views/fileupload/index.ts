@@ -38,7 +38,7 @@ export default class FileuploadCompParent extends Vue {
 	protected fileNameList: any = [];
 	get Title() {
 		console.log(this.$router.currentRoute);
-		return this.$router.currentRoute.meta.title;
+		return this.$router.currentRoute.meta?.title;
 	}
 
 	getTag(fileName: string) {
