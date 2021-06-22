@@ -108,7 +108,7 @@ export default class TagsComp extends Vue {
 	} | null = null;
 
 	get Title() {
-		return this.$router.currentRoute.meta.title;
+		return this.$router.currentRoute.meta?.title||'';
 	}
 
 	private async init() {

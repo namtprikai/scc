@@ -106,7 +106,7 @@ export default class KeywordShowComp extends Vue {
 	} | null = null;
 
 	get Title() {
-		return this.$router.currentRoute.meta.title;
+		return this.$router.currentRoute.meta?.title||'';
 	}
 	public page: any = 1;
 	public perPage = 100;

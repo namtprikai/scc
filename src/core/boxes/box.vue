@@ -81,11 +81,11 @@ export default class Box extends Vue {
 
 	setTabs() {
 		console.log('setTabs');
-		if (!this.$attrs['data-name'] || (!this.$route.meta && this.$attrs['data-name'] in this.$route.meta)) {
+		if (!this.$attrs['data-name'] || !(this.$route.meta && this.$attrs['data-name'] in this.$route.meta)) {
 			return;
 		}
 		try {
-			const tabMapOptions = this.$route.meta[this.$attrs['data-name']].tabs || [];
+			const tabMapOptions = this.$route.meta?.[this.$attrs['data-name']].tabs || [];
 			this.tabMapOptions = tabMapOptions.filter((tab: any) => {
 				if (tab.roles) {
 					if (!tab.roles.find((r:number)=>UserModule.Role.has(r))) {
