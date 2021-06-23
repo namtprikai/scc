@@ -11,6 +11,8 @@ info:
 servers:
   - url: /api
 tags:
+  - name: products
+    description: products related api.
   - name: roles
     description: Roles related api.
   - name: users
@@ -20,6 +22,28 @@ tags:
   - name: categorys
     description: Categorys related api.
 paths:
+  /products:
+    get:
+      tags:
+        - products
+      summary: Get product List
+      description: Return a list of products.
+      operationId: getProducts
+      security:
+        - AccessTokenAuth: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
   /roles:
     get:
       tags:

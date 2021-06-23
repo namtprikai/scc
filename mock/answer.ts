@@ -5,7 +5,7 @@ import { IAPIResponce,IAnswerDataCondition,IConditionMap } from '../src/core/api
 import { getConditionListByUserToken, getConditionListByAnserId, getConditionList,getConditionListByConditionGroupId } from "./condition";
 import { getConditionGroupById } from "./conditionGroup";
 import { getUserByToken } from './users';
-import { auth, secureObjectCreate } from './security';
+import { auth, secureObjectCreateByUser } from './security';
 import { getAnswerRolesByAnswer,answerRoles } from './answer_roles';
 
 
@@ -36,7 +36,7 @@ export const answers: Array<IAnswerData> = [
 		modified: new Date(),
 	}
 ];
-const Ansers = secureObjectCreate<IAnswerData>(()=>answers,getAnswerRolesByAnswer);
+const Ansers = secureObjectCreateByUser<IAnswerData>(()=>answers,getAnswerRolesByAnswer);
 
 export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce => {
 	const { question_id } = req.params;

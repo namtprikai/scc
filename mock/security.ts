@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from 'express'
 import { IPolicyData,IAPIResponce, IUserData, IRoleData,ISAIAPIData,IAdminData, IProductData } from '../src/core/api/types';
 import {getUserRolesByUserId} from "./user_roles";
-import {getAdminProductsByAdminId} from './product_admins';
+import {getProductsByAdmin, getProductsByAdminId} from './product_admins';
 export const accessTokenAuth = (req: Request, res: IAPIResponce, next: NextFunction) => {
   const accessToken = req.header('Authorization')
   if (!accessToken&&false) {
@@ -25,18 +25,31 @@ export const auth = (user:IUserData,roles:Array<IRoleData>)=>{
 	}
 	return false;
 }
-export const authAdmin = (admin:IAdminData,products:Array<IProductData>,roles:Array<IRoleData>)=>{
-	const adminProducts = getAdminProductsByAdminId(admin.id);
+export const authAdmin = (admin:IAdminData,products:Array<IProductData>)=>{
+	const adminProducts = getProductsByAdminId(admin.id);
 	for(const adminProduct of adminProducts){
-
+		if (products.find(p => p.id === adminProduct.id)) {
+			return true;
+		}
 	}
 	// if(roles.find(r=>r.id === adminRoles.id)){
 	// 	return true;
 	// }
 	return false;
 }
-export const secureObjectCreate = <T>(getDataList:()=>Array<T>,getRoleFunc:(data:T)=>Array<IRoleData>):RoleFilter<T> =>{
-	return new RoleFilter<T>(getDataList,getRoleFunc);
+
+class ProductRoleFilter<T>{
+	constructor(protected getDataList: () => Array<T>, protected getProductsFunc: (data: T) => Array<IProductData>) { }
+	public getData(admin:IAdminData,filter?:(d:T)=>boolean):Array<T>{
+		return this.getDataList()
+			.filter(a => {
+			if(filter&&!filter(a)){
+				return false;
+			}
+			const aProducts = this.getProductsFunc(a);
+				return authAdmin(admin,aProducts);
+		});
+	}
 }
 class RoleFilter<T>{
 	constructor(protected getDataList:()=>Array<T>,protected getRoleFunc:(data:T)=>Array<IRoleData>){}
@@ -49,4 +62,10 @@ class RoleFilter<T>{
 				return auth(user,aRoles);
 		});
 	}
+}
+export const secureObjectCreateByAdmin = <T>(getDataList:()=>Array<T>,getProductsFunc:(data:T)=>Array<IProductData>):ProductRoleFilter<T> => {
+	return new ProductRoleFilter<T>(getDataList,getProductsFunc);
+}
+export const secureObjectCreateByUser = <T>(getDataList:()=>Array<T>,getRoleFunc:(data:T)=>Array<IRoleData>):RoleFilter<T> =>{
+	return new RoleFilter<T>(getDataList,getRoleFunc);
 }
