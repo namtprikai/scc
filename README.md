@@ -29,7 +29,7 @@ nodejs v14
 
 ```bash
 npm i
-CLIENT_ID=7 CONSOLE_TYPE=SearchWindow NODE_ENV=development npm start
+NODE_ENV=mock CLIENT_ID=402 CONSOLE_TYPE=SearchTagPlus npm run start
 ```
 
 ### Compiles and hot-reloads for development
