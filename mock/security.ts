@@ -43,16 +43,23 @@ export const authAdmin = (admin:IAdminData,products:Array<IProductData>)=>{
 class ProductRoleFilter<T>{
 	constructor(protected getDataList: () => Array<T>, protected getProductsFunc: (data: T) => Array<IProductData>) { }
 	public getData(admin:IAdminData,mapFunc?:(data:T,intersectionProducts:Array<IProductData>)=>T,filter?:(d:T)=>boolean):Array<T>{
-		return this.getDataList()
-			.filter(a => {
-			if(filter&&!filter(a)){
-				return false;
+		const res:Array<T> = [];
+		const dataList =  this.getDataList();
+		for(let data of dataList){
+			if(filter&&!filter(data)){
+				continue;
 			}
-			const aProducts = this.getProductsFunc(a);
-			const [isAuth] = authAdmin(admin,aProducts);
+			const dataProducts = this.getProductsFunc(data);
+			const [isAuth,adminProducts] = authAdmin(admin,dataProducts);
 			console.log(isAuth);
-			return isAuth;
-		});
+			if(isAuth){
+				if(mapFunc){
+					data = data;
+				}
+				res.push(data);
+			}
+		}
+		return res;
 	}
 }
 class RoleFilter<T>{
