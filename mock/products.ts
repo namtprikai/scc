@@ -52,7 +52,7 @@ interface IProductsAPIResponce extends Response {
 
 }
 
-const Productions =  secureObjectCreateByAdmin<IProductData>(()=>productions, ()=>productions);
+const Productions =  secureObjectCreateByAdmin<IProductData>(()=>productions, (p)=>[p]);
 
 export const getProducts = (req: Request, res: IAPIResponce): IProductsAPIResponce => {
 	const accessToken = req.header('Authorization') || "";

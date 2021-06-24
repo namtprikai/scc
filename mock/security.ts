@@ -27,9 +27,14 @@ export const auth = (user:IUserData,roles:Array<IRoleData>)=>{
 }
 export const authAdmin = (admin:IAdminData,products:Array<IProductData>)=>{
 	const adminProducts = getProductsByAdminId(admin.id);
-	for(const adminProduct of adminProducts){
-		if (products.find(p => p.id === adminProduct.id)) {
+	console.log(adminProducts);
+	console.log(products);
+	debugger;
+	for(const product of products){
+		if (adminProducts.find(ap => ap.id === product.id)) {
 			return true;
+		}else{
+			return false;
 		}
 	}
 	// if(roles.find(r=>r.id === adminRoles.id)){
@@ -47,7 +52,9 @@ class ProductRoleFilter<T>{
 				return false;
 			}
 			const aProducts = this.getProductsFunc(a);
-				return authAdmin(admin,aProducts);
+			const isAuth = authAdmin(admin,aProducts);
+			console.log(isAuth);
+			return isAuth;
 		});
 	}
 }

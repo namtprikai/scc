@@ -21,16 +21,25 @@ import { Component, Vue, Watch, Prop, PropSync } from "vue-property-decorator";
 import Plugins from "@/components/Tinymce/plugins";
 import Toolbar from "@/components/Tinymce/toolbar";
 import _ from "lodash";
+import { IProductData } from "@/api/types";
+import {AjaxService} from "@/services/ajax";
+import { AxiosResponse } from "axios";
 // @ts-ignore
 @Component({
 	components: {},
 })
 export default class ProductListComp extends Vue {
-	@PropSync("values", { type: String })
-	public productList!: string;
+	// @PropSync("values", { type: Array })
+	public productList: Array<IProductData>=[];
 
-	protected created() {
+	protected async created() {
 		// eventHub.$on("tabclick", this.tabClick);
+		const {data}: AxiosResponse<any> = await AjaxService.ajax.http({
+			url: `/products`,
+			method: 'get',
+			params: {},
+		});
+		this.productList = data.products;
 	}
 
 	protected destroyed() {

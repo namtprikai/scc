@@ -748,6 +748,11 @@ export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vu
 												roles: [4, 5, 999],
 											},
 											{
+												label: '管理プロダクト一覧',
+												key: 'Productions',
+												roles: [4, 5, 999],
+											},
+											{
 												label: 'パスワード変更',
 												key: 'Password',
 												roles: [4, 5, 999],
