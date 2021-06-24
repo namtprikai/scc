@@ -27,32 +27,29 @@ export const auth = (user:IUserData,roles:Array<IRoleData>)=>{
 }
 export const authAdmin = (admin:IAdminData,products:Array<IProductData>)=>{
 	const adminProducts = getProductsByAdminId(admin.id);
-	console.log(adminProducts);
-	console.log(products);
-	debugger;
 	for(const product of products){
 		if (adminProducts.find(ap => ap.id === product.id)) {
-			return true;
+			return [true,adminProducts ];
 		}else{
-			return false;
+			return [false,adminProducts ];
 		}
 	}
 	// if(roles.find(r=>r.id === adminRoles.id)){
 	// 	return true;
 	// }
-	return false;
+	return [false,adminProducts ];
 }
 
 class ProductRoleFilter<T>{
 	constructor(protected getDataList: () => Array<T>, protected getProductsFunc: (data: T) => Array<IProductData>) { }
-	public getData(admin:IAdminData,filter?:(d:T)=>boolean):Array<T>{
+	public getData(admin:IAdminData,mapFunc?:(data:T,intersectionProducts:Array<IProductData>)=>T,filter?:(d:T)=>boolean):Array<T>{
 		return this.getDataList()
 			.filter(a => {
 			if(filter&&!filter(a)){
 				return false;
 			}
 			const aProducts = this.getProductsFunc(a);
-			const isAuth = authAdmin(admin,aProducts);
+			const [isAuth] = authAdmin(admin,aProducts);
 			console.log(isAuth);
 			return isAuth;
 		});

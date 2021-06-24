@@ -29,17 +29,17 @@ import { AxiosResponse } from "axios";
 	components: {},
 })
 export default class ProductListComp extends Vue {
-	// @PropSync("values", { type: Array })
-	public productList: Array<IProductData>=[];
+	@PropSync("values", { type: Array })
+	public productList!: Array<IProductData>;
 
 	protected async created() {
 		// eventHub.$on("tabclick", this.tabClick);
-		const {data}: AxiosResponse<any> = await AjaxService.ajax.http({
-			url: `/products`,
-			method: 'get',
-			params: {},
-		});
-		this.productList = data.products;
+		// const {data}: AxiosResponse<any> = await AjaxService.ajax.http({
+		// 	url: `/products`,
+		// 	method: 'get',
+		// 	params: {},
+		// });
+		// this.productList = data.products;
 	}
 
 	protected destroyed() {

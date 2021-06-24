@@ -1,7 +1,10 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { IQuestionData } from '../src/core/api/types'
+import { IProductData, IQuestionData } from '../src/core/api/types'
 import { IAPIResponce} from '../src/core/api/types'
+import { secureObjectCreateByAdmin } from './security';
+import {questionProducts} from './question_products';
+import {productions} from "./products";
 export const questions:Array<IQuestionData> =[
 	{
 		id:0,
@@ -22,6 +25,32 @@ export const questions:Array<IQuestionData> =[
 		modified:new Date(),
 	}
 ];
+
+// interface IProductsAPIResponce extends Response {
+// 	json: (args: {
+// 		status: number;
+// 		data: {
+// 			products: Array<IAnswerData>;
+// 		};
+// 	}) => any;
+
+// }
+
+const Questions =  secureObjectCreateByAdmin<IQuestionData>(()=>questions, (q)=>{
+	const products:Array<IProductData> = [];
+	for(const qp of questionProducts){
+		if(q.id===qp.question_id){
+			for(const production of productions){
+				if(qp.product_id === production.id){
+					products.push(production);
+					break;
+				}
+			}
+		}
+
+	}
+	return products;
+});
 export const getQuestionList = (req: Request, res: IAPIResponce):Response => {
 	const { category_id,text } = req.params;
 console.log("question");

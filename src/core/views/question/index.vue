@@ -18,12 +18,9 @@
 			<b-form-checkbox-group
       id="checkbox-1"
       v-model="currentProducts"
+						:options="ProductOptions"
       name="checkbox-1"
     >
-      <b-form-checkbox value="orange">販売部CPサイト</b-form-checkbox>
-        <b-form-checkbox value="apple">技術部会員向けサイト</b-form-checkbox>
-        <b-form-checkbox value="pineapple">リクルートサイト</b-form-checkbox>
-        <b-form-checkbox value="grape">子会社A</b-form-checkbox>
     </b-form-checkbox-group>
 				</b-form-group>
 <b-form-input type="text" placeholder="検索文" v-model="searchText"></b-form-input>

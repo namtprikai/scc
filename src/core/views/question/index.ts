@@ -9,6 +9,7 @@ import { QuestionModule } from '@/store/modules/question';
 import { UpdateServer } from '@/api/updateServer';
 import WrapSppiner from '@/components/WrapSinner/index.vue';
 import { BCardAccordion } from '@/components/BCardAccodion';
+import { ProductsModule } from '@/store/modules/products';
 // @ts-ignore
 @Component({
 	components: { WrapSppiner, BCardAccordion },
@@ -26,12 +27,20 @@ export default class QuestionParent extends Vue {
 	protected destroyed() {
 		eventHub.$off('scriptCsvUploadDone', this.fetchData);
 	}
+	get ProductOptions(){
+		return ProductsModule.Products.map(p=>{
+			return {text:p.name,value:p.id}
+		});
+	}
 	public search() {
 
 	}
 	private async fetchData() {
 		this.isLoad = true;
-		await QuestionModule.GetQuestions();
+		await Promise.all([
+			ProductsModule.GetProducts(),
+			QuestionModule.GetQuestions()]
+			);
 		this.isLoad = false;
 
 	}
