@@ -504,6 +504,40 @@ paths:
                         $ref: '#/components/schemas/Admin'
         401:
           $ref: '#/components/responses/Unauthorized'
+  /admin/{admin_id}/product:
+    get:
+      tags:
+        - admins
+      summary: Get current user info
+      description: This can only be done by the logged in user.
+      operationId: getProductsByAdminId
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: admin_id
+          in: path
+          required: true
+          description: The name that needs to be deleted.
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      admin:
+                        $ref: '#/components/schemas/Product'
+        401:
+          $ref: '#/components/responses/Unauthorized'
   /product/{product_id}/role/{role_id}/category:
     get:
       tags:
@@ -876,6 +910,23 @@ components:
       required:
         - code
         - message
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: chat
+        config:
+          type: string
+          example: json
+        routes:
+          $ref: '#/components/schemas/AnyValue'
+      required:
+        - id
+        - name
     Role:
       type: object
       properties:
