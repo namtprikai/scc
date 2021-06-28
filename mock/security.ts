@@ -25,7 +25,11 @@ export const auth = (user:IUserData,roles:Array<IRoleData>)=>{
 	}
 	return false;
 }
-export const authAdmin = (admin:IAdminData,products:Array<IProductData>)=>{
+export const authAdmin = (admin: IAdminData, products: Array<IProductData>) => {
+	// masterであれば無条件に返す
+	if (admin.is_master) {
+		return [true, products];
+	}
 	const adminProducts = getProductsByAdminId(admin.id);
 	for(const product of products){
 		if (adminProducts.find(ap => ap.id === product.id)) {

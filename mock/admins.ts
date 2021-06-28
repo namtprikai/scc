@@ -8,7 +8,7 @@ const adminList: IAdminData[] = [
     name: 'サイシード西田',
     password: 'Anyany',
     email: 'admin@test.com',
-				is_master:false,
+				is_master:true,
 				config:{role:5},
 				is_enabled:true,
 				is_lock:false,
