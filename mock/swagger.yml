@@ -848,7 +848,7 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
   /users/info:
-    post:
+    get:
       tags:
         - users
       summary: Get current user info
