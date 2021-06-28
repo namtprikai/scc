@@ -4,8 +4,8 @@ import { IAnswerData, IConditionData, IConditionGroupData, IScenarioTree, IScena
 import { IAPIResponce, IAnswerDataCondition, IConditionMap } from '../src/core/api/types'
 import { secureObjectCreateByAdmin } from './security';
 import { getAdminByToken } from './admins';
-import { productAdmins } from './product_admins';
-export const productions: Array<IProductData> = [
+import { productAdmins ,deleteProductAdminsByProductId} from './product_admins';
+export let productions: Array<IProductData> = [
 	{
 		id: 0,
 		name: "サーチタグ(自社顧客向けCPサイト埋め込み)",
@@ -89,6 +89,30 @@ export const getProductsByAdminId = (req: Request, res: IAPIResponce): IProducts
 		return res.json({
 			status: 20000,
 			data: { products: productList }
+		})
+	}
+	return res.json({
+		status: 400,
+		data: {}
+	})
+}
+export const deleteProduct  = (req: Request, res: IAPIResponce): IProductsAPIResponce => {
+	const accessToken = req.header('Authorization') || "";
+	const admin = getAdminByToken(accessToken);
+	if (admin) {
+		const { product_id } = req.params;
+		const productList = Productions.getData(admin);
+		for (const product of productList) {
+			if (product.id === parseInt(product_id,10)) {
+				productions = productions.filter(p => p.id !== parseInt(product_id, 10));
+				//  中間テーブルの削除ロジック群
+				deleteProductAdminsByProductId(parseInt(product_id, 10));
+				break;
+			}
+		}
+		return res.json({
+			status: 200,
+			data: {}
 		})
 	}
 	return res.json({

@@ -1,7 +1,7 @@
 import { IProductData } from '../src/core/api/types';
 import { productions} from './products';
 import { IAdminData } from '../src/core/api/types';
-export const productAdmins = [
+export let productAdmins = [
 	{
 		id:0,
 		product_id:0,
@@ -36,4 +36,8 @@ export const getProductsByAdminId = (admin_id:number):Array<IProductData>=>{
 }
 export const getProductsByAdmin = (admin: IAdminData): Array<IProductData> => {
 	return getProductsByAdminId(admin.id);
+}
+
+export const deleteProductAdminsByProductId = (product_id: number) => {
+	productAdmins = productAdmins.filter(p => p.product_id !== product_id);
 }
