@@ -1,7 +1,12 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
 import { IUserData, IAPIResponce } from '../src/core/api/types'
-const userList: IUserData[] = [
+import { secureObjectCreateByAdmin } from './security';
+import { userProducts } from './user_products';
+import { IProductData } from '@/api/types';
+import { productions } from "./products";
+import { getAdminByToken } from './admins';
+let userList: IUserData[] = [
 	{
 		id: 0,
 		password: 'any',
@@ -18,7 +23,8 @@ const userList: IUserData[] = [
 	}
 ];
 const userCount = 100;
-
+const deleteIntermadiateTables = (question_id: number) => {
+}
 for (let i = 2; i < userCount; i++) {
 	userList.push({
 		id: i,
@@ -31,7 +37,21 @@ for (let i = 2; i < userCount; i++) {
 		is_lock: false,
 	})
 }
+const UserList = secureObjectCreateByAdmin<IUserData>(() => userList, (u) => {
+	const products: Array<IProductData> = [];
+	for (const up of userProducts) {
+		if (u.id === up.user_id) {
+			for (const production of productions) {
+				if (up.product_id === production.id) {
+					products.push(production);
+					break;
+				}
+			}
+		}
 
+	}
+	return products;
+});
 export const register = (req: Request, res: IAPIResponce) => {
 	return res.json({
 		status: 20000,
@@ -167,6 +187,27 @@ export const updateUser = (req: Request, res: IAPIResponce) => {
 }
 
 export const deleteUser = (req: Request, res: IAPIResponce) => {
+	const { user_id, text } = req.params;
+	if (!/\d/.test(user_id)) {
+		return res.status(400).json({
+			status: 50004,
+			data: {
+				errors: [
+					{ status: 'validation_error' }
+				]
+			}
+		})
+	}
+	const accessToken = req.header('Authorization') || "";
+	const admin = getAdminByToken(accessToken);
+	if (UserList.getData(admin).find(q => q.id === parseInt(user_id, 10))) {
+		userList = userList.filter(u => u.id !== parseInt(user_id, 10));
+		deleteIntermadiateTables(parseInt(user_id, 10));
+		return res.json({
+			status: 20000,
+			data: [...UserList.getData(admin)]
+		})
+	}
 	return res.json({
 		status: 20000,
 		data: {
