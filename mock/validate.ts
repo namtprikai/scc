@@ -1,6 +1,10 @@
 import { Response, Request, NextFunction } from 'express'
 import { IAPIResponce} from '../src/core/api/types'
-const validList:Array<any> = [];
+const validList: Array<any> = [
+	{
+		id: 0
+	}
+];
 export const validation = (req: Request, res: IAPIResponce, next: NextFunction) => {
 		//バリデーション処理
 		console.log(req.route.path);
