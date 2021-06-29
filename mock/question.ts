@@ -1,28 +1,29 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
 import { IProductData, IQuestionData } from '../src/core/api/types'
-import { IAPIResponce} from '../src/core/api/types'
+import { IAPIResponce } from '../src/core/api/types'
 import { secureObjectCreateByAdmin } from './security';
-import {questionProducts} from './question_products';
-import {productions} from "./products";
-export const questions:Array<IQuestionData> =[
+import { questionProducts, deleteQuestionProductsByQuestionId } from './question_products';
+import { productions } from "./products";
+import { getAdminByToken } from './admins';
+export let questions: Array<IQuestionData> = [
 	{
-		id:0,
-		label:"",
-		title:"私におすすめの車は？",
-		is_public:true,
-		config:{},
-		created:new Date(),
-		modified:new Date(),
+		id: 0,
+		label: "",
+		title: "私におすすめの車は？",
+		is_public: true,
+		config: {},
+		created: new Date(),
+		modified: new Date(),
 	},
 	{
-		id:1,
-		label:"",
-		title:"私におすすめのバイクは？",
-		is_public:true,
-		config:{},
-		created:new Date(),
-		modified:new Date(),
+		id: 1,
+		label: "",
+		title: "私におすすめのバイクは？",
+		is_public: true,
+		config: {},
+		created: new Date(),
+		modified: new Date(),
 	}
 ];
 
@@ -35,13 +36,15 @@ export const questions:Array<IQuestionData> =[
 // 	}) => any;
 
 // }
-
-const Questions =  secureObjectCreateByAdmin<IQuestionData>(()=>questions, (q)=>{
-	const products:Array<IProductData> = [];
-	for(const qp of questionProducts){
-		if(q.id===qp.question_id){
-			for(const production of productions){
-				if(qp.product_id === production.id){
+const deleteIntermadiateTables = (question_id:number) => {
+deleteQuestionProductsByQuestionId(question_id);
+}
+const Questions = secureObjectCreateByAdmin<IQuestionData>(() => questions, (q) => {
+	const products: Array<IProductData> = [];
+	for (const qp of questionProducts) {
+		if (q.id === qp.question_id) {
+			for (const production of productions) {
+				if (qp.product_id === production.id) {
 					products.push(production);
 					break;
 				}
@@ -51,25 +54,53 @@ const Questions =  secureObjectCreateByAdmin<IQuestionData>(()=>questions, (q)=>
 	}
 	return products;
 });
-export const getQuestionList = (req: Request, res: IAPIResponce):Response => {
-	const { category_id,text } = req.params;
-console.log("question");
-	// const users = userList.filter(user => {
-	// 		const lowerCaseName = user.name.toLowerCase()
-	// 		return !(name && lowerCaseName.indexOf((name as string).toLowerCase()) < 0)
-	// })
-	if(category_id==null){
+export const getQuestionList = (req: Request, res: IAPIResponce): Response => {
+	const { category_id, text } = req.params;
+	const accessToken = req.header('Authorization') || "";
+	const admin = getAdminByToken(accessToken);
+	if (category_id == null) {
 		return res.json({
-				status: 20000,
-				data: [...questions]
+			status: 20000,
+			data: [...Questions.getData(admin)]
 		})
 	}
 	return res.status(400).json({
 		status: 50004,
-		data:{
-			errors:[
-				{status: 'forbidden_error'}
+		data: {
+			errors: [
+				{ status: 'forbidden_error' }
 			]
 		}
-})
+	})
+}
+export const deleteQuestion = (req: Request, res: IAPIResponce): Response => {
+	const { question_id, text } = req.params;
+	if (!/\d/.test(question_id)) {
+		return res.status(400).json({
+			status: 50004,
+			data: {
+				errors: [
+					{ status: 'validation_error' }
+				]
+			}
+		})
+	}
+	const accessToken = req.header('Authorization') || "";
+	const admin = getAdminByToken(accessToken);
+	if (Questions.getData(admin).find(q => q.id === parseInt(question_id, 10))) {
+		questions = questions.filter(q => q.id !== parseInt(question_id, 10));
+		deleteIntermadiateTables(parseInt(question_id, 10));
+		return res.json({
+			status: 20000,
+			data: [...questions]
+		})
+	}
+	return res.status(400).json({
+		status: 50004,
+		data: {
+			errors: [
+				{ status: 'forbidden_error' }
+			]
+		}
+	})
 }
