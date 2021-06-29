@@ -6,6 +6,7 @@ import { secureObjectCreateByAdmin } from './security';
 import { questionProducts, deleteQuestionProductsByQuestionId } from './question_products';
 import { productions } from "./products";
 import { getAdminByToken } from './admins';
+import { deleteQuestionKeywordsByQuestionId } from './question_keywords';
 export let questions: Array<IQuestionData> = [
 	{
 		id: 0,
@@ -37,7 +38,8 @@ export let questions: Array<IQuestionData> = [
 
 // }
 const deleteIntermadiateTables = (question_id:number) => {
-deleteQuestionProductsByQuestionId(question_id);
+	deleteQuestionProductsByQuestionId(question_id);
+	deleteQuestionKeywordsByQuestionId(question_id);
 }
 const Questions = secureObjectCreateByAdmin<IQuestionData>(() => questions, (q) => {
 	const products: Array<IProductData> = [];
