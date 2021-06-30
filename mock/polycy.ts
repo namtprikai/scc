@@ -22,6 +22,26 @@ const policys:Array<IPolicyData> =[
 		label:"ロールの詳細",
 		is_sharing:false
 	},
+	{
+		id:4,
+		label:"ユーザーの詳細",
+		is_sharing:false
+	},
+	{
+		id:5,
+		label:"ユーザーの編集",
+		is_sharing:false
+	},
+	{
+		id:6,
+		label:"ユーザーの削除",
+		is_sharing:false
+	},
+	{
+		id:7,
+		label:"ユーザーの作成",
+		is_sharing:false
+	},
 ];
 
 export const getPolicyList = (req: Request, res: IAPIResponce):Response => {
