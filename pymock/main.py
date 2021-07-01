@@ -1,5 +1,5 @@
 import json
-def make_flow(_condition_list,_ansers):
+def make_flow2(_condition_list,_ansers):
 	st = {
 		"ansers":_ansers,
 		"anser_ids":map(lambda a:a['id'],_ansers),
@@ -20,8 +20,8 @@ def make_flow(_condition_list,_ansers):
 					print(list(map(lambda a:a['id'],anser['anserConditionMap'][conditionObj['conditionGroup']['id']]['conditions'])))
 					sym_diff = sym_diff^set(list(map(lambda a:a['id'],anser['anserConditionMap'][conditionObj['conditionGroup']['id']]['conditions'])))
 				print(sym_diff)
-def make_flow2(_condition_list,_answer):
-	def _make_flow2(_condition_list,_answer):
+def make_flow(_condition_list,_answer):
+	def _make_flow(_condition_list,_answer):
 		if len(_answer) <= 1 or len(_condition_list)<1:
 			return {'answerIds':list(map(lambda x:x['id'],_answer))}
 		condition_list = sorted(_condition_list,key=lambda c:c['conditionGroup']['level'],reverse = True)
@@ -40,7 +40,7 @@ def make_flow2(_condition_list,_answer):
 					return {'answerIds':list(map(lambda x:x['id'],_answer))}
 		for condition in condition_obj['conditions']:
 			answers = list(filter(lambda a: (condition_obj['conditionGroup']['id'] not in a['anserConditionMap']) or (condition['id'] in map(lambda c:c['id'],a['anserConditionMap'][condition_obj['conditionGroup']['id']]['conditions'])),_answer))
-			condition['next'] = _make_flow2(condition_list,answers)
+			condition['next'] = _make_flow(condition_list,answers)
 			if len(condition['next'])>=1:
 				conditions.append(condition)
 		return {
@@ -48,7 +48,7 @@ def make_flow2(_condition_list,_answer):
 			'conditions': conditions,
 			'answerIds': list(map(lambda x:x['id'],_answer))
 		}
-	return json.dumps(_make_flow2(_condition_list,_answer), indent=4, ensure_ascii=False)
+	return json.dumps(_make_flow(_condition_list,_answer), indent=4, ensure_ascii=False)
 def test():
 	anser_list = [
 		{
