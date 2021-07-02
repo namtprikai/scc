@@ -13,9 +13,9 @@ export namespace Login {
 				url: 'admin/login',
 				method: 'post',
 				data: {
-					email: username,
+					name: username,
 					password,
-					product_id: CLIENT_ID,
+					// product_id: CLIENT_ID,
 				},
 			})
 				.then((res: any) => {

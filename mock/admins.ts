@@ -5,7 +5,7 @@ const admin_polycyGropup = [];
 const adminList: IAdminData[] = [
 	{
 		id: 0,
-		name: "サイシード西田",
+		name: "Xeiefh",
 		password: "Anyany",
 		email: "admin@test.com",
 		is_master: true,
@@ -32,10 +32,10 @@ export const signinAdmin = (req: Request, res: IAPIResponce) => {
 	const { email, password } = req.body;
 };
 export const loginAdmin = (req: Request, res: IAPIResponce) => {
-	const { email, password } = req.body;
+	const { name, password } = req.body;
 	for (const user of adminList) {
-		if (user.email === email && user.password === password) {
-			const token = `${user.id}-${user.email}-token`;
+		if (user.name === name && user.password === password) {
+			const token = `${user.id}-${user.name}-token`;
 			return res.json({
 				status: 200,
 				data: {
@@ -74,7 +74,7 @@ export const getAdmins = (req: Request, res: IAPIResponce) => {
 };
 export const getAdminByToken = (token: string) => {
 	for (const admin of adminList) {
-		if (`${admin.id}-${admin.email}-token` === token) {
+		if (`${admin.id}-${admin.name}-token` === token) {
 			return admin;
 		}
 	}
@@ -85,7 +85,7 @@ export const getAdminInfo = (req: Request, res: IAPIResponce) => {
 	const token = req.header("Authorization");
 	console.log(token);
 	for (const admin of adminList) {
-		if (`${admin.id}-${admin.email}-token` === token) {
+		if (`${admin.id}-${admin.name}-token` === token) {
 			return res.json({
 				status: 20000,
 				data: { ...admin },

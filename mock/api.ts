@@ -1,5 +1,5 @@
 export * from './role'
-export { getProducts, getProductsByAdminId } from './products';
+export { getProducts, getProductsByAdminId ,deleteProduct} from './products';
 export {getAdminById,getAdminInfo,getAdmins,loginAdmin} from './admins'
 export { getUserById,getUsers} from './users'
 export {getCategoryList} from './category';

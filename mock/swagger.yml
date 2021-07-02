@@ -538,6 +538,19 @@ paths:
                         $ref: '#/components/schemas/Product'
         401:
           $ref: '#/components/responses/Unauthorized'
+  /product/{product_id}:
+    delete:
+      tags:
+        - product
+      summary: Get users list
+      description: Return a list of users
+      operationId: deleteProduct
+      parameters:
+        - name: product_id
+          in: path
+          description: 該当プロダクトIDのカテゴリのみ
+          schema:
+            type: string
   /product/{product_id}/role/{role_id}/category:
     get:
       tags:
