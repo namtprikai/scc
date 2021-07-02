@@ -5,6 +5,7 @@ import { IAPIResponce, IAnswerDataCondition, IConditionMap } from '../src/core/a
 import { secureObjectCreateByAdmin } from './security';
 import { getAdminByToken } from './admins';
 import { productAdmins ,deleteProductAdminsByProductId} from './product_admins';
+import { getUserById } from './users';
 export let productions: Array<IProductData> = [
 	{
 		id: 0,
@@ -96,6 +97,41 @@ export const getProductsByAdminId = (req: Request, res: IAPIResponce): IProducts
 		data: {}
 	})
 }
+function getId(){
+	let maxId = 0;
+	for(const product of productions){
+		maxId = Math.max(product.id,maxId);
+	}
+	return maxId+=1;
+}
+export const addProduct = (req: Request, res: IAPIResponce): IProductsAPIResponce => {
+	const accessToken = req.header('Authorization') || "";
+	const admin = getAdminByToken(accessToken);
+	if (admin) {
+		const { name,config,max_failure_count_user,max_failure_time_user} = req.body;
+		const newId = getId();
+		const product = {
+			id:newId,
+			name,
+			config,
+			max_failure_count_user:max_failure_count_user||0,
+			max_failure_time_user:max_failure_time_user||0,
+			created: new Date(),
+			modified: new Date(),
+		};
+		productions.push(product);
+		return res.json({
+			status: 200,
+			data: product
+		})
+	}
+	return res.json({
+		status: 400,
+		data: {}
+	})
+};
+
+
 export const deleteProduct  = (req: Request, res: IAPIResponce): IProductsAPIResponce => {
 	const accessToken = req.header('Authorization') || "";
 	const admin = getAdminByToken(accessToken);

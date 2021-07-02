@@ -538,6 +538,14 @@ paths:
                         $ref: '#/components/schemas/Product'
         401:
           $ref: '#/components/responses/Unauthorized'
+  /product:
+    post:
+      tags:
+        - product
+      summary: Get users list
+      description: Return a list of users
+      operationId: addProduct
+      parameters:
   /product/{product_id}:
     delete:
       tags:

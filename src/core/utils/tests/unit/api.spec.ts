@@ -43,6 +43,9 @@ test("DELETE ALL TABLE", async () => {
 			console.log(data.data);
 			target.token = data.data.token;
 		}
+		/**
+			* 初期化処理
+			*/
 	for (const target of targets) {
 		const {data} = await axios({
 			baseURL: `${target.url}`,
@@ -64,6 +67,36 @@ test("DELETE ALL TABLE", async () => {
 				}
 			});
 		}
+	}
+/**
+	* productの登録、紐付け
+
+	*/
+	for (const target of targets) {
+		const { data } = await axios({
+			baseURL: `${target.url}`,
+			url: `product`,
+			method: "post",
+			headers:{
+				Authorization:target.token
+			},
+			data:{
+				name:"テストプロダクト",
+				config:{"data1":"data1value"}
+			}
+		});
+		console.log(data.data);
+		const addProduct = data.data;
+		// for (const product of productList) {
+		// 	await axios({
+		// 		baseURL: `${target.url}`,
+		// 		url: `product/${product.id}`,
+		// 		method: "get",
+		// 		headers:{
+		// 			Authorization:target.token
+		// 		}
+		// 	});
+		// }
 	}
 	expect({}).toEqual({});
 	//　テーブルをすべて削除したあと、アドミン、プロダクト、ロールなど、各項目の登録、紐付けを行い、各項目のgetAPI、patchを行い、モックと同等の結果が得られるかをテストする。
