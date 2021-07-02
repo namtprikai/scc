@@ -3,8 +3,17 @@ const MOCK_URL = 'http://127.0.0.1:9528/api/';
 const API_SERVER_URL = '';
 // API　サーバーテスト
 //　各テーブルの初期化
+/**
+	*
+	前提条件
+	ID,PWが固定のadminuserが各々に一つ存在する。
+	*/
 test('DELETE ALL TABLE', async () => {
 	const targets = ['MOCK_URL', 'API_SERVER_URL'];
+	/**
+		*
+		ログインし、tokenを取得。
+		*/
 	for (const target of targets) {
 		const productsRes = await axios({
 			baseURL: `${target}`,
