@@ -12,6 +12,7 @@ test('DELETE ALL TABLE', async () => {
 			method: 'get',
 		})
 		const productList = productsRes.data;
+		console.log(productList);
 		for (const product_id of productList) {
 			await axios({
 				baseURL: `${target}`,

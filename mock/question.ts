@@ -60,7 +60,7 @@ export const getQuestionList = (req: Request, res: IAPIResponce): Response => {
 	const { category_id, text } = req.params;
 	const accessToken = req.header('Authorization') || "";
 	const admin = getAdminByToken(accessToken);
-	if (category_id == null) {
+	if (admin && category_id == null) {
 		return res.json({
 			status: 20000,
 			data: [...Questions.getData(admin)]
@@ -89,7 +89,7 @@ export const deleteQuestion = (req: Request, res: IAPIResponce): Response => {
 	}
 	const accessToken = req.header('Authorization') || "";
 	const admin = getAdminByToken(accessToken);
-	if (Questions.getData(admin).find(q => q.id === parseInt(question_id, 10))) {
+	if (admin && Questions.getData(admin).find(q => q.id === parseInt(question_id, 10))) {
 		questions = questions.filter(q => q.id !== parseInt(question_id, 10));
 		deleteIntermadiateTables(parseInt(question_id, 10));
 		return res.json({

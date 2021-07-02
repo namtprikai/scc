@@ -200,7 +200,7 @@ export const deleteUser = (req: Request, res: IAPIResponce) => {
 	}
 	const accessToken = req.header('Authorization') || "";
 	const admin = getAdminByToken(accessToken);
-	if (UserList.getData(admin).find(q => q.id === parseInt(user_id, 10))) {
+	if (admin && UserList.getData(admin).find(q => q.id === parseInt(user_id, 10))) {
 		userList = userList.filter(u => u.id !== parseInt(user_id, 10));
 		deleteIntermadiateTables(parseInt(user_id, 10));
 		return res.json({

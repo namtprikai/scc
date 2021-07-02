@@ -10,6 +10,7 @@
     "serve": "vue-cli-service serve",
     "build": "npm run icon && vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
+    "test:api": "vue-cli-service test:unit ./src/core/utils/tests/unit/api.spec.ts",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint --no-fix",
     "icon": "vsvg -s ./src/core/icons/svg -t ./src/core/icons/components --ext ts --es6",
