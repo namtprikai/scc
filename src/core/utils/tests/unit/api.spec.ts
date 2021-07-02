@@ -3,29 +3,30 @@ const MOCK_URL = "http://127.0.0.1:9528/api/";
 const API_SERVER_URL = "";
 // import {Login} from "../../../api/login";
 // API　サーバーテスト
-//　各テーブルの初期化
 /**
 	*
 	前提条件
 	is_masterがtrueのID,PWが固定のadminuserが各々に一つ存在する。
 	*/
+const targets = [
+	{
+		url: "http://127.0.0.1:9528/api",
+		admin_name: "Xeiefh",
+		password: "Anyany",
+		token: "",
+	},
+	// {
+	// 	url: "API_SERVER_URL",
+	// 	admin_name: "amfief",
+	// 	password: "efefe",
+	// 	token:'',
+	// },
+];
 describe("APItest1", () => {
-	test("DELETE ALL TABLE", async () => {
-		console.log("asdf");
-		const targets = [
-			{
-				url: "http://127.0.0.1:9528/api",
-				admin_name: "Xeiefh",
-				password: "Anyany",
-				token: "",
-			},
-			// {
-			// 	url: "API_SERVER_URL",
-			// 	admin_name: "amfief",
-			// 	password: "efefe",
-			// 	token:'',
-			// },
-		];
+	/**
+	 * 各テーブルの初期化
+	 */
+	beforeAll(async () => {
 		/**
 		*
 		masteでログインし、それぞれのtokenを取得。
@@ -69,6 +70,10 @@ describe("APItest1", () => {
 				});
 			}
 		}
+	});
+	test("add Product", async () => {
+		console.log("asdf");
+
 		/**
 	* productの登録、紐付け
 
