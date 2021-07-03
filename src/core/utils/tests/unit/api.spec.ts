@@ -8,19 +8,20 @@ const API_SERVER_URL = "";
 	前提条件
 	is_masterがtrueのID,PWが固定のadminuserが各々に一つ存在する。
 	*/
-const targets = [
+type target ={url:string,admin_name:string,password:string,token:string};
+const targets: [target,target] = [
 	{
 		url: "http://127.0.0.1:9528/api",
 		admin_name: "Xeiefh",
 		password: "Anyany",
 		token: "",
 	},
-	// {
-	// 	url: "API_SERVER_URL",
-	// 	admin_name: "amfief",
-	// 	password: "efefe",
-	// 	token:'',
-	// },
+	{
+		url: "API_SERVER_URL",
+		admin_name: "amfief",
+		password: "efefe",
+		token:'',
+	},
 ];
 describe("APItest1", () => {
 	/**
