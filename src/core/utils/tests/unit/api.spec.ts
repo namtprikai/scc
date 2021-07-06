@@ -1,4 +1,5 @@
 import axios from "axios";
+import faker from "faker";
 const MOCK_URL = "http://127.0.0.1:9528/api/";
 const API_SERVER_URL = "";
 // import {Login} from "../../../api/login";
@@ -115,4 +116,5 @@ describe("APItest1", () => {
 		//　テーブルをすべて削除したあと、アドミン、プロダクト、ロールなど、各項目の登録、紐付けを行い、各項目のgetAPI、patchを行い、モックと同等の結果が得られるかをテストする。
 		// expect(scenario).toEqual(scenarioBot);
 	});
+	test("add Question", async () => { });
 });
