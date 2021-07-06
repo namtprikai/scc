@@ -1,9 +1,9 @@
-import Cookies from 'js-cookie';
-import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
-import store from '@/store';
-import { Ajax } from '@/utils/parts';
-import { CLIENT_ID, subsystemUrl } from '@consoletype/utils/configration';
-import { v4 } from 'uuid';
+import Cookies from "js-cookie";
+import { VuexModule, Module, Mutation, Action, getModule } from "vuex-module-decorators";
+import store from "@/store";
+import { Ajax } from "@/utils/parts";
+import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
+import { v4 } from "uuid";
 const ajax: Ajax = new Ajax();
 export interface IScenarioState {
 	FileList: any;
@@ -15,7 +15,7 @@ export interface ScenarioFlow {
 	next: Array<ScenarioFlow>;
 }
 
-@Module({ dynamic: true, store, name: 'fileList' })
+@Module({ dynamic: true, store, name: "fileList" })
 class FileStore extends VuexModule implements IScenarioState {
 	private fileList: any = [];
 	get FileList() {
@@ -35,21 +35,21 @@ class FileStore extends VuexModule implements IScenarioState {
 	}
 
 	@Action({
-		commit: 'SET_FILE',
+		commit: "SET_FILE",
 	})
 	public async getFile(ob: { parent: string; type: string }) {
 		const { parent, type } = ob;
 		const data: any = await ajax.http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/download`,
-			method: 'get',
+			method: "get",
 			params: { parent, type },
 		});
 		return data;
 	}
 
 	@Action({
-		commit: 'SET_FILE',
+		commit: "SET_FILE",
 	})
 	public async deleateFile(ob: { parent: string; fileName: string }) {
 		const { parent, fileName } = ob;
@@ -57,9 +57,9 @@ class FileStore extends VuexModule implements IScenarioState {
 		const setData: any = await ajax.http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/upload`,
-			method: 'post',
+			method: "post",
 			data: {
-				type: 'deleate',
+				type: "deleate",
 				fileName: `${parent}/${fileName}`,
 			},
 		});
@@ -67,14 +67,14 @@ class FileStore extends VuexModule implements IScenarioState {
 		const data: any = await ajax.http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/download`,
-			method: 'get',
-			params: { parent, type: 'list' },
+			method: "get",
+			params: { parent, type: "list" },
 		});
 		return data;
 	}
 
 	@Action({
-		commit: 'SET_FILE',
+		commit: "SET_FILE",
 	})
 	public async postFile(ob: { parent: string; fileName: string; base64Str: string; type: string }) {
 		const { parent, fileName, base64Str, type } = ob;
@@ -82,7 +82,7 @@ class FileStore extends VuexModule implements IScenarioState {
 		const setData: any = await ajax.http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/upload`,
-			method: 'post',
+			method: "post",
 			data: {
 				fileName: `${parent}/${fileName}`,
 				data: base64Str,
@@ -92,7 +92,7 @@ class FileStore extends VuexModule implements IScenarioState {
 		const data: any = await ajax.http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/download`,
-			method: 'get',
+			method: "get",
 			params: { parent, type },
 		});
 		return data;

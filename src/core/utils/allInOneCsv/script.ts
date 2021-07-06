@@ -4,7 +4,7 @@ export interface ITalkScriptState {
 }
 export interface RootTalkScript {
 	id: string;
-	type: 'root';
+	type: "root";
 	position: number;
 }
 export interface TalkScript {
@@ -12,8 +12,8 @@ export interface TalkScript {
 	parent: string;
 	position: number;
 	text: string;
-	type: 'node' | 'leaf';
-	status: 'published' | 'editing';
+	type: "node" | "leaf";
+	status: "published" | "editing";
 	value?: string;
 	title: string;
 	questions?: Array<string>;
@@ -39,7 +39,7 @@ export interface Data {
 	parent?: number | string;
 	value?: string;
 	children?: Array<Data>;
-	status?: 'published' | 'editing';
+	status?: "published" | "editing";
 	questions?: Array<any>;
 	scenario?: string;
 	feedback?: Array<string>;
@@ -56,7 +56,7 @@ export interface ScriptDataTree {
 	title: string;
 	data: Data;
 	item?: any;
-	status?: 'published' | 'editing';
+	status?: "published" | "editing";
 	items?: { [key: string]: Array<string> | string };
 	parent?: any;
 	children?: Array<ScriptDataTree>;

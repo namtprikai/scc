@@ -1,8 +1,8 @@
-import { createDecorator } from 'vue-class-component';
+import { createDecorator } from "vue-class-component";
 
 export function AsyncComputed(options?: any) {
 	return createDecorator((componentOptions: any, path: any) => {
-		if (typeof componentOptions.asyncComputed !== 'object') {
+		if (typeof componentOptions.asyncComputed !== "object") {
 			componentOptions.asyncComputed = Object.create(null);
 		}
 		componentOptions.asyncComputed[path] = Object.assign(

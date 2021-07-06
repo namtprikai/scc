@@ -8,15 +8,15 @@ export class Teikeibun {
 		},
 	};
 
-	private tags = ['[管理者名]'];
-	private headers = [''];
-	private footers = [''];
+	private tags = ["[管理者名]"];
+	private headers = [""];
+	private footers = [""];
 	constructor(private axios: any, private productId: string, private adminUserName: string, private FileModule: any) {
 		// this.updateTeikeibun();
 	}
 
 	get TagListString() {
-		return this.tags.join(' ');
+		return this.tags.join(" ");
 	}
 
 	public async updateTeikeibun() {
@@ -28,8 +28,8 @@ export class Teikeibun {
 			});
 			console.log(data);
 			// this.$forceUpdate();
-			this.headers = data.headers || [''];
-			this.footers = data.footers || [''];
+			this.headers = data.headers || [""];
+			this.footers = data.footers || [""];
 		} catch (e) {
 			console.log(e);
 		}
@@ -40,15 +40,15 @@ export class Teikeibun {
 	}
 
 	get Headers() {
-		return ['冒頭に挿入', ...this.headers.map((text: string) => this.replaceTags(text))];
+		return ["冒頭に挿入", ...this.headers.map((text: string) => this.replaceTags(text))];
 	}
 
 	get Footers() {
-		return ['末尾に挿入', ...this.footers.map((text: string) => this.replaceTags(text))];
+		return ["末尾に挿入", ...this.footers.map((text: string) => this.replaceTags(text))];
 	}
 
 	add(list: Array<string>) {
-		list.push('');
+		list.push("");
 	}
 
 	removeHeader(index: number) {
@@ -60,24 +60,24 @@ export class Teikeibun {
 	}
 
 	addHeader() {
-		this.headers.push('');
+		this.headers.push("");
 	}
 
 	addFooter() {
-		this.footers.push('');
+		this.footers.push("");
 	}
 
 	setTeikeibun({ headers, footers }: any) {
-		this.headers = headers || [''];
-		this.footers = footers || [''];
+		this.headers = headers || [""];
+		this.footers = footers || [""];
 	}
 
 	async upload() {
 		const base64Str: string = this.Base64.encode(JSON.stringify({ headers: this.headers, footers: this.footers }));
 		await this.FileModule.postFile({
-			parent: '',
-			fileName: 'teikeibun.json',
-			type: 'list',
+			parent: "",
+			fileName: "teikeibun.json",
+			type: "list",
 			base64Str,
 		});
 		return { headers: this.headers, footers: this.footers };

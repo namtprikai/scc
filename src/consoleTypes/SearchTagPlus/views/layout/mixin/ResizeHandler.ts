@@ -1,6 +1,6 @@
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { DeviceType, AppModule } from '@/store/modules/app'; // refer to Bootstrap's responsive design
-import { eventHub } from '@/init/eventHub';
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { DeviceType, AppModule } from "@/store/modules/app"; // refer to Bootstrap's responsive design
+import { eventHub } from "@/init/eventHub";
 
 const WIDTH = 992;
 // @ts-ignore
@@ -14,7 +14,7 @@ export default class ResizeHandlerMixin extends Vue {
 		return AppModule.sidebar;
 	}
 
-	@Watch('$route')
+	@Watch("$route")
 	private OnRouteChange() {
 		if (this.device === DeviceType.Mobile && this.sidebar.opened) {
 			AppModule.CloseSideBar(false);
@@ -22,7 +22,7 @@ export default class ResizeHandlerMixin extends Vue {
 	}
 
 	private beforeMount() {
-		window.addEventListener('resize', this.resizeHandler);
+		window.addEventListener("resize", this.resizeHandler);
 	}
 
 	private mounted() {
@@ -39,7 +39,7 @@ export default class ResizeHandlerMixin extends Vue {
 	}
 
 	private resizeHandler() {
-		eventHub.$emit('resize', {
+		eventHub.$emit("resize", {
 			height: window.innerHeight,
 			width: window.innerWidth,
 		});

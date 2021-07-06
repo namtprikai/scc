@@ -1,3 +1,3 @@
-import FileInputWidget from './FileInputWidget.vue';
+import FileInputWidget from "./FileInputWidget.vue";
 export { FileInputWidget };
 export default { FileInputWidget };

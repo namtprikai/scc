@@ -1,4 +1,4 @@
-import { TalkScript } from '../talkScriptApi';
+import { TalkScript } from "../talkScriptApi";
 
 export class TalkScriptResource {
 	cache = new WeakMap();
@@ -20,7 +20,7 @@ export class TalkScriptResource {
 		let parentID = currentScript.parent;
 		routes.unshift(currentScript.id);
 		routes.unshift(parentID);
-		while (parentID && parentID != '#') {
+		while (parentID && parentID != "#") {
 			currentScript = this.talkScript.get(parentID);
 			parentID = currentScript.parent;
 			routes.unshift(parentID);
@@ -36,16 +36,16 @@ export class TalkScriptResource {
 	}
 
 	topItem = {
-		text: 'トップ',
-		viewType: 'talkScript',
-		parentViewType: 'talkScript',
-		componentName: 'ResourceList',
-		resourceName: 'talkScript',
-		talkScriptId: '#',
+		text: "トップ",
+		viewType: "talkScript",
+		parentViewType: "talkScript",
+		componentName: "ResourceList",
+		resourceName: "talkScript",
+		talkScriptId: "#",
 	};
 
 	getItemSync(params: any) {
-		if (!params.talkScriptId || params.talkScriptId === '#') {
+		if (!params.talkScriptId || params.talkScriptId === "#") {
 			return this.topItem;
 		} else {
 			const item = this.talkScript.getSync(params.talkScriptId);
@@ -54,7 +54,7 @@ export class TalkScriptResource {
 	}
 
 	getItem(params: any) {
-		if (!params.talkScriptId || params.talkScriptId === '#') {
+		if (!params.talkScriptId || params.talkScriptId === "#") {
 			return this.topItem;
 		} else {
 			const item = this.talkScript.get(params.talkScriptId);
@@ -68,8 +68,8 @@ export class TalkScriptResource {
 				text: item.text,
 				caption: item.value,
 				talkScriptId: item.id,
-				componentName: 'ResourceList',
-				parentViewType: 'talkScript',
+				componentName: "ResourceList",
+				parentViewType: "talkScript",
 				items: item.items,
 				ancesters: item.ancesters,
 				keywords: item.keywords,
@@ -77,42 +77,42 @@ export class TalkScriptResource {
 					talkScriptId: item.parent,
 				}),
 			};
-			if (item.type === 'node') {
+			if (item.type === "node") {
 				this.cache.set(
 					item,
 					Object.assign(convertedItem, {
-						resourceName: 'talkScript',
-						viewType: 'talkScript',
-						talkScriptType: 'node',
+						resourceName: "talkScript",
+						viewType: "talkScript",
+						talkScriptType: "node",
 					}),
 				);
-			} else if (item.type === 'leaf' && item.scenario) {
+			} else if (item.type === "leaf" && item.scenario) {
 				this.cache.set(
 					item,
 					Object.assign(convertedItem, {
-						resourceName: 'scenario',
+						resourceName: "scenario",
 						scenarioId: item.scenario,
-						viewType: 'scenario',
-						talkScriptType: 'leaf',
+						viewType: "scenario",
+						talkScriptType: "leaf",
 					}),
 				);
-			} else if (item.type === 'leaf' && item.items) {
+			} else if (item.type === "leaf" && item.items) {
 				this.cache.set(
 					item,
 					Object.assign(convertedItem, {
-						resourceName: 'talkScript',
+						resourceName: "talkScript",
 						scenarioId: item.items.scenario_id,
-						viewType: 'result',
-						talkScriptType: 'leaf',
+						viewType: "result",
+						talkScriptType: "leaf",
 					}),
 				);
 			} else {
 				this.cache.set(
 					item,
 					Object.assign(convertedItem, {
-						resourceName: 'talkScript',
-						viewType: 'result',
-						talkScriptType: 'leaf',
+						resourceName: "talkScript",
+						viewType: "result",
+						talkScriptType: "leaf",
 					}),
 				);
 			}

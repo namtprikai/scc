@@ -1,14 +1,14 @@
-import Cookies from 'js-cookie';
-import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
-import store from '@/store';
+import Cookies from "js-cookie";
+import { VuexModule, Module, Mutation, Action, getModule } from "vuex-module-decorators";
+import store from "@/store";
 
-import { Ajax, RequeuestWokersService } from '@/utils/parts';
-import { CLIENT_ID, subsystemUrl, apiUrl } from '@consoletype/utils/configration';
-import { v4 } from 'uuid';
-import { MessageList } from '@/api/messageList';
-import axios from 'axios';
-import { eventHub } from '../../init/eventHub';
-import { UpdateServer } from '@/api/updateServer';
+import { Ajax, RequeuestWokersService } from "@/utils/parts";
+import { CLIENT_ID, subsystemUrl, apiUrl } from "@consoletype/utils/configration";
+import { v4 } from "uuid";
+import { MessageList } from "@/api/messageList";
+import axios from "axios";
+import { eventHub } from "../../init/eventHub";
+import { UpdateServer } from "@/api/updateServer";
 const ajax: Ajax = new Ajax();
 export interface IScenarioState {
 	ScenarioList: any;
@@ -37,10 +37,10 @@ export interface Scenario {
 	scenarioId: string;
 }
 function isArray(obj: any) {
-	return Object.prototype.toString.call(obj) === '[object Array]';
+	return Object.prototype.toString.call(obj) === "[object Array]";
 }
 function cleanFixScenario(scenario: Scenario) {
-	if ('step' in scenario) {
+	if ("step" in scenario) {
 		const { step } = scenario;
 		for (const stepName in step) {
 			const flowOb = getFlow(scenario.flow, stepName);
@@ -48,11 +48,11 @@ function cleanFixScenario(scenario: Scenario) {
 				step[stepName].parent_step = flowOb.parentStep;
 			}
 			try {
-				if ('items' in step[stepName]) {
+				if ("items" in step[stepName]) {
 					for (const itemName in step[stepName].items) {
 						const items = step[stepName].items;
 						if (isArray(items[itemName])) {
-							items[itemName] = items[itemName].filter((o: any) => o != null && o != '');
+							items[itemName] = items[itemName].filter((o: any) => o != null && o != "");
 							if (items[itemName].length == 0) {
 								delete items[itemName];
 								continue;
@@ -67,7 +67,7 @@ function cleanFixScenario(scenario: Scenario) {
 	}
 	return scenario;
 }
-function getFlow(flowList: Array<ScenarioFlow>, step: string, parentStep = 'root'): any {
+function getFlow(flowList: Array<ScenarioFlow>, step: string, parentStep = "root"): any {
 	for (const flow of flowList) {
 		if (flow.step === step) {
 			return { flow, flowList, parentStep };
@@ -84,22 +84,22 @@ function getFlow(flowList: Array<ScenarioFlow>, step: string, parentStep = 'root
 function defaultScenario(id: string) {
 	const scenario = {
 		id,
-		title: '新しいシナリオ',
-		value: '',
+		title: "新しいシナリオ",
+		value: "",
 		scenarioId: id,
 		step: {
 			1: {
-				id: '1',
-				type: 'q',
+				id: "1",
+				type: "q",
 				scenarioId: id,
-				title: '新しいステップ',
-				text: '',
+				title: "新しいステップ",
+				text: "",
 				options: [],
 				items: {
-					log_faq: [''],
-					log_faq_child_category: [''],
-					log_faq_parent_category: [''],
-					log_faq_title: [''],
+					log_faq: [""],
+					log_faq_child_category: [""],
+					log_faq_parent_category: [""],
+					log_faq_title: [""],
 					log_scenario: [id],
 				},
 			},
@@ -107,20 +107,20 @@ function defaultScenario(id: string) {
 		flow: [
 			{
 				// condition:{value:``,type:},
-				step: '1',
+				step: "1",
 				next: [],
 			},
 		],
 	};
 	return scenario;
 }
-@Module({ dynamic: true, store, name: 'scenario' })
+@Module({ dynamic: true, store, name: "scenario" })
 class ScenarioStore extends VuexModule implements IScenarioState {
 	public scenarioList: any = [];
-	private currentScenarioId = '';
+	private currentScenarioId = "";
 	@Mutation
 	public INIT() {
-		console.log('INIT');
+		console.log("INIT");
 	}
 
 	get CurrentScenario() {
@@ -138,14 +138,14 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 	// }
 	@Mutation
 	private SET_CURRENT_SCENARIO(scenario: Scenario) {
-		console.log('GET_SCENARIO');
+		console.log("GET_SCENARIO");
 		console.log(scenario);
 		this.currentScenarioId = scenario.id;
 	}
 
 	@Mutation
 	private SET_SCENARIOLIST(scenarioList: Array<Scenario>) {
-		console.log('GET_SCENARIO');
+		console.log("GET_SCENARIO");
 		console.log(scenarioList);
 		this.scenarioList = scenarioList.map((s: Scenario) => cleanFixScenario(s));
 	}
@@ -159,23 +159,23 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 
 				flow.next.push({
 					condition: {
-						type: 'number',
+						type: "number",
 						value: `${index}`,
 					},
 					step: newStepId,
-					title: '新規',
+					title: "新規",
 					next: [],
 				});
 				_scenario.step[newStepId] = {
 					id: newStepId,
-					type: 'q',
-					title: '新規',
+					type: "q",
+					title: "新規",
 					items: {
-						log_faq: [''],
-						log_faq_child_category: [''],
-						log_faq_parent_category: [''],
-						log_faq_title: [''],
-						log_scenario: [''],
+						log_faq: [""],
+						log_faq_child_category: [""],
+						log_faq_parent_category: [""],
+						log_faq_title: [""],
+						log_scenario: [""],
 					},
 					options: [],
 				};
@@ -186,7 +186,7 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 	}
 
 	@Action({
-		commit: 'ADD_FLOW',
+		commit: "ADD_FLOW",
 	})
 	addFlow({ step, index, scenario }: any) {
 		console.log(step);
@@ -195,12 +195,12 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 	}
 
 	@Action({
-		commit: 'SET_SCENARIOLIST',
+		commit: "SET_SCENARIOLIST",
 	})
 	public async getScenario() {
 		const data: any = await ajax.http({
 			url: `product/${CLIENT_ID}/scenario?${Math.floor(Math.random() * 100)}`,
-			method: 'get',
+			method: "get",
 		});
 		return data;
 	}
@@ -209,29 +209,29 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 		const maxScenarioId = this.maxScenarioId;
 		const scenario = {
 			id: maxScenarioId,
-			title: '新しいシナリオ' + maxScenarioId,
+			title: "新しいシナリオ" + maxScenarioId,
 			value: maxScenarioId,
 			scenarioId: maxScenarioId,
 			step: {
 				1: {
-					id: '1',
-					type: 'q',
-					title: '新しいステップ',
-					text: '',
+					id: "1",
+					type: "q",
+					title: "新しいステップ",
+					text: "",
 					scenarioId: maxScenarioId,
 					items: {
-						log_faq: ['-'],
-						log_faq_child_category: ['-'],
-						log_faq_parent_category: ['-'],
-						log_faq_title: ['-'],
-						log_scenario: ['-'],
+						log_faq: ["-"],
+						log_faq_child_category: ["-"],
+						log_faq_parent_category: ["-"],
+						log_faq_title: ["-"],
+						log_scenario: ["-"],
 					},
 					options: [],
 				},
 			},
 			flow: [
 				{
-					step: '1',
+					step: "1",
 					next: [],
 				},
 			],
@@ -267,7 +267,7 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 	}
 
 	@Action({
-		commit: 'SET_SCENARIOLIST',
+		commit: "SET_SCENARIOLIST",
 	})
 	public async addScenario() {
 		if (this.scenarioList) {
@@ -275,9 +275,9 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 			// this.scenarioList.push(newScenario);
 			await ajax.http({
 				url: `product/${CLIENT_ID}/scenario`,
-				method: 'POST',
+				method: "POST",
 				headers: {
-					'Content-type': 'application/json',
+					"Content-type": "application/json",
 				},
 				data: JSON.stringify(newScenario),
 			});
@@ -288,16 +288,16 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 	}
 
 	@Action({
-		commit: 'SET_SCENARIOLIST',
+		commit: "SET_SCENARIOLIST",
 	})
 	public async deleteScenario(id: string) {
 		await axios.delete(`${apiUrl}/product/${CLIENT_ID}/scenario/${id}`, {
 			baseURL: apiUrl,
 			url: `product/${CLIENT_ID}/scenario/${id}`,
-			method: 'DELETE',
+			method: "DELETE",
 			headers: {
-				'Content-type': 'application/json',
-				'If-Modified-Since': 'null',
+				"Content-type": "application/json",
+				"If-Modified-Since": "null",
 				Authorization: `Bearer ${ajax.getToken()}`,
 			},
 		});
@@ -314,7 +314,7 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 	}
 
 	@Action({
-		commit: 'SET_SCENARIOLIST',
+		commit: "SET_SCENARIOLIST",
 	})
 	public async saveScenario(scenario?: Scenario | any) {
 		const currentScenario = cleanFixScenario(Object.assign({}, scenario || this.CurrentScenario));
@@ -323,18 +323,18 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 			await axios.delete(`${apiUrl}/product/${CLIENT_ID}/scenario/${currentScenario.id}`, {
 				baseURL: apiUrl,
 				url: `product/${CLIENT_ID}/scenario/${currentScenario.id}`,
-				method: 'DELETE',
+				method: "DELETE",
 				headers: {
-					'Content-type': 'application/json',
-					'If-Modified-Since': 'null',
+					"Content-type": "application/json",
+					"If-Modified-Since": "null",
 					Authorization: `Bearer ${ajax.getToken()}`,
 				},
 			});
 			// this.scenarioList.push(newScenario);
 			await axios.post(`${apiUrl}/product/${CLIENT_ID}/scenario`, JSON.stringify(currentScenario), {
 				headers: {
-					'Content-type': 'application/json',
-					'If-Modified-Since': 'null',
+					"Content-type": "application/json",
+					"If-Modified-Since": "null",
 					Authorization: `Bearer ${ajax.getToken()}`,
 				},
 			});
@@ -345,7 +345,7 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 	}
 
 	@Action({
-		commit: 'SET_SCENARIOLIST',
+		commit: "SET_SCENARIOLIST",
 	})
 	public async saveScenarioList(scenarioList: Scenario[]) {
 		const worker = new RequeuestWokersService(new Ajax());
@@ -368,18 +368,18 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 				{
 					baseURL: apiUrl,
 					url: `product/${CLIENT_ID}/scenario/${scenario.id}`,
-					method: 'DELETE',
+					method: "DELETE",
 					headers: {
-						'Content-type': 'application/json',
-						'If-Modified-Since': 'null',
+						"Content-type": "application/json",
+						"If-Modified-Since": "null",
 						Authorization: `Bearer ${ajax.getToken()}`,
 					},
 				},
 				() => {
-					eventHub.$emit('scenarioUploadMessage', {
+					eventHub.$emit("scenarioUploadMessage", {
 						listSize: deleteListSize,
 						count: deleteCount++,
-						message: '削除中',
+						message: "削除中",
 					});
 				},
 				() => {},
@@ -392,44 +392,44 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 				{
 					baseURL: apiUrl,
 					url: `product/${CLIENT_ID}/scenario`,
-					method: 'POST',
+					method: "POST",
 					headers: {
-						'Content-type': 'application/json',
-						'If-Modified-Since': 'null',
+						"Content-type": "application/json",
+						"If-Modified-Since": "null",
 						Authorization: `Bearer ${ajax.getToken()}`,
 					},
 					data: JSON.stringify(currentScenario),
 				},
 				() => {
-					eventHub.$emit('scenarioUploadMessage', {
+					eventHub.$emit("scenarioUploadMessage", {
 						listSize,
 						count: count++,
-						message: 'アップロード中',
+						message: "アップロード中",
 					});
 				},
 				() => {},
 				2,
 			);
 		}
-		console.log('start');
+		console.log("start");
 		await worker.start();
-		console.log('start2');
+		console.log("start2");
 		await worker2.start();
-		console.log('startdone');
+		console.log("startdone");
 		await UpdateServer.update();
 		const afscenarioList: any = await this.getScenario();
 		return afscenarioList;
 	}
 
 	@Action({
-		commit: 'SET_SCENARIOLIST',
+		commit: "SET_SCENARIOLIST",
 	})
 	public setScenarioList(scenarioList: any) {
 		return scenarioList;
 	}
 
 	@Action({
-		commit: 'SET_CURRENT_SCENARIO',
+		commit: "SET_CURRENT_SCENARIO",
 	})
 	public setCurrentScenario(scenario: any) {
 		return scenario;

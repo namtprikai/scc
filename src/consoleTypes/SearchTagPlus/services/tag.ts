@@ -1,11 +1,11 @@
-import store from '../store/index';
-import { inherits } from 'util';
-import { MessageListModule } from '@/store/modules/messageList';
-import { UserModule } from '@/store/modules/user';
-import io from 'socket.io-client';
-import { Auth } from '@/utils/auth';
-import { apiUrl, CLIENT_ID } from '../utils/configration';
-import { Ajax } from '@/utils/parts';
+import store from "../store/index";
+import { inherits } from "util";
+import { MessageListModule } from "@/store/modules/messageList";
+import { UserModule } from "@/store/modules/user";
+import io from "socket.io-client";
+import { Auth } from "@/utils/auth";
+import { apiUrl, CLIENT_ID } from "../utils/configration";
+import { Ajax } from "@/utils/parts";
 export namespace TagService {
 	export class Tag {
 		public id: string | null = null;
@@ -43,7 +43,7 @@ export namespace TagService {
 		}
 
 		getTagById(id: string): Tag | undefined {
-			return this._tags.find(tag => tag.id === id);
+			return this._tags.find((tag) => tag.id === id);
 		}
 
 		getTagsByIds(ids: Array<string> = []): Array<Tag> {
@@ -62,18 +62,18 @@ export namespace TagService {
 		}
 
 		public setTags(tags: Array<Tag>): void {
-			console.info('setTags');
+			console.info("setTags");
 			this._tags = [];
 			for (let i = 0; i < tags.length; i++) {
 				this._tags.push(new Tag(tags[i]));
 			}
 			// カテゴリー設定
 			this.setCategory();
-			this.trigger('ready');
+			this.trigger("ready");
 		}
 
 		private setCategory(tags: Array<Tag> | null = null) {
-			console.log('setCategory');
+			console.log("setCategory");
 			if (tags == null) {
 				for (let i = 0; i < this._tags.length; i++) {
 					if (this._tags[i].is_category() == false && this._tags[i].parent != null) {
@@ -196,7 +196,7 @@ export namespace TagService {
 
 			// 現状のタグのカテゴリ名セットを作る
 			for (let i = 0; i < oldTags.length; i++) {
-				if ('category' in oldTags[i]) {
+				if ("category" in oldTags[i]) {
 					const category: any = oldTags[i].category;
 					if (oldTagCategorys.indexOf(category) === -1) {
 						oldTagCategorys.push(category);
@@ -256,7 +256,7 @@ export namespace TagService {
 		getTagsByCategory(category: string | Array<string>): Array<Tag> | any {
 			const tags = [];
 			for (let i = 0; i < this._tags.length; i++) {
-				if (typeof category === 'string') {
+				if (typeof category === "string") {
 					if (this._tags[i].category === category) {
 						tags.push(this._tags[i]);
 					}
@@ -274,7 +274,7 @@ export namespace TagService {
 	const ajax = new Ajax();
 	let isInit = false;
 	export async function init() {
-		console.log('init');
+		console.log("init");
 		// if (isInit) {
 		// 	return;
 		// }

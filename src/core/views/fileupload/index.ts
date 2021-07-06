@@ -1,12 +1,12 @@
-import { v4 } from 'uuid';
-import { Component, Vue } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import { FileModule } from '@/store/modules/file';
-import { CLIENT_ID } from '@consoletype/utils/configration';
+import { v4 } from "uuid";
+import { Component, Vue } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import { FileModule } from "@/store/modules/file";
+import { CLIENT_ID } from "@consoletype/utils/configration";
 // import { debug } from 'util';
-import { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
-import clipboard from 'clipboard';
-import { UserModule } from '@/store/modules/user';
+import { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
+import clipboard from "clipboard";
+import { UserModule } from "@/store/modules/user";
 function wait(time: number) {
 	return new Promise((r: Function) => {
 		setTimeout(() => {
@@ -20,21 +20,21 @@ function wait(time: number) {
 	filters: {
 		statusFilter(status: string) {
 			const statusMap: { [id: string]: string } = {
-				published: 'success',
-				draft: 'gray',
-				deleted: 'danger',
+				published: "success",
+				draft: "gray",
+				deleted: "danger",
 			};
 			return statusMap[status];
 		},
 	},
 })
 export default class FileuploadCompParent extends Vue {
-	protected clipBoard = new clipboard('.clipcopy');
+	protected clipBoard = new clipboard(".clipcopy");
 	protected uploadFileList: any = null;
 	protected confirmOpened = false;
 	protected isUpload = false;
-	public filterText = '';
-	message = '';
+	public filterText = "";
+	message = "";
 	protected fileNameList: any = [];
 	get Title() {
 		console.log(this.$router.currentRoute);
@@ -54,35 +54,35 @@ export default class FileuploadCompParent extends Vue {
 	}
 
 	public async search() {
-		const parent = '';
-		const type = 'list';
+		const parent = "";
+		const type = "list";
 		await FileModule.getFile({ parent, type });
 		this.$forceUpdate();
 	}
 
 	public async deleate(fileName: string) {
-		const parent = '';
-		const type = 'list';
-		const message = '';
-		this.$modal.show('dialog', {
-			title: '削除してよろしいですか？',
-			text: '',
+		const parent = "";
+		const type = "list";
+		const message = "";
+		this.$modal.show("dialog", {
+			title: "削除してよろしいですか？",
+			text: "",
 			buttons: [
 				{
-					title: 'はい',
+					title: "はい",
 					handler: async () => {
 						try {
 							await FileModule.deleateFile({ parent, fileName });
 
-							this.modal('結果', '削除が成功しました。');
+							this.modal("結果", "削除が成功しました。");
 						} catch (error) {
-							this.modal('失敗', '削除が失敗しました。');
+							this.modal("失敗", "削除が失敗しました。");
 						}
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 				{
-					title: 'いいえ',
+					title: "いいえ",
 				},
 			],
 		});
@@ -98,15 +98,15 @@ export default class FileuploadCompParent extends Vue {
 
 	public async upload() {
 		if (this.uploadFileList.find((f: File) => !this.filenameValidate(f.name))) {
-			this.$bvToast.toast('ファイル名に使用してはいけない文字が含まれています。', {
-				toaster: 'b-toaster-top-center',
+			this.$bvToast.toast("ファイル名に使用してはいけない文字が含まれています。", {
+				toaster: "b-toaster-top-center",
 			});
 			return;
 		}
 		this.isUpload = true;
-		this.message = 'アップロード中です';
+		this.message = "アップロード中です";
 		const getReadFile = (file: File) =>
-			new Promise(r => {
+			new Promise((r) => {
 				const reader: any = new FileReader();
 				reader.onload = () => {
 					r(reader.result);
@@ -117,29 +117,29 @@ export default class FileuploadCompParent extends Vue {
 			const uploadFile = this.uploadFileList[i];
 			const readFile = await getReadFile(uploadFile);
 			const file: string | ArrayBuffer = readFile as string;
-			const files = file.split(',');
+			const files = file.split(",");
 			const base64Str = files[files.length - 1];
-			const fileName = this.fileNameList[i] == '' ? uploadFile.name : this.fileNameList[i];
+			const fileName = this.fileNameList[i] == "" ? uploadFile.name : this.fileNameList[i];
 			console.log(fileName);
-			const message = '';
+			const message = "";
 			try {
-				this.$modal.hide('dialog');
+				this.$modal.hide("dialog");
 				this.message = `アップロード中です
 				 ${i}/${this.uploadFileList.length}`;
 				await FileModule.postFile({
-					parent: '',
+					parent: "",
 					fileName,
 					base64Str,
-					type: 'list',
+					type: "list",
 				});
 			} catch (error) {
-				this.modal('失敗', 'アップロードが失敗しました。');
+				this.modal("失敗", "アップロードが失敗しました。");
 			}
 		}
-		await FileModule.getFile({ parent: '', type: 'list' });
+		await FileModule.getFile({ parent: "", type: "list" });
 		this.isUpload = false;
-		this.modal('結果', 'アップロードが成功しました。');
-		this.message = '';
+		this.modal("結果", "アップロードが成功しました。");
+		this.message = "";
 	}
 
 	imagemodal(imageUrl: string, fileName: string) {
@@ -153,12 +153,12 @@ export default class FileuploadCompParent extends Vue {
 	}
 
 	public modal(title: string, message: string) {
-		this.$modal.show('dialog', {
+		this.$modal.show("dialog", {
 			title,
 			text: message,
 			buttons: [
 				{
-					title: 'OK',
+					title: "OK",
 				},
 			],
 		});
@@ -168,12 +168,12 @@ export default class FileuploadCompParent extends Vue {
 		if (files) {
 			for (let i = 0; i < files.length; i++) {
 				if (files[i].size > 5242880) {
-					this.$modal.show('dialog', {
-						title: 'エラー',
-						text: 'サイズは5MB以下にしてください',
+					this.$modal.show("dialog", {
+						title: "エラー",
+						text: "サイズは5MB以下にしてください",
 						buttons: [
 							{
-								title: '閉じる',
+								title: "閉じる",
 							},
 						],
 					});
@@ -189,21 +189,21 @@ export default class FileuploadCompParent extends Vue {
 		}
 	}
 
-  get FileList() {
+	get FileList() {
 		return FileModule.FileList.filter((file: { Key: string }) => {
-			const otherThumbReg = new RegExp('^[0-9]+_thumb.gif$|^[0-9]+_theme.gif$');
+			const otherThumbReg = new RegExp("^[0-9]+_thumb.gif$|^[0-9]+_theme.gif$");
 			const thumbReg = new RegExp(`^${UserModule.id}_thumb.gif$|^${UserModule.id}_theme.gif$`);
 			if (otherThumbReg.test(file.Key) && !thumbReg.test(file.Key)) {
 				return false;
 			}
 			return true;
 		}).filter((file: { Key: string }) => {
-			if (this.filterText == '') {
+			if (this.filterText == "") {
 				return true;
 			}
-			return new RegExp(this.filterText, 'g').test(file.Key);
-    });
-  }
+			return new RegExp(this.filterText, "g").test(file.Key);
+		});
+	}
 	public ok() {
 		this.confirmOpened = false;
 		this.upload();

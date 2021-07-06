@@ -1,15 +1,15 @@
-import { Component, Vue } from 'vue-property-decorator';
-import { UserModule } from '@/store/modules/user';
-import { mapGetters } from 'vuex';
-import { CLIENT_ID } from '@consoletype/utils/configration';
-import { ImageChack } from '../../utils/parts';
+import { Component, Vue } from "vue-property-decorator";
+import { UserModule } from "@/store/modules/user";
+import { mapGetters } from "vuex";
+import { CLIENT_ID } from "@consoletype/utils/configration";
+import { ImageChack } from "../../utils/parts";
 // @ts-ignore
 @Component
 export default class DashboardParent extends Vue {
 	private imageChack = new ImageChack();
 	create() {}
 	public roleStyle(role: number) {
-		return { 'background-image': `url(${this.roleGif(role)})` };
+		return { "background-image": `url(${this.roleGif(role)})` };
 	}
 
 	get name() {

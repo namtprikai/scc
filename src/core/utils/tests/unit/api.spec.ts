@@ -17,10 +17,10 @@ const targets: [target,target] = [
 		token: "",
 	},
 	{
-		url: "API_SERVER_URL",
-		admin_name: "amfief",
-		password: "efefe",
-		token:'',
+		url: "http://127.0.0.1:9528/api",
+		admin_name: "Xeiefh",
+		password: "Anyany",
+		token: "",
 	},
 ];
 describe("APItest1", () => {

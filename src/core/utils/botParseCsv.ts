@@ -12,7 +12,7 @@ const recursiveFlow = (result: any, flow: any, next: any, isRoot: any = false, s
 	// nodeごとに抽出
 	next.forEach((n: any, index: any) => {
 		// 選択肢(文字列)抽出
-		let selectText = '';
+		let selectText = "";
 		if (selection) {
 			const btnText = selection[index];
 			const cnt = String(btnText).search(/\./);
@@ -22,14 +22,14 @@ const recursiveFlow = (result: any, flow: any, next: any, isRoot: any = false, s
 		// 選択肢を外したテキスト抽出
 		let title = n.title;
 		const stepItems = n.stepItems;
-		let tagText = '';
+		let tagText = "";
 		if (stepItems) {
 			for (const itemKey in stepItems) {
 				const logItemList = stepItems[itemKey];
-				const itemKeyText = itemKey.replace(/_/g, '-');
+				const itemKeyText = itemKey.replace(/_/g, "-");
 				if (logItemList) {
 					for (const logItemValue of logItemList) {
-						if (logItemValue != '') {
+						if (logItemValue != "") {
 							tagText += `<${itemKeyText}:${logItemValue}>`;
 						}
 					}
@@ -56,7 +56,7 @@ const recursiveFlow = (result: any, flow: any, next: any, isRoot: any = false, s
 				flow = [n.condition.value + tagText, title];
 			} else {
 				const number = 2 * deep - 2;
-				flow = [...new Array(number).fill(''), selectText + tagText, title];
+				flow = [...new Array(number).fill(""), selectText + tagText, title];
 			}
 		}
 
@@ -86,7 +86,7 @@ export namespace BotParseCsv {
 function searchScenario(next: Array<any>, fn: Function) {
 	for (const flow of next) {
 		fn(flow);
-		if ('next' in flow) {
+		if ("next" in flow) {
 			searchScenario(flow.next, fn);
 		}
 	}
@@ -110,11 +110,11 @@ function parseCSVToArray(bot_csv: any) {
 			null,
 			result.map((record: any) => record.length),
 		) + 1;
-	result.unshift(['']);
+	result.unshift([""]);
 	// 配列を文字列の,区切りにする
 	return result
 		.map((record: any) => {
-			record.splice(1, 0, '');
+			record.splice(1, 0, "");
 			let data = record.map((column: any, index: number) => {
 				// ダブルクォーテーションをエスケープ
 				if (String(column).indexOf('"') !== -1) {
@@ -129,9 +129,9 @@ function parseCSVToArray(bot_csv: any) {
 			const len = data.length;
 			if (max > len) {
 				// 配列の数を一致させるため空文字をいれる
-				data = [...data, ...new Array(max - len).fill('')];
+				data = [...data, ...new Array(max - len).fill("")];
 			}
-			return data.join(',');
+			return data.join(",");
 		})
-		.join('\r\n');
+		.join("\r\n");
 }

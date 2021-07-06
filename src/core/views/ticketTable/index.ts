@@ -1,14 +1,14 @@
-import { v4 } from 'uuid';
-import { Component, Vue } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
+import { v4 } from "uuid";
+import { Component, Vue } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
 
-import { CLIENT_ID, subsystemUrl } from '@consoletype/utils/configration';
-import { Ajax } from '@/utils/parts';
-import type { KeyData, TableKeyList, TicketData, EnquateTicket, Condition } from './index.i';
-import { AdminUserModule } from '@/store/modules/adminUser';
+import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
+import { Ajax } from "@/utils/parts";
+import type { KeyData, TableKeyList, TicketData, EnquateTicket, Condition } from "./index.i";
+import { AdminUserModule } from "@/store/modules/adminUser";
 export { Condition, TicketData, KeyData, EnquateTicket };
 export class TicketGroup {
-	public static readonly noneSt = '-';
+	public static readonly noneSt = "-";
 	private ticketList: Array<Ticket> = [];
 	public tableData: Array<Array<string>> = [];
 	public keyData: Array<KeyData> = [];
@@ -29,16 +29,16 @@ export class TicketGroup {
 
 	public setKeyData() {
 		this.keyData = this.getTicketList()
-			.filter(t => {
+			.filter((t) => {
 				const data = t.getNativeData();
-				return this.tableKeyList.every(tableKeyObj => {
+				return this.tableKeyList.every((tableKeyObj) => {
 					if (tableKeyObj.valid) {
 						return tableKeyObj.valid(data[tableKeyObj.key], data);
 					}
 					return true;
 				});
 			})
-			.map(t => {
+			.map((t) => {
 				const data = t.getNativeData();
 				const ret: KeyData = {};
 				let nativeData: any = null;
@@ -78,16 +78,16 @@ export class TicketGroup {
 
 	public setTableData() {
 		this.tableData = this.getTicketList()
-			.filter(t => {
+			.filter((t) => {
 				const data = t.getNativeData();
-				return this.tableKeyList.every(tableKeyObj => {
+				return this.tableKeyList.every((tableKeyObj) => {
 					if (tableKeyObj.valid) {
 						return tableKeyObj.valid(data[tableKeyObj.key], data);
 					}
 					return true;
 				});
 			})
-			.map(t => {
+			.map((t) => {
 				const data = t.getNativeData();
 				const ret: Array<string> = [];
 				const nativeData: any = null;
@@ -103,7 +103,7 @@ export class TicketGroup {
 						dataText = tableKeyObj.valueGetter(dataText, data);
 					}
 					if (Array.isArray(dataText)) {
-						dataText = dataText.join(',');
+						dataText = dataText.join(",");
 					}
 					ret.push(dataText);
 				}
@@ -137,7 +137,7 @@ export class Ticket {
 	// 	this.ticketLabelMapper = ticketLabelMapper;
 	// }
 	private FixTicket(ticket: TicketData) {
-		const safeList = ['partitionKey', 'rangeKey'];
+		const safeList = ["partitionKey", "rangeKey"];
 		for (const key in ticket) {
 			if (safeList.indexOf(key) !== -1) {
 				continue;
@@ -146,10 +146,10 @@ export class Ticket {
 				continue;
 			}
 			const fixKey = key
-				.replace(/([A-Z])/g, a => `_${a.toLowerCase()}`)
-				.replace(/^_/, '')
-				.replace('end_date', 'end_time')
-				.replace('start_date', 'start_time');
+				.replace(/([A-Z])/g, (a) => `_${a.toLowerCase()}`)
+				.replace(/^_/, "")
+				.replace("end_date", "end_time")
+				.replace("start_date", "start_time");
 			const tempValue = ticket[key];
 			delete ticket[key];
 			ticket[fixKey] = tempValue;
@@ -162,32 +162,32 @@ export class Ticket {
 // // @ts-ignore
 @Component({})
 export default class TicketCompParent extends Vue {
-	protected noneString = 'なし';
+	protected noneString = "なし";
 	public isSearch = false;
 	protected tableKeyList: TableKeyList = [
 		{
-			key: 'assignee',
-			label: '対応者',
+			key: "assignee",
+			label: "対応者",
 			valueMapper: (value: string, ticket: TicketData) => value,
 		},
 	];
 
-	protected activeName = 'table';
+	protected activeName = "table";
 	protected ajax: Ajax = new Ajax();
 	protected conditionList: Array<Condition> = [
 		{
-			label: 'ステータス',
-			key: 'status',
+			label: "ステータス",
+			key: "status",
 			checkList: [
-				{ value: ['open'], label: '離脱', flg: true },
-				{ value: ['escalated'], label: '直通', flg: true },
-				{ value: ['resolved'], label: '解決', flg: true },
-				{ value: ['unresolved'], label: '未解決', flg: true },
-				{ value: ['scriptNotFound'], label: '未収録', flg: true },
-				{ value: ['searchFailed'], label: '検索失敗', flg: true },
-				{ value: ['re-search'], label: '再検索', flg: true },
-				{ value: ['unsupported'], label: '未対応', flg: true },
-				{ value: ['quit'], label: '未完了', flg: true },
+				{ value: ["open"], label: "離脱", flg: true },
+				{ value: ["escalated"], label: "直通", flg: true },
+				{ value: ["resolved"], label: "解決", flg: true },
+				{ value: ["unresolved"], label: "未解決", flg: true },
+				{ value: ["scriptNotFound"], label: "未収録", flg: true },
+				{ value: ["searchFailed"], label: "検索失敗", flg: true },
+				{ value: ["re-search"], label: "再検索", flg: true },
+				{ value: ["unsupported"], label: "未対応", flg: true },
+				{ value: ["quit"], label: "未完了", flg: true },
 			],
 		},
 	];
@@ -206,9 +206,7 @@ export default class TicketCompParent extends Vue {
 
 	public ticketGroup = new TicketGroup(this.tableKeyList);
 	protected listLoading = false;
-	protected startdate = this.$moment()
-		.subtract(1, 'month')
-		.toDate();
+	protected startdate = this.$moment().subtract(1, "month").toDate();
 
 	protected enddate = this.$moment().toDate();
 	public created() {
@@ -225,17 +223,15 @@ export default class TicketCompParent extends Vue {
 		const data = ticket.getNativeData();
 		const start = String(data.start_date || data.start_time || data.rangeKey);
 		console.log(`${parseInt(start, 10)}  ${this.startdate.getTime()}`);
-		if (typeof start === 'string' && parseInt(start, 10) < this.startdate.getTime()) {
+		if (typeof start === "string" && parseInt(start, 10) < this.startdate.getTime()) {
 			return false;
 		}
-		const EndDate = this.$moment(this.enddate)
-			.add(1, 'day')
-			.toDate();
-		if (typeof start === 'string' && parseInt(start, 10) > EndDate.getTime()) {
+		const EndDate = this.$moment(this.enddate).add(1, "day").toDate();
+		if (typeof start === "string" && parseInt(start, 10) > EndDate.getTime()) {
 			return false;
 		}
 		for (const condition of this.conditionList) {
-			if (condition.checkList.every(c => c.flg === false)) {
+			if (condition.checkList.every((c) => c.flg === false)) {
 				// 項目自体がない場合でもすべてチェックしていないなら出す。
 				continue;
 			}
@@ -243,7 +239,7 @@ export default class TicketCompParent extends Vue {
 			for (const check of condition.checkList) {
 				if (
 					check.flg === false &&
-					check.value.find(v => {
+					check.value.find((v) => {
 						const ticketItem = condition.mapper ? condition.mapper(data) : data[condition.key];
 						if (Array.isArray(ticketItem)) {
 							return ticketItem.indexOf(v) !== -1;
@@ -264,8 +260,8 @@ export default class TicketCompParent extends Vue {
 			}
 			if (
 				condition.checkList.every(
-					c =>
-						!c.value.find(v => {
+					(c) =>
+						!c.value.find((v) => {
 							const ticketItem = condition.mapper ? condition.mapper(data) : data[condition.key];
 							if (Array.isArray(ticketItem)) {
 								return ticketItem.indexOf(v) !== -1;
@@ -290,35 +286,35 @@ export default class TicketCompParent extends Vue {
 	}
 
 	public async csv() {
-		let csvSt = '';
+		let csvSt = "";
 		const tableKeyList = this.ticketGroup.TableKeyList;
 		const tableData = this.ticketGroup.tableData;
 		if (tableKeyList) {
-			csvSt += tableKeyList.map(v => `"${v.label}"`).join(',') + '\n';
+			csvSt += tableKeyList.map((v) => `"${v.label}"`).join(",") + "\n";
 
 			for (const ticket of tableData) {
 				csvSt +=
 					tableKeyList
 						.map((k, i) => {
 							const t = ticket;
-							return `"${t[i] || ''}"`;
+							return `"${t[i] || ""}"`;
 						})
-						.join(',') + '\n';
+						.join(",") + "\n";
 			}
 		}
 		const bom = new Uint8Array([0xef, 0xbb, 0xbf]);
-		const element = document.createElement('a');
-		let blob = new Blob([bom, csvSt], { type: 'text/csv' });
+		const element = document.createElement("a");
+		let blob = new Blob([bom, csvSt], { type: "text/csv" });
 		// if(code=="SJIS"){
 
 		blob = new Blob([bom, csvSt], {
-			type: 'text/csv;charset=shift_jis',
+			type: "text/csv;charset=shift_jis",
 		});
 
 		// }
 		const url = URL.createObjectURL(blob);
 		element.href = url;
-		element.setAttribute('download', 'data.csv');
+		element.setAttribute("download", "data.csv");
 		// element.setAttribute('target', '_blank');
 		document.body.appendChild(element); // Append the element to work in firefox
 		element.click();
@@ -326,9 +322,9 @@ export default class TicketCompParent extends Vue {
 
 	public async getTicket() {
 		const startDateMoment = this.$moment(this.startdate); // .subtract(1, 'months');
-		const st = startDateMoment.format('YYYY-MM');
-		const endDateMoment = this.$moment(this.enddate).add(1, 'month');
-		const en = endDateMoment.format('YYYY-MM');
+		const st = startDateMoment.format("YYYY-MM");
+		const endDateMoment = this.$moment(this.enddate).add(1, "month");
+		const en = endDateMoment.format("YYYY-MM");
 		const filter = (ticket: Ticket): boolean => {
 			const defaultFlg = this.defaultSearchFilter(ticket);
 			const optionFlg = this.optionSearchFilter(ticket);
@@ -343,8 +339,8 @@ export default class TicketCompParent extends Vue {
 		const data: any = await this.ajax.http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/data_get`,
-			method: 'get',
-			params: { type: 'ticket', en, st },
+			method: "get",
+			params: { type: "ticket", en, st },
 		});
 		if (Array.isArray(data.message)) {
 			this.ticketGroup.setTicketList(data.message, filter);

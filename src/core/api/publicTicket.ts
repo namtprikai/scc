@@ -1,6 +1,6 @@
-import request from '@/utils/request';
-import { CLIENT_ID, subsystemUrl } from '@consoletype/utils/configration';
-import axios from 'axios';
+import request from "@/utils/request";
+import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
+import axios from "axios";
 
 export namespace PublicTicket {
 	interface Log {
@@ -45,10 +45,10 @@ export namespace PublicTicket {
 		if (start_time === null) {
 			setStartTime();
 		}
-		return new Promise(async r => {
-			const data: any = { origin: 'console', start_time };
+		return new Promise(async (r) => {
+			const data: any = { origin: "console", start_time };
 			for (const logKey in log) {
-				if (logKey === 'items') {
+				if (logKey === "items") {
 					console.log(logKey);
 					for (const itemKey in log[logKey]) {
 						data[itemKey] = log[logKey][itemKey];
@@ -70,12 +70,12 @@ export namespace PublicTicket {
 				axios({
 					url: `${subsystemUrl}/product/${CLIENT_ID}/public-ticket`,
 					headers: {},
-					method: 'post',
+					method: "post",
 					data: {
 						values: data,
 					},
 				})
-					.then(res => {
+					.then((res) => {
 						console.log(res);
 						const { data } = res;
 						ticketID = data.putItem;

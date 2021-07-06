@@ -7,7 +7,7 @@ interface Items {
 }
 export interface BotConfigFlow {
 	step: string;
-	condition: { value: string; type: 'number' | 'text' | 'id' };
+	condition: { value: string; type: "number" | "text" | "id" };
 	label?: string;
 	next: Array<BotConfigFlow>;
 }
@@ -22,6 +22,6 @@ export interface BotConfig {
 		title: string;
 		description: string;
 		steps: { [id: string]: BotConfigStep };
-		flow: { step: 'init'; next: Array<BotConfigFlow> };
+		flow: { step: "init"; next: Array<BotConfigFlow> };
 	};
 }

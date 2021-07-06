@@ -1,4 +1,4 @@
-import { Scenario, ScenarioFlow } from '@/store/modules/scenario';
+import { Scenario, ScenarioFlow } from "@/store/modules/scenario";
 
 function search(flowList: Array<ScenarioFlow>, parentStep: string, fn: Function, depth = 0) {
 	if (flowList) {
@@ -76,7 +76,7 @@ export const parseListToCsv = (scenarioList: Array<Scenario>) => {
 		let leafCount = 0;
 		search(
 			scenario.flow,
-			'#',
+			"#",
 			(ob: { flow: ScenarioFlow; depth: number; y: number; parentFlow?: any }) => {
 				console.log(`${leafCount}:::depth${ob.depth}`);
 				while (csvList.length <= leafCount) {
@@ -84,16 +84,16 @@ export const parseListToCsv = (scenarioList: Array<Scenario>) => {
 				}
 				const row = csvList[leafCount];
 				while (row.length - 1 <= ob.depth * 2 + 1) {
-					row.push('');
+					row.push("");
 				}
 				const step = scenario.step[ob.flow.step];
-				let itemString = '';
+				let itemString = "";
 				if (step.scenarioId) {
 					itemString += `<scenario-id:${step.scenarioId}>`;
 				}
 				if (step.items) {
 					for (const itemKey in step.items) {
-						itemString += `<${itemKey.replace(/_/g, '-')}:${step.items[itemKey]}>`;
+						itemString += `<${itemKey.replace(/_/g, "-")}:${step.items[itemKey]}>`;
 					}
 				}
 				row[ob.depth * 2] = step.title + itemString;
@@ -114,18 +114,18 @@ export const parseListToCsv = (scenarioList: Array<Scenario>) => {
 		// 	console.log(size);
 		// }
 	}
-	csvListList.unshift(['', '']);
+	csvListList.unshift(["", ""]);
 	let maxX = 0;
 	for (const csvRow of csvListList) {
 		maxX = Math.max(maxX, csvRow.length);
 	}
 	for (const csvRow of csvListList) {
 		while (csvRow.length <= maxX) {
-			csvRow.push('');
+			csvRow.push("");
 		}
 	}
 	return csvListList.map((row: any) => {
-		row.splice(1, 0, '');
+		row.splice(1, 0, "");
 		return row;
 	});
 };
@@ -134,21 +134,21 @@ export const parseScenario = (bot_json_list: any) => {
 	const scenarioList = [];
 	for (let h = 0; h < bot_json_list.length; h++) {
 		const bot_json = bot_json_list[h];
-		console.log('bot_json');
+		console.log("bot_json");
 		console.log(bot_json);
 		const scenarioObj: any = {
-			id: '',
-			type: '',
-			title: '',
+			id: "",
+			type: "",
+			title: "",
 			value: bot_json[0].value,
 			step: {},
 			flow: [],
 			scenarioId: bot_json[0].scenario,
-			bname: '',
+			bname: "",
 		};
 		let flow: any = {
-			step: '',
-			condition: { value: bot_json[0].scenario || '' },
+			step: "",
+			condition: { value: bot_json[0].scenario || "" },
 			next: [],
 		};
 		bot_json.forEach((o: any, i: any, ar: any) => {
@@ -172,11 +172,11 @@ export const parseScenario = (bot_json_list: any) => {
 			scenarioObj.step[o.step] = {
 				id: o.step,
 				type: o.type,
-				title: o.title.replace(/<log-(.+?):(.+?)>/g, ''),
+				title: o.title.replace(/<log-(.+?):(.+?)>/g, ""),
 				text: o.value,
 				scenarioId: o.scenario,
 				// tslint:disable-next-line:max-line-length
-				options: o.options.map((p: any) => Object.assign(p, { value: p.value.replace(/(<log-.+?:.+?>)/g, '') })),
+				options: o.options.map((p: any) => Object.assign(p, { value: p.value.replace(/(<log-.+?:.+?>)/g, "") })),
 				items,
 			};
 			// }
@@ -188,7 +188,7 @@ export const parseScenario = (bot_json_list: any) => {
 				// scenarioObj.text=o.value;
 				const flowObj = {
 					step: o.step,
-					condition: { value: o.scenario || '' },
+					condition: { value: o.scenario || "" },
 					next: [],
 				};
 				// if(o.type=="q"){
@@ -197,7 +197,7 @@ export const parseScenario = (bot_json_list: any) => {
 				// }
 			}
 		});
-		if (flow.step !== '') {
+		if (flow.step !== "") {
 			scenarioObj.flow.push(flow);
 			parse([flow], bot_json);
 		}
@@ -208,7 +208,7 @@ export const parseScenario = (bot_json_list: any) => {
 		for (let i = 0; i < objList.length; i++) {
 			const flowObj = objList[i];
 			const bot_jsonItem = getObjForId(flowObj.step);
-			if (bot_jsonItem.hasOwnProperty('nextSteps')) {
+			if (bot_jsonItem.hasOwnProperty("nextSteps")) {
 				if (bot_jsonItem.nextSteps.length == 0) {
 					continue;
 				}
@@ -220,7 +220,7 @@ export const parseScenario = (bot_json_list: any) => {
 					console.log(o);
 					return {
 						condition: {
-							value: o.scenarioId || o.title.replace(/(<log-.+?:.+?>)/g, ''),
+							value: o.scenarioId || o.title.replace(/(<log-.+?:.+?>)/g, ""),
 						},
 						step: o.step,
 						next: [],
@@ -256,12 +256,12 @@ export const horizontaltojson = (bot_csv: any) => {
 	console.log(rootKeyList);
 	const list = [];
 	let rootList = [];
-	rootList = rootKeyList.map(o => {
+	rootList = rootKeyList.map((o) => {
 		const TITLETEXT = bot_csv[o.y][o.x];
-		const title = TITLETEXT.replace(/(<log-.+?:.+?>)/g, '');
+		const title = TITLETEXT.replace(/(<log-.+?:.+?>)/g, "");
 		const matchScenarioId = TITLETEXT.match(/<scenario-id:(.+?)>/);
 		const scenario = title;
-		let scenarioId = '';
+		let scenarioId = "";
 		if (matchScenarioId) {
 			scenarioId = matchScenarioId[1];
 		}
@@ -272,7 +272,7 @@ export const horizontaltojson = (bot_csv: any) => {
 		let child_list: any = [];
 		start([rootKeyList[h]], (o_: any, i: any) => {
 			let nextNumber = 1;
-			let SCENARIO_ID = '';
+			let SCENARIO_ID = "";
 			if (is_onenext(o_.x, o_.y, bot_csv)) {
 				nextNumber = 1;
 			}
@@ -288,9 +288,9 @@ export const horizontaltojson = (bot_csv: any) => {
 			}
 			const TITLETEXT = o_.x == 0 ? bot_csv[o_.y][o_.x] : bot_csv[o_.y][o_.x + nextNumber - 1];
 			const title = String(TITLETEXT)
-				.replace(/(<log-.+?:.+?>)/g, '')
-				.replace(/<scenario-id:(.+?)>/g, '');
-			const scenario = SCENARIO_ID.replace(/(<log-.+?:.+?>)/g, '');
+				.replace(/(<log-.+?:.+?>)/g, "")
+				.replace(/<scenario-id:(.+?)>/g, "");
+			const scenario = SCENARIO_ID.replace(/(<log-.+?:.+?>)/g, "");
 			// if (matchScenarioId) {
 			// 	scenarioId = matchScenarioId[1];
 			// }
@@ -302,7 +302,7 @@ export const horizontaltojson = (bot_csv: any) => {
 				console.log(log_itemsMATCH);
 				for (const matchTag of log_itemsMATCH) {
 					const [_matchText, matchKey, matchId] = matchTag.match(/<(log-.+?):(.+?)>/);
-					const matchKeySt = matchKey.replace(/\-/g, '_');
+					const matchKeySt = matchKey.replace(/\-/g, "_");
 					if (!(matchKeySt in log)) {
 						log[matchKeySt] = [];
 					}
@@ -312,7 +312,7 @@ export const horizontaltojson = (bot_csv: any) => {
 			}
 			const log_items = log;
 			if (!bot_csv[o_.y][o_.x + nextNumber]) {
-				console.log('NONEVALUE');
+				console.log("NONEVALUE");
 				console.log(bot_csv[o_.y]);
 			}
 			let obj = {
@@ -375,15 +375,15 @@ export const horizontaltojson = (bot_csv: any) => {
 		});
 		for (let i = 0; i < child_list.length; i++) {
 			if (child_list[i].options.length > 0) {
-				child_list[i].type = 'q';
+				child_list[i].type = "q";
 			} else {
-				child_list[i].type = 'a';
+				child_list[i].type = "a";
 			}
 
 			child_list[i].options = child_list[i].options.map((o: any, j: any) => ({
 				value: o,
 			}));
-			child_list[i].error_value = 'すいません認識できませんでした';
+			child_list[i].error_value = "すいません認識できませんでした";
 			delete child_list[i].keyValue;
 			// delete list[i].nextSteps;
 			delete child_list[i].nexts;
@@ -441,10 +441,10 @@ export const horizontaltojson = (bot_csv: any) => {
 	}
 	// tslint:disable-next-line:no-shadowed-variable
 	function makeValue(text: any, x: any, y: any, bot_csv: any) {
-		let retValue = '';
+		let retValue = "";
 		const matchTag = is_image(text);
 		if (matchTag) {
-			retValue = text.replace(matchTag[0], '');
+			retValue = text.replace(matchTag[0], "");
 		} else {
 			retValue = `${text}\n${getStringValueForValue(x, y, bot_csv)}`;
 		}
@@ -467,11 +467,11 @@ export const horizontaltojson = (bot_csv: any) => {
 	}
 	function getStringValueForValue(x: any, y: any, table: any) {
 		if (getSelects(x, y, table).length <= 1) {
-			return '';
+			return "";
 		}
 		return getSelects(x, y, table)
 			.map((o: any, i: any) => `<button:${i + 1}.${o}>`)
-			.join('\n');
+			.join("\n");
 	}
 	function getSelects(x: any, y: any, table: any) {
 		const value: any = [];

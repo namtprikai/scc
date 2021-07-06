@@ -1,4 +1,4 @@
-import { Scenario } from '../scenarioApi';
+import { Scenario } from "../scenarioApi";
 // declare var window: any;
 // console.log(scenarioApi);
 
@@ -43,7 +43,7 @@ export class ScenarioResource {
 
 	convertStep = ({ step, scenario }: any) => {
 		if (!step) {
-			console.error('imcompatible scenario');
+			console.error("imcompatible scenario");
 			return;
 		}
 		if (!this.cache.has(step)) {
@@ -52,9 +52,9 @@ export class ScenarioResource {
 				caption: step.text,
 				scenarioId: scenario.scenarioId,
 				stepId: step.id,
-				componentName: 'ResourceList',
-				resourceName: 'scenario',
-				viewType: step.type === 'a' ? 'result' : 'scenario',
+				componentName: "ResourceList",
+				resourceName: "scenario",
+				viewType: step.type === "a" ? "result" : "scenario",
 			});
 		}
 		return this.cache.get(step);
@@ -69,9 +69,9 @@ export class ScenarioResource {
 				caption: step.text,
 				scenarioId: scenario.scenarioId,
 				stepId: step.id,
-				componentName: 'ResourceList',
-				resourceName: 'scenario',
-				viewType: step.type === 'a' ? 'result' : 'scenario',
+				componentName: "ResourceList",
+				resourceName: "scenario",
+				viewType: step.type === "a" ? "result" : "scenario",
 			});
 		}
 		return this.cache.get(option);

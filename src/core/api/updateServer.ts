@@ -1,17 +1,17 @@
-import request from '@/utils/request';
-import { CLIENT_ID, scriptUrl } from '@consoletype/utils/configration';
-import axios from 'axios';
-import {AjaxService} from "@/services/ajax";
+import request from "@/utils/request";
+import { CLIENT_ID, scriptUrl } from "@consoletype/utils/configration";
+import axios from "axios";
+import { AjaxService } from "@/services/ajax";
 export namespace UpdateServer {
 	const defaultParam = {};
 	export const setDefaultParam = (param: Object) => {
 		Object.assign(defaultParam, param || {});
 	};
 	export const deployPackageFromTest = (extendPram?: Object): Promise<any> =>
-	AjaxService.ajax.http({
+		AjaxService.ajax.http({
 			baseURL: `${scriptUrl}`,
-			url: 'deploy_package_from_test',
-			method: 'GET',
+			url: "deploy_package_from_test",
+			method: "GET",
 			params: Object.assign(
 				{},
 				{
@@ -26,15 +26,15 @@ export namespace UpdateServer {
 			),
 		});
 	export const deployInvertedIndex = (extendPram?: Object): Promise<any> =>
-	AjaxService.ajax.http({
+		AjaxService.ajax.http({
 			baseURL: `${scriptUrl}`,
-			url: 'deploy_inverted_index/',
-			method: 'GET',
+			url: "deploy_inverted_index/",
+			method: "GET",
 			params: Object.assign(
 				{},
 				{
 					product_id: parseInt(CLIENT_ID),
-					env: 'test',
+					env: "test",
 					with_package: true,
 					with_bot_package: true,
 					with_tag_package: true,
@@ -54,7 +54,7 @@ export namespace UpdateServer {
 			axios({
 				url: `${scriptUrl}/update_script`,
 				headers: {},
-				method: 'get',
+				method: "get",
 				data: {},
 				params: Object.assign(
 					{

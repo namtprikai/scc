@@ -191,9 +191,9 @@ module.exports = {
 			args[0].memoryLimit = 16000;
 			return args;
 		});
-		config.plugin('cli-plugin-unit-jest').tap(args => {
-			args[0].SILENT = false;
-		});
+		// config.plugin('cli-plugin-unit-jest').tap(args => {
+		// 	args[0].SILENT = false;
+		// });
 		// config.resolve
 		// 	.plugin("tsconfig-paths")
 		// 	.use(require("tsconfig-paths-webpack-plugin"))

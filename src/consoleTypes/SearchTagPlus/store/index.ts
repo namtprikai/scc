@@ -1,6 +1,6 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import { IRootState, default as Parent } from '@/store';
+import Vue from "vue";
+import Vuex from "vuex";
+import { IRootState, default as Parent } from "@/store";
 // import { IMessageListState } from './modules/messageList';
 
 Vue.use(Vuex);

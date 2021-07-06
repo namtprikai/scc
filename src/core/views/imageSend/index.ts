@@ -1,13 +1,13 @@
-import { BModal } from 'bootstrap-vue';
-import { MessageList } from '@/api/messageList';
-import { eventHub } from '@/init/eventHub';
-import { UserModule } from '@/store/modules/user';
-import { Ajax } from '@/utils/parts';
-import WrapMessage from '@/components/WrapMessage/index.vue';
-import { Component, Vue } from 'vue-property-decorator';
-import { CLIENT_ID, subsystemUrl } from '@consoletype/utils/configration';
-import { AdminUserModule } from '@/store/modules/adminUser';
-import axios from 'axios';
+import { BModal } from "bootstrap-vue";
+import { MessageList } from "@/api/messageList";
+import { eventHub } from "@/init/eventHub";
+import { UserModule } from "@/store/modules/user";
+import { Ajax } from "@/utils/parts";
+import WrapMessage from "@/components/WrapMessage/index.vue";
+import { Component, Vue } from "vue-property-decorator";
+import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
+import { AdminUserModule } from "@/store/modules/adminUser";
+import axios from "axios";
 // @ts-ignore
 @Component({
 	components: { WrapMessage },
@@ -18,8 +18,8 @@ export default class ImageSendParent extends Vue {
 	protected maxSize = 1048576;
 	protected message: any = {};
 	protected user: any;
-	protected userId = '';
-	protected userName = '';
+	protected userId = "";
+	protected userName = "";
 	protected isSend = false;
 	get active() {
 		return this.userId && this.message && this.message.is_read;
@@ -35,13 +35,13 @@ export default class ImageSendParent extends Vue {
 
 	get errorMessage() {
 		if (this.file && this.file.size >= this.maxSize) {
-			return 'ファイルサイズが大きすぎます';
+			return "ファイルサイズが大きすぎます";
 		}
-		return '';
+		return "";
 	}
 
 	async handleSend() {
-		const answer = await this.confirm('メッセージを送信しますか？');
+		const answer = await this.confirm("メッセージを送信しますか？");
 		if (!answer) {
 			return;
 		}
@@ -50,21 +50,21 @@ export default class ImageSendParent extends Vue {
 	}
 
 	protected confirm(title: string): Promise<boolean> {
-		return new Promise(resolve =>
-			this.$modal.show('dialog', {
+		return new Promise((resolve) =>
+			this.$modal.show("dialog", {
 				title,
 				buttons: [
 					{
-						title: 'はい',
+						title: "はい",
 						handler: () => {
-							this.$modal.hide('dialog');
+							this.$modal.hide("dialog");
 							resolve(true);
 						},
 					},
 					{
-						title: 'いいえ',
+						title: "いいえ",
 						handler: () => {
-							this.$modal.hide('dialog');
+							this.$modal.hide("dialog");
 							resolve(false);
 						},
 					},
@@ -81,7 +81,7 @@ export default class ImageSendParent extends Vue {
 		this.isSend = true;
 		const data: any = await this.ajax.http({
 			url: `product/${CLIENT_ID}/message_data/upload`,
-			method: 'GET',
+			method: "GET",
 		});
 		console.log(data);
 		// const formData = new FormData();
@@ -90,23 +90,23 @@ export default class ImageSendParent extends Vue {
 		const res = await axios({
 			url: data.url,
 			headers: {
-				'Content-Type': 'image/*',
+				"Content-Type": "image/*",
 			},
-			method: 'put',
+			method: "put",
 			data: file,
 		});
 		console.log(res);
 		await this.ajax.http({
 			url: `product/${CLIENT_ID}/line/send_message`,
-			method: 'POST',
+			method: "POST",
 			data: {
 				user_id: userId,
-				type: 'image',
+				type: "image",
 				text: data.key,
 			},
 		});
 		if (this.user) {
-			eventHub.$emit('setCurrentUser', this.user);
+			eventHub.$emit("setCurrentUser", this.user);
 		}
 		this.file = null;
 		this.isSend = false;
@@ -127,24 +127,24 @@ export default class ImageSendParent extends Vue {
 		this.message = message;
 		this.userId = message.user_id;
 		this.user = message.user;
-		this.userName = message.user ? message.user.name : '';
+		this.userName = message.user ? message.user.name : "";
 	}
 
 	protected setUser(user: any) {
 		this.message = { is_read: true };
 		this.user = user;
 		this.userId = user.id;
-		this.userName = user ? user.name : '';
+		this.userName = user ? user.name : "";
 	}
 
 	protected created() {
-		console.log('Created response');
-		eventHub.$on('setCurrentMessage', this.setUserByMessage);
-		eventHub.$on('setCurrentUser', this.setUser);
+		console.log("Created response");
+		eventHub.$on("setCurrentMessage", this.setUserByMessage);
+		eventHub.$on("setCurrentUser", this.setUser);
 	}
 
 	protected destroyed() {
-		eventHub.$off('setCurrentMessage', this.setUserByMessage);
-		eventHub.$off('setCurrentUser', this.setUser);
+		eventHub.$off("setCurrentMessage", this.setUserByMessage);
+		eventHub.$off("setCurrentUser", this.setUser);
 	}
 }

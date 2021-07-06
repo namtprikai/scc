@@ -13,17 +13,17 @@ export interface TicketData {
 export interface EnquateTicket {
 	[id: string]:
 	| {
-		type: 'radio';
+		type: "radio";
 		label: string;
 		value: { value: string; label: string } | null;
 		  }
 	| {
-		type: 'checkbox';
+		type: "checkbox";
 		label: string;
 		value: Array<{ value: string; label: string }>;
 		  }
 	| {
-		type: 'textarea';
+		type: "textarea";
 		label: string;
 		value: string;
 		  };

@@ -1,12 +1,12 @@
-import { BModal } from 'bootstrap-vue';
-import { MessageList } from '@/api/messageList';
-import { eventHub } from '@/init/eventHub';
-import { UserModule } from '@/store/modules/user';
-import { Ajax } from '@/utils/parts';
-import WrapMessage from '@/components/WrapMessage/index.vue';
-import { Component, Vue } from 'vue-property-decorator';
-import { CLIENT_ID, subsystemUrl } from '@consoletype/utils/configration';
-import { AdminUserModule } from '@/store/modules/adminUser';
+import { BModal } from "bootstrap-vue";
+import { MessageList } from "@/api/messageList";
+import { eventHub } from "@/init/eventHub";
+import { UserModule } from "@/store/modules/user";
+import { Ajax } from "@/utils/parts";
+import WrapMessage from "@/components/WrapMessage/index.vue";
+import { Component, Vue } from "vue-property-decorator";
+import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
+import { AdminUserModule } from "@/store/modules/adminUser";
 // @ts-ignore
 @Component({
 	components: { WrapMessage },
@@ -17,7 +17,7 @@ export default class SendParent extends Vue {
 	}
 
 	protected isHikitsugu = false;
-	protected header = '';
+	protected header = "";
 	protected handleHeaderChange(value: string) {
 		this.text = `${value}\n${this.text}`;
 		this.header = this.headers[0];
@@ -27,16 +27,16 @@ export default class SendParent extends Vue {
 		return [];
 	}
 
-	protected footer = '';
+	protected footer = "";
 	protected handleFooterChange(value: string) {
 		this.text = `${this.text}\n${value}`;
 		this.footer = this.footers[0];
 	}
 
 	protected ajax: Ajax = new Ajax();
-	protected text = '';
-	protected userId = '';
-	protected userName = '';
+	protected text = "";
+	protected userId = "";
+	protected userName = "";
 	get active() {
 		return this.userId;
 	}
@@ -50,21 +50,21 @@ export default class SendParent extends Vue {
 	}
 
 	protected confirm(title: string): Promise<boolean> {
-		return new Promise(resolve =>
-			this.$modal.show('dialog', {
+		return new Promise((resolve) =>
+			this.$modal.show("dialog", {
 				title,
 				buttons: [
 					{
-						title: 'はい',
+						title: "はい",
 						handler: () => {
-							this.$modal.hide('dialog');
+							this.$modal.hide("dialog");
 							resolve(true);
 						},
 					},
 					{
-						title: 'いいえ',
+						title: "いいえ",
 						handler: () => {
-							this.$modal.hide('dialog');
+							this.$modal.hide("dialog");
 							resolve(false);
 						},
 					},
@@ -86,19 +86,19 @@ export default class SendParent extends Vue {
 		const message = await MessageList.sendMessage(
 			{
 				user_id: this.userId,
-				type: 'text',
+				type: "text",
 				text: this.text,
 				assignee_id: UserModule.id,
 			},
 			this.userName,
 		);
-		this.text = '';
+		this.text = "";
 
-		eventHub.$emit('setCurrentMessage', message);
+		eventHub.$emit("setCurrentMessage", message);
 	}
 
 	protected setUserByUser(user: any, isHikitsugu: boolean) {
-		this.text = '';
+		this.text = "";
 		this.userId = user.id;
 		this.userName = user.displayname;
 		this.header = this.headers[0];
@@ -106,11 +106,11 @@ export default class SendParent extends Vue {
 	}
 
 	protected created() {
-		console.log('Created response');
-		eventHub.$on('setCurrentUser', this.setUserByUser);
+		console.log("Created response");
+		eventHub.$on("setCurrentUser", this.setUserByUser);
 	}
 
 	protected destroyed() {
-		eventHub.$off('setCurrentUser', this.setUserByUser);
+		eventHub.$off("setCurrentUser", this.setUserByUser);
 	}
 }

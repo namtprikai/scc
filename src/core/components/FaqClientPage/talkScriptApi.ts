@@ -1,4 +1,4 @@
-import resource from './resource';
+import resource from "./resource";
 declare let window: any;
 export class TalkScript {
 	readyPromise: any = null;
@@ -21,7 +21,7 @@ export class TalkScript {
 
 	listByParentId(parentId: any) {
 		// await this.ready();
-		return this.mapByParentId[parentId || '#'];
+		return this.mapByParentId[parentId || "#"];
 	}
 
 	get(id: any) {
@@ -73,7 +73,7 @@ export class TalkScript {
 		for (const item of talkScripts) {
 			const keywords = new Set();
 			for (const question of item.questions || []) {
-				for (const keyword of question.split(',')) {
+				for (const keyword of question.split(",")) {
 					keywords.add(keyword);
 				}
 			}
@@ -82,14 +82,14 @@ export class TalkScript {
 		const categoryMap: any = {};
 		for (const item of talkScripts) {
 			this.getSyncWithAncesters(item.id);
-			if (item.type === 'node' && item.ancesters.length === 0) {
+			if (item.type === "node" && item.ancesters.length === 0) {
 				categoryMap[item.title] = categoryMap[item.title] || [];
 				categoryMap[item.title].push(item);
 			}
 		}
 		this.categoryMap = categoryMap;
 		this.categories = Object.values(categoryMap).map((items: any, index: number) => ({
-			id: 'category' + index,
+			id: "category" + index,
 			title: items[0].title,
 			items,
 		}));

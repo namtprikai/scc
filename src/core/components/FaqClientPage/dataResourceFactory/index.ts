@@ -1,2 +1,2 @@
-export { TalkScriptResource } from './talkScript';
-export { ScenarioResource } from './scenario';
+export { TalkScriptResource } from "./talkScript";
+export { ScenarioResource } from "./scenario";

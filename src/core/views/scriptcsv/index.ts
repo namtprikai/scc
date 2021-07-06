@@ -1,19 +1,19 @@
-import { Component, Vue } from 'vue-property-decorator';
-import { UserModule } from '@/store/modules/user';
-import { mapGetters } from 'vuex';
-import { UpdateServer } from '@/api/updateServer';
-import { Ajax } from '@/utils/parts';
-import { eventHub } from '@/init/eventHub';
-import { CLIENT_ID, subsystemUrl, scriptUrl } from '@consoletype/utils/configration';
-import { v4 } from 'uuid';
-import { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
-import { Scenario, ScenarioModule } from '@/store/modules/scenario';
-import axios from 'axios';
+import { Component, Vue } from "vue-property-decorator";
+import { UserModule } from "@/store/modules/user";
+import { mapGetters } from "vuex";
+import { UpdateServer } from "@/api/updateServer";
+import { Ajax } from "@/utils/parts";
+import { eventHub } from "@/init/eventHub";
+import { CLIENT_ID, subsystemUrl, scriptUrl } from "@consoletype/utils/configration";
+import { v4 } from "uuid";
+import { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
+import { Scenario, ScenarioModule } from "@/store/modules/scenario";
+import axios from "axios";
 
-const Encoding = require('encoding-japanese');
+const Encoding = require("encoding-japanese");
 // @ts-ignore
 @Component({
-	components: {  },
+	components: {},
 })
 export default class ScriptcsvParent extends Vue {
 	protected scriptFile: any = null;
@@ -21,14 +21,14 @@ export default class ScriptcsvParent extends Vue {
 	protected ajax = new Ajax();
 	public async saveSynonymCsv(_file: File) {
 		if (!new RegExp(`^${CLIENT_ID}_`).test(_file.name)) {
-			this.$modal.show('dialog', {
-				title: 'ファイル名の先頭のプロダクトIDが一致しません',
+			this.$modal.show("dialog", {
+				title: "ファイル名の先頭のプロダクトIDが一致しません",
 				text: `${CLIENT_ID}_ファイル名.csvのようにしてください`,
 				buttons: [
 					{
-						title: 'はい',
+						title: "はい",
 						handler: () => {
-							this.$modal.hide('dialog');
+							this.$modal.hide("dialog");
 						},
 					},
 				],
@@ -36,7 +36,7 @@ export default class ScriptcsvParent extends Vue {
 			return;
 		}
 		const getText = (file: File) =>
-			new Promise(r => {
+			new Promise((r) => {
 				const reader: any = new FileReader();
 				reader.onload = () => {
 					r(reader.result);
@@ -46,36 +46,36 @@ export default class ScriptcsvParent extends Vue {
 		let fileText: any = await getText(_file);
 		fileText = new Uint8Array(fileText);
 		const isSJIS = Encoding.detect(fileText);
-		if (isSJIS === 'SJIS') {
+		if (isSJIS === "SJIS") {
 			fileText = Encoding.convert(fileText, {
-				to: 'UTF8', // to_encoding
-				from: 'SJIS', // from_encoding
+				to: "UTF8", // to_encoding
+				from: "SJIS", // from_encoding
 			});
 			fileText = new Uint8Array(fileText);
 		}
-		const file: any = new Blob([fileText.buffer], { type: 'text/csv' }); // await getText(_file);
+		const file: any = new Blob([fileText.buffer], { type: "text/csv" }); // await getText(_file);
 		const formData = new FormData();
-		formData.append('product_id', CLIENT_ID);
-		formData.append('file', file);
+		formData.append("product_id", CLIENT_ID);
+		formData.append("file", file);
 		await this.ajax.http({
 			baseURL: `${scriptUrl}`,
-			url: '/upload_synonym/',
-			method: 'POST',
+			url: "/upload_synonym/",
+			method: "POST",
 			headers: {
-				'Content-Type': 'multipart/form-data',
+				"Content-Type": "multipart/form-data",
 			},
 			data: formData,
 		});
 		UpdateServer.update();
-		eventHub.$emit('scriptCsvUploadDone');
-		this.$modal.show('dialog', {
-			title: 'アップロード終了',
-			text: '',
+		eventHub.$emit("scriptCsvUploadDone");
+		this.$modal.show("dialog", {
+			title: "アップロード終了",
+			text: "",
 			buttons: [
 				{
-					title: 'はい',
+					title: "はい",
 					handler: () => {
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 			],
@@ -84,14 +84,14 @@ export default class ScriptcsvParent extends Vue {
 
 	public async sendScriptCsv(_file: File) {
 		if (!new RegExp(`^${CLIENT_ID}_`).test(_file.name)) {
-			this.$modal.show('dialog', {
-				title: 'ファイル名の先頭のプロダクトIDが一致しません',
+			this.$modal.show("dialog", {
+				title: "ファイル名の先頭のプロダクトIDが一致しません",
 				text: `${CLIENT_ID}_ファイル名.csvのようにしてください`,
 				buttons: [
 					{
-						title: 'はい',
+						title: "はい",
 						handler: () => {
-							this.$modal.hide('dialog');
+							this.$modal.hide("dialog");
 						},
 					},
 				],
@@ -99,7 +99,7 @@ export default class ScriptcsvParent extends Vue {
 			return;
 		}
 		const getText = (file: File) =>
-			new Promise(r => {
+			new Promise((r) => {
 				const reader: any = new FileReader();
 				reader.onload = () => {
 					r(reader.result);
@@ -109,47 +109,47 @@ export default class ScriptcsvParent extends Vue {
 		let fileText: any = await getText(_file);
 		fileText = new Uint8Array(fileText);
 		const isSJIS = Encoding.detect(fileText);
-		if (isSJIS === 'SJIS') {
+		if (isSJIS === "SJIS") {
 			fileText = Encoding.convert(fileText, {
-				to: 'UTF8', // to_encoding
-				from: 'SJIS', // from_encoding
+				to: "UTF8", // to_encoding
+				from: "SJIS", // from_encoding
 			});
 			fileText = new Uint8Array(fileText);
 		}
-		const file: any = new Blob([fileText.buffer], { type: 'text/csv' }); // await getText(_file);
+		const file: any = new Blob([fileText.buffer], { type: "text/csv" }); // await getText(_file);
 		const formData = new FormData();
-		formData.append('product_id', CLIENT_ID);
-		formData.append('file', file);
+		formData.append("product_id", CLIENT_ID);
+		formData.append("file", file);
 		await this.ajax.http({
 			baseURL: `${scriptUrl}`,
-			url: '/upload_script/',
-			method: 'POST',
+			url: "/upload_script/",
+			method: "POST",
 			headers: {
-				'Content-Type': 'multipart/form-data;',
+				"Content-Type": "multipart/form-data;",
 			},
 			data: formData,
 		});
 		await UpdateServer.update();
-		eventHub.$emit('scriptCsvUploadDone');
-		this.$modal.show('dialog', {
-			title: 'アップロード終了',
-			text: '',
+		eventHub.$emit("scriptCsvUploadDone");
+		this.$modal.show("dialog", {
+			title: "アップロード終了",
+			text: "",
 			buttons: [
 				{
-					title: 'はい',
+					title: "はい",
 					handler: () => {
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 			],
 		});
 	}
 
-	public async downloadCsv(type = 'script') {
+	public async downloadCsv(type = "script") {
 		const res = await this.ajax.http({
 			baseURL: `${scriptUrl}`,
 			url: `download_${type}`,
-			method: 'GET',
+			method: "GET",
 			params: {
 				product_id: CLIENT_ID,
 				password: 8671,
@@ -157,9 +157,9 @@ export default class ScriptcsvParent extends Vue {
 		});
 		const csvSt = res;
 		const bom: any = new Uint8Array([0xef, 0xbb, 0xbf]);
-		const element: any = document.createElement('a');
+		const element: any = document.createElement("a");
 		const blob = new Blob([bom, csvSt], {
-			type: 'text/csv',
+			type: "text/csv",
 		});
 		// if(code=="SJIS"){
 		// blob = new Blob([bom, csvSt], {
@@ -168,7 +168,7 @@ export default class ScriptcsvParent extends Vue {
 		// }
 		const url = URL.createObjectURL(blob);
 		element.href = url;
-		element.setAttribute('download', `${CLIENT_ID}_${type}_${this.$moment().format('YYYYMMDD_HHmm')}.csv`);
+		element.setAttribute("download", `${CLIENT_ID}_${type}_${this.$moment().format("YYYYMMDD_HHmm")}.csv`);
 		document.body.appendChild(element); // Append the element to work in firefox
 		element.click();
 	}

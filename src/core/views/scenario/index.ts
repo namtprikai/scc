@@ -1,32 +1,32 @@
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { UserModule } from '@/store/modules/user';
-import { mapGetters } from 'vuex';
-import { UpdateServer } from '@/api/updateServer';
-import { Ajax } from '@/utils/parts';
-import { CLIENT_ID } from '@consoletype/utils/configration';
-import { eventHub } from '@/init/eventHub';
-import { v4 } from 'uuid';
-import { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
-import { Scenario, ScenarioModule, ScenarioFlow, ScenarioStep } from '@/store/modules/scenario';
-import { leafSize } from '@/utils/scenarioParseCsv';
-import axios from 'axios';
-import { watch } from 'fs';
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { UserModule } from "@/store/modules/user";
+import { mapGetters } from "vuex";
+import { UpdateServer } from "@/api/updateServer";
+import { Ajax } from "@/utils/parts";
+import { CLIENT_ID } from "@consoletype/utils/configration";
+import { eventHub } from "@/init/eventHub";
+import { v4 } from "uuid";
+import { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
+import { Scenario, ScenarioModule, ScenarioFlow, ScenarioStep } from "@/store/modules/scenario";
+import { leafSize } from "@/utils/scenarioParseCsv";
+import axios from "axios";
+import { watch } from "fs";
 // @ts-ignore
 @Component({
-	components: {  },
+	components: {},
 })
 export default class ScenarioParent extends Vue {
 	protected isSet = false;
 	protected isSave = false;
 	protected isEdit = false;
-	protected editValue = '';
+	protected editValue = "";
 	protected contextMenuIsVisible = false;
 	private LOG_LIST = {
-		log_scenario: 'シナリオログ',
-		log_faq: 'FAQ番号',
-		log_faq_parent_category: '親カテゴリ',
-		log_faq_child_category: '子カテゴリ',
-		log_faq_title: 'FAQタイトル',
+		log_scenario: "シナリオログ",
+		log_faq: "FAQ番号",
+		log_faq_parent_category: "親カテゴリ",
+		log_faq_child_category: "子カテゴリ",
+		log_faq_title: "FAQタイトル",
 	};
 
 	protected scenario: Scenario | any = null;
@@ -38,7 +38,7 @@ export default class ScenarioParent extends Vue {
 	protected created() {
 		// this.fetchData();
 		// eventHub.$on("setCurrentScenario", this.setScenario);
-		eventHub.$on('setCurrentScenarioData', this.setScenarioData);
+		eventHub.$on("setCurrentScenarioData", this.setScenarioData);
 	}
 
 	// @Watch('step.title')
@@ -47,8 +47,8 @@ export default class ScenarioParent extends Vue {
 		// if () {
 		// 	this.flow = { condition: { value: '' } };
 		// }
-		if (!('condition' in this.flow) || !('value' in this.flow.condition)) {
-			Object.assign(this.flow, { condition: { value: '', type: 'number' } });
+		if (!("condition" in this.flow) || !("value" in this.flow.condition)) {
+			Object.assign(this.flow, { condition: { value: "", type: "number" } });
 			// this.flow.condition = { value: '' };
 		}
 		this.flow.condition.value = title;
@@ -59,7 +59,7 @@ export default class ScenarioParent extends Vue {
 	// 	ScenarioModule.setCurrentScenario(scenario);
 	// 	this.isSet = true;
 	// }
-	@Watch('scenario.scenarioId')
+	@Watch("scenario.scenarioId")
 	public changeScenarioId(scenarioId: string) {
 		console.log(scenarioId);
 		this.step.scenarioId = scenarioId;
@@ -68,7 +68,7 @@ export default class ScenarioParent extends Vue {
 	public setDefaultItems() {
 		for (const [key, item] of Object.entries(this.LOG_LIST)) {
 			if (this.step.items && !(key in this.step.items)) {
-				this.step.items[key] = [''];
+				this.step.items[key] = [""];
 			}
 		}
 	}
@@ -80,13 +80,13 @@ export default class ScenarioParent extends Vue {
 		this.scenario = data.scenario;
 		// this.parentstep = data.parentstep;
 		// this.sibling = data.sibling;
-		if (!('condition' in this.flow) || !('value' in this.flow.condition)) {
-			Object.assign(this.flow, { condition: { value: '', type: 'number' } });
+		if (!("condition" in this.flow) || !("value" in this.flow.condition)) {
+			Object.assign(this.flow, { condition: { value: "", type: "number" } });
 			// this.flow.condition = { value: '' };
 		}
 		leafSize(this.flow);
-		if ('text' in this.step) {
-			this.editValue = this.step.text.replace(/\n/g, '<br>');
+		if ("text" in this.step) {
+			this.editValue = this.step.text.replace(/\n/g, "<br>");
 		}
 		this.setDefaultItems();
 		this.isSet = true;
@@ -98,7 +98,7 @@ export default class ScenarioParent extends Vue {
 
 	protected destroyed() {
 		// eventHub.$off("setCurrentScenario", this.setScenario);
-		eventHub.$off('setCurrentScenarioData', this.setScenarioData);
+		eventHub.$off("setCurrentScenarioData", this.setScenarioData);
 	}
 
 	// protected async fetchData() {
@@ -126,7 +126,7 @@ export default class ScenarioParent extends Vue {
 	}
 
 	public setEdit() {
-		if ('text' in this.step) {
+		if ("text" in this.step) {
 			this.step.text = this.editValue;
 		}
 	}
@@ -138,22 +138,22 @@ export default class ScenarioParent extends Vue {
 		}
 
 		if (this.scenario) {
-			this.$modal.show('dialog', {
-				title: '保存してよろしいですか？',
-				text: '',
+			this.$modal.show("dialog", {
+				title: "保存してよろしいですか？",
+				text: "",
 				buttons: [
 					{
-						title: 'はい',
+						title: "はい",
 						handler: () => {
 							this.isSave = true;
 							this.saveId = setTimeout(async () => {
 								await this.doSave();
 							}, 1000);
-							this.$modal.hide('dialog');
+							this.$modal.hide("dialog");
 						},
 					},
 					{
-						title: 'いいえ',
+						title: "いいえ",
 					},
 				],
 			});
@@ -165,34 +165,34 @@ export default class ScenarioParent extends Vue {
 	}
 
 	addItems() {
-		this.$modal.show('dialog', {
-			title: 'ログ項目を追加する',
+		this.$modal.show("dialog", {
+			title: "ログ項目を追加する",
 			text: `<div>
 			<p>項目名:<input id="logItemKeyName" type="text" /></p>
 			</div>`,
 			buttons: [
 				{
-					title: '追加',
+					title: "追加",
 					handler: () => {
-						const itemInput: any = document.getElementById('logItemKeyName');
+						const itemInput: any = document.getElementById("logItemKeyName");
 						console.log(itemInput.value);
 						if (itemInput.value && /^log_[a-z_]/.test(itemInput.value)) {
 							const items = this.Items;
-							items[itemInput.value] = [''];
+							items[itemInput.value] = [""];
 							this.$forceUpdate();
 						} else if (itemInput.value in this.Items) {
-							this.$modal.show('すでにその項目名がついた項目が存在します');
+							this.$modal.show("すでにその項目名がついた項目が存在します");
 						} else {
-							this.$modal.show('項目名はlog_のあとに小文字アルファベットもしくはアンダーバーの形式のみ利用できます。');
+							this.$modal.show("項目名はlog_のあとに小文字アルファベットもしくはアンダーバーの形式のみ利用できます。");
 						}
 						// this.Items
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 				{
-					title: '中止',
+					title: "中止",
 					handler: () => {
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 			],
@@ -202,12 +202,12 @@ export default class ScenarioParent extends Vue {
 	async doSave() {
 		await ScenarioModule.saveScenario(this.scenario);
 		this.setDefaultItems();
-		this.$modal.show('dialog', {
-			title: '保存しました',
-			text: '',
+		this.$modal.show("dialog", {
+			title: "保存しました",
+			text: "",
 			buttons: [
 				{
-					title: '閉じる',
+					title: "閉じる",
 				},
 			],
 		});
@@ -232,20 +232,20 @@ export default class ScenarioParent extends Vue {
 	}
 
 	deleate() {
-		if (this.scenario.hasOwnProperty('id')) {
-			this.$modal.show('dialog', {
-				title: '削除してよろしいですか？',
-				text: '',
+		if (this.scenario.hasOwnProperty("id")) {
+			this.$modal.show("dialog", {
+				title: "削除してよろしいですか？",
+				text: "",
 				buttons: [
 					{
-						title: 'はい',
+						title: "はい",
 						handler: () => {
 							this.doDelate(this.scenario.id);
-							this.$modal.hide('dialog');
+							this.$modal.hide("dialog");
 						},
 					},
 					{
-						title: 'いいえ',
+						title: "いいえ",
 					},
 				],
 			});
@@ -253,36 +253,36 @@ export default class ScenarioParent extends Vue {
 	}
 
 	async doDelate(id: string) {
-		this.$modal.show('dialog', {
-			title: '削除中',
-			text: '削除しています',
+		this.$modal.show("dialog", {
+			title: "削除中",
+			text: "削除しています",
 		});
 		await this.ajax.http({
 			url: `product/${CLIENT_ID}/scenario/${id}`,
-			method: 'DELETE',
+			method: "DELETE",
 			data: {},
 		});
 		await UpdateServer.update();
 		await ScenarioModule.getScenario();
-		this.$modal.show('dialog', {
-			title: '削除完了',
-			text: '削除が完了しました',
+		this.$modal.show("dialog", {
+			title: "削除完了",
+			text: "削除が完了しました",
 			buttons: [
 				{
-					title: '閉じる',
+					title: "閉じる",
 				},
 			],
 		});
 	}
 
 	remove() {
-		this.$modal.show('dialog', {
-			title: '削除してよろしいでしょうか？',
+		this.$modal.show("dialog", {
+			title: "削除してよろしいでしょうか？",
 			buttons: [
 				{
-					title: 'hai',
+					title: "hai",
 					handler: () => {
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 						this.$modal.show(
 							{
 								template: `<div>
@@ -293,27 +293,27 @@ export default class ScenarioParent extends Vue {
 						  >
 							  <button @click="$emit('close')">Close</button>
 		  </div>`,
-								props: ['pw'],
+								props: ["pw"],
 							},
 							{
-								pw: '',
+								pw: "",
 							},
 							{
-								height: 'auto',
+								height: "auto",
 							},
 							{
-								'before-close': (event: any) => {
-									console.log('this will be called before the modal closes');
-									const pwinput: any = document.getElementById('scenariopw');
-									if (pwinput.value === '123') {
+								"before-close": (event: any) => {
+									console.log("this will be called before the modal closes");
+									const pwinput: any = document.getElementById("scenariopw");
+									if (pwinput.value === "123") {
 										this.doRemove();
 										this.reset();
 									} else {
-										this.$modal.show('dialog', {
-											title: '間違い',
+										this.$modal.show("dialog", {
+											title: "間違い",
 											buttons: [
 												{
-													title: 'hai',
+													title: "hai",
 												},
 											],
 										});
@@ -375,9 +375,9 @@ export default class ScenarioParent extends Vue {
 			}
 			removeFlg = true;
 			if (removeFlg) {
-				ScenarioModule.saveScenario().then(o => {
-					this.$modal.show('dialog', {
-						text: '削除情報を保存しました',
+				ScenarioModule.saveScenario().then((o) => {
+					this.$modal.show("dialog", {
+						text: "削除情報を保存しました",
 					});
 					this.reset();
 					UpdateServer.update();

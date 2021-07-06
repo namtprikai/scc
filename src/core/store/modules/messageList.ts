@@ -1,21 +1,21 @@
-import Cookies from 'js-cookie';
-import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
-import store from '@/store';
+import Cookies from "js-cookie";
+import { VuexModule, Module, Mutation, Action, getModule } from "vuex-module-decorators";
+import store from "@/store";
 
-import { MessageList } from '@/api/messageList';
+import { MessageList } from "@/api/messageList";
 
 export interface IMessageListState {
 	currentMessage: any;
 	messageList: any;
 }
 
-@Module({ dynamic: true, store, name: 'messageList' })
+@Module({ dynamic: true, store, name: "messageList" })
 class MessageListStore extends VuexModule implements IMessageListState {
 	public messageList: any = [];
 	public currentMessage: any;
 	@Mutation
 	public INIT() {
-		console.log('INIT');
+		console.log("INIT");
 	}
 
 	// @Mutation
@@ -24,13 +24,13 @@ class MessageListStore extends VuexModule implements IMessageListState {
 	// }
 	@Mutation
 	private GET_MESSAGE_LIST(messageList: Array<any>) {
-		console.log('GET_MESSAGE_LIST');
+		console.log("GET_MESSAGE_LIST");
 		console.log(messageList);
 		this.messageList = messageList;
 	}
 
 	@Action({
-		commit: 'GET_MESSAGE_LIST',
+		commit: "GET_MESSAGE_LIST",
 	})
 	public async getMessageList() {
 		const { data } = await MessageList.getMessageList();

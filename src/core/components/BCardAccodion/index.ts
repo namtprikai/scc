@@ -1,3 +1,3 @@
-import BCardAccordion from './BCardAccordion.vue';
+import BCardAccordion from "./BCardAccordion.vue";
 export { BCardAccordion };
 export default { BCardAccordion };

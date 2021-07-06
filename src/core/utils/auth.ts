@@ -1,8 +1,8 @@
-import Cookies from 'js-cookie';
-import { UserModule } from '@/store/modules/user';
-import { CLIENT_ID } from '@consoletype/utils/configration';
+import Cookies from "js-cookie";
+import { UserModule } from "@/store/modules/user";
+import { CLIENT_ID } from "@consoletype/utils/configration";
 class AdminUser {
-	constructor(private id: string = '', private name: string = '', private pw: string = '', private product_id: string, private email: string, private role?: number) {}
+	constructor(private id: string = "", private name: string = "", private pw: string = "", private product_id: string, private email: string, private role?: number) {}
 
 	public get Id() {
 		return this.id;
@@ -73,11 +73,11 @@ export namespace Auth {
 		// }
 		return Cookies.get(TokenKey) || false;
 	};
-	export const isLogin = async () => (await getToken()) !== '';
+	export const isLogin = async () => (await getToken()) !== "";
 	export const setToken = (token: string) => Cookies.set(TokenKey, token);
 
 	export const removeToken = () => {
-		console.log('removeToken');
+		console.log("removeToken");
 		Cookies.remove(TokenKey);
 	};
 	// export const setAdminUser = (data: LoginResponceData, password: string, email: string) => {

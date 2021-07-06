@@ -1,36 +1,28 @@
-import store from '../store/index';
-import { inherits } from 'util';
-import { MessageListModule } from '../store/modules/messageList';
-import { UserModule } from '@/store/modules/user';
-import io from 'socket.io-client';
-import { Auth } from '@/utils/auth';
-import { apiUrl } from '@consoletype/utils/configration';
-const sound = require('./sound/sound02.wav');
-const Push = require('push.js');
+import store from "../store/index";
+import { inherits } from "util";
+import { MessageListModule } from "../store/modules/messageList";
+import { UserModule } from "@/store/modules/user";
+import io from "socket.io-client";
+import { Auth } from "@/utils/auth";
+import { apiUrl } from "@consoletype/utils/configration";
+const sound = require("./sound/sound02.wav");
+const Push = require("push.js");
 export namespace MessageListService {
 	let socket: any = null;
 	export async function init() {
 		const token = await Auth.getToken();
-		console.log('token set');
+		console.log("token set");
 		socket = io(`${apiUrl}?room=objectupdate&token=${token}`, {
-			transports: ['websocket', 'polling'],
+			transports: ["websocket", "polling"],
 			reconnection: true,
 			reconnectionDelay: 5000,
 			timeout: 6000,
 			autoConnect: true,
 		});
-		socket.on('connect', (message: any) => {
+		socket.on("connect", (message: any) => {
 			console.log(message);
 		});
-		socket.on('connect_error', (message: any) => {
-			console.log(message);
-			setTimeout(() => {
-				if (Auth.isLogin()) {
-					socket.connect();
-				}
-			}, 1000);
-		});
-		socket.on('reconnect_error', (message: any) => {
+		socket.on("connect_error", (message: any) => {
 			console.log(message);
 			setTimeout(() => {
 				if (Auth.isLogin()) {
@@ -38,11 +30,19 @@ export namespace MessageListService {
 				}
 			}, 1000);
 		});
-		socket.on('objectupdate', (message: any) => {
+		socket.on("reconnect_error", (message: any) => {
+			console.log(message);
+			setTimeout(() => {
+				if (Auth.isLogin()) {
+					socket.connect();
+				}
+			}, 1000);
+		});
+		socket.on("objectupdate", (message: any) => {
 			console.info(message);
-			if (message.method == 'insert' && !message.body.is_admin && !(message.object == 'admin_user')) {
-				if (message.object == 'message') {
-					notification('新規メッセージがあります', 'AIChatSupporter');
+			if (message.method == "insert" && !message.body.is_admin && !(message.object == "admin_user")) {
+				if (message.object == "message") {
+					notification("新規メッセージがあります", "AIChatSupporter");
 				}
 				// try{
 				// 	if(message.body.type=="text"){
@@ -62,13 +62,13 @@ export namespace MessageListService {
 				// }
 
 				// this.doGetMessageList();
-			} else if (message.object == 'message' && message.body.assignee_id !== UserModule.id) {
+			} else if (message.object == "message" && message.body.assignee_id !== UserModule.id) {
 				// this.notification("新規メッセージ","AIChatSupporter");
 				// this.doGetMessageList();
 			}
 			getMessageList();
 		});
-		socket.on('disconnect', (message: any) => {
+		socket.on("disconnect", (message: any) => {
 			UserModule.GetInfo().then(() => {
 				setTimeout(() => {
 					if (Auth.isLogin()) {
@@ -83,7 +83,7 @@ export namespace MessageListService {
 		MessageListModule.getMessageList();
 	}
 	let notificationTimeId: any = null;
-	function notification(title = '', text = '') {
+	function notification(title = "", text = "") {
 		if (notificationTimeId != null) {
 			clearTimeout(notificationTimeId);
 		}
@@ -92,12 +92,12 @@ export namespace MessageListService {
 		}, 1000);
 	}
 	async function playSound() {
-		return new Promise<void>(r => {
+		return new Promise<void>((r) => {
 			const audio = new Audio(sound);
 			audio.currentTime = 0;
 
 			audio.addEventListener(
-				'ended',
+				"ended",
 				() => {
 					r();
 				},
@@ -106,12 +106,12 @@ export namespace MessageListService {
 			audio.play();
 		});
 	}
-	function doNotification(title = '', text = '') {
-		console.log('notification');
+	function doNotification(title = "", text = "") {
+		console.log("notification");
 		const options = {
 			body: text,
 			// icon: require("../head/img/logo.png"),
-			url: 'SAIChatSupporter',
+			url: "SAIChatSupporter",
 			onShow: async () => {
 				await playSound();
 				await playSound();

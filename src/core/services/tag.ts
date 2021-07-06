@@ -1,11 +1,11 @@
-import store from '../store/index';
-import { inherits } from 'util';
-import { MessageListModule } from '../store/modules/messageList';
-import { UserModule } from '@/store/modules/user';
-import io from 'socket.io-client';
-import { Auth } from '@/utils/auth';
-import { apiUrl, CLIENT_ID } from '@consoletype/utils/configration';
-import { Ajax } from '@/utils/parts';
+import store from "../store/index";
+import { inherits } from "util";
+import { MessageListModule } from "../store/modules/messageList";
+import { UserModule } from "@/store/modules/user";
+import io from "socket.io-client";
+import { Auth } from "@/utils/auth";
+import { apiUrl, CLIENT_ID } from "@consoletype/utils/configration";
+import { Ajax } from "@/utils/parts";
 export namespace TagService {
 	export class Tag {
 		public id: string | null = null;
@@ -43,7 +43,7 @@ export namespace TagService {
 		}
 
 		getTagById(id: string): Tag | undefined {
-			return this._tags.find(tag => tag.id === id);
+			return this._tags.find((tag) => tag.id === id);
 		}
 
 		getTagsByIds(ids: Array<string> = []): Array<Tag> {
@@ -62,18 +62,18 @@ export namespace TagService {
 		}
 
 		public setTags(tags: Array<Tag>): void {
-			console.info('setTags');
+			console.info("setTags");
 			this._tags = [];
 			for (let i = 0; i < tags.length; i++) {
 				this._tags.push(new Tag(tags[i]));
 			}
 			// カテゴリー設定
 			this.setCategory();
-			this.trigger('ready');
+			this.trigger("ready");
 		}
 
 		private setCategory(tags: Array<Tag> | null = null) {
-			console.log('setCategory');
+			console.log("setCategory");
 			if (tags == null) {
 				for (let i = 0; i < this._tags.length; i++) {
 					if (this._tags[i].is_category() == false && this._tags[i].parent != null) {
@@ -90,6 +90,5 @@ export namespace TagService {
 				}
 			}
 		}
-
 	}
 }

@@ -1,9 +1,9 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Vue from "vue";
+import Vuex from "vuex";
 // import dataResource from '../dataResource';
-import { DataResource } from '../dataResource';
-import store from '@/store';
-import { VuexModule, Module, MutationAction, Mutation, Action, getModule } from 'vuex-module-decorators';
+import { DataResource } from "../dataResource";
+import store from "@/store";
+import { VuexModule, Module, MutationAction, Mutation, Action, getModule } from "vuex-module-decorators";
 // import { eventHub } from '@/init/eventHub';
 /* eslint-disable */
 // Vue.use(Vuex);

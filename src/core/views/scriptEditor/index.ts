@@ -1,44 +1,44 @@
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import Tinymce from '@/components/Tinymce/index.vue';
-import InputTag from '@/components/InputTag/index.vue';
-import Synonym from '@/components/Synonym/index.vue';
-import { Ajax } from '@/utils/parts';
-import _ from 'lodash';
-import { bartUrl } from '@consoletype/utils/configration';
-import { ScenarioModule } from '@/store/modules/scenario';
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import Tinymce from "@/components/Tinymce/index.vue";
+import InputTag from "@/components/InputTag/index.vue";
+import Synonym from "@/components/Synonym/index.vue";
+import { Ajax } from "@/utils/parts";
+import _ from "lodash";
+import { bartUrl } from "@consoletype/utils/configration";
+import { ScenarioModule } from "@/store/modules/scenario";
 
 // @ts-ignore
 @Component({
-	components: { Tinymce, InputTag, Synonym, },
+	components: { Tinymce, InputTag, Synonym },
 })
 export default class ScriptEditorCompParent extends Vue {
-	protected item: any = '';
+	protected item: any = "";
 	protected isShow = true;
-	protected currentSynonym = '';
-	protected editValue = '';
+	protected currentSynonym = "";
+	protected editValue = "";
 	protected isEdit = false;
-	protected message = '要編集リクエストが送られた当時のアイテムが存在しません。';
+	protected message = "要編集リクエストが送られた当時のアイテムが存在しません。";
 
 	protected isMessage = false;
 	protected LOG_LIST = {
-		log_scenario: 'シナリオログ',
-		log_faq: 'FAQ番号',
-		log_faq_parent_category: '親カテゴリ',
-		log_faq_child_category: '子カテゴリ',
-		log_faq_title: 'FAQタイトル',
+		log_scenario: "シナリオログ",
+		log_faq: "FAQ番号",
+		log_faq_parent_category: "親カテゴリ",
+		log_faq_child_category: "子カテゴリ",
+		log_faq_title: "FAQタイトル",
 	};
 
-	protected LOG_LIST_ORDER_LIST = ['log_scenario', 'log_faq', 'log_faq_parent_category', 'log_faq_child_category', 'log_faq_title'];
+	protected LOG_LIST_ORDER_LIST = ["log_scenario", "log_faq", "log_faq_parent_category", "log_faq_child_category", "log_faq_title"];
 
-	@Watch('item.data.scenario')
+	@Watch("item.data.scenario")
 	protected setScenarioIdItem(scenarioId: string) {
 		this.item.data.items.scenario_id = scenarioId;
 	}
 
 	public get IsScenarioLink() {
-		if ('items' in this.item.data) {
-			if ('scenario_id' in this.item.data.items) {
+		if ("items" in this.item.data) {
+			if ("scenario_id" in this.item.data.items) {
 				const scenarioId = this.item.data.items.scenario_id;
 				const scenarioList = ScenarioModule.ScenarioList;
 				if (scenarioList) {
@@ -66,31 +66,31 @@ export default class ScriptEditorCompParent extends Vue {
 		this.isShow = true;
 		this.isMessage = false;
 		this.item = item;
-		if ('data' in item && 'value' in item.data) {
-			this.editValue = item.data.value.replace(/\n/g, '<br>');
+		if ("data" in item && "value" in item.data) {
+			this.editValue = item.data.value.replace(/\n/g, "<br>");
 		}
-		if (!('status' in item.data)) {
-			item.data.status = 'published';
+		if (!("status" in item.data)) {
+			item.data.status = "published";
 		}
-		if (!('items' in item.data)) {
+		if (!("items" in item.data)) {
 			item.data.items = item.item || {};
 		}
-		if ('items' in item.data) {
-			if (!('scenario_id' in item.data.items)) {
-				item.data.items.scenario_id = '';
+		if ("items" in item.data) {
+			if (!("scenario_id" in item.data.items)) {
+				item.data.items.scenario_id = "";
 			}
-			if (!('log_faq' in item.data.items)) {
-				item.data.items.log_faq = [''];
+			if (!("log_faq" in item.data.items)) {
+				item.data.items.log_faq = [""];
 			}
 		}
 	}
 
 	public resetItem() {
-		this.editValue = this.item = '';
+		this.editValue = this.item = "";
 	}
 
 	public setEdit() {
-		if ('data' in this.item) {
+		if ("data" in this.item) {
 			this.item.data.value = this.editValue;
 		}
 	}
@@ -119,34 +119,34 @@ export default class ScriptEditorCompParent extends Vue {
 	}
 
 	addItems() {
-		this.$modal.show('dialog', {
-			title: 'ログ項目を追加する',
+		this.$modal.show("dialog", {
+			title: "ログ項目を追加する",
 			text: `<div>
 			<p>項目名:<input id="logItemKeyName" type="text" /></p>
 			</div>`,
 			buttons: [
 				{
-					title: '追加',
+					title: "追加",
 					handler: () => {
-						const itemInput: any = document.getElementById('logItemKeyName');
+						const itemInput: any = document.getElementById("logItemKeyName");
 						console.log(itemInput.value);
 						if (itemInput.value && /^log_[a-z_]/.test(itemInput.value)) {
 							const items = this.Items;
-							items[itemInput.value] = [''];
+							items[itemInput.value] = [""];
 							this.$forceUpdate();
 						} else if (itemInput.value in this.Items) {
-							this.$modal.show('すでにその項目名がついた項目が存在します');
+							this.$modal.show("すでにその項目名がついた項目が存在します");
 						} else {
-							this.$modal.show('項目名はlog_のあとに小文字アルファベットもしくはアンダーバーの形式のみ利用できます。');
+							this.$modal.show("項目名はlog_のあとに小文字アルファベットもしくはアンダーバーの形式のみ利用できます。");
 						}
 						// this.Items
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 				{
-					title: '中止',
+					title: "中止",
 					handler: () => {
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 			],
@@ -158,7 +158,7 @@ export default class ScriptEditorCompParent extends Vue {
 		return this.currentSynonym;
 	}
 
-	@Watch('item', { deep: true })
+	@Watch("item", { deep: true })
 	protected itemChange(item: any, oldItem: any) {
 		if (item == null) {
 			return;
@@ -168,12 +168,12 @@ export default class ScriptEditorCompParent extends Vue {
 			clearTimeout(this.itemChangeId);
 		}
 		this.itemChangeId = setTimeout(() => {
-			if (item.data && item.data.type === 'leaf') {
+			if (item.data && item.data.type === "leaf") {
 				item.isLeaf = true;
 			} else {
 				item.isLeaf = false;
 			}
-			this.editValue = String(item.data.value).replace(/\n/g, '<br>');
+			this.editValue = String(item.data.value).replace(/\n/g, "<br>");
 			this.$forceUpdate();
 		}, 500);
 	}
@@ -200,14 +200,14 @@ export default class ScriptEditorCompParent extends Vue {
 	}
 
 	public isLog_script(data: any) {
-		if ('items' in data && 'log_faq' in data.items) {
+		if ("items" in data && "log_faq" in data.items) {
 			return true;
 		}
 		return false;
 	}
 
 	get Is_show() {
-		if (this.isShow && this.item && this.item.hasOwnProperty('data')) {
+		if (this.isShow && this.item && this.item.hasOwnProperty("data")) {
 			return true;
 		}
 		return false;
@@ -223,23 +223,23 @@ export default class ScriptEditorCompParent extends Vue {
 		this.isBartSearch = true;
 		this.ajax
 			.http({
-				method: 'POST',
+				method: "POST",
 				baseURL: bartUrl,
-				url: '',
-				data: { text: this.item.data.text || '' },
+				url: "",
+				data: { text: this.item.data.text || "" },
 			})
 			.then((data: any) => {
 				console.log(data);
 				const { tokens } = data;
 				const questions: any = [];
-				let keyWord = '';
+				let keyWord = "";
 				let nCount = 0;
 				for (const token of tokens) {
 					if (token.label === 1 || (token.label === 2 && nCount > 4)) {
-						if (keyWord !== '') {
+						if (keyWord !== "") {
 							questions.push(keyWord);
 							nCount = 0;
-							keyWord = '';
+							keyWord = "";
 						}
 						keyWord += token.surface;
 					}
@@ -251,7 +251,7 @@ export default class ScriptEditorCompParent extends Vue {
 						nCount++;
 					}
 				}
-				if (keyWord !== '') {
+				if (keyWord !== "") {
 					questions.push(keyWord);
 				}
 				this.item.data.questions.push(questions);
@@ -265,12 +265,12 @@ export default class ScriptEditorCompParent extends Vue {
 	protected created() {
 		ScenarioModule.getScenario();
 
-		eventHub.$on('setScript', this.setItem);
-		eventHub.$on('tabclick', this.tabClick);
+		eventHub.$on("setScript", this.setItem);
+		eventHub.$on("tabclick", this.tabClick);
 	}
 
 	protected destroyed() {
-		eventHub.$off('setScript', this.setItem);
-		eventHub.$off('tabclick', this.tabClick);
+		eventHub.$off("setScript", this.setItem);
+		eventHub.$off("tabclick", this.tabClick);
 	}
 }

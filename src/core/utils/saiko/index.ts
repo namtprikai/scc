@@ -1,14 +1,14 @@
-import * as tf from '@tensorflow/tfjs';
+import * as tf from "@tensorflow/tfjs";
 // @ts-ignore
-import word_dict from './word_dict.js';
-const emotions = ['happy', 'sad', 'disgust', 'angry', 'fear', 'surprise'];
+import word_dict from "./word_dict.js";
+const emotions = ["happy", "sad", "disgust", "angry", "fear", "surprise"];
 const emotionMapper = {
-	happy: '嬉しい',
-	sad: '悲しい',
-	disgust: 'きもい',
-	angry: 'おこ',
-	fear: '怖い',
-	surprise: 'びっくり',
+	happy: "嬉しい",
+	sad: "悲しい",
+	disgust: "きもい",
+	angry: "おこ",
+	fear: "怖い",
+	surprise: "びっくり",
 };
 export namespace Saiko {
 	const kanjo = (text: string, tokenizer: { [key: string]: number }, maxlen = 280) =>
@@ -16,7 +16,7 @@ export namespace Saiko {
 		tf.tensor([
 			new Array(maxlen)
 				.fill(0)
-				.concat([...text].map(c => tokenizer[c] || 0))
+				.concat([...text].map((c) => tokenizer[c] || 0))
 				.slice(-maxlen),
 		]);
 
@@ -26,7 +26,7 @@ export namespace Saiko {
 		}
 
 		let max = 0;
-		let maxKey = '';
+		let maxKey = "";
 		for (const [key, value] of Object.entries(obj)) {
 			if (value > max) {
 				max = value;
@@ -41,10 +41,10 @@ export namespace Saiko {
 
 	let model: any = null; // tf.LayersModel | null = null;
 	export const init = async () => {
-		model = await tf.loadLayersModel('./models/0.3/model.json');
+		model = await tf.loadLayersModel("./models/0.3/model.json");
 	};
 	export const mind = async (text: string) => {
-		console.log('mind');
+		console.log("mind");
 		if (model === null) {
 			await init();
 		}
@@ -54,7 +54,7 @@ export namespace Saiko {
 			if (!Array.isArray(ans)) {
 				const [d]: any = await ans.array();
 				if (Array.isArray(d)) {
-					const [happy, sad, disgust, angry, fear, surprise] = d.map(n => Math.round(n * 100));
+					const [happy, sad, disgust, angry, fear, surprise] = d.map((n) => Math.round(n * 100));
 					return { happy, sad, disgust, angry, fear, surprise };
 				}
 			}
@@ -69,7 +69,7 @@ export namespace Saiko {
 			if (!Array.isArray(ans)) {
 				const [d]: any = ans.arraySync();
 				if (Array.isArray(d)) {
-					const [happy, sad, disgust, angry, fear, surprise] = d.map(n => Math.round(n * 100));
+					const [happy, sad, disgust, angry, fear, surprise] = d.map((n) => Math.round(n * 100));
 					console.table([happy, sad, disgust, angry, fear, surprise]);
 					return { happy, sad, disgust, angry, fear, surprise };
 				}

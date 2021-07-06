@@ -1,11 +1,11 @@
-import { CLIENT_ID, apiUrl } from '@consoletype/utils/configration';
-import Cookies from 'js-cookie';
-import request from '@/utils/request';
-import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
-import { eventHub } from '@/init/eventHub';
+import { CLIENT_ID, apiUrl } from "@consoletype/utils/configration";
+import Cookies from "js-cookie";
+import request from "@/utils/request";
+import axios, { AxiosPromise, AxiosRequestConfig } from "axios";
+import { eventHub } from "@/init/eventHub";
 
-import { OldScenario } from '@/utils/allInOneCsv/scenario';
-import Password from '@/views/password/index.vue';
+import { OldScenario } from "@/utils/allInOneCsv/scenario";
+import Password from "@/views/password/index.vue";
 export interface MessageObj {
 	assignee_id: string;
 	created_date: string;
@@ -28,7 +28,7 @@ export interface MessageObj {
 	talk_script_id?: string;
 	user?: User;
 	is_draft?: boolean;
-	script_id: string | 'no_script';
+	script_id: string | "no_script";
 	product_id: string;
 }
 interface UnreadMessageObj extends MessageObj {
@@ -50,14 +50,14 @@ export class Message {
 	protected is_replied: boolean;
 	protected is_suspended: boolean;
 	protected loyalty = 0;
-	protected message_type = '';
+	protected message_type = "";
 	protected recent_messages: Array<any>;
 	protected talk_script_id?: string;
 	protected text: string;
 	protected user_id: string;
 	protected user?: User | null;
 	protected product_id: string;
-	protected script_id: string | 'no_script' | undefined;
+	protected script_id: string | "no_script" | undefined;
 	constructor(message: MessageObj) {
 		this.id = message.id;
 		this.is_replied = message.is_replied;
@@ -175,7 +175,7 @@ export class User {
 	}
 
 	get Attribute(): any {
-		if (this.attribute != null && this.attribute != '') {
+		if (this.attribute != null && this.attribute != "") {
 			try {
 				return JSON.parse(this.attribute);
 			} catch (e) {
@@ -198,7 +198,7 @@ export class User {
 	get Memo() {
 		const des = this.Attribute;
 		if (this.Attribute.memo == null) {
-			des.memo = '';
+			des.memo = "";
 			this.Attribute = des;
 		}
 		return this.Attribute.memo;
@@ -207,8 +207,8 @@ export class User {
 	get Age() {
 		try {
 			const birthday: any = new Date(`${this.Attribute.birthdayY}-${this.Attribute.birthdayM}-${this.Attribute.birthdayD}`);
-			if (birthday == 'Invalid Date') {
-				return '';
+			if (birthday == "Invalid Date") {
+				return "";
 			}
 			const today = new Date();
 			let years = today.getFullYear() - birthday.getFullYear();
@@ -224,16 +224,16 @@ export class User {
 		} catch (e) {
 			console.log(e);
 		}
-		return '';
+		return "";
 	}
 
-	public search(keyword = '') {
-		if (keyword === '') {
+	public search(keyword = "") {
+		if (keyword === "") {
 			return true;
 		}
 		if (keyword) {
 			// 全角スペースを半角スペースに置換
-			keyword = keyword.replace(/　/g, ' ');
+			keyword = keyword.replace(/　/g, " ");
 		}
 		const keywords = keyword.split(/\s+/);
 		let is_keyword = false;
@@ -270,7 +270,7 @@ export class UserList {
 	protected updateIntervalInSecond = 60;
 	constructor(protected ajax: Ajax, users?: Array<User>) {
 		if (users != null) {
-			this.users = users.filter(el => el.displayname != null);
+			this.users = users.filter((el) => el.displayname != null);
 		}
 	}
 
@@ -333,7 +333,7 @@ export class UserList {
 				}
 				// updateUser.tags=[...new Set(updateUser.tags)];
 				// tslint:disable-next-line:only-arrow-functions
-				updateUser.tags = updateUser.tags.filter(function(x, i, self) {
+				updateUser.tags = updateUser.tags.filter(function (x, i, self) {
 					return self.indexOf(x) === i;
 				});
 				const tagIds: Array<string> = [];
@@ -363,7 +363,7 @@ export class UserList {
 				this.ajax
 					.http({
 						url: `product/${updateUser.product_id}/user/${id}`,
-						method: 'PATCH',
+						method: "PATCH",
 						data: JSON.stringify({ tags: updateUser.tags }),
 					})
 					.then(
@@ -386,7 +386,7 @@ export class UserList {
 					this.ajax
 						.http({
 							url: `product/${updateUser.product_id}/user/${id}`,
-							method: 'PATCH',
+							method: "PATCH",
 							data: { attribute: updateUser.Attribute },
 						})
 						.then(
@@ -437,7 +437,7 @@ export class UserList {
 				this.ajax
 					.http({
 						url: `product/${updateUser.product_id}/user/${id}`,
-						method: 'PATCH',
+						method: "PATCH",
 						data: { status: updateUser.Status },
 					})
 					.then(
@@ -454,19 +454,19 @@ export class UserList {
 
 	public setUserList(userList: Array<User>): void {
 		this.users = [];
-		userList = userList.filter(el => el.displayname != null);
+		userList = userList.filter((el) => el.displayname != null);
 		for (let i = 0; i < userList.length; i++) {
 			this.users.push(new User(userList[i]));
 		}
 		if (this.is_users === false) {
-			this.trigger('ready');
+			this.trigger("ready");
 		}
 		this.is_users = true;
 		this.lastUpdateTime = new Date();
 	}
 
 	public addUserList(users: Array<User>): void {
-		users = users.filter(el => el.displayname != null);
+		users = users.filter((el) => el.displayname != null);
 		this.users = this.users.concat(users);
 	}
 
@@ -546,7 +546,7 @@ export class UserList {
 	public setCurrentUserById(id: string): void {
 		this.getUser(id, (user: User) => {
 			this._currentUser = user;
-			this.trigger('setCurrentUser', this._currentUser);
+			this.trigger("setCurrentUser", this._currentUser);
 		});
 		// if(this.users!=null){
 		// 	for(let i=0;i<this.users.length;i++){
@@ -567,13 +567,13 @@ export class UserList {
 }
 export class Ajax {
 	private _LINE_API_URL: string = apiUrl;
-	private token = '';
+	private token = "";
 	private logout: Function = () => {};
 	private defObj: any = {
-		url: '',
+		url: "",
 		withCredentials: false,
 		headers: {
-			'Content-type': 'application/json',
+			"Content-type": "application/json",
 			// 'X-Requested-With': 'XMLHttpRequest',
 		},
 	};
@@ -602,7 +602,7 @@ export class Ajax {
 	}
 
 	public resetToken() {
-		this.token = '';
+		this.token = "";
 		Cookies.remove(`token_${CLIENT_ID}`);
 	}
 
@@ -610,7 +610,7 @@ export class Ajax {
 		this.token = token;
 		this.defObj.headers.Authorization = `Bearer ${this.token}`;
 		request.interceptors.request.use(
-			config => {
+			(config) => {
 				// Add X-Token header to every request, you can add other custom headers here
 				if (token) {
 					// config.headers['X-Token'] = token;
@@ -618,7 +618,7 @@ export class Ajax {
 				}
 				return config;
 			},
-			error => {
+			(error) => {
 				Promise.reject(error);
 			},
 		);
@@ -627,14 +627,14 @@ export class Ajax {
 
 	public http = (obj: AxiosRequestConfig) => {
 		console.log(obj.headers);
-    console.log(this.defObj.headers);
-    obj.headers = Object.assign({}, this.defObj.headers || {}, obj.headers || {});
+		console.log(this.defObj.headers);
+		obj.headers = Object.assign({}, this.defObj.headers || {}, obj.headers || {});
 		return request(obj);
 	};
 }
 
 export interface VueBeautifulChatData {
-	author: 'support' | 'me';
+	author: "support" | "me";
 	type: string;
 	data: any;
 }
@@ -662,12 +662,12 @@ class AndyWoker {
 			if (/delete/i.test(String(queue.http.method))) {
 				axios
 					.delete(`${queue.http.baseURL}/${queue.http.url}`, queue.http)
-					.then(res => {
+					.then((res) => {
 						this.is_start = false;
 						queue.resolve(res);
 						this.start(resolve);
 					})
-					.catch(res => {
+					.catch((res) => {
 						this.is_start = false;
 						queue.reject(res);
 						this.start(resolve);
@@ -675,12 +675,12 @@ class AndyWoker {
 			} else if (/post/i.test(String(queue.http.method))) {
 				axios
 					.post(`${queue.http.baseURL}/${queue.http.url}`, queue.http.data, queue.http)
-					.then(res => {
+					.then((res) => {
 						queue.resolve(res);
 						this.is_start = false;
 						this.start(resolve);
 					})
-					.catch(res => {
+					.catch((res) => {
 						queue.reject(res);
 						this.is_start = false;
 						this.start(resolve);
@@ -688,12 +688,12 @@ class AndyWoker {
 			} else if (/get/i.test(String(queue.http.method))) {
 				axios
 					.get(`${queue.http.baseURL}/${queue.http.url}`, queue.http)
-					.then(res => {
+					.then((res) => {
 						this.is_start = false;
 						queue.resolve(res);
 						this.start(resolve);
 					})
-					.catch(res => {
+					.catch((res) => {
 						this.is_start = false;
 						queue.reject(res);
 						this.start(resolve);
@@ -701,13 +701,13 @@ class AndyWoker {
 			} else if (/patch/i.test(String(queue.http.method))) {
 				axios
 					.patch(`${queue.http.baseURL}/${queue.http.url}`, queue.http.data, queue.http)
-					.then(res => {
+					.then((res) => {
 						this.is_start = false;
 						queue.resolve(res);
 
 						this.start(resolve);
 					})
-					.catch(res => {
+					.catch((res) => {
 						this.is_start = false;
 						queue.reject(res);
 
@@ -715,12 +715,12 @@ class AndyWoker {
 					});
 			} else {
 				this.ajax.http(queue.http).then(
-					res => {
+					(res) => {
 						queue.resolve(res);
 						this.is_start = false;
 						this.start(resolve);
 					},
-					res => {
+					(res) => {
 						this.is_start = false;
 						queue.reject(res);
 
@@ -729,7 +729,7 @@ class AndyWoker {
 				);
 			}
 		} else {
-			console.log('doneResolve');
+			console.log("doneResolve");
 			this.is_start = false;
 			resolve();
 		}
@@ -774,7 +774,7 @@ class AndyQueue {
 				resolve: Function;
 				reject: Function;
 				pr?: number;
-			},
+			}
 		) => number,
 	) {
 		this.queues.sort(sortFunction);
@@ -842,7 +842,7 @@ export class RequeuestWokersService {
 		// for (let i = 0; i < this.wokers.length; i++) {
 		// 	this.wokers[i].start();
 		// }
-		return Promise.all(this.wokers.map((w: any) => new Promise(r => w.start(r))));
+		return Promise.all(this.wokers.map((w: any) => new Promise((r) => w.start(r))));
 	}
 
 	public reset() {
@@ -876,7 +876,7 @@ export interface MessageObj {
 	user_id: string;
 	talk_script_id?: string;
 	user?: User;
-	script_id: string | 'no_script';
+	script_id: string | "no_script";
 	product_id: string;
 }
 interface UnreadMessageObj extends MessageObj {
@@ -968,7 +968,7 @@ export class MessageList {
 export class ImageChack {
 	private safeList = new Set();
 	public checkLink(url: string) {
-		return new Promise(r => {
+		return new Promise((r) => {
 			const image = new Image();
 			if (this.safeList.has(url)) {
 				r(true);
@@ -1050,10 +1050,10 @@ export interface StepObj {
 	options: Array<{ value: string }>;
 	text: string;
 	title: string;
-	type: 'q' | 'a';
+	type: "q" | "a";
 }
 export class Flow {
-	private currentNextButtonLabel = '';
+	private currentNextButtonLabel = "";
 	private log_scenario: string | null = null;
 	private condition:
 	| {
@@ -1066,7 +1066,7 @@ export class Flow {
 	// title: string;
 	private next: Array<any>;
 	private stepObj: StepObj | null = null;
-	private memo = '';
+	private memo = "";
 	constructor(flow: FlowObj, public index: number, public stepMap: any) {
 		this.condition = flow.condition;
 		this.step = flow.step;
@@ -1118,7 +1118,7 @@ export class Flow {
 		}
 	}
 
-	public formatConditionValue(value = '') {
+	public formatConditionValue(value = "") {
 		const bnMatch = value.match(/<bn>(.+)[\n]*$/);
 		console.info(bnMatch);
 		if (bnMatch && bnMatch.length > 0) {
@@ -1130,7 +1130,7 @@ export class Flow {
 
 	public bnLink(index: number) {
 		if (this.isbnLink()) {
-			eventHub.$emit('selectBlanch', this, index);
+			eventHub.$emit("selectBlanch", this, index);
 		}
 	}
 }
@@ -1222,10 +1222,10 @@ export namespace Algorithm {
 
 export class PasswordValid {
 	private minLength = 8;
-	pw1 = '';
-	pw2 = '';
+	pw1 = "";
+	pw2 = "";
 	get invalidFeedbackPw() {
-		return '';
+		return "";
 	}
 }
 export class AndyPasswordValidator {
@@ -1233,26 +1233,18 @@ export class AndyPasswordValidator {
 	private scema: any;
 
 	private messageMapper: any = {
-		uppercase: '大文字が含まれていません',
-		min: '文字数が足りません',
-		lowercase: '小文字が含まれていません',
-		symbols: '特殊文字が含まれていません',
-		digits: '数字が含まれていません',
+		uppercase: "大文字が含まれていません",
+		min: "文字数が足りません",
+		lowercase: "小文字が含まれていません",
+		symbols: "特殊文字が含まれていません",
+		digits: "数字が含まれていません",
 	};
 
 	constructor(PasswordValidator: any) {
 		this.requiredScema = new PasswordValidator();
 		this.scema = new PasswordValidator();
 		this.requiredScema.is().min(8);
-		this.scema
-			.has()
-			.uppercase()
-			.has()
-			.lowercase()
-			.has()
-			.symbols()
-			.has()
-			.digits();
+		this.scema.has().uppercase().has().lowercase().has().symbols().has().digits();
 	}
 
 	public valid(text: string) {
@@ -1270,13 +1262,13 @@ export class AndyPasswordValidator {
 	public getValidMessage(text: string) {
 		const requiredValidList = this.requiredScema.validate(text, { list: true });
 		if (requiredValidList.length > 0) {
-			return requiredValidList.map((o: any) => this.messageMapper[o]).join(' ');
+			return requiredValidList.map((o: any) => this.messageMapper[o]).join(" ");
 		}
 		const validList = this.scema.validate(text, { list: true });
 		if (validList.length > 1) {
-			return validList.map((o: any) => this.messageMapper[o]).join(' ');
+			return validList.map((o: any) => this.messageMapper[o]).join(" ");
 		}
-		return '';
+		return "";
 	}
 
 	public getValidMessageList(text: string) {
@@ -1288,7 +1280,7 @@ export class AndyPasswordValidator {
 }
 
 export function Wait(time = 1000) {
-	return new Promise<void>(r => {
+	return new Promise<void>((r) => {
 		setTimeout(() => {
 			r();
 		}, time);

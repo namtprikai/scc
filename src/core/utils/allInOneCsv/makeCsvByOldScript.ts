@@ -1,17 +1,17 @@
 // const fs = require('fs');
 // const csvSync = require('csv-parse/lib/sync');
-import { BotConfig, BotConfigFlow } from './scenario';
-import { TalkScript, RootTalkScript } from './script';
-import csvParser from 'csv-parse';
-import csvPtringify from 'csv-stringify';
+import { BotConfig, BotConfigFlow } from "./scenario";
+import { TalkScript, RootTalkScript } from "./script";
+import csvParser from "csv-parse";
+import csvPtringify from "csv-stringify";
 // import talkScript from '../../components/FaqClientPage/talkScriptApi';
 // import { Scenario } from '../../../products/185/store/modules/scenario';
-const moment = require('moment');
+const moment = require("moment");
 // const talkScript = JSON.parse(fs.readFileSync("./talkScript.json", "utf-8"));
 // const scenario: BotConfig = JSON.parse(fs.readFileSync("./scenario.json", "utf-8"));
 interface RowObject {
 	scenarioId: string;
-	status?: 'published' | 'editing';
+	status?: "published" | "editing";
 	keyWords: Array<string>;
 	leafTitle: string;
 	menu: Array<string>;
@@ -50,7 +50,7 @@ class ScenarioGroup implements ScenarioGroupInterface {
 class ScriptGroup implements ScriptGroupInterface<TalkScript> {
 	constructor(private scriptList: Array<TalkScript>) {}
 	public getMenuListByScenarioId(scenarioId: string): Array<string> {
-		let parentId = '#';
+		let parentId = "#";
 		const retMenuList = [];
 		for (const script of this.scriptList) {
 			if (script.scenario === scenarioId) {
@@ -63,7 +63,7 @@ class ScriptGroup implements ScriptGroupInterface<TalkScript> {
 			return retMenuList;
 		}
 		let flg = true;
-		while (parentId != '#' && flg) {
+		while (parentId != "#" && flg) {
 			flg = false;
 			for (const script of this.scriptList) {
 				if (script.id === parentId) {
@@ -95,12 +95,12 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig) {
 	const rowList: Array<RowObject> = [];
 	for (const flow of scenario.flow.next) {
 		const row: RowObject = {
-			leafTitle: '',
+			leafTitle: "",
 			menu: [],
-			scenarioId: '',
+			scenarioId: "",
 			scenario: [],
 			keyWords: [],
-			updateDate: '',
+			updateDate: "",
 		};
 		row.menu = talkScriptGroup.getMenuListByScenarioId(flow.id);
 		const currentScript = talkScriptGroup.getScriptByScenarioId(flow.id);
@@ -112,7 +112,7 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig) {
 				row.updateDate = `${flow.items.update_date}`;
 			}
 		}
-		console.log('currentScript');
+		console.log("currentScript");
 		console.log(flow.id);
 		console.log(currentScript);
 		// if (flow.condition.type == 'text' && !flow.action.items.is_search) {
@@ -138,37 +138,37 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig) {
 		MaxScenario = Math.max(MaxScenario, row.scenario.length);
 		MaxMenu = Math.max(MaxMenu, row.menu.length);
 	}
-	const csvString = '';
-	csvArray.push(['1', '2', '3']);
+	const csvString = "";
+	csvArray.push(["1", "2", "3"]);
 	for (let i = 0; i < MaxMenu; i++) {
-		csvArray[0].push('4');
+		csvArray[0].push("4");
 	}
-	csvArray[0].push('5');
-	csvArray[0].push('6');
+	csvArray[0].push("5");
+	csvArray[0].push("6");
 	for (let i = 0; i < MaxScenario; i++) {
-		csvArray[0].push('7');
+		csvArray[0].push("7");
 	}
 
 	// let rowIndex=0;
 	for (const row of rowList) {
 		csvArray.push([]);
 
-		csvArray[csvArray.length - 1].push(row.scenarioId.replace(/^s/, ''));
-		csvArray[csvArray.length - 1].push(row.status == 'published' ? '1' : '0');
-		csvArray[csvArray.length - 1].push(moment(row.updateDate).format('YYYY/MM/DD'));
+		csvArray[csvArray.length - 1].push(row.scenarioId.replace(/^s/, ""));
+		csvArray[csvArray.length - 1].push(row.status == "published" ? "1" : "0");
+		csvArray[csvArray.length - 1].push(moment(row.updateDate).format("YYYY/MM/DD"));
 		for (let i = 0; i < MaxMenu; i++) {
-			csvArray[csvArray.length - 1].push(row.menu[i] || '');
+			csvArray[csvArray.length - 1].push(row.menu[i] || "");
 		}
-		csvArray[csvArray.length - 1].push(row.keyWords.join('\n'));
+		csvArray[csvArray.length - 1].push(row.keyWords.join("\n"));
 		csvArray[csvArray.length - 1].push(row.leafTitle);
 		const scenarioPosition = csvArray[csvArray.length - 1].length;
 		for (let i = 0; i < MaxScenario; i++) {
-			csvArray[csvArray.length - 1].push(row.scenario[0][i] || '');
+			csvArray[csvArray.length - 1].push(row.scenario[0][i] || "");
 		}
 		for (let i = 1; i < row.scenario.length; i++) {
 			csvArray.push([]);
 			for (let j = 0; j < scenarioPosition; j++) {
-				csvArray[csvArray.length - 1].push('');
+				csvArray[csvArray.length - 1].push("");
 			}
 			for (let j = 0; j < row.scenario[i].length; j++) {
 				csvArray[csvArray.length - 1].push(row.scenario[i][j]);
@@ -176,7 +176,7 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig) {
 		}
 	}
 	// fs.writeFileSync(`./allinone.csv`, csvArray.map(a => a.map(b => `"${b}"`).join(',')).join('\n'));
-	return await new Promise(r => {
+	return await new Promise((r) => {
 		csvPtringify(csvArray, { quoted: true }, (err, records) => {
 			r(records);
 		});
@@ -192,23 +192,23 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig) {
 				retArray.push([]);
 			}
 			while (retArray[rowCount].length < depth * 2) {
-				retArray[rowCount].push('');
+				retArray[rowCount].push("");
 			}
 
 			// console.log('retArray');
 			// console.table(retArray);
-			let itemTagString = '';
+			let itemTagString = "";
 			for (const [itemKey, itemValue] of Object.entries(sc.items)) {
 				if (itemKey.match(/^log_/) && Array.isArray(itemValue)) {
 					for (const item of itemValue) {
-						itemTagString += `<${itemKey.replace(/_/g, '-')}:${item}>`;
+						itemTagString += `<${itemKey.replace(/_/g, "-")}:${item}>`;
 					}
 				}
 			}
-			retArray[rowCount][depth * 2] = String(sc.text).replace(/<(button|link):.+?>/g, '') + itemTagString;
+			retArray[rowCount][depth * 2] = String(sc.text).replace(/<(button|link):.+?>/g, "") + itemTagString;
 
 			if (depth > 0) {
-				retArray[rowCount][depth * 2 - 1] = String(sc.label).replace(/^\d+\./, '');
+				retArray[rowCount][depth * 2 - 1] = String(sc.label).replace(/^\d+\./, "");
 			}
 			if (!sc.next || sc.next.length == 0) {
 				rowCount += 1;
@@ -216,7 +216,7 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig) {
 		});
 		// }
 		return retArray;
-		function ScenarioCrawler(scenario: BotConfigFlow, fn: (scenario: BotConfigFlow, depth: number) => void, parent = 'root', depth = 0) {
+		function ScenarioCrawler(scenario: BotConfigFlow, fn: (scenario: BotConfigFlow, depth: number) => void, parent = "root", depth = 0) {
 			// const step = scenarioGroup.getStep(scenario.step);
 			// const parentStep = scenarioGroup.getStep(parent);
 			fn(scenario, depth);

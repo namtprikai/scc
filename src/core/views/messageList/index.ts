@@ -1,22 +1,22 @@
-import { getList } from '@/api/table';
-import { MessageList } from '@/api/messageList';
-import { Component, Vue } from 'vue-property-decorator';
-import { MessageListModule } from '@/store/modules/messageList';
-import { UserModule } from '@/store/modules/user';
-import { eventHub } from '@/init/eventHub';
-import { Ajax, MessageObj } from '@/utils/parts';
-import { CLIENT_ID } from '@consoletype/utils/configration';
-import { Message, MessageBox } from 'element-ui';
-import { AdminUserModule } from '@/store/modules/adminUser';
+import { getList } from "@/api/table";
+import { MessageList } from "@/api/messageList";
+import { Component, Vue } from "vue-property-decorator";
+import { MessageListModule } from "@/store/modules/messageList";
+import { UserModule } from "@/store/modules/user";
+import { eventHub } from "@/init/eventHub";
+import { Ajax, MessageObj } from "@/utils/parts";
+import { CLIENT_ID } from "@consoletype/utils/configration";
+import { Message, MessageBox } from "element-ui";
+import { AdminUserModule } from "@/store/modules/adminUser";
 
 // @ts-ignore
 @Component({
 	filters: {
 		statusFilter(status: string) {
 			const statusMap: { [id: string]: string } = {
-				published: 'success',
-				draft: 'gray',
-				deleted: 'danger',
+				published: "success",
+				draft: "gray",
+				deleted: "danger",
 			};
 			return statusMap[status];
 		},
@@ -36,9 +36,9 @@ export default class MessageListCompParent extends Vue {
 
 	tableRowClassName({ row, rowIndex }: any) {
 		if (new Date().getTime() - new Date(row.created_date).getTime() < 1000 * 90) {
-			return 'new-row';
+			return "new-row";
 		}
-		return '';
+		return "";
 	}
 
 	isReplied(message: any) {
@@ -82,7 +82,7 @@ export default class MessageListCompParent extends Vue {
 	}
 
 	protected setCurrentMessage(message: any, e?: Event) {
-		eventHub.$emit('setCurrentMessage', message, this.isHikitugu(message.user, message.id));
+		eventHub.$emit("setCurrentMessage", message, this.isHikitugu(message.user, message.id));
 	}
 
 	hikituguFlg: any = null;
@@ -90,7 +90,7 @@ export default class MessageListCompParent extends Vue {
 		if (this.hikituguFlg !== null && this.hikituguFlg === messageId) {
 			return false;
 		}
-		if (UserModule.Role.size>0) {
+		if (UserModule.Role.size > 0) {
 			try {
 				const { admin_user_id } = user.assignee[0];
 				if (admin_user_id === UserModule.id) {
@@ -107,20 +107,20 @@ export default class MessageListCompParent extends Vue {
 	}
 
 	public deleteMessage(messageId: string) {
-		this.$modal.show('dialog', {
-			title: 'メッセージを非表示にしますか？',
+		this.$modal.show("dialog", {
+			title: "メッセージを非表示にしますか？",
 			buttons: [
 				{
-					title: 'OK',
+					title: "OK",
 					handler: () => {
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 						this.doDelete(messageId);
 					},
 				},
 				{
-					title: 'CANCEL',
+					title: "CANCEL",
 					handler: () => {
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 			],
@@ -130,27 +130,27 @@ export default class MessageListCompParent extends Vue {
 	doDelete(messageId: any) {
 		this.ajax.http({
 			url: `product/${CLIENT_ID}/message/${messageId}/suspend/`,
-			method: 'PATCH',
+			method: "PATCH",
 			data: {},
 		});
 	}
 
 	hikitsugi(message: MessageObj, admin: any) {
 		const adminname = this.getAdminName(admin);
-		this.$modal.show('dialog', {
+		this.$modal.show("dialog", {
 			title: `${adminname}さんが対応中です。引き継ぎますか？`,
 			buttons: [
 				{
-					title: 'OK',
+					title: "OK",
 					handler: () => {
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 						this.dohikitsugi(message);
 					},
 				},
 				{
-					title: 'CANCEL',
+					title: "CANCEL",
 					handler: () => {
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 			],
@@ -172,27 +172,27 @@ export default class MessageListCompParent extends Vue {
 			console.log(AdminUserModule.AdminList);
 			const adminUser = AdminUserModule.AdminList.filter((o: any) => o.id == admin_user_id)[0];
 			if (adminUser) {
-				return adminUser.name + ' ';
+				return adminUser.name + " ";
 			}
 		} catch (e) {
 			console.info(e);
 		}
-		return '';
+		return "";
 	}
 
 	public async setResponse(message: MessageObj) {
 		await this.ajax
 			.http({
 				url: `product/${CLIENT_ID}/message/${message.id}/read`,
-				method: 'PATCH',
+				method: "PATCH",
 			})
 			.then(
 				(res: any) => {
 					if (res.code === 409) {
-						MessageBox.confirm('409エラー', '既に他のユーザーが対応中です', {
-							confirmButtonText: '既に他のユーザーが対応中です',
-							cancelButtonText: '取消',
-							type: 'warning',
+						MessageBox.confirm("409エラー", "既に他のユーザーが対応中です", {
+							confirmButtonText: "既に他のユーザーが対応中です",
+							cancelButtonText: "取消",
+							type: "warning",
 						});
 					} else {
 						MessageList.updateMessage(message.id, {
@@ -200,7 +200,7 @@ export default class MessageListCompParent extends Vue {
 						});
 					}
 				},
-				res => {},
+				(res) => {},
 			);
 		// await MessageList.updateMessage(message.id, { description: "123" });
 		await MessageListModule.getMessageList();

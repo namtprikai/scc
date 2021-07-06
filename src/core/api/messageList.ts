@@ -1,7 +1,7 @@
-import request from '@/utils/request';
-import { CLIENT_ID } from '@consoletype/utils/configration';
-import { AxiosPromise } from 'axios';
-import { Auth } from '@/utils/auth';
+import request from "@/utils/request";
+import { CLIENT_ID } from "@consoletype/utils/configration";
+import { AxiosPromise } from "axios";
+import { Auth } from "@/utils/auth";
 
 export interface SendMessage {
 	user_id: string;
@@ -16,7 +16,7 @@ export interface SearchMessage {
 	page: number;
 	st: string;
 	en: string;
-	owner: 'all' | 'admin' | 'user';
+	owner: "all" | "admin" | "user";
 }
 
 export interface UpdateMessage {
@@ -27,11 +27,11 @@ export interface UpdateMessage {
 
 export namespace MessageList {
 	export const getMessageList = (): Promise<any> =>
-		new Promise(async r => {
+		new Promise(async (r) => {
 			const token = await Auth.getToken();
 			request({
 				url: `product/${CLIENT_ID}/message/unread`,
-				method: 'get',
+				method: "get",
 				headers: {
 					Authorization: token,
 				},
@@ -43,7 +43,7 @@ export namespace MessageList {
 					console.log(res);
 					r({ data: res });
 				})
-				.catch(res => {
+				.catch((res) => {
 					console.log(res);
 					r(res);
 				});
@@ -51,13 +51,13 @@ export namespace MessageList {
 
 	export const sendMessage = async (data: SendMessage, userName: string): Promise<any> => {
 		const token = await Auth.getToken();
-		let apiName = 'line/send_message';
+		let apiName = "line/send_message";
 		if (String(userName).match(/AIChatWindowUser/)) {
-			apiName = 'ai_chat_window/send';
+			apiName = "ai_chat_window/send";
 		}
 		return request({
 			url: `product/${CLIENT_ID}/${apiName}`,
-			method: 'post',
+			method: "post",
 			data: JSON.stringify(data),
 			headers: {
 				Authorization: token,
@@ -69,7 +69,7 @@ export namespace MessageList {
 		const token = await Auth.getToken();
 		return request({
 			url: `product/${CLIENT_ID}/message/${id}`,
-			method: 'patch',
+			method: "patch",
 			data: JSON.stringify(data),
 			headers: {
 				Authorization: token,
@@ -81,7 +81,7 @@ export namespace MessageList {
 		const token = await Auth.getToken();
 		return request({
 			url: `product/${CLIENT_ID}/message/${id}/read`,
-			method: 'patch',
+			method: "patch",
 			headers: {
 				Authorization: token,
 			},
@@ -95,7 +95,7 @@ export namespace MessageList {
 			const { q, limit, page, st, en } = data;
 			const next: any = await request({
 				url: `product/${CLIENT_ID}/search_message`,
-				method: 'get',
+				method: "get",
 				headers: {
 					Authorization: token,
 				},

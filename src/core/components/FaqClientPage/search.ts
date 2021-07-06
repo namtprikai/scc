@@ -1,5 +1,5 @@
-import resource from './resource';
-const { ScriptMatchingManager }: any = require('./libs/qaRetrieval');
+import resource from "./resource";
+const { ScriptMatchingManager }: any = require("./libs/qaRetrieval");
 declare let window: any;
 export class Search {
 	readyPromise: any = null;
@@ -31,7 +31,7 @@ export class Search {
 		if (searchText) {
 			return this.scriptMatchingManager.getSearchResult(this.cleanText(searchText));
 		} else {
-			return ['170', '550', '588', '602', '503'];
+			return ["170", "550", "588", "602", "503"];
 		}
 	}
 }

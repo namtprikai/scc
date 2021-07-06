@@ -1,6 +1,6 @@
-import { TalkScriptResource, ScenarioResource } from './dataResourceFactory';
-import { TalkScript } from './talkScriptApi';
-import { Scenario } from './scenarioApi';
+import { TalkScriptResource, ScenarioResource } from "./dataResourceFactory";
+import { TalkScript } from "./talkScriptApi";
+import { Scenario } from "./scenarioApi";
 // const dataResourceFactory: any = _dataResourceFactory;
 // console.log(dataResourceFactory);
 

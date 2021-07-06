@@ -1,12 +1,12 @@
 export class CSVFact {
-	constructor(private csv = '', private newLineFlag = true) {}
+	constructor(private csv = "", private newLineFlag = true) {}
 
 	public get CSV(): string {
 		return this.csv;
 	}
 
 	public newLine(): void {
-		this.csv += '\n';
+		this.csv += "\n";
 		this.newLineFlag = true;
 	}
 
@@ -17,12 +17,12 @@ export class CSVFact {
 
 	public addNumber(number: number): void {
 		this.addComma();
-		this.csv += `${number !== Infinity ? number : '-'}`;
+		this.csv += `${number !== Infinity ? number : "-"}`;
 	}
 
 	private addComma(): boolean {
 		if (!this.newLineFlag) {
-			this.csv += ',';
+			this.csv += ",";
 			return true;
 		} else {
 			this.newLineFlag = false;
@@ -36,7 +36,7 @@ export type ICSVHeader = ICSVHeaderItem[];
 export interface ICSVHeaderItem {
 	label: string;
 	field: string;
-	type: 'text' | 'number';
+	type: "text" | "number";
 	index?: number;
 }
 
@@ -44,7 +44,7 @@ export class CSVFactPlus {
 	constructor(private header: ICSVHeader, private rows: any[]) {}
 
 	public getCSV(): string {
-		let csv = '';
+		let csv = "";
 		csv += this.createHeader();
 		const cf = new CSVFact();
 		for (let i = 0; i < this.rows.length; i++) {
@@ -52,10 +52,10 @@ export class CSVFactPlus {
 			for (let q = 0; q < this.header.length; q++) {
 				const hi = this.header[q];
 				switch (hi.type) {
-					case 'text':
-						cf.addText(row[hi.field] ?? '');
+					case "text":
+						cf.addText(row[hi.field] ?? "");
 						break;
-					case 'number':
+					case "number":
 						cf.addNumber(hi?.index !== undefined ? row[hi.field][hi.index] : row[hi.field]);
 						break;
 				}

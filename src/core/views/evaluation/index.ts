@@ -1,15 +1,15 @@
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import Tinymce from '@/components/Tinymce/index.vue';
-import InputTag from '@/components/InputTag/index.vue';
-import Synonym from '@/components/Synonym/index.vue';
-import { Ajax, MessageObj, Message, MessageList } from '@/utils/parts';
-import { subsystemUrl, CLIENT_ID, script_logUrl } from '@consoletype/utils/configration';
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import Tinymce from "@/components/Tinymce/index.vue";
+import InputTag from "@/components/InputTag/index.vue";
+import Synonym from "@/components/Synonym/index.vue";
+import { Ajax, MessageObj, Message, MessageList } from "@/utils/parts";
+import { subsystemUrl, CLIENT_ID, script_logUrl } from "@consoletype/utils/configration";
 
-import { TicketModule, ticketMapper, ticketLabelsGenerator, Ticket, RawTicket } from '@/store/modules/ticket';
+import { TicketModule, ticketMapper, ticketLabelsGenerator, Ticket, RawTicket } from "@/store/modules/ticket";
 
-import axios from 'axios';
-import { PublicTicket } from '@/api/publicTicket';
+import axios from "axios";
+import { PublicTicket } from "@/api/publicTicket";
 interface NoscriptMessageObj extends MessageObj {
 	related_messages: Array<any>;
 }
@@ -42,9 +42,7 @@ export default class EvaluationCompParent extends Vue {
 	protected listLoading = false;
 	protected currentLeafs: Array<any> = [];
 	protected submitTimeoutId: any = null;
-	protected startdate = this.$moment()
-		.subtract(1, 'month')
-		.toDate();
+	protected startdate = this.$moment().subtract(1, "month").toDate();
 
 	protected enddate = this.$moment().toDate();
 	is_talkscriptNone = false;
@@ -55,25 +53,17 @@ export default class EvaluationCompParent extends Vue {
 
 	public async getMessages() {
 		this.listLoading = true;
-		const st = this.$moment(this.startdate)
-			.subtract(1, 'days')
-			.format('YYYY-MM-DD');
-		const en = this.$moment(this.enddate)
-			.add(1, 'days')
-			.format('YYYY-MM-DD');
+		const st = this.$moment(this.startdate).subtract(1, "days").format("YYYY-MM-DD");
+		const en = this.$moment(this.enddate).add(1, "days").format("YYYY-MM-DD");
 		const { startdate, enddate } = this;
 		this.listLoading = true;
 		await TicketModule.getTicket({
 			st,
 			en,
-			startdate: this.$moment(startdate)
-				.startOf('day')
-				.toDate(),
-			enddate: this.$moment(enddate)
-				.endOf('day')
-				.toDate(),
+			startdate: this.$moment(startdate).startOf("day").toDate(),
+			enddate: this.$moment(enddate).endOf("day").toDate(),
 		});
-		this.message = TicketModule.Ticket.filter((o: any) => /none/gi.test(o.script_id) && o.is_processed == '0');
+		this.message = TicketModule.Ticket.filter((o: any) => /none/gi.test(o.script_id) && o.is_processed == "0");
 		this.listLoading = false;
 		// this.ajax
 		// 	.http({
@@ -111,11 +101,11 @@ export default class EvaluationCompParent extends Vue {
 
 	public done2(item: any) {
 		console.log(item);
-		item = Object.assign({}, item || {}, { is_processed: '1' });
+		item = Object.assign({}, item || {}, { is_processed: "1" });
 		axios({
 			url: `${subsystemUrl}/product/${CLIENT_ID}/public-ticket`,
 			headers: {},
-			method: 'post',
+			method: "post",
 			data: {
 				values: item,
 			},
@@ -124,7 +114,7 @@ export default class EvaluationCompParent extends Vue {
 				console.log(res);
 				this.getMessages();
 			},
-			res => {
+			(res) => {
 				console.log(res);
 			},
 		);

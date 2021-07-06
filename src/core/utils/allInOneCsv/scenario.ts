@@ -16,7 +16,7 @@ export interface BotConfigFlow {
 export interface BotConfig {
 	title: string;
 	description: string;
-	flow: { step: 'init'; next: Array<BotConfigFlow> };
+	flow: { step: "init"; next: Array<BotConfigFlow> };
 }
 export namespace OldSearchScenario {
 	export interface IScenarioState {
@@ -34,8 +34,8 @@ export namespace OldSearchScenario {
 		items?: { [log: string]: Array<any> | any };
 		title: string;
 		text: string;
-    options: Array<{ value: string }> | null;
-    scenarioId: string;
+		options: Array<{ value: string }> | null;
+		scenarioId: string;
 	}
 	export interface Scenario {
 		id: string;
@@ -58,7 +58,7 @@ export namespace OldScenario {
 		title: string;
 		value: string;
 		step: string;
-		condition: { value: string; type: 'number' | 'string' | 'or' };
+		condition: { value: string; type: "number" | "string" | "or" };
 		next: Array<BotConfigFlow>;
 	}
 	export interface BotConfigStep {
@@ -73,7 +73,7 @@ export namespace OldScenario {
 			description: string;
 			steps: { [id: string]: BotConfigStep };
 			flow: {
-				root: { step: 'init'; next: Array<BotConfigFlow> };
+				root: { step: "init"; next: Array<BotConfigFlow> };
 			};
 		};
 	}
