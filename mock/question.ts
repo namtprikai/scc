@@ -10,6 +10,7 @@ import {
 import { productions } from "./products";
 import { getAdminByToken } from "./admins";
 import { deleteQuestionKeywordsByQuestionId } from "./question_keywords";
+import { getId } from "./utils";
 export let questions: Array<IQuestionData> = [
 	{
 		id: 0,
@@ -61,6 +62,34 @@ const Questions = secureObjectCreateByAdmin<IQuestionData>(
 		return products;
 	}
 );
+export const addQuestion = (req: Request, res: IAPIResponce): Response => {
+	const { title, config, label, is_public } = req.body;
+	const accessToken = req.header("Authorization") || "";
+	const admin = getAdminByToken(accessToken);
+	if (admin) {
+		const newId = getId(questions);
+		const question = {
+			id: newId,
+			label,
+			config,
+			title,
+			is_public,
+			created: new Date(),
+			modified: new Date(),
+		};
+		questions.push(question);
+		return res.json({
+			status: 20000,
+			data: question
+		});
+	}
+	return res.status(400).json({
+		status: 50004,
+		data: {
+			errors: [{ status: "forbidden_error" }],
+		},
+	});
+};
 export const getQuestionList = (req: Request, res: IAPIResponce): Response => {
 	const { category_id, text } = req.params;
 	const accessToken = req.header("Authorization") || "";
