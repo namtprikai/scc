@@ -9,7 +9,7 @@
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint --fix",
     "icon": "vsvg -s ./src/core/icons/svg -t ./src/core/icons/components --ext ts --es6",
-    "lintes": "eslint --fix .",
+    "lintes": "eslint --fix . --silent",
     "mock": "cd mock && ts-node-dev mock-server.ts",
     "start": "vue-cli-service serve",
     "test": "yarn test:unit",
