@@ -20,12 +20,12 @@
 </style>
 
 <script lang="ts">
-import WrapMessage from '@/components/WrapMessage/index.vue';
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import Tinymce from '@/components/Tinymce/index.vue';
-import InputTag from '@/components/InputTag/index.vue';
-import Synonym from '@/components/Synonym/index.vue';
-import AllInOneEditorCompParent from '@/views/allInOneEditor';
+import WrapMessage from "@/components/WrapMessage/index.vue";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import Tinymce from "@/components/Tinymce/index.vue";
+import InputTag from "@/components/InputTag/index.vue";
+import Synonym from "@/components/Synonym/index.vue";
+import AllInOneEditorCompParent from "@/views/allInOneEditor";
 import AnsewerEditor from "@/components/AnsewerEditor/index.vue";
 // @ts-ignore
 @Component({

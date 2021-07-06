@@ -17,18 +17,18 @@
 	</div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
+import { Component, Vue, Watch, Prop } from "vue-property-decorator";
 // import { apiUrl, scriptUrl, CLIENT_ID } from "@consoletype/utils/configration";
 // import { UpdateServer } from "@/api/updateServer";
 // import { EditModule } from "@/store/modules/edit";
 // import { Ajax } from "@/utils/parts";
 // import { clearTimeout, setTimeout, clearInterval, setInterval } from "timers";
-import { eventHub } from '@/init/eventHub';
+import { eventHub } from "@/init/eventHub";
 // @ts-ignore
 @Component
 export default class UploadModal extends Vue {
 	close() {
-		eventHub.$emit('BoxModalClose');
+		eventHub.$emit("BoxModalClose");
 	}
 }
 </script>
@@ -96,7 +96,7 @@ $modalTopMargin: 20px;
 	}
 	&__contents {
 		overflow: auto;
-    min-height: $imageHeight;
+		min-height: $imageHeight;
 		max-height: calc(
 			100vh - #{$modalTopMargin + $imageHeight + $headerHeight + 50px}
 		);

@@ -3,11 +3,18 @@ import Vuex from "vuex";
 // import dataResource from '../dataResource';
 import { DataResource } from "../dataResource";
 import store from "@/store";
-import { VuexModule, Module, MutationAction, Mutation, Action, getModule } from "vuex-module-decorators";
+import {
+	VuexModule,
+	Module,
+	MutationAction,
+	Mutation,
+	Action,
+	getModule,
+} from "vuex-module-decorators";
 // import { eventHub } from '@/init/eventHub';
 /* eslint-disable */
 // Vue.use(Vuex);
-@Module({ dynamic: true, store, name: 'navigationStore', namespaced: true })
+@Module({ dynamic: true, store, name: "navigationStore", namespaced: true })
 class navigationStore extends VuexModule {
 	[x: string]: any;
 	dataResource: DataResource = new DataResource();
@@ -15,10 +22,10 @@ class navigationStore extends VuexModule {
 	eventHub: any = {};
 	routes: any[] = [
 		{
-			componentName: 'ResourceList',
-			resourceName: 'talkScript',
-			talkScriptId: '#',
-			viewType: 'talkScript',
+			componentName: "ResourceList",
+			resourceName: "talkScript",
+			talkScriptId: "#",
+			viewType: "talkScript",
 			// parentViewType: 'talkScript',
 		},
 	];
@@ -31,7 +38,7 @@ class navigationStore extends VuexModule {
 		console.log(scriptPackage);
 		this.dataResource.setDataResource(scriptPackage);
 	}
-	@Action({ commit: 'SET_DATA_RESOURCE' })
+	@Action({ commit: "SET_DATA_RESOURCE" })
 	setDataResource(scriptPackage: any) {
 		return scriptPackage;
 	}
@@ -50,19 +57,19 @@ class navigationStore extends VuexModule {
 			this.index = index;
 		}
 	}
-	@Action({ commit: 'movePositionTo' })
+	@Action({ commit: "movePositionTo" })
 	movePositionBy(relative: any): any {
 		console.log(this.Index);
 		return navigationStoreModule.Index + relative;
 	}
-	@MutationAction({ mutate: ['routes', 'index'] })
+	@MutationAction({ mutate: ["routes", "index"] })
 	setRoutes(routes: any): any {
 		console.log(routes);
 		if (
 			this.dataResource &&
 			this.dataResource.isEquals({ a: this.routes, b: routes })
 		) {
-			console.log('cancel navigation routes update');
+			console.log("cancel navigation routes update");
 			return;
 		}
 		return {
@@ -70,18 +77,18 @@ class navigationStore extends VuexModule {
 			index: routes.length - 2,
 		};
 	}
-	@MutationAction({ mutate: ['eventHub'] })
+	@MutationAction({ mutate: ["eventHub"] })
 	setEventHub(eventHub: any): any {
 		return { eventHub };
 	}
 	@Mutation
 	hoge() {
-		console.log('hoge');
+		console.log("hoge");
 	}
 	@Mutation
 	SETROUTES_BY_SCRIPTID(scriptId: string) {}
 	@Action({
-		commit: 'SETROUTES_BY_SCRIPTID',
+		commit: "SETROUTES_BY_SCRIPTID",
 	})
 	setScriptById(scriptId: string) {
 		// dataResource.getList();
@@ -90,23 +97,23 @@ class navigationStore extends VuexModule {
 	@Mutation
 	setResultScript(route: any) {
 		this.eventHub.$emit(
-			'setResultScript',
-			Object.assign({}, route, { query: '-', routes: this.routes }),
+			"setResultScript",
+			Object.assign({}, route, { query: "-", routes: this.routes })
 		);
 	}
 	// indexの次の位置で開く
-	@MutationAction({ mutate: ['routes', 'index'] })
+	@MutationAction({ mutate: ["routes", "index"] })
 	open({ route, index }: any): any {
 		const getters: any = this.getters;
 		console.log(getters.Routes);
 		let routes = [];
 		console.log(route.viewType);
-		if (route.viewType == 'scenario') {
+		if (route.viewType == "scenario") {
 			routes = getters.Routes.slice(0, index + 1).concat([route]);
-			this.commit('setResultScript', route);
-		} else if (route.viewType == 'result') {
+			this.commit("setResultScript", route);
+		} else if (route.viewType == "result") {
 			routes = getters.Routes.slice(0, index + 1).concat([route]);
-			this.commit('setResultScript', route);
+			this.commit("setResultScript", route);
 		} else {
 			routes = getters.Routes.slice(0, index + 1).concat([route]);
 			index = index + 1;

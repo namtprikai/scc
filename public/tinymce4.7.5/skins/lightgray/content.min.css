@@ -67,7 +67,7 @@ th {
 	line-height: 0;
 	border: 1px solid gray;
 }
-.mce-preview-object[data-mce-selected='2'] .mce-shim {
+.mce-preview-object[data-mce-selected="2"] .mce-shim {
 	display: none;
 }
 .mce-preview-object .mce-shim {
@@ -145,7 +145,7 @@ figure.image figcaption {
 	background: #aaa;
 }
 .mce-shy::after {
-	content: '-';
+	content: "-";
 }
 .mce-match-marker {
 	background: #aaa;
@@ -176,16 +176,16 @@ th[data-mce-selected] {
 .mce-edit-focus {
 	outline: 1px dotted #333;
 }
-.mce-content-body *[contentEditable='false'] *[contentEditable='true']:focus {
+.mce-content-body *[contentEditable="false"] *[contentEditable="true"]:focus {
 	outline: 2px solid #2276d2;
 }
-.mce-content-body *[contentEditable='false'] *[contentEditable='true']:hover {
+.mce-content-body *[contentEditable="false"] *[contentEditable="true"]:hover {
 	outline: 2px solid #2276d2;
 }
-.mce-content-body *[contentEditable='false'][data-mce-selected] {
+.mce-content-body *[contentEditable="false"][data-mce-selected] {
 	outline: 2px solid #2276d2;
 }
-.mce-content-body *[data-mce-selected='inline-boundary'] {
+.mce-content-body *[data-mce-selected="inline-boundary"] {
 	background: #bfe6ff;
 }
 .mce-content-body .mce-item-anchor[data-mce-selected] {

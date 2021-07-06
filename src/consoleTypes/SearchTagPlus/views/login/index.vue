@@ -1,24 +1,50 @@
 <template>
 	<div class="login-container">
-		<el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+		<el-form
+			ref="loginForm"
+			:model="loginForm"
+			:rules="loginRules"
+			class="login-form"
+			auto-complete="on"
+			label-position="left"
+		>
 			<h3 class="title">SAI CONSOLE</h3>
 			<el-form-item prop="username">
 				<span class="svg-container">
 					<svg-icon name="user" />
 				</span>
-				<el-input v-model="loginForm.username" name="username" type="text" auto-complete="on" placeholder="username" />
+				<el-input
+					v-model="loginForm.username"
+					name="username"
+					type="text"
+					auto-complete="on"
+					placeholder="username"
+				/>
 			</el-form-item>
 			<el-form-item prop="password">
 				<span class="svg-container">
 					<svg-icon name="password" />
 				</span>
-				<el-input :type="pwdType" v-model="loginForm.password" name="password" auto-complete="on" placeholder="password" @keyup.enter.native="handleLogin" />
+				<el-input
+					:type="pwdType"
+					v-model="loginForm.password"
+					name="password"
+					auto-complete="on"
+					placeholder="password"
+					@keyup.enter.native="handleLogin"
+				/>
 				<span class="show-pwd" @click="showPwd">
 					<svg-icon :name="pwdType === 'password' ? 'eye-off' : 'eye-on'" />
 				</span>
 			</el-form-item>
 			<el-form-item>
-				<el-button :loading="loading" type="primary" style="width: 100%" @click.native.prevent="handleLogin">Sign in</el-button>
+				<el-button
+					:loading="loading"
+					type="primary"
+					style="width: 100%"
+					@click.native.prevent="handleLogin"
+					>Sign in</el-button
+				>
 			</el-form-item>
 
 			<div class="tips">
@@ -32,24 +58,24 @@
 </template>
 
 <script lang="ts">
-import { isValidUsername } from '@/utils/validate';
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { UserModule } from '@/store/modules/user';
-import { Route } from 'vue-router';
-import { ElForm } from 'element-ui/types/form';
-import { eventHub } from '@/init/eventHub';
-import Forgotpw from '@/components/forgotpw/index.vue';
-import { Ajax, Wait } from '@/utils/parts';
+import { isValidUsername } from "@/utils/validate";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { UserModule } from "@/store/modules/user";
+import { Route } from "vue-router";
+import { ElForm } from "element-ui/types/form";
+import { eventHub } from "@/init/eventHub";
+import Forgotpw from "@/components/forgotpw/index.vue";
+import { Ajax, Wait } from "@/utils/parts";
 const validateUsername = (rule: any, value: string, callback: any) => {
 	if (!isValidUsername(value)) {
-		callback(new Error('ユーザー名が正しくありません'));
+		callback(new Error("ユーザー名が正しくありません"));
 	} else {
 		callback();
 	}
 };
 const validatePass = (rule: any, value: string, callback: any) => {
 	if (value.length < 5) {
-		callback(new Error('パスワードが不正です'));
+		callback(new Error("パスワードが不正です"));
 	} else {
 		callback();
 	}
@@ -64,22 +90,22 @@ const validatePass = (rule: any, value: string, callback: any) => {
 export default class Login extends Vue {
 	is_forgot = false;
 	private loginForm = {
-		username: '',
-		password: '',
+		username: "",
+		password: "",
 	};
 
 	private loginRules = {
-		username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-		password: [{ required: true, trigger: 'blur', validator: validatePass }],
+		username: [{ required: true, trigger: "blur", validator: validateUsername }],
+		password: [{ required: true, trigger: "blur", validator: validatePass }],
 	};
 
 	private loading = false;
-	private pwdType = 'password';
+	private pwdType = "password";
 	private redirect: string | undefined = undefined;
 
-	@Watch('$route', { immediate: true })
+	@Watch("$route", { immediate: true })
 	private OnRouteChange(route: Route) {
-		console.log('routechange');
+		console.log("routechange");
 		// TODO: remove the "as string" hack after v4 release for vue-router
 		// See https://github.com/vuejs/vue-router/pull/2050 for details
 		this.redirect = route.query && (route.query.redirect as string);
@@ -90,10 +116,10 @@ export default class Login extends Vue {
 	}
 
 	private showPwd() {
-		if (this.pwdType === 'password') {
-			this.pwdType = '';
+		if (this.pwdType === "password") {
+			this.pwdType = "";
 		} else {
-			this.pwdType = 'password';
+			this.pwdType = "password";
 		}
 	}
 
@@ -103,14 +129,14 @@ export default class Login extends Vue {
 			if (valid) {
 				this.loading = true;
 				UserModule.Login(this.loginForm)
-					.then(async() => {
+					.then(async () => {
 						this.loading = false;
 						await Wait(500);
-						eventHub.$emit('loginAfterInit');
+						eventHub.$emit("loginAfterInit");
 						await Wait(500);
-						this.$router.push({ path: this.redirect || '/' });
+						this.$router.push({ path: this.redirect || "/" });
 					})
-					.catch(e => {
+					.catch((e) => {
 						console.log(e);
 						this.loading = false;
 					});
@@ -133,7 +159,7 @@ export default class Login extends Vue {
 </script>
 
 <style lang="scss">
-@import 'src/core/styles/variables.scss';
+@import "src/core/styles/variables.scss";
 
 .login-container {
 	.el-input {
@@ -154,7 +180,7 @@ export default class Login extends Vue {
 </style>
 
 <style lang="scss" scoped>
-@import 'src/core/styles/variables.scss';
+@import "src/core/styles/variables.scss";
 .forgotButton {
 	cursor: pointer;
 }

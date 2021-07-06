@@ -31,11 +31,11 @@
 // import { getToken } from 'api/qiniu'
 
 export default {
-	name: 'EditorSlideUpload',
+	name: "EditorSlideUpload",
 	props: {
 		color: {
 			type: String,
-			default: '#1890ff',
+			default: "#1890ff",
 		},
 	},
 	data() {
@@ -47,15 +47,19 @@ export default {
 	},
 	methods: {
 		checkAllSuccess() {
-			return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess);
+			return Object.keys(this.listObj).every(
+				(item) => this.listObj[item].hasSuccess
+			);
 		},
 		handleSubmit() {
-			const arr = Object.keys(this.listObj).map(v => this.listObj[v]);
+			const arr = Object.keys(this.listObj).map((v) => this.listObj[v]);
 			if (!this.checkAllSuccess()) {
-				this.$message('请等待所有图片上传成功 或 出现了网络问题，请刷新页面重新上传！');
+				this.$message(
+					"请等待所有图片上传成功 或 出现了网络问题，请刷新页面重新上传！"
+				);
 				return;
 			}
-			this.$emit('successCBK', arr);
+			this.$emit("successCBK", arr);
 			this.listObj = {};
 			this.fileList = [];
 			this.dialogVisible = false;
@@ -89,7 +93,7 @@ export default {
 			return new Promise((resolve, reject) => {
 				const img = new Image();
 				img.src = _URL.createObjectURL(file);
-				img.onload = function() {
+				img.onload = function () {
 					_self.listObj[fileName] = {
 						hasSuccess: false,
 						uid: file.uid,

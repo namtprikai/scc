@@ -1,6 +1,10 @@
 <template>
 	<div class="navbar">
-		<hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container" />
+		<hamburger
+			:toggle-click="toggleSideBar"
+			:is-active="sidebar.opened"
+			class="hamburger-container"
+		/>
 		<!-- <breadcrumb/> -->
 		<router-link class="inlineBlock" to="/">
 			<div class="logo header__logo"></div>
@@ -21,9 +25,23 @@
 		<div class="controlButtons">
 			<div class="relative">
 				<div class="controlButtons__inner">
-					<b-button size="sm" class="controlButtons__item" @click="devPage" v-if="isDevPage()">テストページ</b-button>
-					<b-button size="sm" variant="primary" class="controlButtons__item" @click="prodPage">本番ページ</b-button>
-					<b-button size="sm" class="controlButtons__item" @click="logout">ログアウト</b-button>
+					<b-button
+						size="sm"
+						class="controlButtons__item"
+						@click="devPage"
+						v-if="isDevPage()"
+						>テストページ</b-button
+					>
+					<b-button
+						size="sm"
+						variant="primary"
+						class="controlButtons__item"
+						@click="prodPage"
+						>本番ページ</b-button
+					>
+					<b-button size="sm" class="controlButtons__item" @click="logout"
+						>ログアウト</b-button
+					>
 				</div>
 			</div>
 		</div>
@@ -46,18 +64,18 @@
 </template>
 
 <script lang="ts">
-import Breadcrumb from '@/components/Breadcrumb/index.vue';
-import Hamburger from '@/components/Hamburger/index.vue';
-import { Component, Vue } from 'vue-property-decorator';
-import { AppModule } from '@/store/modules/app';
-import { UserModule } from '@/store/modules/user';
+import Breadcrumb from "@/components/Breadcrumb/index.vue";
+import Hamburger from "@/components/Hamburger/index.vue";
+import { Component, Vue } from "vue-property-decorator";
+import { AppModule } from "@/store/modules/app";
+import { UserModule } from "@/store/modules/user";
 
-import { CLIENT_ID } from '../../../utils/configration';
-import { Ajax } from '@/utils/parts';
-import { url } from 'inspector';
-import axios from 'axios';
-import { eventHub } from '@/init/eventHub';
-import { WindowTestPageUrl, WindowPageUrl } from '../../../config';
+import { CLIENT_ID } from "../../../utils/configration";
+import { Ajax } from "@/utils/parts";
+import { url } from "inspector";
+import axios from "axios";
+import { eventHub } from "@/init/eventHub";
+import { WindowTestPageUrl, WindowPageUrl } from "../../../config";
 // @ts-ignore
 @Component({
 	components: {
@@ -75,8 +93,8 @@ export default class Navbar extends Vue {
 		return `https://file.ai-x-supporter.com/${CLIENT_ID}/${UserModule.id}.gif`;
 	}
 
-	oshirase = '';
-	link = '';
+	oshirase = "";
+	link = "";
 	get Oshirase() {
 		return this.oshirase;
 	}
@@ -91,43 +109,46 @@ export default class Navbar extends Vue {
 			this.updateOshirase();
 		}, 1000 * 60 * 15);
 		this.updateOshirase();
-		eventHub.$on('updateoshirase', this.setOshirase);
+		eventHub.$on("updateoshirase", this.setOshirase);
 	}
 
 	public prodPage() {
-		window.open(`${WindowPageUrl}`, '_blank');
+		window.open(`${WindowPageUrl}`, "_blank");
 	}
 
 	public isDevPage(): boolean {
-		return WindowTestPageUrl !== '';
+		return WindowTestPageUrl !== "";
 	}
 
 	public devPage() {
-		window.open(`${WindowTestPageUrl}`, '_blank');
+		window.open(`${WindowTestPageUrl}`, "_blank");
 	}
 
 	setOshirase({ text, link }: any) {
-		this.oshirase = text || '';
-		this.link = link || '';
+		this.oshirase = text || "";
+		this.link = link || "";
 	}
 
 	destroy() {
 		if (this.updateOshiraseId != null) {
 			clearInterval(this.updateOshiraseId);
 		}
-		eventHub.$off('updateoshirase', this.setOshirase);
+		eventHub.$off("updateoshirase", this.setOshirase);
 	}
 
 	async updateOshirase() {
 		try {
-			const { data } = await axios.get(`https://file.ai-x-supporter.com/${CLIENT_ID}/oshirase.json`, {
-				params: {
-					h: Date.now(),
-				},
-			});
+			const { data } = await axios.get(
+				`https://file.ai-x-supporter.com/${CLIENT_ID}/oshirase.json`,
+				{
+					params: {
+						h: Date.now(),
+					},
+				}
+			);
 			console.log(data);
-			this.oshirase = data.text || '';
-			this.link = data.link || '';
+			this.oshirase = data.text || "";
+			this.link = data.link || "";
 			// this.$forceUpdate();
 		} catch (e) {}
 	}
@@ -151,7 +172,7 @@ export default class Navbar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '@consoletype/styles/_variables.scss';
+@import "@consoletype/styles/_variables.scss";
 $navHeight: 50px;
 .relative {
 	position: relative;

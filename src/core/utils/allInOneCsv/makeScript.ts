@@ -1,16 +1,27 @@
 // const fs = require('fs');
 // const csvSync = require('csv-parse/lib/sync');
-import { BotConfig, BotConfigFlow, OldScenario, OldSearchScenario } from "./scenario";
+import {
+	BotConfig,
+	BotConfigFlow,
+	OldScenario,
+	OldSearchScenario,
+} from "./scenario";
 import { TalkScript, RootTalkScript } from "./script";
 import _ from "lodash";
 import { valueAndGrad } from "@tensorflow/tfjs";
 import { v4 } from "uuid";
 export function GetRootMenu(talkScript: Array<TalkScript>) {
-	return talkScript.filter((t) => t.parent === "#" && t.text !== OTHER_TEXT && t.status !== "editing").map((t) => t.text);
+	return talkScript
+		.filter(
+			(t) => t.parent === "#" && t.text !== OTHER_TEXT && t.status !== "editing"
+		)
+		.map((t) => t.text);
 }
 export function CleanRegExp(item: string): string {
 	// if(item instanceof String){
-	return item.replace(/[\[\\\^\$\|\*\+\(\)\]]/g, (m: string) => String.fromCharCode(m.charCodeAt(0) + 0xfee0));
+	return item.replace(/[\[\\\^\$\|\*\+\(\)\]]/g, (m: string) =>
+		String.fromCharCode(m.charCodeAt(0) + 0xfee0)
+	);
 	// }else if(item!=null){
 	// 	for(let [key,value] of Object.entries(item)){
 	// 	if(typeof item ==="string"){
@@ -42,9 +53,12 @@ function AutoScriptLogTag(TalkScript: Array<TalkScript>) {
 					{
 						log_faq_title: script.type == "leaf" ? [script.text] : [],
 					},
-					addItems,
+					addItems
 				);
-				if ("scenario_id" in script.items && !Array.isArray(script.items.scenario_id)) {
+				if (
+					"scenario_id" in script.items &&
+					!Array.isArray(script.items.scenario_id)
+				) {
 					script.items.log_scenario = [script.items.scenario_id];
 					script.items.log_faq = [script.items.scenario_id];
 				}
@@ -52,7 +66,12 @@ function AutoScriptLogTag(TalkScript: Array<TalkScript>) {
 		}
 	}
 	return talkScript;
-	function _croler(script: TalkScript, scriptList: Array<TalkScript>, parents: Array<TalkScript> = [], fn: (t: TalkScript, parents: Array<TalkScript>) => void) {
+	function _croler(
+		script: TalkScript,
+		scriptList: Array<TalkScript>,
+		parents: Array<TalkScript> = [],
+		fn: (t: TalkScript, parents: Array<TalkScript>) => void
+	) {
 		fn(script, parents);
 		for (const s of scriptList) {
 			if (s.parent === script.id) {
@@ -61,7 +80,13 @@ function AutoScriptLogTag(TalkScript: Array<TalkScript>) {
 		}
 	}
 }
-function AutoBotLogTag({ TalkScript, BotConfig }: { TalkScript: Array<TalkScript>; BotConfig: BotConfig }): BotConfig {
+function AutoBotLogTag({
+	TalkScript,
+	BotConfig,
+}: {
+	TalkScript: Array<TalkScript>;
+	BotConfig: BotConfig;
+}): BotConfig {
 	const botConfig: BotConfig = JSON.parse(JSON.stringify(BotConfig));
 	const flow = botConfig.flow;
 	console.log(flow);
@@ -99,7 +124,10 @@ function AutoBotLogTag({ TalkScript, BotConfig }: { TalkScript: Array<TalkScript
 		const scenarioId = rFlow.id;
 		search(
 			rFlow,
-			(flow: BotConfigFlow, parents: Array<{ position: number; flow: any; nextFlow?: any }>) => {
+			(
+				flow: BotConfigFlow,
+				parents: Array<{ position: number; flow: any; nextFlow?: any }>
+			) => {
 				let logName = `${scenarioId}`;
 				if (parents.map((o, index) => index).filter((o, i) => i !== 0).length > 0) {
 					logName = `${scenarioId}-${parents
@@ -110,19 +138,29 @@ function AutoBotLogTag({ TalkScript, BotConfig }: { TalkScript: Array<TalkScript
 				const stepKey = flow.id;
 				if (scenarioId in linkScriptMap) {
 					const scriptList = linkScriptMap[scenarioId];
-					flow.items = Object.assign({}, scriptList[scriptList.length - 1].items || {}, flow.items || {}, {
-						log_scenario: [logName],
-						log_faq: [
-							scenarioId, // scriptList[scriptList.length - 1].id
-						],
-						log_faq_parent_category: [scriptList[0].text],
-						log_faq_child_category: [scriptList[1].text],
-						log_faq_title: scriptList.length > 2 ? [scriptList[scriptList.length - 1].text] : [],
-					});
+					flow.items = Object.assign(
+						{},
+						scriptList[scriptList.length - 1].items || {},
+						flow.items || {},
+						{
+							log_scenario: [logName],
+							log_faq: [
+								scenarioId, // scriptList[scriptList.length - 1].id
+							],
+							log_faq_parent_category: [scriptList[0].text],
+							log_faq_child_category: [scriptList[1].text],
+							log_faq_title:
+								scriptList.length > 2 ? [scriptList[scriptList.length - 1].text] : [],
+						}
+					);
 					// console.log(new Date(parseInt(flow.items.update_date,10)));
 					//
 				} else if (flow.items?.is_category) {
-					const logMapper = ["log_faq_parent_category", "log_faq_child_category", "log_faq_title"];
+					const logMapper = [
+						"log_faq_parent_category",
+						"log_faq_child_category",
+						"log_faq_title",
+					];
 					let log: any = {};
 					const script = TalkScript.find((s) => s.id === flow.items.link_script_id);
 					if (script) {
@@ -139,12 +177,16 @@ function AutoBotLogTag({ TalkScript, BotConfig }: { TalkScript: Array<TalkScript
 					});
 				}
 			},
-			[{ position: count, flow: rFlow }],
+			[{ position: count, flow: rFlow }]
 		);
 		count++;
 	}
 
-	function search(flow: any, fn: Function, parents: Array<{ position: number; flow: any; nextFlow?: any }> = []) {
+	function search(
+		flow: any,
+		fn: Function,
+		parents: Array<{ position: number; flow: any; nextFlow?: any }> = []
+	) {
 		fn(flow, parents);
 		let count = 0;
 		for (const nextFlow of flow.next) {
@@ -164,7 +206,11 @@ function AutoBotLogTag({ TalkScript, BotConfig }: { TalkScript: Array<TalkScript
  * @param  {BotConfig} 新フォーマット
  * @returns OldSearchScenario　旧フォーマット
  */
-export function changeOldSearchConfig(_botConfig: BotConfig, talkScript: Array<TalkScript>, tagFlg = true): Array<OldSearchScenario.Scenario> {
+export function changeOldSearchConfig(
+	_botConfig: BotConfig,
+	talkScript: Array<TalkScript>,
+	tagFlg = true
+): Array<OldSearchScenario.Scenario> {
 	const botConfig: BotConfig = _.cloneDeep(_botConfig);
 	const scenarioList: Array<OldSearchScenario.Scenario> = [];
 	for (const next of botConfig.flow.next) {
@@ -183,7 +229,10 @@ export function changeOldSearchConfig(_botConfig: BotConfig, talkScript: Array<T
 		let oneflg = false;
 		if (talkScript) {
 			for (const t of talkScript) {
-				if ((t.scenario && t.scenario === next.id) || (t.items && t.items.scenario_id === next.id)) {
+				if (
+					(t.scenario && t.scenario === next.id) ||
+					(t.items && t.items.scenario_id === next.id)
+				) {
 					t.value = next.text;
 					if (Object.keys(oldScenarioConfig.step).length <= 1) {
 						delete t.scenario;
@@ -206,8 +255,12 @@ export function changeOldSearchConfig(_botConfig: BotConfig, talkScript: Array<T
 		}
 	}
 	return scenarioList;
-	function convertFlow(_flows: Array<BotConfigFlow>): Array<OldSearchScenario.ScenarioFlow> {
-		const flow: Array<OldSearchScenario.ScenarioFlow> = JSON.parse(JSON.stringify(_flows));
+	function convertFlow(
+		_flows: Array<BotConfigFlow>
+	): Array<OldSearchScenario.ScenarioFlow> {
+		const flow: Array<OldSearchScenario.ScenarioFlow> = JSON.parse(
+			JSON.stringify(_flows)
+		);
 		cloler(flow);
 		return flow;
 		function cloler(_flow: Array<any>, parentFlow?: any, deep = 0) {
@@ -234,13 +287,22 @@ export function changeOldSearchConfig(_botConfig: BotConfig, talkScript: Array<T
 			}
 		}
 	}
-	function getStepByFlow(flows: Array<BotConfigFlow>, scenarioId: string): { [id: string]: OldSearchScenario.ScenarioStep } {
+	function getStepByFlow(
+		flows: Array<BotConfigFlow>,
+		scenarioId: string
+	): { [id: string]: OldSearchScenario.ScenarioStep } {
 		const step: { [id: string]: OldSearchScenario.ScenarioStep } = {};
 		cloler(flows);
 		return step;
-		function cloler(_flow: Array<BotConfigFlow>, parentFlow?: BotConfigFlow, deep = 0) {
+		function cloler(
+			_flow: Array<BotConfigFlow>,
+			parentFlow?: BotConfigFlow,
+			deep = 0
+		) {
 			for (const __flow of _flow) {
-				const buttonString = __flow.next.map((o: any, i: number) => `<button:${i + 1}.${String(o.label)}>`).join("");
+				const buttonString = __flow.next
+					.map((o: any, i: number) => `<button:${i + 1}.${String(o.label)}>`)
+					.join("");
 				let title = "";
 				if (Array.isArray(__flow.items?.log_faq_title)) {
 					title = __flow.items.log_faq_title[0];
@@ -274,7 +336,9 @@ export function changeOldSearchConfig(_botConfig: BotConfig, talkScript: Array<T
  * @param  {BotConfig} 新フォーマット
  * @returns OldScenario　旧フォーマット
  */
-export function changeOldBotConfig(_botConfig: BotConfig): OldScenario.BotConfig {
+export function changeOldBotConfig(
+	_botConfig: BotConfig
+): OldScenario.BotConfig {
 	const botConfig: BotConfig = _.cloneDeep(_botConfig);
 	const oldBotConfig: OldScenario.BotConfig = {
 		scenario: {
@@ -287,14 +351,20 @@ export function changeOldBotConfig(_botConfig: BotConfig): OldScenario.BotConfig
 		},
 	};
 	return oldBotConfig;
-	function convertFlow(_flows: Array<BotConfigFlow>): Array<OldScenario.BotConfigFlow> {
-		const flows: Array<OldScenario.BotConfigFlow> = JSON.parse(JSON.stringify(_flows));
+	function convertFlow(
+		_flows: Array<BotConfigFlow>
+	): Array<OldScenario.BotConfigFlow> {
+		const flows: Array<OldScenario.BotConfigFlow> = JSON.parse(
+			JSON.stringify(_flows)
+		);
 		cloler(flows);
 		return flows;
 		function cloler(_flow: Array<any>, deep = 0) {
 			let count = 1;
 			for (const __flow of _flow) {
-				const buttonString = __flow.next.map((o: any, i: number) => `<button:${i + 1}.${o.label}>`).join("");
+				const buttonString = __flow.next
+					.map((o: any, i: number) => `<button:${i + 1}.${o.label}>`)
+					.join("");
 				__flow.title = CleanRegExp(__flow.text + buttonString);
 				__flow.value = CleanRegExp(__flow.label);
 				__flow.step = CleanRegExp(__flow.id);
@@ -312,7 +382,9 @@ export function changeOldBotConfig(_botConfig: BotConfig): OldScenario.BotConfig
 			}
 		}
 	}
-	function getStepsByFlow(flows: Array<BotConfigFlow>): { [id: string]: OldScenario.BotConfigStep } {
+	function getStepsByFlow(flows: Array<BotConfigFlow>): {
+		[id: string]: OldScenario.BotConfigStep;
+	} {
 		const steps: { [id: string]: OldScenario.BotConfigStep } = {
 			init: {
 				action: {
@@ -325,7 +397,9 @@ export function changeOldBotConfig(_botConfig: BotConfig): OldScenario.BotConfig
 		return steps;
 		function cloler(_flow: Array<BotConfigFlow>) {
 			for (const __flow of _flow) {
-				const buttonString = __flow.next.map((o: any, i: number) => `<button:${i + 1}.${String(o.label)}>`).join("");
+				const buttonString = __flow.next
+					.map((o: any, i: number) => `<button:${i + 1}.${String(o.label)}>`)
+					.join("");
 				steps[CleanRegExp(__flow.id)] = {
 					action: {
 						success: {
@@ -351,21 +425,32 @@ export function UpdateInfoMessage(
 	searchActionConfig: {
 		INFO_MESSAGE_PARENT: string;
 		INFO_MESSAGE_CHILD: string;
-	},
+	}
 ): BotConfig {
 	const botConfig: BotConfig = _.cloneDeep(_botConfig);
 
 	ScenarioCrawler(botConfig.flow.next, (scenarioFlow, depth) => {
 		if (scenarioFlow.items.is_category) {
 			if (depth == 0) {
-				scenarioFlow.text = String(searchActionConfig.INFO_MESSAGE_PARENT).replace(/\[category-text\]/, scenarioFlow.label);
+				scenarioFlow.text = String(searchActionConfig.INFO_MESSAGE_PARENT).replace(
+					/\[category-text\]/,
+					scenarioFlow.label
+				);
 			} else if (depth == 1) {
-				scenarioFlow.text = String(searchActionConfig.INFO_MESSAGE_CHILD).replace(/\[category-text\]/, scenarioFlow.label);
+				scenarioFlow.text = String(searchActionConfig.INFO_MESSAGE_CHILD).replace(
+					/\[category-text\]/,
+					scenarioFlow.label
+				);
 			}
 		}
 	});
 	return botConfig;
-	function ScenarioCrawler(scenarioList: Array<BotConfigFlow>, fn: (scenario: BotConfigFlow, depth: number) => void, parent = "root", depth = 0) {
+	function ScenarioCrawler(
+		scenarioList: Array<BotConfigFlow>,
+		fn: (scenario: BotConfigFlow, depth: number) => void,
+		parent = "root",
+		depth = 0
+	) {
 		// const step = scenarioGroup.getStep(scenario.step);
 		// const parentStep = scenarioGroup.getStep(parent);
 		for (const scenario of scenarioList) {
@@ -383,7 +468,7 @@ export function makeScriptAndScenarioByData(
 	searchActionConfig?: {
 		INFO_MESSAGE_PARENT: string;
 		INFO_MESSAGE_CHILD: string;
-	},
+	}
 ) {
 	let BotScenario = _.cloneDeep(botScenario);
 	let TalkScript = _.cloneDeep(talkScript);
@@ -403,19 +488,30 @@ export function makeScriptAndScenarioByData(
 		}
 		for (const script of TalkScript) {
 			if (script.parent == parent.id) {
-				let cSId = parent.parent.length > 0 ? `${parent.parent.join("-")}-${script.text}` : `${script.text}`;
+				let cSId =
+					parent.parent.length > 0
+						? `${parent.parent.join("-")}-${script.text}`
+						: `${script.text}`;
 				if (parent.parent.indexOf(OTHER_TEXT) !== -1) {
 					cSId = v4();
 				}
 				if (script.text != OTHER_TEXT && parent.parent.indexOf(OTHER_TEXT) === -1) {
-					const nextFlow = _.cloneDeep(BotScenario.flow.next.find((f) => f.id == (script.scenario || script.items.scenario_id)));
+					const nextFlow = _.cloneDeep(
+						BotScenario.flow.next.find(
+							(f) => f.id == (script.scenario || script.items.scenario_id)
+						)
+					);
 					const nextQue = [];
 					const cSList = getScenarioFlow(parent.scenarioId, categoryScenario);
 					let text = "";
 					if (parent.parent.length <= 0) {
-						text = String(searchActionConfig?.INFO_MESSAGE_PARENT || script.text || "").replace(/\[category-text\]/, String(script.text));
+						text = String(
+							searchActionConfig?.INFO_MESSAGE_PARENT || script.text || ""
+						).replace(/\[category-text\]/, String(script.text));
 					} else if (parent.parent.length === 1) {
-						text = String(searchActionConfig?.INFO_MESSAGE_CHILD || script.text || "").replace(/\[category-text\]/, String(script.text));
+						text = String(
+							searchActionConfig?.INFO_MESSAGE_CHILD || script.text || ""
+						).replace(/\[category-text\]/, String(script.text));
 					} else {
 						text = nextFlow?.text || "";
 					}
@@ -486,21 +582,31 @@ export function makeScriptAndScenarioByData(
 		console.log(parentQue);
 	}
 	console.log(categoryScenario);
-	BotScenario.flow.next = BotScenario.flow.next.filter((flow) => !flow.items?.is_category).concat(categoryScenario);
+	BotScenario.flow.next = BotScenario.flow.next
+		.filter((flow) => !flow.items?.is_category)
+		.concat(categoryScenario);
 
 	BotScenario.flow.next = BotScenario.flow.next.filter((flow) => {
 		if (flow.items.is_category) {
 			return true;
 		}
-		return TalkScript.find((t) => (t.items.scenario_id || t.scenario || true) === flow.id);
+		return TalkScript.find(
+			(t) => (t.items.scenario_id || t.scenario || true) === flow.id
+		);
 	});
 	console.log(BotScenario);
-	function getScenarioFlow(id: string, flowList: Array<BotConfigFlow>): Array<BotConfigFlow> {
+	function getScenarioFlow(
+		id: string,
+		flowList: Array<BotConfigFlow>
+	): Array<BotConfigFlow> {
 		if (id == "#") {
 			return flowList;
 		}
 		return flowCroler(id, flowList) || flowList;
-		function flowCroler(_id: string, fList: Array<BotConfigFlow>): Array<BotConfigFlow> | null {
+		function flowCroler(
+			_id: string,
+			fList: Array<BotConfigFlow>
+		): Array<BotConfigFlow> | null {
 			for (const f of fList) {
 				if (f.id == _id) {
 					return f.next;
@@ -516,10 +622,16 @@ export function makeScriptAndScenarioByData(
 	}
 	croler(BotScenario.flow.next, (botConfig: BotConfigFlow, deep: number) => {
 		if (botConfig.items.is_category && botConfig.items.link_script_id) {
-			const script = talkScript.find((t) => t.id == botConfig.items.link_script_id);
+			const script = talkScript.find(
+				(t) => t.id == botConfig.items.link_script_id
+			);
 			if (script) {
 				botConfig.label = script.text;
-				botConfig.items = Object.assign({}, botConfig.items || {}, script.items || {});
+				botConfig.items = Object.assign(
+					{},
+					botConfig.items || {},
+					script.items || {}
+				);
 				// botConfig.id = script.id;
 				// カテゴリ文言を挿入；これは後にまとめてやる？
 				// if(deep==0){
@@ -535,7 +647,14 @@ export function makeScriptAndScenarioByData(
 		*/
 	TalkScriptEditingParse(TalkScript);
 	FlowCroler(BotScenario.flow.next, BotScenario.flow, (flow, parentFlow) => {
-		if (TalkScript.find((t) => flow.items?.link_script_id && flow.items?.link_script_id === t.id && t.status === "editing")) {
+		if (
+			TalkScript.find(
+				(t) =>
+					flow.items?.link_script_id &&
+					flow.items?.link_script_id === t.id &&
+					t.status === "editing"
+			)
+		) {
 			if (parentFlow?.next) {
 				parentFlow.next = parentFlow.next.filter((f) => f.id !== flow.id);
 			}
@@ -544,7 +663,11 @@ export function makeScriptAndScenarioByData(
 	TalkScript = AutoScriptLogTag(TalkScript);
 	BotScenario = AutoBotLogTag({ TalkScript, BotConfig: BotScenario });
 	return { TalkScript, BotScenario };
-	function croler(botConfigList: Array<BotConfigFlow>, fn: (b: BotConfigFlow, deep: number) => void, deep = 0) {
+	function croler(
+		botConfigList: Array<BotConfigFlow>,
+		fn: (b: BotConfigFlow, deep: number) => void,
+		deep = 0
+	) {
 		for (let i = 0; i < botConfigList.length; i++) {
 			const botConfig = botConfigList[i];
 			fn(botConfig, deep);
@@ -554,7 +677,10 @@ export function makeScriptAndScenarioByData(
 		}
 	}
 }
-export function validateAllInOneCsv(bot_csv: Array<Array<string>>, setting?: Set<string>): [boolean, string | null] {
+export function validateAllInOneCsv(
+	bot_csv: Array<Array<string>>,
+	setting?: Set<string>
+): [boolean, string | null] {
 	type Csv = Array<Array<string>>;
 	const indispensableIdSet = new Set(["1", "2", "3", "4", "5", "6", "7"]);
 	const coromIdList = bot_csv[0].map((s) => s.replace(/\(.*\)/, "").trim());
@@ -604,7 +730,10 @@ export function validateAllInOneCsv(bot_csv: Array<Array<string>>, setting?: Set
 			}
 			sId.add(scenarioIdCellValue);
 		}
-		if (scenarioIdCellValue !== "" && !String(scenarioIdCellValue).match(/^[a-zA-Z0-9!-/:-@¥[-`{-~]*$/)) {
+		if (
+			scenarioIdCellValue !== "" &&
+			!String(scenarioIdCellValue).match(/^[a-zA-Z0-9!-/:-@¥[-`{-~]*$/)
+		) {
 			return [true, `不正なID値が含まれています。:${i + 1}行目`];
 		}
 		if (leafTitle.match(/\n/)) {
@@ -613,7 +742,10 @@ export function validateAllInOneCsv(bot_csv: Array<Array<string>>, setting?: Set
 		// if(leafTitle&&scenarioIdCellValue !== ""){
 		// 	return [true, `IDが未入力の項目があります。:${i}行目`];
 		// }
-		if (updatingDate !== "" && !String(updatingDate).match(/^20[2-9][0-9]\/[0-1]?[0-9]\/[0-3]?[0-9]$/)) {
+		if (
+			updatingDate !== "" &&
+			!String(updatingDate).match(/^20[2-9][0-9]\/[0-1]?[0-9]\/[0-3]?[0-9]$/)
+		) {
 			return [true, `不正な値が含まれています。:${i + 1}行目`];
 		}
 		if (menu.filter((m) => m != null && m != "").length == 1) {
@@ -656,7 +788,7 @@ export function makeScriptAndScenario(
 	searchActionConfig?: {
 		INFO_MESSAGE_PARENT: string;
 		INFO_MESSAGE_CHILD: string;
-	},
+	}
 ) {
 	type Csv = Array<Array<string>>;
 	const scenarioObj: BotConfig = {
@@ -808,89 +940,108 @@ export function makeScriptAndScenario(
 			_tkMap.data.position = position;
 		}
 
-		start(0, 0, scenario, (q, title, slectList, deep, index, scenarioDeepString, parentScenarioStep) => {
-			let scenarioStepString = "";
-			if (parentScenarioStep === "root") {
-				scenarioStepString = `${scenarioIdString}`;
-			} else {
-				scenarioStepString = `${parentScenarioStep}_${index}`;
-			}
-
-			for (const slect of slectList) {
-				// console.log(slect);
-			}
-			const log_itemsMATCH = q.match(/<log-(.+?):(.+?)>/g);
-			const log: any = {};
-			if (log_itemsMATCH) {
-				for (const matchTag of log_itemsMATCH) {
-					const matchOneTag = matchTag.match(/<(log-.+?):(.+?)>/);
-					if (!matchOneTag) {
-						continue;
-					}
-					const [matchText, matchKey, matchId] = matchOneTag;
-					const matchKeySt = matchKey.replace(/\-/g, "_");
-					if (!(matchKeySt in log)) {
-						log[matchKeySt] = [];
-					}
-					log[matchKeySt].push(matchId);
-				}
-			}
-			const log_scenarioString = `${scenarioIdString}${scenarioDeepString}`;
-			// すでにログシナリオがない場合のみ自動付与　（この条件は要検討）
-			if (!("log_scenario" in log)) {
-				log.log_scenario = [log_scenarioString];
-			}
-			if (!("log_faq" in log)) {
-				log.log_faq = [scenarioIdString];
-			}
-			if (!("log_faq_title" in log)) {
-				log.log_faq_title = [leafTitle];
-			}
-			const buttonString = slectList.map((o, i) => `<button:${i + 1}.${o.value}>`).join("");
-			// flow追加ロジック
-			const items = {
-				update_date: `${updatingDate.getTime() || new Date().getTime()}`,
-			};
-			if (deep === 0) {
-				/**
-				 * 野良だったら
-				 */
-				if (menu.length === 3 && menu[0] === OTHER_TEXT && menu[1] === OTHER_TEXT) {
-					scenarioObj.flow.next.push({
-						id: scenarioStepString,
-						next: [],
-						items: Object.assign({}, items, log, { is_search: true }),
-						text: q,
-						label: title,
-					});
+		start(
+			0,
+			0,
+			scenario,
+			(
+				q,
+				title,
+				slectList,
+				deep,
+				index,
+				scenarioDeepString,
+				parentScenarioStep
+			) => {
+				let scenarioStepString = "";
+				if (parentScenarioStep === "root") {
+					scenarioStepString = `${scenarioIdString}`;
 				} else {
-					scenarioObj.flow.next.push({
-						id: scenarioIdString,
-						next: [],
-						items: Object.assign({}, items, log),
-						label: title,
-						text: q,
-						// action: {
-						//     type: "text",
-						//     value: q + buttonString,
-						//     items: Object.assign({}, items, log)
-						// }
+					scenarioStepString = `${parentScenarioStep}_${index}`;
+				}
+
+				for (const slect of slectList) {
+					// console.log(slect);
+				}
+				const log_itemsMATCH = q.match(/<log-(.+?):(.+?)>/g);
+				const log: any = {};
+				if (log_itemsMATCH) {
+					for (const matchTag of log_itemsMATCH) {
+						const matchOneTag = matchTag.match(/<(log-.+?):(.+?)>/);
+						if (!matchOneTag) {
+							continue;
+						}
+						const [matchText, matchKey, matchId] = matchOneTag;
+						const matchKeySt = matchKey.replace(/\-/g, "_");
+						if (!(matchKeySt in log)) {
+							log[matchKeySt] = [];
+						}
+						log[matchKeySt].push(matchId);
+					}
+				}
+				const log_scenarioString = `${scenarioIdString}${scenarioDeepString}`;
+				// すでにログシナリオがない場合のみ自動付与　（この条件は要検討）
+				if (!("log_scenario" in log)) {
+					log.log_scenario = [log_scenarioString];
+				}
+				if (!("log_faq" in log)) {
+					log.log_faq = [scenarioIdString];
+				}
+				if (!("log_faq_title" in log)) {
+					log.log_faq_title = [leafTitle];
+				}
+				const buttonString = slectList
+					.map((o, i) => `<button:${i + 1}.${o.value}>`)
+					.join("");
+				// flow追加ロジック
+				const items = {
+					update_date: `${updatingDate.getTime() || new Date().getTime()}`,
+				};
+				if (deep === 0) {
+					/**
+					 * 野良だったら
+					 */
+					if (
+						menu.length === 3 &&
+						menu[0] === OTHER_TEXT &&
+						menu[1] === OTHER_TEXT
+					) {
+						scenarioObj.flow.next.push({
+							id: scenarioStepString,
+							next: [],
+							items: Object.assign({}, items, log, { is_search: true }),
+							text: q,
+							label: title,
+						});
+					} else {
+						scenarioObj.flow.next.push({
+							id: scenarioIdString,
+							next: [],
+							items: Object.assign({}, items, log),
+							label: title,
+							text: q,
+							// action: {
+							//     type: "text",
+							//     value: q + buttonString,
+							//     items: Object.assign({}, items, log)
+							// }
+						});
+					}
+				} else {
+					SearchScenarioFlow(parentScenarioStep, scenarioObj.flow.next, (flow) => {
+						flow.next.push({
+							id: scenarioStepString, // `${parentScenarioStep}_${flow.next.length + 1}`,
+							label: `${title}`, // `${flow.next.length + 1}.${title}`,
+							next: [],
+							items: Object.assign({}, items, log),
+							text: q,
+						});
 					});
 				}
-			} else {
-				SearchScenarioFlow(parentScenarioStep, scenarioObj.flow.next, (flow) => {
-					flow.next.push({
-						id: scenarioStepString, // `${parentScenarioStep}_${flow.next.length + 1}`,
-						label: `${title}`, // `${flow.next.length + 1}.${title}`,
-						next: [],
-						items: Object.assign({}, items, log),
-						text: q,
-					});
-				});
-			}
 
-			return scenarioStepString;
-		});
+				return scenarioStepString;
+			}
+		);
 		// ↑ロジック
 		if (rowSize > 0) {
 			// シナリオ取得のために行数を取得する。そしてループをその行数＋１に飛ばす
@@ -922,7 +1073,11 @@ export function makeScriptAndScenario(
 			}
 			let scenarioStepString = data.id; // `C_${scenaristCount++}`;
 			const items = {
-				update_date: `${Array.isArray(data.items?.update_date) ? data.items?.update_date[0] : data.items?.update_date || new Date().getTime()}`,
+				update_date: `${
+					Array.isArray(data.items?.update_date)
+						? data.items?.update_date[0]
+						: data.items?.update_date || new Date().getTime()
+				}`,
 			};
 			const log_itemsMATCH = data.text.match(/<log-(.+?):(.+?)>/g);
 			const log: any = {};
@@ -969,7 +1124,9 @@ export function makeScriptAndScenario(
 								is_category: true,
 								link_script_id: data.id,
 							}),
-							text: String(searchActionConfig?.INFO_MESSAGE_PARENT || data.text || "").replace(/\[category-text\]/, String(key)),
+							text: String(
+								searchActionConfig?.INFO_MESSAGE_PARENT || data.text || ""
+							).replace(/\[category-text\]/, String(key)),
 							label: data.text,
 							next: [],
 						});
@@ -977,9 +1134,13 @@ export function makeScriptAndScenario(
 						let text = data.text || "";
 
 						if (deep === 1 && searchActionConfig?.INFO_MESSAGE_CHILD) {
-							text = String(searchActionConfig.INFO_MESSAGE_CHILD || data.text).replace(/\[category-text\]/, String(key));
+							text = String(
+								searchActionConfig.INFO_MESSAGE_CHILD || data.text
+							).replace(/\[category-text\]/, String(key));
 						} else {
-							const flow = scenarioObj.flow.next.find((f) => f.id == (data.scenario || data.items.scenario_id));
+							const flow = scenarioObj.flow.next.find(
+								(f) => f.id == (data.scenario || data.items.scenario_id)
+							);
 							if (flow) {
 								text = flow.text;
 							}
@@ -1025,12 +1186,21 @@ export function makeScriptAndScenario(
 				// 	}
 				// }
 
-				if (parentValue && "text" in parentValue.data && parentValue.data.text !== OTHER_TEXT && data.status !== "editing") {
+				if (
+					parentValue &&
+					"text" in parentValue.data &&
+					parentValue.data.text !== OTHER_TEXT &&
+					data.status !== "editing"
+				) {
 					SearchScenarioFlow(parentStepName, scenarioObj.flow.next, (flow) => {
 						console.log(flow);
 						scenarioStepString = data.text;
 						scenarioStepString = `${parentStepName}_${scenarioStepString}`;
-						const nextFlow = _.cloneDeep(scenarioObj.flow.next.find((f) => f.id == (data.scenario || data.items.scenario_id)));
+						const nextFlow = _.cloneDeep(
+							scenarioObj.flow.next.find(
+								(f) => f.id == (data.scenario || data.items.scenario_id)
+							)
+						);
 
 						// const nextFlow = _.cloneDeep(scenarioObj.flow.next.find(f => f.id == flow.items.scenario_id));
 						const nextQue = [];
@@ -1095,7 +1265,7 @@ export function makeScriptAndScenario(
 			return scenarioStepString;
 		},
 		0,
-		"",
+		""
 	);
 
 	/**
@@ -1104,7 +1274,11 @@ export function makeScriptAndScenario(
 	TalkScriptEditingParse(talkScript);
 
 	FlowCroler(scenarioObj.flow.next, scenarioObj.flow, (flow, parentFlow) => {
-		if (talkScript.find((t) => t.id === flow.items.link_script_id && t.status === "editing")) {
+		if (
+			talkScript.find(
+				(t) => t.id === flow.items.link_script_id && t.status === "editing"
+			)
+		) {
 			if (parentFlow?.next) {
 				parentFlow.next = parentFlow.next.filter((f) => f.id !== flow.id);
 			}
@@ -1117,7 +1291,11 @@ export function makeScriptAndScenario(
 		TalkScript: tagScript,
 		BotConfig: scenarioObj,
 	});
-	const rootMenu = talkScript.filter((t) => t.parent === "#" && t.text !== OTHER_TEXT && t.status !== "editing").map((t) => t.text);
+	const rootMenu = talkScript
+		.filter(
+			(t) => t.parent === "#" && t.text !== OTHER_TEXT && t.status !== "editing"
+		)
+		.map((t) => t.text);
 	console.log(tagScript);
 	return {
 		talkScript: tagScript,
@@ -1149,11 +1327,19 @@ export function makeScriptAndScenario(
 		x: number,
 		y: number,
 		scenario: any,
-		fn: (a: string, title: string, nexts: Array<{ x: number; y: number; value: string }>, deep: number, index: number, scenarioDeepString: string, parentScenarioStep: string) => string,
+		fn: (
+			a: string,
+			title: string,
+			nexts: Array<{ x: number; y: number; value: string }>,
+			deep: number,
+			index: number,
+			scenarioDeepString: string,
+			parentScenarioStep: string
+		) => string,
 		deep = 0,
 		index = 0,
 		scenarioDeepString = "",
-		parentScenarioStep = "root",
+		parentScenarioStep = "root"
 	) {
 		const nexts = getNextsForValue(x, y, scenario);
 		let a = "";
@@ -1164,10 +1350,27 @@ export function makeScriptAndScenario(
 		if (scenario.length >= y && scenario[y] && scenario[y][x - 1]) {
 			title = scenario[y][x - 1];
 		}
-		parentScenarioStep = fn(a, title, nexts, deep, index, scenarioDeepString, parentScenarioStep);
+		parentScenarioStep = fn(
+			a,
+			title,
+			nexts,
+			deep,
+			index,
+			scenarioDeepString,
+			parentScenarioStep
+		);
 		let count = 0;
 		for (const next of nexts) {
-			start(next.x, next.y, scenario, fn, deep + 1, count, scenarioDeepString + "-" + count, parentScenarioStep);
+			start(
+				next.x,
+				next.y,
+				scenario,
+				fn,
+				deep + 1,
+				count,
+				scenarioDeepString + "-" + count,
+				parentScenarioStep
+			);
 			count++;
 		}
 	}
@@ -1281,16 +1484,30 @@ export function makeScriptAndScenario(
 	function makeNode(
 		tsNode: TkMap,
 		parentId: string,
-		fn: (key: string | number, value: TkMap, parentId: string, deep: number, parentStepName: string, parent?: TkMap) => string,
+		fn: (
+			key: string | number,
+			value: TkMap,
+			parentId: string,
+			deep: number,
+			parentStepName: string,
+			parent?: TkMap
+		) => string,
 		deep = 0,
-		parentStepName: string,
+		parentStepName: string
 	) {
 		let count = 0;
 		if (tsNode.map == null) {
 			return;
 		}
 		for (const [key, value] of tsNode.map.entries()) {
-			const stepName = fn(key, value, tsNode.data.id, deep, parentStepName, tsNode);
+			const stepName = fn(
+				key,
+				value,
+				tsNode.data.id,
+				deep,
+				parentStepName,
+				tsNode
+			);
 			const { data, map } = value;
 			data.position = count;
 			if (data.type === "leaf") {
@@ -1300,7 +1517,11 @@ export function makeScriptAndScenario(
 			count++;
 		}
 	}
-	function SearchScenarioFlow(stepName: string, flowList: Array<BotConfigFlow>, fn: (flow: BotConfigFlow) => void) {
+	function SearchScenarioFlow(
+		stepName: string,
+		flowList: Array<BotConfigFlow>,
+		fn: (flow: BotConfigFlow) => void
+	) {
 		for (const flow of flowList) {
 			if (flow.id === stepName) {
 				fn(flow);
@@ -1312,7 +1533,11 @@ export function makeScriptAndScenario(
 		}
 	}
 }
-function FlowCroler(flowList: Array<BotConfigFlow>, parentFlow: any, fn: (flow: BotConfigFlow, parentFlow: BotConfigFlow | null) => void) {
+function FlowCroler(
+	flowList: Array<BotConfigFlow>,
+	parentFlow: any,
+	fn: (flow: BotConfigFlow, parentFlow: BotConfigFlow | null) => void
+) {
 	for (const flow of flowList) {
 		fn(flow, parentFlow);
 		if (flow.next && flow.next.length > 0) {

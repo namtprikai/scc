@@ -11,7 +11,12 @@ export class Teikeibun {
 	private tags = ["[管理者名]"];
 	private headers = [""];
 	private footers = [""];
-	constructor(private axios: any, private productId: string, private adminUserName: string, private FileModule: any) {
+	constructor(
+		private axios: any,
+		private productId: string,
+		private adminUserName: string,
+		private FileModule: any
+	) {
 		// this.updateTeikeibun();
 	}
 
@@ -21,11 +26,14 @@ export class Teikeibun {
 
 	public async updateTeikeibun() {
 		try {
-			const { data } = await this.axios.get(`https://file.ai-x-supporter.com/${this.productId}/teikeibun.json`, {
-				params: {
-					h: Date.now(),
-				},
-			});
+			const { data } = await this.axios.get(
+				`https://file.ai-x-supporter.com/${this.productId}/teikeibun.json`,
+				{
+					params: {
+						h: Date.now(),
+					},
+				}
+			);
 			console.log(data);
 			// this.$forceUpdate();
 			this.headers = data.headers || [""];
@@ -40,11 +48,17 @@ export class Teikeibun {
 	}
 
 	get Headers() {
-		return ["冒頭に挿入", ...this.headers.map((text: string) => this.replaceTags(text))];
+		return [
+			"冒頭に挿入",
+			...this.headers.map((text: string) => this.replaceTags(text)),
+		];
 	}
 
 	get Footers() {
-		return ["末尾に挿入", ...this.footers.map((text: string) => this.replaceTags(text))];
+		return [
+			"末尾に挿入",
+			...this.footers.map((text: string) => this.replaceTags(text)),
+		];
 	}
 
 	add(list: Array<string>) {
@@ -73,7 +87,9 @@ export class Teikeibun {
 	}
 
 	async upload() {
-		const base64Str: string = this.Base64.encode(JSON.stringify({ headers: this.headers, footers: this.footers }));
+		const base64Str: string = this.Base64.encode(
+			JSON.stringify({ headers: this.headers, footers: this.footers })
+		);
 		await this.FileModule.postFile({
 			parent: "",
 			fileName: "teikeibun.json",

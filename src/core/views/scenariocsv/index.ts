@@ -6,9 +6,17 @@ import ScenarioParent from "@/views/scenario/index";
 import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 
 import ScenarioTemp from "@/components/ScenarioTemp/index.vue";
-import { ScenarioStep, ScenarioModule, ScenarioFlow } from "@/store/modules/scenario";
+import {
+	ScenarioStep,
+	ScenarioModule,
+	ScenarioFlow,
+} from "@/store/modules/scenario";
 import csvSync from "csv-parse/lib/sync";
-import { horizontaltojson, parseScenario, parseListToCsv } from "@/utils/scenarioParseCsv";
+import {
+	horizontaltojson,
+	parseScenario,
+	parseListToCsv,
+} from "@/utils/scenarioParseCsv";
 import { UpdateServer } from "@/api/updateServer";
 import WrapMessage from "@/components/WrapMessage/index.vue";
 import { RequeuestWokersService, Ajax } from "@/utils/parts";
@@ -32,8 +40,18 @@ export default class BotcsvParent extends Vue {
 	}
 
 	// { listSize: deleteListSize, count: deleteCount++, message: "削除中" });
-	scenarioUploadMessage({ listSize, count, message }: { listSize: number; count: number; message: string }) {
-		this.message = `${message} ${count}/${listSize}  ${Math.floor((count / listSize) * 100)}%`;
+	scenarioUploadMessage({
+		listSize,
+		count,
+		message,
+	}: {
+		listSize: number;
+		count: number;
+		message: string;
+	}) {
+		this.message = `${message} ${count}/${listSize}  ${Math.floor(
+			(count / listSize) * 100
+		)}%`;
 	}
 
 	public async download() {
@@ -51,7 +69,9 @@ export default class BotcsvParent extends Vue {
 		const blob = new Blob([bom, data], { type: "text/csv" });
 		const url = (window.URL || window.webkitURL).createObjectURL(blob);
 		const link = document.createElement("a");
-		link.download = `${CLIENT_ID}_scenario_${this.$moment().format("YYYYMMDD_HHmm")}.csv`;
+		link.download = `${CLIENT_ID}_scenario_${this.$moment().format(
+			"YYYYMMDD_HHmm"
+		)}.csv`;
 		link.href = url;
 		document.body.appendChild(link);
 		link.click();

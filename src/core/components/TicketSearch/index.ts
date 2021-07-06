@@ -6,7 +6,13 @@ import _ from "lodash";
 import moment, { duration } from "moment";
 import { Saiko } from "@/utils/saiko/index";
 // import { TicketModule, ticketMapper, Ticket, FaqTicket } from "@/store/modules/ticket";
-import TicketCompParent, { Ticket, TicketData, TicketGroup, Condition, KeyData } from "@/views/ticketTable";
+import TicketCompParent, {
+	Ticket,
+	TicketData,
+	TicketGroup,
+	Condition,
+	KeyData,
+} from "@/views/ticketTable";
 import { AdminUserModule } from "@/store/modules/adminUser";
 export interface GrafhConf {
 	size: string;
@@ -24,7 +30,11 @@ export const EnquateMapperRadio = (tickets: Array<KeyData>, key: string) => {
 	}
 	const checkList = [];
 	for (const ticket of tickets) {
-		if (ticket[key] && ticket[key].value && ticket[key].value !== TicketGroup.noneSt) {
+		if (
+			ticket[key] &&
+			ticket[key].value &&
+			ticket[key].value !== TicketGroup.noneSt
+		) {
 			checkList.push(ticket[key].value);
 		}
 	}
@@ -102,7 +112,11 @@ export const EnquateTicketText = (tickets: Array<KeyData>, key: string) => {
 		}))
 		.value();
 };
-export const EnquateMapper = (tickets: Array<KeyData>, key: string, enquateKey: string) => {
+export const EnquateMapper = (
+	tickets: Array<KeyData>,
+	key: string,
+	enquateKey: string
+) => {
 	if (!tickets || tickets.length <= 0) {
 		return [];
 	}
@@ -207,7 +221,11 @@ export default class TicketSearchParent extends Vue {
 				let maxDate = 0;
 				let minDate = new Date().getTime();
 				for (const ticket of tickets) {
-					if (!ticket.start_time || !String(ticket.start_time.value).match(/^\d+$/) || typeof ticket.start_time.value !== "string") {
+					if (
+						!ticket.start_time ||
+						!String(ticket.start_time.value).match(/^\d+$/) ||
+						typeof ticket.start_time.value !== "string"
+					) {
 						continue;
 					}
 					maxDate = Math.max(maxDate, parseInt(ticket.start_time.value, 10));
@@ -226,7 +244,9 @@ export default class TicketSearchParent extends Vue {
 							return moment(parseInt(t.start_time.value, 10)).format(format);
 						}
 					});
-				const ticketCountsFromStartToEnd = _.times(endDate.diff(startDate, "days") + 1).map((diff) => {
+				const ticketCountsFromStartToEnd = _.times(
+					endDate.diff(startDate, "days") + 1
+				).map((diff) => {
 					const date: string = startDate.clone().add(diff, "days").format(format);
 					return {
 						name: date,
@@ -400,7 +420,9 @@ export default class TicketSearchParent extends Vue {
 					return [];
 				}
 				const group = _.chain(tickets)
-					.filter((t) => t.log_faq_title && t.log_faq_title.value !== TicketGroup.noneSt)
+					.filter(
+						(t) => t.log_faq_title && t.log_faq_title.value !== TicketGroup.noneSt
+					)
 					.groupBy((t: KeyData) => t.log_faq_title.value);
 				return group
 					.keys()
@@ -424,7 +446,10 @@ export default class TicketSearchParent extends Vue {
 					return [];
 				}
 
-				const assigneeMap = this.AdminList.reduce((dic: any, admin: any) => ({ ...dic, [admin.id]: admin.name }), {});
+				const assigneeMap = this.AdminList.reduce(
+					(dic: any, admin: any) => ({ ...dic, [admin.id]: admin.name }),
+					{}
+				);
 				const group = _.chain(tickets)
 					.filter((t) => t.assignee_id && t.assignee_id.value !== TicketGroup.noneSt)
 					.groupBy((t: KeyData) => t.assignee_id.value);
@@ -470,7 +495,11 @@ export default class TicketSearchParent extends Vue {
 				}
 
 				const group = _.chain(tickets)
-					.filter((t) => t.log_faq_parent_category && t.log_faq_parent_category.value !== TicketGroup.noneSt)
+					.filter(
+						(t) =>
+							t.log_faq_parent_category &&
+							t.log_faq_parent_category.value !== TicketGroup.noneSt
+					)
 					.groupBy((t: KeyData) => t.log_faq_parent_category.value);
 				return group
 					.keys()
@@ -493,7 +522,11 @@ export default class TicketSearchParent extends Vue {
 					return [];
 				}
 				const group = _.chain(tickets)
-					.filter((t) => t.log_faq_child_category && t.log_faq_child_category.value !== TicketGroup.noneSt)
+					.filter(
+						(t) =>
+							t.log_faq_child_category &&
+							t.log_faq_child_category.value !== TicketGroup.noneSt
+					)
 					.groupBy((t: KeyData) => t.log_faq_child_category.value);
 				return group
 					.keys()
@@ -544,7 +577,10 @@ export default class TicketSearchParent extends Vue {
 			return [];
 		}
 
-		const assigneeMap = this.AdminList.reduce((dic: any, admin: any) => ({ ...dic, [admin.id]: admin.name }), {});
+		const assigneeMap = this.AdminList.reduce(
+			(dic: any, admin: any) => ({ ...dic, [admin.id]: admin.name }),
+			{}
+		);
 		const group = _.chain(tickets)
 			.filter((t) => t.assignee_id)
 			.groupBy((t: KeyData) => t.assignee_id);

@@ -9,8 +9,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import ResizeHandlerMixin from '@/views/layout/mixin/ResizeHandler';
+import { Vue, Component } from "vue-property-decorator";
+import ResizeHandlerMixin from "@/views/layout/mixin/ResizeHandler";
 // @ts-ignore
 @Component
 export default class AppMain extends Vue {

@@ -69,7 +69,7 @@ export default class ImageSendParent extends Vue {
 						},
 					},
 				],
-			}),
+			})
 		);
 	}
 

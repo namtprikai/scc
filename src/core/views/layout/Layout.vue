@@ -1,6 +1,10 @@
 <template>
 	<div :class="classObj" class="app-wrapper">
-		<div v-if="classObj.mobile && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
+		<div
+			v-if="classObj.mobile && sidebar.opened"
+			class="drawer-bg"
+			@click="handleClickOutside"
+		/>
 		<sidebar class="sidebar-container" :collapse="classObj.hideSidebar" />
 		<div class="main-container">
 			<navbar />
@@ -10,11 +14,11 @@
 </template>
 
 <script lang="ts">
-import { Navbar, AppMain, Sidebar } from './components';
-import ResizeMixin from './mixin/ResizeHandler';
-import { Component, Vue } from 'vue-property-decorator';
-import { mixins } from 'vue-class-component';
-import { DeviceType, AppModule } from '@/store/modules/app';
+import { Navbar, AppMain, Sidebar } from "./components";
+import ResizeMixin from "./mixin/ResizeHandler";
+import { Component, Vue } from "vue-property-decorator";
+import { mixins } from "vue-class-component";
+import { DeviceType, AppModule } from "@/store/modules/app";
 
 // @ts-ignore
 @Component({
@@ -41,8 +45,8 @@ export default class Layout extends mixins(ResizeMixin) {
 </script>
 
 <style lang="scss" scoped>
-@import 'src/core/styles/mixin.scss';
-@import 'src/core/styles/variables.scss';
+@import "src/core/styles/mixin.scss";
+@import "src/core/styles/variables.scss";
 
 .app-wrapper {
 	@include clearfix;

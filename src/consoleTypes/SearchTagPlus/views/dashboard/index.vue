@@ -29,17 +29,20 @@
 			</div>
 		</div>
 		<div class="dashboard-contents">
-			<div :style="{ backgroundImage: 'url(' + emptyGif + ')' }" class="dashboard-contents__background"></div>
+			<div
+				:style="{ backgroundImage: 'url(' + emptyGif + ')' }"
+				class="dashboard-contents__background"
+			></div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { UserModule } from '@/store/modules/user';
-import { mapGetters } from 'vuex';
-import DashboardParent from '@/views/dashboard/index';
-import PanThumb from '@/components/PanThumb/index.vue';
+import { Component, Vue } from "vue-property-decorator";
+import { UserModule } from "@/store/modules/user";
+import { mapGetters } from "vuex";
+import DashboardParent from "@/views/dashboard/index";
+import PanThumb from "@/components/PanThumb/index.vue";
 // @ts-ignore
 @Component({
 	components: {

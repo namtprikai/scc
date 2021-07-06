@@ -4,7 +4,11 @@ import { mapGetters } from "vuex";
 import { UpdateServer } from "@/api/updateServer";
 import { Ajax } from "@/utils/parts";
 import { eventHub } from "@/init/eventHub";
-import { CLIENT_ID, subsystemUrl, scriptUrl } from "@consoletype/utils/configration";
+import {
+	CLIENT_ID,
+	subsystemUrl,
+	scriptUrl,
+} from "@consoletype/utils/configration";
 import { v4 } from "uuid";
 import { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 import { Scenario, ScenarioModule } from "@/store/modules/scenario";
@@ -168,7 +172,10 @@ export default class ScriptcsvParent extends Vue {
 		// }
 		const url = URL.createObjectURL(blob);
 		element.href = url;
-		element.setAttribute("download", `${CLIENT_ID}_${type}_${this.$moment().format("YYYYMMDD_HHmm")}.csv`);
+		element.setAttribute(
+			"download",
+			`${CLIENT_ID}_${type}_${this.$moment().format("YYYYMMDD_HHmm")}.csv`
+		);
 		document.body.appendChild(element); // Append the element to work in firefox
 		element.click();
 	}

@@ -15,7 +15,12 @@ import axios from "axios";
 	components: { WrapMessage },
 })
 export default class ResponseParent extends Vue {
-	protected teikeibun: Teikeibun = new Teikeibun(axios, CLIENT_ID, UserModule.name, FileModule);
+	protected teikeibun: Teikeibun = new Teikeibun(
+		axios,
+		CLIENT_ID,
+		UserModule.name,
+		FileModule
+	);
 
 	protected isHikitsugu = false;
 	protected header = "";
@@ -76,11 +81,15 @@ export default class ResponseParent extends Vue {
 						},
 					},
 				],
-			}),
+			})
 		);
 	}
 
-	reply(attr: { related_message_id: string; currentMessageId: string; currentScriptId: string | null }) {
+	reply(attr: {
+		related_message_id: string;
+		currentMessageId: string;
+		currentScriptId: string | null;
+	}) {
 		const { currentMessageId, currentScriptId, related_message_id } = attr;
 		this.ajax
 			.http({
@@ -93,12 +102,14 @@ export default class ResponseParent extends Vue {
 			})
 			.then(
 				(res) => {},
-				(res) => {},
+				(res) => {}
 			);
 	}
 
 	async handleSend() {
-		const answer = await this.confirm(`メッセージ\n「${this.text}」\nを送信しますか？`);
+		const answer = await this.confirm(
+			`メッセージ\n「${this.text}」\nを送信しますか？`
+		);
 		if (!answer) {
 			return;
 		}
@@ -173,7 +184,9 @@ export default class ResponseParent extends Vue {
 				setFlg.user = true;
 			}
 			if (!data[i].is_admin && !setFlg.ticket) {
-				const match: any = String(data[i].text).match(/<ticket-operator:\s*?(.+?)_(.+?)>/);
+				const match: any = String(data[i].text).match(
+					/<ticket-operator:\s*?(.+?)_(.+?)>/
+				);
 				if (match) {
 					const [_t, rangeKey, partitionKey] = match;
 					ticket = { rangeKey, partitionKey };
@@ -233,11 +246,15 @@ export default class ResponseParent extends Vue {
 				(res) => {
 					// this.is_talkscriptNone=false;
 				},
-				(res) => {},
+				(res) => {}
 			);
 	}
 
-	protected async doSetDraft(attr: { messageId: string; scriptId: string; text: string }) {
+	protected async doSetDraft(attr: {
+		messageId: string;
+		scriptId: string;
+		text: string;
+	}) {
 		const data: any = await this.ajax.http({
 			url: `product/${CLIENT_ID}/draft`,
 			method: "POST",
@@ -265,7 +282,7 @@ export default class ResponseParent extends Vue {
 				text: this.text,
 				assignee_id: UserModule.id,
 			},
-			this.userName,
+			this.userName
 		);
 		this.text = "";
 

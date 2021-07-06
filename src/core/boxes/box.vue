@@ -1,12 +1,34 @@
 <template>
 	<div class="box" v-bind:style="{ height: Height }">
-		<el-tabs v-model="activeName" style="margin-top: 0px" type="border-card" @tab-click="tabclick" @handleTabClick="tabclick">
-			<el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key="item.key" :name="item.key">
+		<el-tabs
+			v-model="activeName"
+			style="margin-top: 0px"
+			type="border-card"
+			@tab-click="tabclick"
+			@handleTabClick="tabclick"
+		>
+			<el-tab-pane
+				v-for="item in tabMapOptions"
+				:label="item.label"
+				:key="item.key"
+				:name="item.key"
+			>
 				<!-- <keep-alive> -->
 				<!-- <tab-pane v-if="activeName==item.key" :type="item.key" @create="showCreatedTimes"/> -->
 				<!-- <div class="panelWrap" v-bind:style="{height:windowHeight+'px'}"> -->
-				<div class="panelWrap" v-bind:style="{ height: PanelHeight }" v-bind:id="item.key" v-if="activeName == item.key || item.all">
-					<panels :component="item.component || item.key" :defaultpanel="Defaultpanel" :height="PanelHeight" :discription="item.discription" :tabtype="item.tabtype" />
+				<div
+					class="panelWrap"
+					v-bind:style="{ height: PanelHeight }"
+					v-bind:id="item.key"
+					v-if="activeName == item.key || item.all"
+				>
+					<panels
+						:component="item.component || item.key"
+						:defaultpanel="Defaultpanel"
+						:height="PanelHeight"
+						:discription="item.discription"
+						:tabtype="item.tabtype"
+					/>
 				</div>
 
 				<!-- </keep-alive> -->
@@ -23,12 +45,12 @@
 	</div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import Panels from '@consoletype/panels.vue';
-import { eventHub } from '@/init/eventHub';
-import { UserModule } from '@/store/modules/user';
-import MediaList from '@consoletype/views/mediaList/modal.vue';
-import Modal from '@/components/ModalComp/index.vue';
+import { Component, Vue, Prop } from "vue-property-decorator";
+import Panels from "@consoletype/panels.vue";
+import { eventHub } from "@/init/eventHub";
+import { UserModule } from "@/store/modules/user";
+import MediaList from "@consoletype/views/mediaList/modal.vue";
+import Modal from "@/components/ModalComp/index.vue";
 // @ts-ignore
 @Component({
 	components: {
@@ -42,22 +64,22 @@ export default class Box extends Vue {
 	private tabHeight = 30;
 
 	private params?: any;
-	@Prop({ default: 'auto' })
+	@Prop({ default: "auto" })
 	height?: string;
 
 	private modalOpen: false | string = false;
 	// @Prop({ default: "Tree" })
 	private defaultpanel?: any;
-	private activeName = 'Tree';
+	private activeName = "Tree";
 	private tabMapOptions = [
-		{ label: 'Default', key: 'MessageList' },
-		{ label: 'Default2', key: 'Tree' },
+		{ label: "Default", key: "MessageList" },
+		{ label: "Default2", key: "Tree" },
 		// { label: "Japan", key: "JP" },
 		// { label: "Eurozone", key: "EU" }
 	];
 
 	get Height() {
-		return 'auto';
+		return "auto";
 		// if (this.height === "auto" || this.height === undefined) {
 		// 	return "auto";
 		// }
@@ -74,28 +96,33 @@ export default class Box extends Vue {
 	}
 
 	tabclick(e: any) {
-		console.log('tabclick');
+		console.log("tabclick");
 		console.log(e);
-		eventHub.$emit('tabclick', e.name);
+		eventHub.$emit("tabclick", e.name);
 	}
 
 	setTabs() {
-		console.log('setTabs');
-		if (!this.$attrs['data-name'] || !(this.$route.meta && this.$attrs['data-name'] in this.$route.meta)) {
+		console.log("setTabs");
+		if (
+			!this.$attrs["data-name"] ||
+			!(this.$route.meta && this.$attrs["data-name"] in this.$route.meta)
+		) {
 			return;
 		}
 		try {
-			const tabMapOptions = this.$route.meta?.[this.$attrs['data-name']].tabs || [];
+			const tabMapOptions =
+				this.$route.meta?.[this.$attrs["data-name"]].tabs || [];
 			this.tabMapOptions = tabMapOptions.filter((tab: any) => {
 				if (tab.roles) {
-					if (!tab.roles.find((r:number)=>UserModule.Role.has(r))) {
+					if (!tab.roles.find((r: number) => UserModule.Role.has(r))) {
 						return false;
 					}
 				}
 				return true;
 			});
-			console.log('created');
-			this.Defaultpanel = this.activeName = this.$route.meta[this.$attrs['data-name']].default;
+			console.log("created");
+			this.Defaultpanel = this.activeName =
+				this.$route.meta[this.$attrs["data-name"]].default;
 		} catch (e) {
 			console.log(e);
 		}
@@ -108,11 +135,11 @@ export default class Box extends Vue {
 			this.setTabs();
 		});
 		this.setTabs();
-		window.addEventListener('resize', this.resizeHandler);
+		window.addEventListener("resize", this.resizeHandler);
 		this.resizeHandler();
 		console.log(this.height);
-		eventHub.$on('BoxModalOpen', this.ModalOpen);
-		eventHub.$on('BoxModalClose', this.ModalClose);
+		eventHub.$on("BoxModalOpen", this.ModalOpen);
+		eventHub.$on("BoxModalClose", this.ModalClose);
 	}
 
 	set Defaultpanel(name: string) {
@@ -120,7 +147,7 @@ export default class Box extends Vue {
 	}
 
 	get Defaultpanel() {
-		return this.defaultpanel || '';
+		return this.defaultpanel || "";
 	}
 
 	public ModalOpen(type: string, param?: any) {
@@ -135,9 +162,9 @@ export default class Box extends Vue {
 	resizeId: number | null = null;
 	windowHeight = 1000;
 	destroyed() {
-		eventHub.$off('BoxModalOpen', this.ModalOpen);
-		eventHub.$off('BoxModalClose', this.ModalClose);
-		window.removeEventListener('resize', this.resizeHandler);
+		eventHub.$off("BoxModalOpen", this.ModalOpen);
+		eventHub.$off("BoxModalClose", this.ModalClose);
+		window.removeEventListener("resize", this.resizeHandler);
 	}
 
 	resizeHandler() {

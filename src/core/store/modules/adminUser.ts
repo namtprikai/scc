@@ -1,5 +1,11 @@
 import Cookies from "js-cookie";
-import { VuexModule, Module, Mutation, Action, getModule } from "vuex-module-decorators";
+import {
+	VuexModule,
+	Module,
+	Mutation,
+	Action,
+	getModule,
+} from "vuex-module-decorators";
 import store from "@/store";
 import { Ajax } from "@/utils/parts";
 import { CLIENT_ID } from "@consoletype/utils/configration";
@@ -20,7 +26,9 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 
 	@Mutation
 	private SET_ADMINLIST(adminUser: Array<IAdminData>) {
-		this.adminList = adminUser.sort((a: IAdminData, b: IAdminData) => Number(a.id) - Number(b.id));
+		this.adminList = adminUser.sort(
+			(a: IAdminData, b: IAdminData) => Number(a.id) - Number(b.id)
+		);
 	}
 
 	@Action({
@@ -53,7 +61,14 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 	}
 
 	@Action
-	public async addAdminUser(adminUser: { role: number; name: string; email: string; password: string; config: any; is_master: boolean }) {
+	public async addAdminUser(adminUser: {
+		role: number;
+		name: string;
+		email: string;
+		password: string;
+		config: any;
+		is_master: boolean;
+	}) {
 		const { role, name, email, password, is_master, config } = adminUser;
 		const admin = await ajax.http({
 			url: `/admin/`,

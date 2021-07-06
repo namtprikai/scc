@@ -1,20 +1,17 @@
 <template>
 	<div class="tab-body">
-
-					<b-alert show variant="info">
-						検索してください
-					</b-alert>
-					<div class="section">
-						<b-form-group>
-							<b-form-input
-								name="title"
-								type="text"
-								v-model="subject"
-								ref="mailSubject"
-								placeholder=""
-							/>
-						</b-form-group>
-					</div>
+		<b-alert show variant="info"> 検索してください </b-alert>
+		<div class="section">
+			<b-form-group>
+				<b-form-input
+					name="title"
+					type="text"
+					v-model="subject"
+					ref="mailSubject"
+					placeholder=""
+				/>
+			</b-form-group>
+		</div>
 	</div>
 </template>
 <style type="scss" lang="scss" scoped>
@@ -44,7 +41,7 @@ import Toolbar from "@/components/Tinymce/toolbar";
 import _ from "lodash";
 import { JSDOM } from "jsdom";
 import { mailTo } from "mailstring";
-import { AjaxService } from '@/services/ajax';
+import { AjaxService } from "@/services/ajax";
 // @ts-ignore
 @Component({
 	components: {},
@@ -59,8 +56,7 @@ export default class UserWinComp extends Vue {
 	protected plugins = Plugins;
 	protected ticketTag: string = "";
 	protected ticketTag2: string = "";
-	protected message =
-		"要編集リクエストが送られた当時のアイテムが存在しません。";
+	protected message = "要編集リクエストが送られた当時のアイテムが存在しません。";
 	@PropSync("value", { type: String })
 	public dataValue!: string;
 	protected isMessage = false;
@@ -70,14 +66,13 @@ export default class UserWinComp extends Vue {
 		mailText: HTMLFormElement;
 		mailSubject: HTMLFormElement;
 	};
-	public questionList: Array<{ value: string; text: string }> = [
-	];
+	public questionList: Array<{ value: string; text: string }> = [];
 	get IsShow() {
 		return this.isShow;
 	}
-	async init(){
+	async init() {
 		const res = await AjaxService.ajax.http({
-			url:`questions`
+			url: `questions`,
 		});
 		console.log(res);
 	}

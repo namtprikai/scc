@@ -7,13 +7,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit } from 'vue-property-decorator';
-import { Computed } from 'vuex';
-import { eventHub } from '@/init/eventHub';
-import { polyfill } from 'mobile-drag-drop';
+import { Component, Vue, Emit } from "vue-property-decorator";
+import { Computed } from "vuex";
+import { eventHub } from "@/init/eventHub";
+import { polyfill } from "mobile-drag-drop";
 
 // optional import of scroll behaviour
-import { scrollBehaviourDragImageTranslateOverride } from 'mobile-drag-drop/scroll-behaviour';
+import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
 
 // options are optional ;)
 polyfill({
@@ -24,13 +24,13 @@ polyfill({
 @Component
 export default class Vertical extends Vue {
 	private refName = `void${Math.floor(Math.random() * 1000)}`;
-	centerStyle: Object = { width: '100%' };
+	centerStyle: Object = { width: "100%" };
 }
 </script>
 <style lang="scss"></style>
 
 <style lang="scss" scoped>
-@import '@/styles/_variables.scss';
+@import "@/styles/_variables.scss";
 
 $barWidth: 2px;
 .relative {
@@ -93,7 +93,7 @@ $barWidth: 2px;
 			&::before {
 				overflow: hidden;
 				text-indent: -9999px;
-				content: '.';
+				content: ".";
 				position: absolute;
 				width: 100px;
 				border-color: #d9534f;
@@ -117,7 +117,7 @@ $barWidth: 2px;
 			&::before {
 				overflow: hidden;
 				text-indent: -9999px;
-				content: '.';
+				content: ".";
 				position: absolute;
 				width: 100px;
 				border-color: #d9534f;

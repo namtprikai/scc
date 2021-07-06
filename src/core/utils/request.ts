@@ -23,7 +23,7 @@ service.interceptors.request.use(
 	},
 	(error) => {
 		Promise.reject(error);
-	},
+	}
 );
 
 // Response interceptors
@@ -82,7 +82,7 @@ service.interceptors.response.use(
 			});
 		}
 		return Promise.reject(error);
-	},
+	}
 );
 
 export default service;

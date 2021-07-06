@@ -9,7 +9,15 @@
 		</b-row>
 		<b-row>
 			<b-col lg="12" class="pb-2">
-				<el-table v-loading="loadFlg" :data="FeedbackList" element-loading-text="Loading" border fit highlight-current-row @row-click="setFeedback">
+				<el-table
+					v-loading="loadFlg"
+					:data="FeedbackList"
+					element-loading-text="Loading"
+					border
+					fit
+					highlight-current-row
+					@row-click="setFeedback"
+				>
 					<el-table-column align="center" label="名前">
 						<template slot-scope="scope">{{ scope.row.assignee_id }}</template>
 					</el-table-column>
@@ -26,12 +34,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import { apiUrl, scriptUrl, CLIENT_ID, subsystemUrl } from './../../utils/configration';
-import { Ajax, Message } from '@/utils/parts';
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import {
+	apiUrl,
+	scriptUrl,
+	CLIENT_ID,
+	subsystemUrl,
+} from "./../../utils/configration";
+import { Ajax, Message } from "@/utils/parts";
 @Component({
-	components: { },
+	components: {},
 })
 export default class FeedbackAdmin extends Vue {
 	currentMessage: Message | null = null;
@@ -40,10 +53,8 @@ export default class FeedbackAdmin extends Vue {
 	protected ajax: Ajax = new Ajax();
 	messages: Array<Message> = [];
 	adminmessages: Array<Message> = [];
-	date = '1';
-	protected startdate = this.$moment()
-		.subtract(1, 'month')
-		.toDate();
+	date = "1";
+	protected startdate = this.$moment().subtract(1, "month").toDate();
 
 	created() {
 		this.getAdminMessages();
@@ -52,12 +63,14 @@ export default class FeedbackAdmin extends Vue {
 	getAdminMessages() {
 		this.adminmessages = [];
 		this.show = false;
-		const yesterdayDate = new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * parseInt(this.date));
+		const yesterdayDate = new Date(
+			new Date().getTime() - 1000 * 60 * 60 * 24 * parseInt(this.date)
+		);
 		const toDoubleDigits = (_num: number) => {
 			let num = String(_num);
-			num += '';
+			num += "";
 			if (num.length === 1) {
-				num = '0' + num;
+				num = "0" + num;
 			}
 			return num;
 		};
@@ -65,19 +78,27 @@ export default class FeedbackAdmin extends Vue {
 		this.ajax
 			.http({
 				url: `product/${CLIENT_ID}/search_message`,
-				method: 'GET',
+				method: "GET",
 				params: {
-					mode: 'and',
-					q: '',
-					owner: 'admin',
-					st: `${yesterdayDate.getUTCFullYear()}-${toDoubleDigits(yesterdayDate.getUTCMonth() + 1)}-${toDoubleDigits(yesterdayDate.getUTCDate())}`,
+					mode: "and",
+					q: "",
+					owner: "admin",
+					st: `${yesterdayDate.getUTCFullYear()}-${toDoubleDigits(
+						yesterdayDate.getUTCMonth() + 1
+					)}-${toDoubleDigits(yesterdayDate.getUTCDate())}`,
 				},
 			})
 			.then(
 				(res: any) => {
 					console.log(res);
 					try {
-						this.adminmessages = res.filter((el: any) => el.message_feedback_id === null && el.assignee_id !== null && el.type == 'text' && el.text != '');
+						this.adminmessages = res.filter(
+							(el: any) =>
+								el.message_feedback_id === null &&
+								el.assignee_id !== null &&
+								el.type == "text" &&
+								el.text != ""
+						);
 						// .filter((message: Message | any) => {
 						// 	if (UserModule.name.indexOf("サイシード") != -1) {
 						// 		return true;
@@ -95,7 +116,7 @@ export default class FeedbackAdmin extends Vue {
 					}
 					this.show = true;
 				},
-				res => {},
+				(res) => {}
 			);
 	}
 
@@ -103,13 +124,13 @@ export default class FeedbackAdmin extends Vue {
 		this.ajax
 			.http({
 				url: `product/${CLIENT_ID}/message_feedback`,
-				method: 'GET',
+				method: "GET",
 			})
 			.then(
 				(res: any) => {
 					this.messages = res;
 				},
-				res => {},
+				(res) => {}
 			);
 	}
 
@@ -120,9 +141,9 @@ export default class FeedbackAdmin extends Vue {
 	setFeedback(message: Message) {
 		console.log(message);
 		this.currentMessage = message;
-		eventHub.$emit('setCurrentMessage', message);
-		eventHub.$emit('clickfeedbackAdminMessage', message);
-		eventHub.$emit('setHilightMessage', message);
+		eventHub.$emit("setCurrentMessage", message);
+		eventHub.$emit("clickfeedbackAdminMessage", message);
+		eventHub.$emit("setHilightMessage", message);
 	}
 }
 </script>

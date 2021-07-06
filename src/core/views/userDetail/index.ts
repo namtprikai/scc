@@ -94,12 +94,18 @@ export default class UserDetailParent extends Vue {
 		if (this.user) {
 			for (const item of this.items) {
 				if (item.dataType === "tags") {
-					item.tags = this.parseTag(this.currentUserTags.filter((tag: any = {}) => tag.category === item.category));
+					item.tags = this.parseTag(
+						this.currentUserTags.filter(
+							(tag: any = {}) => tag.category === item.category
+						)
+					);
 					editTags = editTags.concat(item.tags.map((t: any) => t.id));
 				}
 				if (item.dataType === "radio") {
 					item.model = "";
-					const tags = this.currentUserTags.filter((tag: any = {}) => tag.category === item.category);
+					const tags = this.currentUserTags.filter(
+						(tag: any = {}) => tag.category === item.category
+					);
 					if (tags && tags.length > 0) {
 						console.log(tags);
 						item.model = tags[0].id;
@@ -118,7 +124,9 @@ export default class UserDetailParent extends Vue {
 					item.model = this.attr[item.key];
 				}
 			}
-			this.noEditTags = this.currentUserTags.filter((tag: any = {}) => editTags.indexOf(tag.id) === -1).map((t) => t.id);
+			this.noEditTags = this.currentUserTags
+				.filter((tag: any = {}) => editTags.indexOf(tag.id) === -1)
+				.map((t) => t.id);
 		}
 		this.isShow = true;
 	}
@@ -139,12 +147,18 @@ export default class UserDetailParent extends Vue {
 		if (this.user) {
 			for (const item of this.items) {
 				if (item.dataType === "tags") {
-					item.tags = this.parseTag(this.currentUserTags.filter((tag: any = {}) => tag.category === item.category));
+					item.tags = this.parseTag(
+						this.currentUserTags.filter(
+							(tag: any = {}) => tag.category === item.category
+						)
+					);
 					editTags = editTags.concat(item.tags.map((t: any) => t.id));
 				}
 				if (item.dataType === "radio") {
 					item.model = "";
-					const tags = this.currentUserTags.filter((tag: any = {}) => tag.category === item.category);
+					const tags = this.currentUserTags.filter(
+						(tag: any = {}) => tag.category === item.category
+					);
 					if (tags && tags.length > 0) {
 						console.log(tags);
 						item.model = tags[0].id;
@@ -163,7 +177,9 @@ export default class UserDetailParent extends Vue {
 					item.model = this.attr[item.key];
 				}
 			}
-			this.noEditTags = this.currentUserTags.filter((tag: any = {}) => editTags.indexOf(tag.id) === -1).map((t) => t.id);
+			this.noEditTags = this.currentUserTags
+				.filter((tag: any = {}) => editTags.indexOf(tag.id) === -1)
+				.map((t) => t.id);
 		}
 		this.isShow = true;
 	}
@@ -213,7 +229,9 @@ export default class UserDetailParent extends Vue {
 	}
 
 	private parseRadioTag(tags: Array<any>): Array<any> {
-		return tags.map((tag) => Object.assign({ text: tag.name, value: tag.id }, tag));
+		return tags.map((tag) =>
+			Object.assign({ text: tag.name, value: tag.id }, tag)
+		);
 	}
 
 	private parseTagToData(tags: Array<any>): Array<any> {

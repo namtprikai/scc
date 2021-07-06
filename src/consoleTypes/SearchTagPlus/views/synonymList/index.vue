@@ -3,12 +3,19 @@
 		<h2>類義語一覧</h2>
 		<b-button v-on:click="pushSynonim">保存</b-button>
 		<p v-if="synonym.length == 0">対義語がありません</p>
-		<b-form-group label="類義語検索" description="キーワードを入力すると類義語が絞り込まれます。">
+		<b-form-group
+			label="類義語検索"
+			description="キーワードを入力すると類義語が絞り込まれます。"
+		>
 			<b-form-input type="text" v-model="presearchText" />
 		</b-form-group>
 		<!-- <b-list-group> -->
 		<transition-group name="list" tag="ul">
-			<li v-for="(item, index) in synonymFilter(synonym)" :key="item.key" class="synonymList__list">
+			<li
+				v-for="(item, index) in synonymFilter(synonym)"
+				:key="item.key"
+				class="synonymList__list"
+			>
 				<b-list-group-item>
 					<b-input type="text" v-model="item.key" />
 					<input-tag v-model="item.syn" />
@@ -16,7 +23,12 @@
 				</b-list-group-item>
 			</li>
 		</transition-group>
-		<b-list-group-item class="text-center list-complete-item" button v-on:click="addItem()">+</b-list-group-item>
+		<b-list-group-item
+			class="text-center list-complete-item"
+			button
+			v-on:click="addItem()"
+			>+</b-list-group-item
+		>
 		<!-- </b-list-group> -->
 		<b-button v-on:click="pushSynonim">保存</b-button>
 		<div class="backWrap d-flex justify-content-center mb-3" v-if="isSynonymload">
@@ -25,11 +37,11 @@
 	</div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
-import { apiUrl, scriptUrl, CLIENT_ID } from './../../utils/configration';
-import { UpdateServer } from '@/api/updateServer';
-import { Ajax, RequeuestWokersService } from '@/utils/parts';
-import InputTag from '@/components/InputTag/index.vue';
+import { Component, Vue, Watch, Prop } from "vue-property-decorator";
+import { apiUrl, scriptUrl, CLIENT_ID } from "./../../utils/configration";
+import { UpdateServer } from "@/api/updateServer";
+import { Ajax, RequeuestWokersService } from "@/utils/parts";
+import InputTag from "@/components/InputTag/index.vue";
 // @ts-ignore
 @Component({
 	filters: {},
@@ -41,18 +53,18 @@ export default class Synonym extends Vue {
 	private oldsynonym: Array<any> = [];
 	private synonym: Array<any> = [];
 	private ajax = new Ajax();
-	private presearchText = '';
-	private searchText = '';
+	private presearchText = "";
+	private searchText = "";
 	private requeuestWokersService = new RequeuestWokersService(new Ajax());
 	private created() {
-		console.log('created');
+		console.log("created");
 		this.fetchSynonim().then(() => {
 			this.isSynonymload = false;
 		});
 	}
 
 	private changeSearchTextId: any = null;
-	@Watch('presearchText')
+	@Watch("presearchText")
 	public changeSearchText() {
 		if (this.changeSearchTextId !== null) {
 			clearTimeout(this.changeSearchTextId);
@@ -63,7 +75,9 @@ export default class Synonym extends Vue {
 	}
 
 	public synonymFilter(synonymList: Array<string>) {
-		return synonymList.filter((s: any) => `${s.key}`.indexOf(this.searchText) != -1);
+		return synonymList.filter(
+			(s: any) => `${s.key}`.indexOf(this.searchText) != -1
+		);
 	}
 
 	public async fetchSynonim() {
@@ -86,7 +100,7 @@ export default class Synonym extends Vue {
 			table[synonym[key]].push(key);
 		}
 		return Object.keys(table).map((key: any) => {
-			return { key, syn: [...new Set(table[key])].filter(o => o !== key) };
+			return { key, syn: [...new Set(table[key])].filter((o) => o !== key) };
 		});
 	}
 
@@ -108,17 +122,17 @@ export default class Synonym extends Vue {
 		if (this.synonym === undefined) {
 			this.synonym = [];
 		}
-		this.synonym.push({ key: '', syn: [] });
+		this.synonym.push({ key: "", syn: [] });
 	}
 
 	private getKeyAndCans(
 		key: string,
-		cans: Array<string> = [],
+		cans: Array<string> = []
 	): {
-			key: string | null;
-			cans: Array<string> | null;
-			error: boolean | null;
-		} {
+		key: string | null;
+		cans: Array<string> | null;
+		error: boolean | null;
+	} {
 		const valueList = cans;
 		valueList.push(key);
 
@@ -135,7 +149,7 @@ export default class Synonym extends Vue {
 		if (keyValue !== null) {
 			return { key: keyValue, cans: valueList, error: false };
 		}
-		return { key: '', cans: valueList, error: true };
+		return { key: "", cans: valueList, error: true };
 	}
 
 	private getSynonim() {
@@ -144,15 +158,15 @@ export default class Synonym extends Vue {
 				.http({
 					baseURL: `${scriptUrl}`,
 					url: `get_script/?path=${CLIENT_ID}/synonym_dict.json`,
-					method: 'GET',
+					method: "GET",
 				})
 				.then(
-					res => {
+					(res) => {
 						resolve({ synonym: res, error: false });
 					},
-					res => {
+					(res) => {
 						resolve({ synonym: res, error: true });
-					},
+					}
 				);
 		});
 	}
@@ -175,15 +189,15 @@ export default class Synonym extends Vue {
 				this.requeuestWokersService.setQueue(
 					{
 						baseURL: `${scriptUrl}`,
-						url: 'update_synonym',
-						method: 'PUT',
+						url: "update_synonym",
+						method: "PUT",
 						data: {
 							product_id: CLIENT_ID,
 							word: key,
 							synonyms: cans,
 						},
 					},
-					() => {},
+					() => {}
 				);
 			}
 		});

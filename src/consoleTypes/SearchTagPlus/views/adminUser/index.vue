@@ -1,6 +1,13 @@
 <template>
 	<div class="admin-user tab-body">
-		<el-table v-loading="listLoading" :data="AdminList" element-loading-text="Loading" border fit highlight-current-row>
+		<el-table
+			v-loading="listLoading"
+			:data="AdminList"
+			element-loading-text="Loading"
+			border
+			fit
+			highlight-current-row
+		>
 			<el-table-column align="center" label="ユーザー名">
 				<template slot-scope="scope">{{ scope.row.name }}</template>
 			</el-table-column>
@@ -14,13 +21,23 @@
 					<b-popover :target="`kengen`" :placement="'left'" triggers="hover focus">
 						<template slot:contents>
 							名称と権限は以下の通りです。
-							<br />オーナー <br />・アカウントの発行・削除ができます。 <br />・FAQ設定メニューが使用できます。 <br />・管理画面からFAQの検索ができます（※sAI Searchのみ） <br />●管理者
-							<br />・FAQ設定メニューが使用できます。 <br />・管理画面からFAQの検索ができます（※sAI Searchのみ）
+							<br />オーナー <br />・アカウントの発行・削除ができます。
+							<br />・FAQ設定メニューが使用できます。
+							<br />・管理画面からFAQの検索ができます（※sAI Searchのみ） <br />●管理者
+							<br />・FAQ設定メニューが使用できます。
+							<br />・管理画面からFAQの検索ができます（※sAI Searchのみ）
 						</template>
 					</b-popover>
 				</span>
 				<template slot slot-scope="scope">
-					<b-form-select v-on:change="changeRole(scope.row)" v-model="scope.row.role" :options="roleOptions" size="sm" class="mt-3" :disabled="!isValid(scope.row.id)"></b-form-select>
+					<b-form-select
+						v-on:change="changeRole(scope.row)"
+						v-model="scope.row.role"
+						:options="roleOptions"
+						size="sm"
+						class="mt-3"
+						:disabled="!isValid(scope.row.id)"
+					></b-form-select>
 				</template>
 			</el-table-column>
 			<el-table-column align="center" label="バッジ">
@@ -49,7 +66,11 @@
 			</el-table-column>
 			<el-table-column align="center" label="操作">
 				<template slot-scope="scope">
-					<b-button v-on:click="deleateAdmin(scope.row)" :disabled="!isValid(scope.row.id)">削除</b-button>
+					<b-button
+						v-on:click="deleateAdmin(scope.row)"
+						:disabled="!isValid(scope.row.id)"
+						>削除</b-button
+					>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -57,18 +78,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { UserModule } from '@/store/modules/user';
-import { mapGetters } from 'vuex';
-import DashboardParent from '@/views/dashboard/index';
-import PanThumb from '@/components/PanThumb/index.vue';
-import { CLIENT_ID } from '../../utils/configration';
-import { AndyPasswordValidator } from '@/utils/parts';
-import {AjaxService} from '@/services/ajax';
-import { AdminUserModule } from '@/store/modules/adminUser';
-import Breadcrumb from '@/components/Breadcrumb/index.vue';
-const PasswordValidator = require('password-validator');
-import {IAdminData} from "@/api/types";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { UserModule } from "@/store/modules/user";
+import { mapGetters } from "vuex";
+import DashboardParent from "@/views/dashboard/index";
+import PanThumb from "@/components/PanThumb/index.vue";
+import { CLIENT_ID } from "../../utils/configration";
+import { AndyPasswordValidator } from "@/utils/parts";
+import { AjaxService } from "@/services/ajax";
+import { AdminUserModule } from "@/store/modules/adminUser";
+import Breadcrumb from "@/components/Breadcrumb/index.vue";
+const PasswordValidator = require("password-validator");
+import { IAdminData } from "@/api/types";
 // @ts-ignore
 @Component({
 	components: {},
@@ -77,23 +98,23 @@ export default class AdminUser extends Vue {
 	private listLoading = true;
 	passwordValidator = new AndyPasswordValidator(PasswordValidator);
 	private newAdminUser = {
-		name: '',
-		email: '',
+		name: "",
+		email: "",
 		role: 4,
-		password: '',
+		password: "",
 	};
 
 	protected roleOptions = [
 		// { value: 1, text: "ゲスト" },
-		{ value: 4, text: '管理者' },
-		{ value: 5, text: 'オーナー' },
+		{ value: 4, text: "管理者" },
+		{ value: 5, text: "オーナー" },
 	];
 
 	public addAdminUser() {
 		AjaxService.ajax
 			.http({
 				url: `product/${CLIENT_ID}/admin_user/`,
-				method: 'POST',
+				method: "POST",
 				data: {
 					name: this.newAdminUser.name,
 					email: this.newAdminUser.email,
@@ -101,31 +122,31 @@ export default class AdminUser extends Vue {
 					role: this.newAdminUser.role,
 				},
 			})
-			.then(data => {
-				this.$modal.show('dialog', {
-					title: '成功',
-					text: 'アカウントの追加に成功しました',
+			.then((data) => {
+				this.$modal.show("dialog", {
+					title: "成功",
+					text: "アカウントの追加に成功しました",
 					buttons: [
 						{
-							title: 'OK',
+							title: "OK",
 							handler: () => {
-								this.$modal.hide('dialog');
+								this.$modal.hide("dialog");
 							},
 						},
 					],
 				});
 			})
-			.catch(error => {
+			.catch((error) => {
 				try {
-					if (error.response.data.message == 'Already exists.') {
-						this.$modal.show('dialog', {
-							title: '失敗',
-							text: 'すでに登録されています',
+					if (error.response.data.message == "Already exists.") {
+						this.$modal.show("dialog", {
+							title: "失敗",
+							text: "すでに登録されています",
 							buttons: [
 								{
-									title: 'OK',
+									title: "OK",
 									handler: () => {
-										this.$modal.hide('dialog');
+										this.$modal.hide("dialog");
 									},
 								},
 							],
@@ -136,7 +157,7 @@ export default class AdminUser extends Vue {
 	}
 
 	public roleStyle(role: number) {
-		return { 'background-image': `url(${this.emptyGif(role)})` };
+		return { "background-image": `url(${this.emptyGif(role)})` };
 	}
 
 	public emptyGif(role: number) {
@@ -150,11 +171,10 @@ export default class AdminUser extends Vue {
 			}
 			// return admin.role > 1;
 			return true;
-		})
-		.map((admin: IAdminData) => {
-			const {id,name,email,config} = admin;
-			return {id,name,email,role:config.role||0}
-		})
+		}).map((admin: IAdminData) => {
+			const { id, name, email, config } = admin;
+			return { id, name, email, role: config.role || 0 };
+		});
 	}
 
 	get stateName() {
@@ -165,14 +185,14 @@ export default class AdminUser extends Vue {
 	}
 
 	get validFeedbackName() {
-		return this.stateName === true ? 'Thanks' : '';
+		return this.stateName === true ? "Thanks" : "";
 	}
 
 	get invalidFeedbackName() {
 		if (this.newAdminUser.name.length === 0) {
-			return '名前を入力してください';
+			return "名前を入力してください";
 		}
-		return '';
+		return "";
 	}
 
 	get statePassword() {
@@ -180,7 +200,7 @@ export default class AdminUser extends Vue {
 	}
 
 	get validFeedbackPassword() {
-		return this.statePassword === true ? '使用可能なパスワードです' : '';
+		return this.statePassword === true ? "使用可能なパスワードです" : "";
 	}
 
 	get invalidFeedbackPassword() {
@@ -195,11 +215,13 @@ export default class AdminUser extends Vue {
 	}
 
 	get validFeedbackMail() {
-		return this.stateMail === true ? 'Thanks' : '';
+		return this.stateMail === true ? "Thanks" : "";
 	}
 
 	get invalidFeedbackMail() {
-		return this.stateMail === true ? '' : '正しいメールアドレスを入力してください';
+		return this.stateMail === true
+			? ""
+			: "正しいメールアドレスを入力してください";
 	}
 
 	public async created() {
@@ -208,22 +230,22 @@ export default class AdminUser extends Vue {
 	}
 
 	public deleateAdmin(admin: IAdminData) {
-		this.$modal.show('dialog', {
-			title: 'アカウントを削除しますか？',
-			text: '',
+		this.$modal.show("dialog", {
+			title: "アカウントを削除しますか？",
+			text: "",
 			buttons: [
 				{
-					title: 'はい',
+					title: "はい",
 					handler: () => {
 						// admin.role = 0;
 						AdminUserModule.setAdminUser(admin);
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 				{
-					title: 'いいえ',
+					title: "いいえ",
 					handler: () => {
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 			],
@@ -231,23 +253,23 @@ export default class AdminUser extends Vue {
 	}
 
 	public changeRole(admin: IAdminData) {
-		this.$modal.show('dialog', {
-			title: '権限を変更しますか？',
-			text: '',
+		this.$modal.show("dialog", {
+			title: "権限を変更しますか？",
+			text: "",
 			buttons: [
 				{
-					title: 'はい',
+					title: "はい",
 					handler: () => {
-						console.log('SETADMINUSER はい');
+						console.log("SETADMINUSER はい");
 						AdminUserModule.setAdminUser(admin);
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 				{
-					title: 'いいえ',
+					title: "いいえ",
 					handler: () => {
 						AdminUserModule.getAdminUserList();
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 			],

@@ -49,7 +49,10 @@ export namespace MessageList {
 				});
 		});
 
-	export const sendMessage = async (data: SendMessage, userName: string): Promise<any> => {
+	export const sendMessage = async (
+		data: SendMessage,
+		userName: string
+	): Promise<any> => {
 		const token = await Auth.getToken();
 		let apiName = "line/send_message";
 		if (String(userName).match(/AIChatWindowUser/)) {
@@ -65,7 +68,10 @@ export namespace MessageList {
 		});
 	};
 
-	export const updateMessage = async (id: string, data: UpdateMessage): Promise<any> => {
+	export const updateMessage = async (
+		id: string,
+		data: UpdateMessage
+	): Promise<any> => {
 		const token = await Auth.getToken();
 		return request({
 			url: `product/${CLIENT_ID}/message/${id}`,
@@ -88,10 +94,15 @@ export namespace MessageList {
 		});
 	};
 
-	export const searchMessageList = async (data: SearchMessage): Promise<object[]> => {
+	export const searchMessageList = async (
+		data: SearchMessage
+	): Promise<object[]> => {
 		const token = await Auth.getToken();
 
-		const impl = async (data: SearchMessage, list: object[] = []): Promise<object[]> => {
+		const impl = async (
+			data: SearchMessage,
+			list: object[] = []
+		): Promise<object[]> => {
 			const { q, limit, page, st, en } = data;
 			const next: any = await request({
 				url: `product/${CLIENT_ID}/search_message`,

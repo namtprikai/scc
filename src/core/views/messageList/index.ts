@@ -56,7 +56,11 @@ export default class MessageListCompParent extends Vue {
 	}
 
 	public isMyTaiouchu(message: MessageObj): boolean {
-		if (!message.user || !message.user.assignee || message.user.assignee.length == 0) {
+		if (
+			!message.user ||
+			!message.user.assignee ||
+			message.user.assignee.length == 0
+		) {
 			return false;
 		}
 		const { admin_user_id } = message.user.assignee[0];
@@ -65,7 +69,11 @@ export default class MessageListCompParent extends Vue {
 	}
 
 	public isOthersTaiouchu(message: MessageObj): boolean {
-		if (!message.user || !message.user.assignee || message.user.assignee.length == 0) {
+		if (
+			!message.user ||
+			!message.user.assignee ||
+			message.user.assignee.length == 0
+		) {
 			return false;
 		}
 		const { admin_user_id } = message.user.assignee[0];
@@ -73,16 +81,28 @@ export default class MessageListCompParent extends Vue {
 		return !isMe && this.isTaiouchu(message);
 	}
 
-	public isTaiouchu(o: { is_replied: boolean; is_read: boolean; is_processed: boolean }): boolean {
+	public isTaiouchu(o: {
+		is_replied: boolean;
+		is_read: boolean;
+		is_processed: boolean;
+	}): boolean {
 		return !o.is_replied && o.is_read && !o.is_processed;
 	}
 
-	public isResponce(o: { is_replied: boolean; is_read: boolean; is_processed: boolean }): boolean {
+	public isResponce(o: {
+		is_replied: boolean;
+		is_read: boolean;
+		is_processed: boolean;
+	}): boolean {
 		return !o.is_replied && !o.is_read && !o.is_processed;
 	}
 
 	protected setCurrentMessage(message: any, e?: Event) {
-		eventHub.$emit("setCurrentMessage", message, this.isHikitugu(message.user, message.id));
+		eventHub.$emit(
+			"setCurrentMessage",
+			message,
+			this.isHikitugu(message.user, message.id)
+		);
 	}
 
 	hikituguFlg: any = null;
@@ -170,7 +190,9 @@ export default class MessageListCompParent extends Vue {
 			console.log(user);
 			const { admin_user_id } = user.assignee[0];
 			console.log(AdminUserModule.AdminList);
-			const adminUser = AdminUserModule.AdminList.filter((o: any) => o.id == admin_user_id)[0];
+			const adminUser = AdminUserModule.AdminList.filter(
+				(o: any) => o.id == admin_user_id
+			)[0];
 			if (adminUser) {
 				return adminUser.name + " ";
 			}
@@ -200,7 +222,7 @@ export default class MessageListCompParent extends Vue {
 						});
 					}
 				},
-				(res) => {},
+				(res) => {}
 			);
 		// await MessageList.updateMessage(message.id, { description: "123" });
 		await MessageListModule.getMessageList();

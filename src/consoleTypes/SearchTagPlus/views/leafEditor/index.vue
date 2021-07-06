@@ -3,7 +3,13 @@
 		<div v-if="Is_show">
 			<b-form-group label="このスクリプトが使われたときのメッセージ">
 				<div v-for="(leaf, index) in currentLeafs" v-bind:key="index">
-					<b-form-textarea id="textarea" name="text" type="text" rows="17" v-model="leaf.text"></b-form-textarea>
+					<b-form-textarea
+						id="textarea"
+						name="text"
+						type="text"
+						rows="17"
+						v-model="leaf.text"
+					></b-form-textarea>
 				</div>
 			</b-form-group>
 			<!-- <b-form-group label="編集理由" v-if="item.feedback">
@@ -18,14 +24,28 @@
 			</b-form-group>-->
 			<!-- <edit-wrap/> -->
 			<b-form-group label="データ種別">
-				<b-form-radio value="node" v-model="item.data.type" name="some-radios">node</b-form-radio>
-				<b-form-radio value="leaf" v-model="item.data.type" name="some-radios">leaf</b-form-radio>
+				<b-form-radio value="node" v-model="item.data.type" name="some-radios"
+					>node</b-form-radio
+				>
+				<b-form-radio value="leaf" v-model="item.data.type" name="some-radios"
+					>leaf</b-form-radio
+				>
 			</b-form-group>
 			<b-form-group label="タイトル">
-				<b-form-input id="textinput" name="title" type="text" v-model="item.data.text" />
+				<b-form-input
+					id="textinput"
+					name="title"
+					type="text"
+					v-model="item.data.text"
+				/>
 			</b-form-group>
 			<b-form-group label="スクリプトログ" v-if="isLog_script(item.data)">
-				<b-form-input id="textinput" name="title" type="text" v-model="item.data.items.log_faq[0]" />
+				<b-form-input
+					id="textinput"
+					name="title"
+					type="text"
+					v-model="item.data.items.log_faq[0]"
+				/>
 			</b-form-group>
 			<div v-if="item.isLeaf">
 				<!-- <b-button v-on:click="isEdit=true">エディター編集</b-button>
@@ -43,7 +63,11 @@
 					<b-form-input id="textinput" name="title" type="text" v-model="item.data.scenario"/>
 				</b-form-group> -->
 				<h3>キーワード</h3>
-				<div v-for="(question, index) in item.data.questions" :key="index" class="question">
+				<div
+					v-for="(question, index) in item.data.questions"
+					:key="index"
+					class="question"
+				>
 					<div class="input">
 						<input-tag v-model="item.data.questions[index]" :item-click="tagClick">
 							<!-- <div slot="menu" v-if="is_menu_show">
@@ -60,7 +84,13 @@
 				</div>
 				<b-container class="bv-example-row">
 					<b-row class="justify-content-md-center">
-						<b-button class="addButton" v-if="item.isLeaf" @click="addQuestion" variant="outline-secondary">+</b-button>
+						<b-button
+							class="addButton"
+							v-if="item.isLeaf"
+							@click="addQuestion"
+							variant="outline-secondary"
+							>+</b-button
+						>
 					</b-row>
 				</b-container>
 			</div>
@@ -91,13 +121,17 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import Tinymce from '@/components/Tinymce/index.vue';
-import InputTag from '@/components/InputTag/index.vue';
-import Synonym from '@/components/Synonym/index.vue';
-import { Ajax, MessageObj, Message, MessageList } from '@/utils/parts';
-import { subsystemUrl, CLIENT_ID, script_logUrl } from './../../utils/configration';
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import Tinymce from "@/components/Tinymce/index.vue";
+import InputTag from "@/components/InputTag/index.vue";
+import Synonym from "@/components/Synonym/index.vue";
+import { Ajax, MessageObj, Message, MessageList } from "@/utils/parts";
+import {
+	subsystemUrl,
+	CLIENT_ID,
+	script_logUrl,
+} from "./../../utils/configration";
 // @ts-ignore
 @Component({
 	components: { Tinymce, InputTag, Synonym },
@@ -106,29 +140,29 @@ export default class LeafEditorComp extends Vue {
 	private ajax: Ajax = new Ajax();
 	private message: Array<any> = [];
 	private listLoading = false;
-	private item: any = '';
+	private item: any = "";
 	private isShow = true;
 	private currentLeafs: Array<any> = [];
-	private currentSynonym = '';
-	private editValue = '';
+	private currentSynonym = "";
+	private editValue = "";
 	private isEdit = false;
 	private setItem(item: any) {
 		this.item = item;
-		if ('data' in item && 'value' in item.data) {
-			this.editValue = item.data.value.replace(/\n/g, '<br>');
+		if ("data" in item && "value" in item.data) {
+			this.editValue = item.data.value.replace(/\n/g, "<br>");
 			this.getSearchLog(item.data);
 		}
-		if ('items' in item.data && !('log_faq' in item.data.items)) {
-			item.data.items.log_faq = [''];
+		if ("items" in item.data && !("log_faq" in item.data.items)) {
+			item.data.items.log_faq = [""];
 		}
 	}
 
 	public resetItem() {
-		this.editValue = this.item = '';
+		this.editValue = this.item = "";
 	}
 
 	public setEdit() {
-		if ('data' in this.item) {
+		if ("data" in this.item) {
 			this.item.data.value = this.editValue;
 		}
 	}
@@ -138,19 +172,19 @@ export default class LeafEditorComp extends Vue {
 		return this.currentSynonym;
 	}
 
-	@Watch('item', { deep: true })
+	@Watch("item", { deep: true })
 	private itemChange(item: any, oldItem: any) {
 		this.isEdit = false;
 		if (this.itemChangeId !== null) {
 			clearTimeout(this.itemChangeId);
 		}
 		this.itemChangeId = setTimeout(() => {
-			if (this.item.data && this.item.data.type === 'leaf') {
+			if (this.item.data && this.item.data.type === "leaf") {
 				this.item.isLeaf = true;
 			} else {
 				this.item.isLeaf = false;
 			}
-			this.editValue = item.data.value.replace(/\n/g, '<br>');
+			this.editValue = item.data.value.replace(/\n/g, "<br>");
 			this.$forceUpdate();
 		}, 500);
 	}
@@ -161,10 +195,10 @@ export default class LeafEditorComp extends Vue {
 			.http({
 				baseURL: `${subsystemUrl}`,
 				url: `product/${CLIENT_ID}/data_get`,
-				method: 'GET',
+				method: "GET",
 				params: {
 					script_id: script.id,
-					type: 'query_script_log',
+					type: "query_script_log",
 				},
 			})
 			.then((data: any) => {
@@ -203,32 +237,32 @@ export default class LeafEditorComp extends Vue {
 	}
 
 	public isLog_script(data: any) {
-		if ('items' in data && 'log_faq' in data.items) {
+		if ("items" in data && "log_faq" in data.items) {
 			return true;
 		}
 		return false;
 	}
 
 	get Is_show() {
-		if (this.isShow && this.item && this.item.hasOwnProperty('data')) {
+		if (this.isShow && this.item && this.item.hasOwnProperty("data")) {
 			return true;
 		}
 		return false;
 	}
 
 	public tabClick() {
-		console.log('tabclick');
+		console.log("tabclick");
 		this.resetItem();
 	}
 
 	private created() {
-		eventHub.$on('setScript', this.setItem);
-		eventHub.$on('tabclick', this.tabClick);
+		eventHub.$on("setScript", this.setItem);
+		eventHub.$on("tabclick", this.tabClick);
 	}
 
 	private destroyed() {
-		eventHub.$off('setScript', this.setItem);
-		eventHub.$off('tabclick', this.tabClick);
+		eventHub.$off("setScript", this.setItem);
+		eventHub.$off("tabclick", this.tabClick);
 	}
 }
 </script>

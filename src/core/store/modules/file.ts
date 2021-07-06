@@ -1,5 +1,11 @@
 import Cookies from "js-cookie";
-import { VuexModule, Module, Mutation, Action, getModule } from "vuex-module-decorators";
+import {
+	VuexModule,
+	Module,
+	Mutation,
+	Action,
+	getModule,
+} from "vuex-module-decorators";
 import store from "@/store";
 import { Ajax } from "@/utils/parts";
 import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
@@ -26,7 +32,9 @@ class FileStore extends VuexModule implements IScenarioState {
 	private SET_FILE(fileList: Array<any>) {
 		this.fileList = fileList.sort((a: any, b: any) => {
 			try {
-				return new Date(b.LastModified).getTime() - new Date(a.LastModified).getTime();
+				return (
+					new Date(b.LastModified).getTime() - new Date(a.LastModified).getTime()
+				);
 			} catch (e) {
 				console.log(e);
 			}
@@ -76,7 +84,12 @@ class FileStore extends VuexModule implements IScenarioState {
 	@Action({
 		commit: "SET_FILE",
 	})
-	public async postFile(ob: { parent: string; fileName: string; base64Str: string; type: string }) {
+	public async postFile(ob: {
+		parent: string;
+		fileName: string;
+		base64Str: string;
+		type: string;
+	}) {
 		const { parent, fileName, base64Str, type } = ob;
 		const file = `${parent}/${fileName}`;
 		const setData: any = await ajax.http({

@@ -11,7 +11,15 @@ export const getSelectionPosition = ({ items }: any) => {
 	return item ? item.offsetTop + item.clientHeight / 2 : null;
 };
 
-export const updateRelation = ({ items, prevLocal, currentLocal, scrollAnchor, anchor, getRelation, disable }: any) => {
+export const updateRelation = ({
+	items,
+	prevLocal,
+	currentLocal,
+	scrollAnchor,
+	anchor,
+	getRelation,
+	disable,
+}: any) => {
 	if (!prevLocal || prevLocal.selectedPosition == null || disable) {
 		if (scrollAnchor) {
 			scrollAnchor.style.display = "none";
@@ -21,7 +29,10 @@ export const updateRelation = ({ items, prevLocal, currentLocal, scrollAnchor, a
 		}
 		return;
 	}
-	const scrollAnchorTop = currentLocal.scrollPosition - prevLocal.scrollPosition + prevLocal.selectedPosition;
+	const scrollAnchorTop =
+		currentLocal.scrollPosition -
+		prevLocal.scrollPosition +
+		prevLocal.selectedPosition;
 	const anchorTop = prevLocal.selectedPosition - prevLocal.scrollPosition;
 
 	let containsSelected = false;
@@ -42,7 +53,11 @@ export const updateRelation = ({ items, prevLocal, currentLocal, scrollAnchor, a
 				const prevItem = items.children[itemIndex - 1];
 				relation.style.bottom = itemHeight / 2 + "px";
 				relation.style.top = "auto";
-				relation.style.height = limitWith(itemOffset, !isSelected && prevItem && prevItem.clientHeight / 2 + itemHeight / 2 + 30) + "px";
+				relation.style.height =
+					limitWith(
+						itemOffset,
+						!isSelected && prevItem && prevItem.clientHeight / 2 + itemHeight / 2 + 30
+					) + "px";
 			} else {
 				// upper
 				item.classList.add("upper");
@@ -50,7 +65,11 @@ export const updateRelation = ({ items, prevLocal, currentLocal, scrollAnchor, a
 				const nextItem = items.children[itemIndex - 1];
 				relation.style.top = itemHeight / 2 + "px";
 				relation.style.bottom = "auto";
-				relation.style.height = limitWith(-itemOffset, !isSelected && nextItem && nextItem.clientHeight / 2 + itemHeight / 2 + 30) + "px";
+				relation.style.height =
+					limitWith(
+						-itemOffset,
+						!isSelected && nextItem && nextItem.clientHeight / 2 + itemHeight / 2 + 30
+					) + "px";
 			}
 		}
 		if (scrollAnchor) {

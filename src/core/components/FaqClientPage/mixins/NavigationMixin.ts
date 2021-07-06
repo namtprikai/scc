@@ -1,6 +1,7 @@
 import { navigationStoreModule } from "../store/navigationStore";
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-const bound = (value: any, min: any, max: any) => Math.min(Math.max(value, min), max);
+const bound = (value: any, min: any, max: any) =>
+	Math.min(Math.max(value, min), max);
 
 // @ts-ignore
 @Component({
@@ -44,11 +45,18 @@ export default class NavigationMixin extends Vue {
 	}
 
 	get localIndex() {
-		return bound(navigationStoreModule.Index - this.baseIndex, 0, this.routes.length - 1);
+		return bound(
+			navigationStoreModule.Index - this.baseIndex,
+			0,
+			this.routes.length - 1
+		);
 	}
 
 	get navigationLeft() {
-		return Math.min(this.componentWidth - (this.localIndex + 1) * this.columnWidth, 0);
+		return Math.min(
+			this.componentWidth - (this.localIndex + 1) * this.columnWidth,
+			0
+		);
 	}
 
 	@Watch("routes", { immediate: true })
@@ -91,7 +99,10 @@ export default class NavigationMixin extends Vue {
 	}
 
 	updateComponentWidth() {
-		if (this.$refs.navigationContent && "clientWidth" in this.$refs.navigationContent) {
+		if (
+			this.$refs.navigationContent &&
+			"clientWidth" in this.$refs.navigationContent
+		) {
 			this.componentWidth = this.$refs.navigationContent.clientWidth;
 		}
 	}

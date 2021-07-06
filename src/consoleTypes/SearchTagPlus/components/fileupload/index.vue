@@ -3,12 +3,28 @@
 		<div class="text-center">
 			<!-- <input type="file" id="file" @input="selectedFile" accept=".jpg, .png, .gif, .mp4, .jpeg" /> -->
 
-			<b-form-file @input="selectedFile" accept=".jpg, .png, .gif, .mp4, .jpeg" placeholder class="mb-4 fileupload__formFile" browse-text="ファイルを選択してください" multiple></b-form-file>
-			<span class="fileUpload__caption text-discription">※ファイルサイズの上限は5MBです</span>
-			<b-alert show variant="warning" v-if="IsInValidFilename">ファイル名に使用してはいけない文字が含まれています。</b-alert>
+			<b-form-file
+				@input="selectedFile"
+				accept=".jpg, .png, .gif, .mp4, .jpeg"
+				placeholder
+				class="mb-4 fileupload__formFile"
+				browse-text="ファイルを選択してください"
+				multiple
+			></b-form-file>
+			<span class="fileUpload__caption text-discription"
+				>※ファイルサイズの上限は5MBです</span
+			>
+			<b-alert show variant="warning" v-if="IsInValidFilename"
+				>ファイル名に使用してはいけない文字が含まれています。</b-alert
+			>
 			<label id="output"></label>
 			<div class="text-center mb-3">
-				<b-button variant="primary" v-on:click="confirmOpened = true" v-bind:disabled="uploadFileList == null || IsInValidFilename">アップロード</b-button>
+				<b-button
+					variant="primary"
+					v-on:click="confirmOpened = true"
+					v-bind:disabled="uploadFileList == null || IsInValidFilename"
+					>アップロード</b-button
+				>
 			</div>
 		</div>
 		<wrap-message v-if="isUpload" :message="message" />
@@ -29,12 +45,18 @@
 								<tr v-for="(uploadFile, i) in UploadFileList" :key="i">
 									<td>{{ uploadFile.name }}</td>
 									<td>
-										<input type="text" v-model="fileNameList[i]" :placeholder="fileNameList[i].name" />
+										<input
+											type="text"
+											v-model="fileNameList[i]"
+											:placeholder="fileNameList[i].name"
+										/>
 									</td>
 								</tr>
 							</table>
 
-							<b-alert show variant="warning" v-if="IsInValidFilename">ファイル名に使用してはいけない文字が含まれています。</b-alert>
+							<b-alert show variant="warning" v-if="IsInValidFilename"
+								>ファイル名に使用してはいけない文字が含まれています。</b-alert
+							>
 							<br />
 							<br />
 							<p class="appendix">
@@ -49,7 +71,12 @@
 						</div>
 						<div class="modal-footer">
 							<b-button @click="cancel()">Cancel</b-button>
-							<b-button variant="primary" @click="ok()" v-bind:disabled="uploadFileList == null || IsInValidFilename">OK</b-button>
+							<b-button
+								variant="primary"
+								@click="ok()"
+								v-bind:disabled="uploadFileList == null || IsInValidFilename"
+								>OK</b-button
+							>
 						</div>
 					</div>
 				</div>
@@ -59,16 +86,16 @@
 </template>
 
 <script lang="ts">
-import { v4 } from 'uuid';
-import { Component, Vue } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import { FileModule } from '@/store/modules/file';
-import { CLIENT_ID } from '../../utils/configration';
+import { v4 } from "uuid";
+import { Component, Vue } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import { FileModule } from "@/store/modules/file";
+import { CLIENT_ID } from "../../utils/configration";
 // import { debug } from 'util';
-import { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
-import clipboard from 'clipboard';
-import FileuploadCompParent from '@/views/fileupload/index';
-import WrapMessage from '@/components/WrapMessage/index.vue';
+import { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
+import clipboard from "clipboard";
+import FileuploadCompParent from "@/views/fileupload/index";
+import WrapMessage from "@/components/WrapMessage/index.vue";
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 // @ts-ignore
 @Component({
@@ -76,9 +103,9 @@ import WrapMessage from '@/components/WrapMessage/index.vue';
 	filters: {
 		statusFilter(status: string) {
 			const statusMap: { [id: string]: string } = {
-				published: 'success',
-				draft: 'gray',
-				deleted: 'danger',
+				published: "success",
+				draft: "gray",
+				deleted: "danger",
 			};
 			return statusMap[status];
 		},
@@ -86,25 +113,29 @@ import WrapMessage from '@/components/WrapMessage/index.vue';
 })
 export default class FileuploadComp extends FileuploadCompParent {
 	get IsInValidFilename() {
-		return this.uploadFileList?.find((f: File) => !this.filenameValidate(f.name)) || this.fileNameList.find((f: string) => !this.filenameValidate(f)) || false;
+		return (
+			this.uploadFileList?.find((f: File) => !this.filenameValidate(f.name)) ||
+			this.fileNameList.find((f: string) => !this.filenameValidate(f)) ||
+			false
+		);
 	}
 
 	public inputFile(file: any) {
 		if (file) {
 			if (file.size > 5242880) {
-				this.$modal.show('dialog', {
-					title: 'エラー',
-					text: 'サイズは5MB以下にしてください',
+				this.$modal.show("dialog", {
+					title: "エラー",
+					text: "サイズは5MB以下にしてください",
 					buttons: [
 						{
-							title: '閉じる',
+							title: "閉じる",
 						},
 					],
 				});
 				return;
 			}
 			if (!this.filenameValidate(file.name)) {
-				this.$bvToast.toast('ファイル名に使用してはいけない文字が含まれています。');
+				this.$bvToast.toast("ファイル名に使用してはいけない文字が含まれています。");
 				return;
 			}
 			if (this.uploadFileList == null) {
@@ -124,17 +155,20 @@ export default class FileuploadComp extends FileuploadCompParent {
 	}
 
 	public async upload() {
-		if (this.uploadFileList.find((f: File) => !this.filenameValidate(f.name)) || this.fileNameList.find((f: string) => !this.filenameValidate(f))) {
-			this.$bvToast.toast('ファイル名に使用してはいけない文字が含まれています。', {
-				toaster: 'b-toaster-top-center',
-				variant: 'danger',
+		if (
+			this.uploadFileList.find((f: File) => !this.filenameValidate(f.name)) ||
+			this.fileNameList.find((f: string) => !this.filenameValidate(f))
+		) {
+			this.$bvToast.toast("ファイル名に使用してはいけない文字が含まれています。", {
+				toaster: "b-toaster-top-center",
+				variant: "danger",
 			});
 			return;
 		}
 		this.isUpload = true;
-		this.message = 'アップロード中です';
+		this.message = "アップロード中です";
 		const getReadFile = (file: File) => {
-			return new Promise(r => {
+			return new Promise((r) => {
 				const reader: any = new FileReader();
 				reader.onload = () => {
 					r(reader.result);
@@ -146,40 +180,46 @@ export default class FileuploadComp extends FileuploadCompParent {
 			const uploadFile = this.UploadFileList[i];
 			const readFile = await getReadFile(uploadFile);
 			const file: string | ArrayBuffer = readFile as string;
-			const files = file.split(',');
+			const files = file.split(",");
 			const base64Str = files[files.length - 1];
-			const fileName = this.fileNameList[i] == '' ? uploadFile.name : this.fileNameList[i];
+			const fileName =
+				this.fileNameList[i] == "" ? uploadFile.name : this.fileNameList[i];
 			console.log(fileName);
-			const message = '';
+			const message = "";
 			try {
-				this.$modal.hide('dialog');
+				this.$modal.hide("dialog");
 				this.message = `アップロード中です
 				 ${i}/${this.uploadFileList.length}`;
 				await FileModule.postFile({
-					parent: '',
+					parent: "",
 					fileName,
 					base64Str,
-					type: 'list',
+					type: "list",
 				});
 			} catch (error) {
-				this.modal('失敗', 'アップロードが失敗しました。');
+				this.modal("失敗", "アップロードが失敗しました。");
 			}
 		}
-		await FileModule.getFile({ parent: '', type: 'list' });
+		await FileModule.getFile({ parent: "", type: "list" });
 		this.isUpload = false;
 		// this.modal("結果", "アップロードが成功しました。");
-		this.$bvToast.toast('アップロードが成功しました。', {
+		this.$bvToast.toast("アップロードが成功しました。", {
 			// title: `挿入されました`,
-			toaster: 'b-toaster-top-center',
+			toaster: "b-toaster-top-center",
 			solid: true,
 			appendToast: true,
 		});
-		this.message = '';
+		this.message = "";
 	}
 }
 </script>
 <style type="sass" lang="scss" src="@/views/fileupload/style.scss"></style>
-<style type="sass" lang="scss" scoped src="@/views/fileupload/scopedstyle.scss"></style>
+<style
+	type="sass"
+	lang="scss"
+	scoped
+	src="@/views/fileupload/scopedstyle.scss"
+></style>
 <style type="sass" lang="scss">
 $height: 150px;
 .modal-wrapper {

@@ -6,11 +6,7 @@
 					<b-card-header>
 						公開設定
 						<b-icon icon="info-circle" id="popover-target-kokai"></b-icon>
-						<b-popover
-							target="popover-target-kokai"
-							triggers="hover"
-							placement="top"
-						>
+						<b-popover target="popover-target-kokai" triggers="hover" placement="top">
 							公開設定を「公開」にすると、Q&amp;Aがユーザー画面上で公開されます。
 							<br />公開設定を「非公開」にすると、Q&amp;Aがユーザー画面上で非公開となり、
 							<br />管理画面からしか閲覧できなくなります。
@@ -91,56 +87,41 @@
 						</b-card-header>
 						<b-card-body>
 							<!-- <b-card-group  columns> -->
-								<b-card
-									v-for="(condition, k) in ConditionList"
-									:key="k"
-									class=""
-								>
-									<b-card-body>
-										<div>
-											コンディショングループテキスト
-											<b-form-textarea
-												type="text"
-												v-model="condition.conditionGroup.label"
-											/>
-										</div>
+							<b-card v-for="(condition, k) in ConditionList" :key="k" class="">
+								<b-card-body>
+									<div>
+										コンディショングループテキスト
+										<b-form-textarea
+											type="text"
+											v-model="condition.conditionGroup.label"
+										/>
+									</div>
 
-										<div class="input">
-											<vue-tags-input
-												:tags="
-													getAnserCondition(condition.conditionGroup).conditions
-												"
-												:autocomplete-items="condition.conditions"
-												:add-only-from-autocomplete="true"
-												:autocomplete-always-open="
-													condition.conditions.length && condition.isFocus
-												"
-												@focus="focusin(condition)"
-												@blur="focusout(condition)"
-												:value="''"
-											>
-												<div
-													slot="tag-center"
-													slot-scope="props"
-													class="my-item"
-												>
-													{{ props.tag.text }}
-												</div>
-												<div
-													slot="autocomplete-item"
-													slot-scope="props"
-													class="my-item"
-												>
-													{{ props.item.text }}
-												</div>
-											</vue-tags-input>
-											<b-button
-												v-on:click="removeConditions(condition.conditions)"
-												>-</b-button
-											>
-										</div>
-									</b-card-body>
-								</b-card>
+									<div class="input">
+										<vue-tags-input
+											:tags="getAnserCondition(condition.conditionGroup).conditions"
+											:autocomplete-items="condition.conditions"
+											:add-only-from-autocomplete="true"
+											:autocomplete-always-open="
+												condition.conditions.length && condition.isFocus
+											"
+											@focus="focusin(condition)"
+											@blur="focusout(condition)"
+											:value="''"
+										>
+											<div slot="tag-center" slot-scope="props" class="my-item">
+												{{ props.tag.text }}
+											</div>
+											<div slot="autocomplete-item" slot-scope="props" class="my-item">
+												{{ props.item.text }}
+											</div>
+										</vue-tags-input>
+										<b-button v-on:click="removeConditions(condition.conditions)"
+											>-</b-button
+										>
+									</div>
+								</b-card-body>
+							</b-card>
 							<!-- </b-card-group> -->
 							<b-container class="bv-example-row mb-3">
 								<b-row class="justify-content-md-center">
@@ -287,11 +268,7 @@ export default class ScriptEditorComp extends Vue {
 		return String(this.answerData.id);
 	}
 	get Is_show() {
-		if (
-			this.isShow &&
-			this.answerData &&
-			this.answerData.hasOwnProperty("id")
-		) {
+		if (this.isShow && this.answerData && this.answerData.hasOwnProperty("id")) {
 			return true;
 		}
 		return false;

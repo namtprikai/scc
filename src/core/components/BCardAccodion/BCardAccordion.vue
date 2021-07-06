@@ -4,7 +4,11 @@
 			<b-card-header>
 				<div @click="isShow = !isShow" class="b-card-accordion-header">
 					<slot name="header">{{ title }}</slot>
-					<b-icon class="b-card-accordion-header__icon" icon="chevron-down" :rotate="rotate"></b-icon>
+					<b-icon
+						class="b-card-accordion-header__icon"
+						icon="chevron-down"
+						:rotate="rotate"
+					></b-icon>
 				</div>
 				<!-- </a> -->
 			</b-card-header>
@@ -17,17 +21,16 @@
 	</div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, PropSync } from 'vue-property-decorator';
-import { Type } from '@/components/Charts';
-@Component({ name: 'BCardAccordion' })
+import { Vue, Component, Prop, PropSync } from "vue-property-decorator";
+import { Type } from "@/components/Charts";
+@Component({ name: "BCardAccordion" })
 export default class BCardAccordion extends Vue {
-	private isShow=true;
+	private isShow = true;
 	private get rotate(): number {
 		return this.isShow ? 0 : 90;
 	}
 
-
-	@Prop({ type: String, default: '' })
+	@Prop({ type: String, default: "" })
 	title!: string;
 
 	@Prop({ type: Boolean, default: true })

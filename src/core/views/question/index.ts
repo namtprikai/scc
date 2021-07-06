@@ -35,7 +35,10 @@ export default class QuestionParent extends Vue {
 	public search() {}
 	private async fetchData() {
 		this.isLoad = true;
-		await Promise.all([ProductsModule.GetProducts(), QuestionModule.GetQuestions()]);
+		await Promise.all([
+			ProductsModule.GetProducts(),
+			QuestionModule.GetQuestions(),
+		]);
 		this.isLoad = false;
 	}
 

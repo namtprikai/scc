@@ -10,7 +10,7 @@ export function AsyncComputed(options?: any) {
 				get: componentOptions.methods[path],
 				debounce: false,
 			},
-			options,
+			options
 		);
 		delete componentOptions.methods[path];
 	});

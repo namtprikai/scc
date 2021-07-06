@@ -1,11 +1,16 @@
 <template>
 	<div class="oshirase">
 		<TabHeader>
-			<b-button size="sm" v-on:click="upload" variant="primary"> <b-spinner small v-if="isUpload"></b-spinner>反映 </b-button>
+			<b-button size="sm" v-on:click="upload" variant="primary">
+				<b-spinner small v-if="isUpload"></b-spinner>反映
+			</b-button>
 		</TabHeader>
 		<div class="tab-body">
 			<b-alert show variant="info" v-if="discription">
-				<span class="text-discription __Info" v-html="$sanitize(discription)"></span>
+				<span
+					class="text-discription __Info"
+					v-html="$sanitize(discription)"
+				></span>
 				<b-icon icon="info-circle" id="popover-target-1"></b-icon>
 				<b-popover target="popover-target-1" triggers="hover" placement="top">
 					<pre><code>{{tooltipText}}</code></pre>
@@ -40,22 +45,22 @@
 </template>
 
 <script lang="ts">
-import { v4 } from 'uuid';
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import { CLIENT_ID } from '../../utils/configration';
+import { v4 } from "uuid";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import { CLIENT_ID } from "../../utils/configration";
 // import { debug } from 'util';
-import { ISlTreeNode, ISlTreeNodeModel } from 'sl-vue-tree';
-import clipboard from 'clipboard';
-import FileuploadCompParent from '@/views/fileupload/index';
-import axios from 'axios';
-import { FileModule } from '@/store/modules/file';
+import { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
+import clipboard from "clipboard";
+import FileuploadCompParent from "@/views/fileupload/index";
+import axios from "axios";
+import { FileModule } from "@/store/modules/file";
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 const Base64 = {
-	encode: function(str: any) {
+	encode: function (str: any) {
 		return btoa(unescape(encodeURIComponent(str)));
 	},
-	decode: function(str: any) {
+	decode: function (str: any) {
 		return decodeURIComponent(escape(atob(str)));
 	},
 };
@@ -64,52 +69,55 @@ const Base64 = {
 	filters: {
 		statusFilter(status: string) {
 			const statusMap: { [id: string]: string } = {
-				published: 'success',
-				draft: 'gray',
-				deleted: 'danger',
+				published: "success",
+				draft: "gray",
+				deleted: "danger",
 			};
 			return statusMap[status];
 		},
 	},
 })
 export default class Oshirase extends Vue {
-	@Prop({ default: '' })
+	@Prop({ default: "" })
 	private discription?: string;
 
-	text = '';
-	link = '';
+	text = "";
+	link = "";
 	isUpload = false;
 
-	private tooltipText = 'おしらせ2 には、簡単なHTML装飾が可能です。\n■ 例：リンク追加\n<a href="遷移したいリンク先URL">リンク表示したいテキスト</a>';
+	private tooltipText =
+		'おしらせ2 には、簡単なHTML装飾が可能です。\n■ 例：リンク追加\n<a href="遷移したいリンク先URL">リンク表示したいテキスト</a>';
 
 	created() {
-		eventHub.$on('updateoshirase', this.setOshirase);
+		eventHub.$on("updateoshirase", this.setOshirase);
 		this.updateOshirase();
 	}
 
 	destroy() {
-		eventHub.$off('updateoshirase', this.setOshirase);
+		eventHub.$off("updateoshirase", this.setOshirase);
 	}
 
 	setOshirase({ text, link }: any) {
-		this.text = text || '';
-		this.link = link || '';
+		this.text = text || "";
+		this.link = link || "";
 	}
 
 	async upload() {
 		this.isUpload = true;
-		const base64Str: string = Base64.encode(JSON.stringify({ text: this.text, link: this.link }));
+		const base64Str: string = Base64.encode(
+			JSON.stringify({ text: this.text, link: this.link })
+		);
 		await FileModule.postFile({
-			parent: '',
-			fileName: 'oshirase.json',
-			type: 'list',
+			parent: "",
+			fileName: "oshirase.json",
+			type: "list",
 			base64Str,
 		});
 		this.isUpload = false;
-		eventHub.$emit('updateoshirase', { text: this.text, link: this.link });
-		this.$bvToast.toast('正常に反映しました', {
+		eventHub.$emit("updateoshirase", { text: this.text, link: this.link });
+		this.$bvToast.toast("正常に反映しました", {
 			// title: `挿入されました`,
-			toaster: 'b-toaster-top-center',
+			toaster: "b-toaster-top-center",
 			solid: true,
 			appendToast: true,
 		});
@@ -117,14 +125,17 @@ export default class Oshirase extends Vue {
 
 	async updateOshirase() {
 		try {
-			const { data } = await axios.get(`https://file.ai-x-supporter.com/${CLIENT_ID}/oshirase.json`, {
-				params: {
-					h: Date.now(),
-				},
-			});
+			const { data } = await axios.get(
+				`https://file.ai-x-supporter.com/${CLIENT_ID}/oshirase.json`,
+				{
+					params: {
+						h: Date.now(),
+					},
+				}
+			);
 			console.log(data);
-			this.text = data.text || '';
-			this.link = data.link || '';
+			this.text = data.text || "";
+			this.link = data.link || "";
 			// this.$forceUpdate();
 		} catch (e) {}
 	}

@@ -5,7 +5,10 @@ export interface ISAIAPIData {
 	modified?: Date;
 }
 export interface IAPIResponce extends Response {
-	json: (args: { status: number; data: { [key: string]: any } | Array<{ [key: string]: any }> }) => any;
+	json: (args: {
+		status: number;
+		data: { [key: string]: any } | Array<{ [key: string]: any }>;
+	}) => any;
 }
 export interface IRoleData extends ISAIAPIData {
 	[key: any]: any;
@@ -50,8 +53,17 @@ export interface IAdminData extends ISAIAPIData {
 	created?: Date;
 	modified?: Date;
 }
-export interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData; conditions: Array<IConditionData> }> {}
-export type IConditionObj = { [key: number]: { conditionGroup: IConditionGroupData; conditions: Array<IConditionData> } };
+export interface IConditionMap
+	extends Map<
+		number,
+		{ conditionGroup: IConditionGroupData; conditions: Array<IConditionData> }
+	> {}
+export type IConditionObj = {
+	[key: number]: {
+		conditionGroup: IConditionGroupData;
+		conditions: Array<IConditionData>;
+	};
+};
 export interface IAdmin {
 	id: number;
 	name: string;

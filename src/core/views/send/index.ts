@@ -69,12 +69,14 @@ export default class SendParent extends Vue {
 						},
 					},
 				],
-			}),
+			})
 		);
 	}
 
 	async handleSend() {
-		const answer = await this.confirm(`メッセージ\n「${this.text}」\nを送信しますか？`);
+		const answer = await this.confirm(
+			`メッセージ\n「${this.text}」\nを送信しますか？`
+		);
 		if (!answer) {
 			return;
 		}
@@ -90,7 +92,7 @@ export default class SendParent extends Vue {
 				text: this.text,
 				assignee_id: UserModule.id,
 			},
-			this.userName,
+			this.userName
 		);
 		this.text = "";
 

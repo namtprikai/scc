@@ -206,7 +206,9 @@ export class User {
 
 	get Age() {
 		try {
-			const birthday: any = new Date(`${this.Attribute.birthdayY}-${this.Attribute.birthdayM}-${this.Attribute.birthdayD}`);
+			const birthday: any = new Date(
+				`${this.Attribute.birthdayY}-${this.Attribute.birthdayM}-${this.Attribute.birthdayD}`
+			);
 			if (birthday == "Invalid Date") {
 				return "";
 			}
@@ -262,7 +264,8 @@ export class UserList {
 	protected users: Array<User> = [];
 	protected _currentUser: User | null = null;
 	protected _setCurrentUserCallback: () => void = () => {};
-	protected _setCurrentUserCallbacks: Array<((currentUser: User) => {}) | any> = [];
+	protected _setCurrentUserCallbacks: Array<((currentUser: User) => {}) | any> =
+		[];
 
 	protected _readyCallbacks: Array<any> = [];
 	protected _readyCallback: () => void = () => {};
@@ -307,7 +310,8 @@ export class UserList {
 	}
 
 	public getElapsedTimeInSecond(): number {
-		const elapsedTime: number = new Date().getTime() - this.lastUpdateTime.getTime(); // ms
+		const elapsedTime: number =
+			new Date().getTime() - this.lastUpdateTime.getTime(); // ms
 		const elapsedSecond: number = elapsedTime / 1000;
 		return elapsedSecond;
 	}
@@ -372,7 +376,7 @@ export class UserList {
 						},
 						(res: any) => {
 							error(res);
-						},
+						}
 					);
 			});
 		});
@@ -395,7 +399,7 @@ export class UserList {
 							},
 							(res: any) => {
 								error(res);
-							},
+							}
 						);
 				} else {
 					sucsess(updateUser);
@@ -446,7 +450,7 @@ export class UserList {
 						},
 						(res: any) => {
 							error(res);
-						},
+						}
 					);
 			});
 		});
@@ -620,7 +624,7 @@ export class Ajax {
 			},
 			(error) => {
 				Promise.reject(error);
-			},
+			}
 		);
 		Cookies.set(`token_${CLIENT_ID}`, token);
 	}
@@ -657,7 +661,9 @@ class AndyWoker {
 		// 	return;
 		// }
 		this.is_start = true;
-		const queue: { http: AxiosRequestConfig; resolve: Function; reject: Function } | undefined = this.queueStocker.getQueue();
+		const queue:
+			| { http: AxiosRequestConfig; resolve: Function; reject: Function }
+			| undefined = this.queueStocker.getQueue();
 		if (queue != null) {
 			if (/delete/i.test(String(queue.http.method))) {
 				axios
@@ -674,7 +680,11 @@ class AndyWoker {
 					});
 			} else if (/post/i.test(String(queue.http.method))) {
 				axios
-					.post(`${queue.http.baseURL}/${queue.http.url}`, queue.http.data, queue.http)
+					.post(
+						`${queue.http.baseURL}/${queue.http.url}`,
+						queue.http.data,
+						queue.http
+					)
 					.then((res) => {
 						queue.resolve(res);
 						this.is_start = false;
@@ -700,7 +710,11 @@ class AndyWoker {
 					});
 			} else if (/patch/i.test(String(queue.http.method))) {
 				axios
-					.patch(`${queue.http.baseURL}/${queue.http.url}`, queue.http.data, queue.http)
+					.patch(
+						`${queue.http.baseURL}/${queue.http.url}`,
+						queue.http.data,
+						queue.http
+					)
 					.then((res) => {
 						this.is_start = false;
 						queue.resolve(res);
@@ -725,7 +739,7 @@ class AndyWoker {
 						queue.reject(res);
 
 						this.start(resolve);
-					},
+					}
 				);
 			}
 		} else {
@@ -748,7 +762,12 @@ class AndyQueue {
 		pr?: number;
 	}> = [];
 
-	public setQueue(http: AxiosRequestConfig, resolve: Function, reject: Function = () => {}, pr?: number) {
+	public setQueue(
+		http: AxiosRequestConfig,
+		resolve: Function,
+		reject: Function = () => {},
+		pr?: number
+	) {
 		this.queues.push({ http, resolve, reject, pr });
 	}
 
@@ -775,7 +794,7 @@ class AndyQueue {
 				reject: Function;
 				pr?: number;
 			}
-		) => number,
+		) => number
 	) {
 		this.queues.sort(sortFunction);
 	}
@@ -800,7 +819,12 @@ export class RequeuestWokersService {
 		this.init();
 	}
 
-	public setQueue(http: AxiosRequestConfig, resolve: Function, reject: Function = () => {}, pr = -1) {
+	public setQueue(
+		http: AxiosRequestConfig,
+		resolve: Function,
+		reject: Function = () => {},
+		pr = -1
+	) {
 		this.queue.setQueue(http, resolve, reject, pr);
 		// this.start();
 	}
@@ -831,18 +855,20 @@ export class RequeuestWokersService {
 					resolve: Function;
 					reject: Function;
 					pr?: number;
-				},
+				}
 			) => {
 				if (a.pr && b.pr && a.pr < b.pr) {
 					return 1;
 				}
 				return -1;
-			},
+			}
 		);
 		// for (let i = 0; i < this.wokers.length; i++) {
 		// 	this.wokers[i].start();
 		// }
-		return Promise.all(this.wokers.map((w: any) => new Promise((r) => w.start(r))));
+		return Promise.all(
+			this.wokers.map((w: any) => new Promise((r) => w.start(r)))
+		);
 	}
 
 	public reset() {
@@ -887,9 +913,13 @@ interface UnreadMessageObj extends MessageObj {
 export class MessageList {
 	protected currentMessage: Message | null = null;
 	protected messages: Array<Message> = [];
-	protected _setCurrentMessageCallbacks: Array<((currentMessage: Message) => {}) | any> = [];
+	protected _setCurrentMessageCallbacks: Array<
+		((currentMessage: Message) => {}) | any
+	> = [];
 
-	protected _setCurrentUserCallbacks: Array<((currentMessage: Message) => {}) | any> = [];
+	protected _setCurrentUserCallbacks: Array<
+		((currentMessage: Message) => {}) | any
+	> = [];
 
 	protected lastUpdateTime: Date = new Date();
 	protected updateIntervalInSecond = 60;
@@ -915,7 +945,8 @@ export class MessageList {
 	}
 
 	public getElapsedTimeInSecond(): number {
-		const elapsedTime: number = new Date().getTime() - this.lastUpdateTime.getTime(); // ms
+		const elapsedTime: number =
+			new Date().getTime() - this.lastUpdateTime.getTime(); // ms
 		const elapsedSecond: number = elapsedTime / 1000;
 		return elapsedSecond;
 	}
@@ -930,7 +961,11 @@ export class MessageList {
 	}
 
 	public getMessageSize(filterFunc: any = () => true): number {
-		return ((this.messages || []).filter((el: any) => !el.is_suspended && !el.is_replied) || []).filter(filterFunc).length;
+		return (
+			(this.messages || []).filter(
+				(el: any) => !el.is_suspended && !el.is_replied
+			) || []
+		).filter(filterFunc).length;
 	}
 
 	public getMessages(callback?: Function): Array<Message> | Array<any> {
@@ -1056,11 +1091,11 @@ export class Flow {
 	private currentNextButtonLabel = "";
 	private log_scenario: string | null = null;
 	private condition:
-	| {
-		// type: string;
-		value: string;
+		| {
+				// type: string;
+				value: string;
 		  }
-	| undefined;
+		| undefined;
 
 	private step: string;
 	// title: string;
@@ -1096,7 +1131,7 @@ export class Flow {
 		return this.next.map((f: FlowObj) =>
 			Object.assign(f, {
 				label: (f.condition || { value: f.step }).value,
-			}),
+			})
 		);
 	}
 
@@ -1105,7 +1140,7 @@ export class Flow {
 			Object.assign(f, {
 				label: (f.condition || { value: f.step }).value,
 				title: this.stepMap[f.step].text,
-			}),
+			})
 		);
 	}
 
@@ -1182,7 +1217,13 @@ export namespace Algorithm {
 		return arr;
 	}
 
-	function quickTopSortCore(arr: Array<any>, M: number, from: number, to: number, fn: Function) {
+	function quickTopSortCore(
+		arr: Array<any>,
+		M: number,
+		from: number,
+		to: number,
+		fn: Function
+	) {
 		const p = arr[to];
 		let i = from;
 		let j = to - 1;
@@ -1275,7 +1316,9 @@ export class AndyPasswordValidator {
 		const requiredValidList = this.requiredScema.validate(text, { list: true });
 		const validList = this.scema.validate(text, { list: true });
 		console.log(validList);
-		return requiredValidList.map((o: any) => this.messageMapper[o]).concat(validList.map((o: any) => this.messageMapper[o]));
+		return requiredValidList
+			.map((o: any) => this.messageMapper[o])
+			.concat(validList.map((o: any) => this.messageMapper[o]));
 	}
 }
 

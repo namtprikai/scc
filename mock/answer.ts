@@ -1,13 +1,27 @@
-import faker from 'faker'
-import { Response, Request } from 'express'
-import { IAnswerData, IConditionData, IConditionGroupData, IScenarioTree, IScenarioTreeCondition } from '../src/core/api/types'
-import { IAPIResponce,IAnswerDataCondition,IConditionMap } from '../src/core/api/types'
-import { getConditionListByUserToken, getConditionListByAnserId, getConditionList,getConditionListByConditionGroupId } from "./condition";
+import faker from "faker";
+import { Response, Request } from "express";
+import {
+	IAnswerData,
+	IConditionData,
+	IConditionGroupData,
+	IScenarioTree,
+	IScenarioTreeCondition,
+} from "../src/core/api/types";
+import {
+	IAPIResponce,
+	IAnswerDataCondition,
+	IConditionMap,
+} from "../src/core/api/types";
+import {
+	getConditionListByUserToken,
+	getConditionListByAnserId,
+	getConditionList,
+	getConditionListByConditionGroupId,
+} from "./condition";
 import { getConditionGroupById } from "./conditionGroup";
-import { getUserByToken } from './users';
-import { auth, secureObjectCreateByUser } from './security';
-import { getAnswerRolesByAnswer,answerRoles } from './answer_roles';
-
+import { getUserByToken } from "./users";
+import { auth, secureObjectCreateByUser } from "./security";
+import { getAnswerRolesByAnswer, answerRoles } from "./answer_roles";
 
 interface IAnserAPIResponce extends Response {
 	json: (args: {
@@ -34,36 +48,52 @@ export const answers: Array<IAnswerData> = [
 		is_public: true,
 		created: new Date(),
 		modified: new Date(),
-	}
+	},
 ];
-const Ansers = secureObjectCreateByUser<IAnswerData>(()=>answers,getAnswerRolesByAnswer);
+const Ansers = secureObjectCreateByUser<IAnswerData>(
+	() => answers,
+	getAnswerRolesByAnswer
+);
 
-export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce => {
+export const getAnsers = (
+	req: Request,
+	res: IAPIResponce
+): IAnserAPIResponce => {
 	const { question_id } = req.params;
-	const accessToken = req.header('Authorization')||"";
+	const accessToken = req.header("Authorization") || "";
 
-	let conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> = [];
-	const conditionGroupKeyConditionMap:Map<number,{conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> = new Map();
+	let conditionList: Array<{
+		conditionGroup: IConditionGroupData;
+		conditions: Array<IConditionData>;
+	}> = [];
+	const conditionGroupKeyConditionMap: Map<
+		number,
+		{ conditionGroup: IConditionGroupData; conditions: Array<IConditionData> }
+	> = new Map();
 	const user = getUserByToken(accessToken);
-	if (accessToken&&user) {
-
-		let anserList: Array<IAnswerDataCondition> = Ansers.getData(user,(d)=>{
+	if (accessToken && user) {
+		let anserList: Array<IAnswerDataCondition> = Ansers.getData(user, (d) => {
 			return d.question_id === parseInt(question_id);
 		});
 		if (anserList.length === 1) {
 			return res.json({
 				status: 20000,
-				data: { ansers: anserList }
-			})
+				data: { ansers: anserList },
+			});
 		}
 		const userConditionList = getConditionListByUserToken(accessToken);
 		const userConditionMap: IConditionMap = new Map();
 		//userConditionMap作成開始
 		for (const userCondition of userConditionList) {
-			const userConditionGroup = getConditionGroupById(userCondition.conditiongroup_id);
+			const userConditionGroup = getConditionGroupById(
+				userCondition.conditiongroup_id
+			);
 			if (userConditionGroup) {
 				if (!userConditionMap.has(userConditionGroup.id)) {
-					userConditionMap.set(userConditionGroup.id, { conditionGroup: userConditionGroup, conditions: [] });
+					userConditionMap.set(userConditionGroup.id, {
+						conditionGroup: userConditionGroup,
+						conditions: [],
+					});
 				}
 				const conditionObj = userConditionMap.get(userConditionGroup.id);
 				if (conditionObj) {
@@ -75,26 +105,34 @@ export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce =>
 		//userConditionMap作成完了
 		anserList = anserList.filter((anser: IAnswerDataCondition) => {
 			const conditions = getConditionListByAnserId(anser.id);
-			console.log('conditions',conditions);
+			console.log("conditions", conditions);
 			const anserConditionMap: IConditionMap = new Map();
 			//anserConditionMap作成開始
 			for (const condition of conditions) {
-				const anserConditionGroup = getConditionGroupById(condition.conditiongroup_id);
+				const anserConditionGroup = getConditionGroupById(
+					condition.conditiongroup_id
+				);
 				if (anserConditionGroup) {
 					if (!anserConditionMap.has(anserConditionGroup.id)) {
-						anserConditionMap.set(anserConditionGroup.id, { conditionGroup: anserConditionGroup, conditions: [] });
-
+						anserConditionMap.set(anserConditionGroup.id, {
+							conditionGroup: anserConditionGroup,
+							conditions: [],
+						});
 					}
 					const conditionObj = anserConditionMap.get(anserConditionGroup.id);
 					if (conditionObj) {
 						const { conditionGroup, conditions } = conditionObj;
 						conditions.push(condition);
 					}
-					if(!conditionGroupKeyConditionMap.has(condition.conditiongroup_id)){
-						conditionGroupKeyConditionMap.set(condition.conditiongroup_id, { conditionGroup:anserConditionGroup,conditions: getConditionListByConditionGroupId(condition.conditiongroup_id) });
+					if (!conditionGroupKeyConditionMap.has(condition.conditiongroup_id)) {
+						conditionGroupKeyConditionMap.set(condition.conditiongroup_id, {
+							conditionGroup: anserConditionGroup,
+							conditions: getConditionListByConditionGroupId(
+								condition.conditiongroup_id
+							),
+						});
 					}
 				}
-
 			}
 			//anserConditionMap作成完了
 
@@ -105,7 +143,9 @@ export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce =>
 					const userConditions = userConditionMap.get(anserCGroupId)?.conditions;
 					if (anserConditions && userConditions) {
 						//共通のコンディショングループのコンディションを保持していながら、積集合が空集合だということは対象のアンサーではないので除外
-						const intersectionAUCondition = anserConditions.filter(ac => !new Set([...userConditions.map(u => u.id)]).has(ac.id));
+						const intersectionAUCondition = anserConditions.filter(
+							(ac) => !new Set([...userConditions.map((u) => u.id)]).has(ac.id)
+						);
 						if (intersectionAUCondition.length === 0) {
 							return false;
 						}
@@ -115,74 +155,78 @@ export const getAnsers = (req: Request, res: IAPIResponce): IAnserAPIResponce =>
 			anser.anserConditionMap = anserConditionMap;
 			return true;
 		});
-	//ここまででユーザーに対して可能性のあるアンサーの絞り込み。
-	//この時点で可能性のあるアンサーが一つに絞り込まれたならそれを返す。
-	if (anserList.length === 1) {
-		anserList.map(a=>{
-			const o:any = {};
-			if(a.anserConditionMap){
-				for(const [k,v] of a.anserConditionMap){
+		//ここまででユーザーに対して可能性のあるアンサーの絞り込み。
+		//この時点で可能性のあるアンサーが一つに絞り込まれたならそれを返す。
+		if (anserList.length === 1) {
+			anserList.map((a) => {
+				const o: any = {};
+				if (a.anserConditionMap) {
+					for (const [k, v] of a.anserConditionMap) {
+						o[k] = v;
+					}
+				}
+				a.anserConditionMap = o;
+				return a;
+			});
+			return res.json({
+				status: 20000,
+				data: { ansers: anserList },
+			});
+		}
+		//絞り込まれていないアンサーを絞り込むのに必要なコンディションを作る処理
+		for (const [gid, conditionObj] of conditionGroupKeyConditionMap.entries()) {
+			getConditionGroupById(gid);
+			conditionList.push({
+				conditionGroup: conditionObj.conditionGroup,
+				conditions: conditionObj.conditions,
+			});
+		}
+		// ここから複数アンサーをコンディションで絞り込むためのツリー構造JSONを作成する処理に入る
+		conditionList = conditionList.sort((a, b) => {
+			if (a.conditionGroup.level > b.conditionGroup.level) {
+				return 1;
+			}
+			if (a.conditionGroup.level < b.conditionGroup.level) {
+				return -1;
+			}
+			return 0;
+		});
+
+		// let anserSet: Set<IAnswerDataCondition> = new Set([...anserList]);
+		// const scenarioTree: IScenarioTree = MakeFlow3(conditionList, anserSet);
+		anserList.map((a) => {
+			const o: any = {};
+			if (a.anserConditionMap) {
+				for (const [k, v] of a.anserConditionMap) {
 					o[k] = v;
 				}
 			}
-			a.anserConditionMap=o;
+			a.anserConditionMap = o;
 			return a;
 		});
+
 		return res.json({
 			status: 20000,
-			data: { ansers: anserList }
-		})
+			data: {
+				ansers: anserList,
+				conditionList,
+			},
+		});
 	}
-	//絞り込まれていないアンサーを絞り込むのに必要なコンディションを作る処理
-	for(const [gid,conditionObj] of conditionGroupKeyConditionMap.entries()) {
-		getConditionGroupById(gid);
-		conditionList.push({ conditionGroup:conditionObj.conditionGroup, conditions: conditionObj.conditions });
-	}
-	// ここから複数アンサーをコンディションで絞り込むためのツリー構造JSONを作成する処理に入る
-	conditionList = conditionList.sort((a, b) => {
-		if (a.conditionGroup.level > b.conditionGroup.level) {
-			return 1;
-		}
-		if (a.conditionGroup.level < b.conditionGroup.level) {
-			return -1;
-		}
-		return 0;
-	});
-
-	// let anserSet: Set<IAnswerDataCondition> = new Set([...anserList]);
-	// const scenarioTree: IScenarioTree = MakeFlow3(conditionList, anserSet);
-	anserList.map(a=>{
-		const o:any = {};
-		if(a.anserConditionMap){
-			for(const [k,v] of a.anserConditionMap){
-				o[k] = v;
-			}
-		}
-		a.anserConditionMap=o;
-		return a;
-	});
-
-	return res.json({
-		status: 20000,
+	return res.status(400).json({
+		status: 50004,
 		data: {
-			ansers: anserList,
-			conditionList
-		}
-	})
-}
-return res.status(400).json({
-	status: 50004,
-	data:{
-		errors:[
-			{status: 'forbidden_error'}
-		]
-	}
-})
-}
+			errors: [{ status: "forbidden_error" }],
+		},
+	});
+};
 
 export const test = () => {
 	console.log("TEST");
-	let conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }> = [
+	let conditionList: Array<{
+		conditionGroup: IConditionGroupData;
+		conditions: Array<IConditionData>;
+	}> = [
 		{
 			conditionGroup: {
 				id: 0,
@@ -201,7 +245,7 @@ export const test = () => {
 					label: "女",
 					conditiongroup_id: 0,
 				},
-			]
+			],
 		},
 		{
 			conditionGroup: {
@@ -220,8 +264,8 @@ export const test = () => {
 					id: 3,
 					label: "500万円以上",
 					conditiongroup_id: 1,
-				}
-			]
+				},
+			],
 		},
 		{
 			conditionGroup: {
@@ -245,8 +289,8 @@ export const test = () => {
 					id: 6,
 					label: "5人以上",
 					conditiongroup_id: 2,
-				}
-			]
+				},
+			],
 		},
 	];
 	const anserList = [
@@ -258,60 +302,66 @@ export const test = () => {
 			created: new Date(),
 			modified: new Date(),
 			anserConditionMap: new Map([
-				[0, {
-					conditionGroup: {
-						id: 0,
-						label: "sex",
-						is_setting: true,
-						level: 1,
+				[
+					0,
+					{
+						conditionGroup: {
+							id: 0,
+							label: "sex",
+							is_setting: true,
+							level: 1,
+						},
+						conditions: [
+							{
+								id: 0,
+								label: "男",
+								conditiongroup_id: 0,
+							},
+						],
 					},
-					conditions: [
-						{
-					id: 0,
-					label: "男",
-					conditiongroup_id: 0,
-				},
-					]
-				}
 				],
-				[1, {
-					conditionGroup: {
-						id: 1,
-						label: "収入",
-						is_setting: true,
-						level: 2,
+				[
+					1,
+					{
+						conditionGroup: {
+							id: 1,
+							label: "収入",
+							is_setting: true,
+							level: 2,
+						},
+						conditions: [
+							{
+								id: 2,
+								label: "500万円未満",
+								conditiongroup_id: 1,
+							},
+						],
 					},
-					conditions: [
-						{
+				],
+				[
+					2,
+					{
+						conditionGroup: {
 							id: 2,
-							label: "500万円未満",
-							conditiongroup_id: 1,
-						}
-					],
-				}
-				],
-				[2, {
-					conditionGroup: {
-						id: 2,
-						label: "家族構成",
-						is_setting: true,
-						level: 3,
+							label: "家族構成",
+							is_setting: true,
+							level: 3,
+						},
+						conditions: [
+							{
+								id: 4,
+								label: "独身",
+								conditiongroup_id: 2,
+							},
+							{
+								id: 5,
+								label: "二人〜５",
+								conditiongroup_id: 1,
+							},
+						],
 					},
-					conditions: [
-						{
-							id: 4,
-							label: "独身",
-							conditiongroup_id: 2,
-						},
-						{
-							id: 5,
-							label: "二人〜５",
-							conditiongroup_id: 1,
-						},
-					],
-				}
-				]
-			])
+				],
+			]),
 		},
 		{
 			id: 1,
@@ -321,69 +371,76 @@ export const test = () => {
 			created: new Date(),
 			modified: new Date(),
 			anserConditionMap: new Map([
-				[0, {
-					conditionGroup: {
-						id: 0,
-						label: "sex",
-						is_setting: true,
-						level: 1,
-					},
-					conditions: [
-						{
+				[
+					0,
+					{
+						conditionGroup: {
 							id: 0,
-							label: "男",
-							conditiongroup_id: 0,
-						}, {
+							label: "sex",
+							is_setting: true,
+							level: 1,
+						},
+						conditions: [
+							{
+								id: 0,
+								label: "男",
+								conditiongroup_id: 0,
+							},
+							{
+								id: 1,
+								label: "女",
+								conditiongroup_id: 0,
+							},
+						],
+					},
+				],
+				[
+					1,
+					{
+						conditionGroup: {
 							id: 1,
-							label: "女",
-							conditiongroup_id: 0,
+							label: "収入",
+							is_setting: true,
+							level: 3,
 						},
-					]
-				}
-				],
-				[1, {
-					conditionGroup: {
-						id: 1,
-						label: "収入",
-						is_setting: true,
-						level: 3,
+						conditions: [
+							{
+								id: 3,
+								label: "500万円以上",
+								conditiongroup_id: 1,
+							},
+						],
 					},
-					conditions: [
-						{
-							id: 3,
-							label: "500万円以上",
-							conditiongroup_id: 1,
-						}
-					],
-				}
 				],
-				[2, {
-					conditionGroup: {
-						id: 2,
-						label: "家族構成",
-						is_setting: true,
-						level: 2,
+				[
+					2,
+					{
+						conditionGroup: {
+							id: 2,
+							label: "家族構成",
+							is_setting: true,
+							level: 2,
+						},
+						conditions: [
+							{
+								id: 4,
+								label: "独身",
+								conditiongroup_id: 2,
+							},
+							{
+								id: 5,
+								label: "二人〜５",
+								conditiongroup_id: 2,
+							},
+							{
+								id: 6,
+								label: "5人以上",
+								conditiongroup_id: 2,
+							},
+						],
 					},
-					conditions: [
-						{
-							id: 4,
-							label: "独身",
-							conditiongroup_id: 2,
-						},
-						{
-							id: 5,
-							label: "二人〜５",
-							conditiongroup_id: 2,
-						},
-						{
-							id: 6,
-							label: "5人以上",
-							conditiongroup_id: 2,
-						}
-					],
-				}
-				]
-			])
+				],
+			]),
 		},
 		{
 			id: 2,
@@ -393,76 +450,95 @@ export const test = () => {
 			created: new Date(),
 			modified: new Date(),
 			anserConditionMap: new Map([
-				[0, {
-					conditionGroup: {
-						id: 0,
-						label: "sex",
-						is_setting: true,
-						level: 1,
+				[
+					0,
+					{
+						conditionGroup: {
+							id: 0,
+							label: "sex",
+							is_setting: true,
+							level: 1,
+						},
+						conditions: [
+							{
+								id: 1,
+								label: "女",
+								conditiongroup_id: 0,
+							},
+						],
 					},
-					conditions: [
-						{
+				],
+				[
+					1,
+					{
+						conditionGroup: {
 							id: 1,
-							label: "女",
-							conditiongroup_id: 0,
+							label: "収入",
+							is_setting: true,
+							level: 3,
 						},
-					]
-				}
-				],
-				[1, {
-					conditionGroup: {
-						id: 1,
-						label: "収入",
-						is_setting: true,
-						level: 3,
+						conditions: [
+							{
+								id: 2,
+								label: "500万円未満",
+								conditiongroup_id: 1,
+							},
+						],
 					},
-					conditions: [
-						{
+				],
+				[
+					2,
+					{
+						conditionGroup: {
 							id: 2,
-							label: "500万円未満",
-							conditiongroup_id: 1,
-						}
-					],
-				}
-				],
-				[2, {
-					conditionGroup: {
-						id: 2,
-						label: "家族構成",
-						is_setting: true,
-						level: 2,
+							label: "家族構成",
+							is_setting: true,
+							level: 2,
+						},
+						conditions: [
+							{
+								id: 4,
+								label: "独身",
+								conditiongroup_id: 2,
+							},
+							{
+								id: 5,
+								label: "二人〜５",
+								conditiongroup_id: 2,
+							},
+						],
 					},
-					conditions: [
-						{
-							id: 4,
-							label: "独身",
-							conditiongroup_id: 2,
-						},
-						{
-							id: 5,
-							label: "二人〜５",
-							conditiongroup_id: 2,
-						},
-					],
-				}
-				]
-			])
-		}
-	]
+				],
+			]),
+		},
+	];
 
 	let anserSet: Set<IAnswerDataCondition> = new Set([...anserList]);
 	const scenarioTree: IScenarioTree = MakeFlow(conditionList, anserSet);
 	console.log(JSON.stringify(scenarioTree));
-		console.log("-------------------");
-	const scenarioTree2: IScenarioTree | undefined = MakeFlow2(conditionList, anserSet);
+	console.log("-------------------");
+	const scenarioTree2: IScenarioTree | undefined = MakeFlow2(
+		conditionList,
+		anserSet
+	);
 
 	console.log(JSON.stringify(scenarioTree2));
-		console.log("-------------------");
-		const scenarioTree3: IScenarioTree | undefined = MakeFlow3(conditionList, anserSet);
+	console.log("-------------------");
+	const scenarioTree3: IScenarioTree | undefined = MakeFlow3(
+		conditionList,
+		anserSet
+	);
 	console.log(JSON.stringify(scenarioTree3));
-		console.log("-------------------");
-}
-function MakeFlow(_conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }>, ansers: Set<IAnswerDataCondition>, conditionHistory: Array<IConditionData> = []): IScenarioTree {
+	console.log("-------------------");
+};
+function MakeFlow(
+	_conditionList: Array<{
+		conditionGroup: IConditionGroupData;
+		conditions: Array<IConditionData>;
+	}>,
+	ansers: Set<IAnswerDataCondition>,
+	conditionHistory: Array<IConditionData> = []
+): IScenarioTree {
 	const conditionList = [..._conditionList];
 	console.log("ansers", ansers);
 	let conditionObj = conditionList.shift();
@@ -475,7 +551,7 @@ function MakeFlow(_conditionList: Array<{ conditionGroup: IConditionGroupData, c
 				const conditions = aCon?.conditions;
 				if (conditions) {
 					console.log("conditions", conditions);
-					const conditionIds = conditions.map(c => c.id);
+					const conditionIds = conditions.map((c) => c.id);
 					if (beforeCons) {
 						const bSize = beforeCons.size;
 						if (bSize !== conditionIds.length) {
@@ -501,33 +577,44 @@ function MakeFlow(_conditionList: Array<{ conditionGroup: IConditionGroupData, c
 			// data.next = {conditionGroup:condition?.conditionGroup,conditions:[]};
 			return {
 				conditionGroup: conditionObj.conditionGroup,
-				conditions: conditionObj.conditions.map(c => {
-					const _ansers: Set<IAnswerDataCondition> = new Set();
-					for (const anser of ansers) {
-						const _cObj = anser.anserConditionMap?.get(c.conditiongroup_id);
-						if (_cObj !== undefined && !_cObj.conditions.find(d => d.id === c.id)) {
-							console.log(_cObj.conditions);
-							continue;
+				conditions: conditionObj.conditions
+					.map((c) => {
+						const _ansers: Set<IAnswerDataCondition> = new Set();
+						for (const anser of ansers) {
+							const _cObj = anser.anserConditionMap?.get(c.conditiongroup_id);
+							if (
+								_cObj !== undefined &&
+								!_cObj.conditions.find((d) => d.id === c.id)
+							) {
+								console.log(_cObj.conditions);
+								continue;
+							}
+							_ansers.add(anser);
 						}
-						_ansers.add(anser);
-					}
-					console.log(_ansers);
-					return {
-						condition: c,
-						next: MakeFlow(conditionList, _ansers)
-					}
-				}).filter(c => c.next.anserIds.length > 0),
+						console.log(_ansers);
+						return {
+							condition: c,
+							next: MakeFlow(conditionList, _ansers),
+						};
+					})
+					.filter((c) => c.next.anserIds.length > 0),
 				conditionHistory: [...conditionHistory],
-				anserIds: [...ansers.values()].map(a => a.id)
+				anserIds: [...ansers.values()].map((a) => a.id),
 			};
 		}
 	}
 	return {
 		conditionHistory: [...conditionHistory],
-		anserIds: [...ansers.values()].map(a => a.id)
+		anserIds: [...ansers.values()].map((a) => a.id),
 	};
 }
-function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData> }>, _ansers: Set<IAnswerDataCondition>): IScenarioTree | undefined {
+function MakeFlow2(
+	_conditionList: Array<{
+		conditionGroup: IConditionGroupData;
+		conditions: Array<IConditionData>;
+	}>,
+	_ansers: Set<IAnswerDataCondition>
+): IScenarioTree | undefined {
 	interface IM extends IScenarioTree {
 		ansers?: Set<IAnswerDataCondition>;
 		conditionIndex?: number;
@@ -539,17 +626,17 @@ function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 
 	const st: IM = {
 		ansers: new Set(_ansers),
-		anserIds: [..._ansers.values()].map(a => a.id),
+		anserIds: [..._ansers.values()].map((a) => a.id),
 		conditionHistory: [],
 		conditionIndex: 0,
 	};
 	const que: Array<IM> = [st];
 	const conditionList = [..._conditionList];
-	rootLoop:while (que.length > 0) {
+	rootLoop: while (que.length > 0) {
 		const s = que.shift();
 
 		if (s && s.ansers && s.conditionIndex !== undefined) {
-			console.log("SSSS",s);
+			console.log("SSSS", s);
 			const { ansers } = s;
 			let { conditionIndex } = s;
 			let conditionObj = conditionList[conditionIndex];
@@ -562,7 +649,7 @@ function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 						const conditions = aCon?.conditions;
 						if (conditions) {
 							console.log("conditions", conditions);
-							const conditionIds = conditions.map(c => c.id);
+							const conditionIds = conditions.map((c) => c.id);
 							if (beforeCons) {
 								const bSize = beforeCons.size;
 								if (bSize !== conditionIds.length) {
@@ -583,7 +670,7 @@ function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 					conditionObj = conditionList[conditionIndex++];
 				}
 				console.log(conditionIndex);
-				if (conditionObj==undefined) {
+				if (conditionObj == undefined) {
 					continue rootLoop;
 				}
 				s.conditions = [];
@@ -591,10 +678,9 @@ function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 				for (const natCondition of conditionObj.conditions) {
 					const newAnsers: Set<IAnswerDataCondition> = new Set();
 					for (const anser of ansers) {
-
 						const aCon = anser.anserConditionMap?.get(conditionObj.conditionGroup.id);
 						const conditions = aCon?.conditions;
-						if (conditions && conditions.find(c => c.id === natCondition.id)) {
+						if (conditions && conditions.find((c) => c.id === natCondition.id)) {
 							newAnsers.add(anser);
 						} else if (conditions === undefined) {
 							newAnsers.add(anser);
@@ -604,17 +690,17 @@ function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 						continue;
 					}
 					// const { conditionHistory } = s;
-					console.log("anser",newAnsers);
+					console.log("anser", newAnsers);
 					const next: IM = {
 						conditionIndex: conditionIndex + 1,
-						anserIds: [...newAnsers.values()].map(a => a.id),
+						anserIds: [...newAnsers.values()].map((a) => a.id),
 						// conditionHistory: [...conditionHistory],
-						ansers: newAnsers
+						ansers: newAnsers,
 					};
 					// next.conditionHistory.push(natCondition);
 					const condition = {
 						condition: natCondition,
-						next
+						next,
 					};
 					s.conditions.push(condition);
 					que.push(next);
@@ -623,30 +709,39 @@ function MakeFlow2(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 				// delete s.conditionIndex;
 			}
 		}
-
 	}
 	return st;
 }
-function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, conditions: Array<IConditionData>, score?: number }>, ansers: Set<IAnswerDataCondition>,deep:number=0, conditionHistory: Array<IConditionData> = [],condition?:IConditionData): IScenarioTree {
+function MakeFlow3(
+	_conditionList: Array<{
+		conditionGroup: IConditionGroupData;
+		conditions: Array<IConditionData>;
+		score?: number;
+	}>,
+	ansers: Set<IAnswerDataCondition>,
+	deep: number = 0,
+	conditionHistory: Array<IConditionData> = [],
+	condition?: IConditionData
+): IScenarioTree {
 	const conditionList = [..._conditionList];
 	let maxScoreIndex = 0;
-	if (ansers.size > 1&&deep<5) {
+	if (ansers.size > 1 && deep < 5) {
 		loop1: for (let i = 0; i < conditionList.length; i++) {
 			const conditionObj = conditionList[i];
 			const allConditionSize = conditionObj.conditions.length;
-			const anserConditionList:Array<Set<number>> = [...ansers].map(a => {
+			const anserConditionList: Array<Set<number>> = [...ansers].map((a) => {
 				const conditions = a.anserConditionMap?.get(conditionObj.conditionGroup.id);
 				if (conditions == undefined) {
 					return new Set();
 				}
-				return new Set(conditions.conditions.map(c => c.id));
+				return new Set(conditions.conditions.map((c) => c.id));
 			});
 			const score = getTScore(anserConditionList, allConditionSize);
 			conditionObj.score = score;
-			if ((conditionList[maxScoreIndex].score||0)<score) {
+			if ((conditionList[maxScoreIndex].score || 0) < score) {
 				maxScoreIndex = i;
 			}
-			if(score>0.9){
+			if (score > 0.9) {
 				break loop1;
 			}
 		}
@@ -655,47 +750,58 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 		// if (condition) {
 		// 	conditionHistory.push(condition);
 		// }
-		if (conditionObj&&maxScore>0.3) {
+		if (conditionObj && maxScore > 0.3) {
 			// data.next = {conditionGroup:condition?.conditionGroup,conditions:[]};
 			return {
 				conditionGroup: conditionObj.conditionGroup,
-				conditions: conditionObj.conditions.map(c => {
-					const _ansers: Set<IAnswerDataCondition> = new Set();
-					for (const anser of ansers) {
-						const _cObj = anser.anserConditionMap?.get(c.conditiongroup_id);
-						if (_cObj !== undefined && !_cObj.conditions.find(d => d.id === c.id)) {
-							console.log(_cObj.conditions);
-							continue;
+				conditions: conditionObj.conditions
+					.map((c) => {
+						const _ansers: Set<IAnswerDataCondition> = new Set();
+						for (const anser of ansers) {
+							const _cObj = anser.anserConditionMap?.get(c.conditiongroup_id);
+							if (
+								_cObj !== undefined &&
+								!_cObj.conditions.find((d) => d.id === c.id)
+							) {
+								console.log(_cObj.conditions);
+								continue;
+							}
+							_ansers.add(anser);
 						}
-						_ansers.add(anser);
-					}
-					if(_ansers.size===0){
+						if (_ansers.size === 0) {
+							return {
+								condition: c,
+							};
+						}
 						return {
 							condition: c,
-						}
-					}
-					return {
-						condition: c,
-						next: MakeFlow3(conditionList, _ansers,deep+1,conditionHistory,c)
-					}
-				}).filter(c => c.next&&c.next.anserIds.length > 0),
+							next: MakeFlow3(conditionList, _ansers, deep + 1, conditionHistory, c),
+						};
+					})
+					.filter((c) => c.next && c.next.anserIds.length > 0),
 				// conditionHistory: [...conditionHistory],
-				anserIds: [...ansers.values()].map(a => a.id)
+				anserIds: [...ansers.values()].map((a) => a.id),
 			};
 		}
 	}
 	return {
 		// conditionHistory: [...conditionHistory],
-		anserIds: [...ansers.values()].map(a => a.id)
+		anserIds: [...ansers.values()].map((a) => a.id),
 	};
-	function getTScore(conditionSetList: Array<Set<number>>, allConditionSize: number): number {
+	function getTScore(
+		conditionSetList: Array<Set<number>>,
+		allConditionSize: number
+	): number {
 		const coeff = 10;
-		let countA = 0, countB = 0;
-		let beforeSet: Set<number> = new Set(conditionSetList[conditionSetList.length-1]);
+		let countA = 0,
+			countB = 0;
+		let beforeSet: Set<number> = new Set(
+			conditionSetList[conditionSetList.length - 1]
+		);
 		for (const conditionSet of conditionSetList) {
 			if (conditionSet.size > 0) {
 				countA += conditionSet.size;
-			}else{
+			} else {
 				countA += allConditionSize;
 			}
 			for (const b of beforeSet) {
@@ -705,21 +811,27 @@ function MakeFlow3(_conditionList: Array<{ conditionGroup: IConditionGroupData, 
 			}
 			beforeSet = conditionSet;
 		}
-		console.log(countA ,countB);
-		if ((countA - countB) === 0) {
+		console.log(countA, countB);
+		if (countA - countB === 0) {
 			return -1;
 		}
-		return ((countA - countB) / countA) * ((1-coeff*0.0001) ** conditionSetList.length);
+		return (
+			((countA - countB) / countA) *
+			(1 - coeff * 0.0001) ** conditionSetList.length
+		);
 	}
 }
-function AnserRefinedSearch(ansers: Set<IAnswerDataCondition>, conditionList: Array<IConditionData>): Set<IAnswerDataCondition> {
+function AnserRefinedSearch(
+	ansers: Set<IAnswerDataCondition>,
+	conditionList: Array<IConditionData>
+): Set<IAnswerDataCondition> {
 	const anserSet: Set<IAnswerDataCondition> = new Set();
 	loop1: for (const anser of ansers) {
 		if (anser.anserConditionMap) {
 			for (const [key, value] of anser.anserConditionMap.entries()) {
-				const condition = conditionList.find(c => c.conditiongroup_id === key);
+				const condition = conditionList.find((c) => c.conditiongroup_id === key);
 				if (condition) {
-					if (value.conditions.find(c => c.id === condition.id)) {
+					if (value.conditions.find((c) => c.id === condition.id)) {
 					} else {
 						continue loop1;
 					}
@@ -730,4 +842,3 @@ function AnserRefinedSearch(ansers: Set<IAnswerDataCondition>, conditionList: Ar
 	}
 	return anserSet;
 }
-

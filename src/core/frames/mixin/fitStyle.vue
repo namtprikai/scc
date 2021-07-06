@@ -1,7 +1,7 @@
 <script lang="ts">
-import { Component, Mixins, Vue, Watch } from 'vue-property-decorator';
-import { AppModule, DeviceType } from '@/store/modules/app';
-import { eventHub } from '@/init/eventHub';
+import { Component, Mixins, Vue, Watch } from "vue-property-decorator";
+import { AppModule, DeviceType } from "@/store/modules/app";
+import { eventHub } from "@/init/eventHub";
 
 export type FitStyleObject = {
 	height?: number | string;
@@ -34,14 +34,14 @@ export default class FitStyle extends Vue {
 		return AppModule.device;
 	}
 
-	@Watch('sidebar', { deep: true })
+	@Watch("sidebar", { deep: true })
 	private onToggle() {
-		eventHub.$emit('fitStyle', this.fitStyle());
+		eventHub.$emit("fitStyle", this.fitStyle());
 	}
 
 	fitStyle() {
 		if (this.device == DeviceType.Mobile) {
-			return { height: '100%', width: '100%' };
+			return { height: "100%", width: "100%" };
 		}
 
 		const element = this.$el as HTMLElement;
@@ -50,15 +50,17 @@ export default class FitStyle extends Vue {
 				// アニメーションがある場合は、要素のオフセット値をすぐ取得してもアニメーション開始時の値しか取れないため、
 				// `width` の固定値を数秒後にセットする (とても微妙な処理)
 				// height: `calc(100% - ${element.offsetTop}px)`,
-				height: 'calc(100% - 50px)',
-				width: `calc(100% - ${this.sidebar.opened ? SidebarWidth.Open : SidebarWidth.Close}px)`,
-				transition: 'width 0.28s',
+				height: "calc(100% - 50px)",
+				width: `calc(100% - ${
+					this.sidebar.opened ? SidebarWidth.Open : SidebarWidth.Close
+				}px)`,
+				transition: "width 0.28s",
 			};
 		}
 
 		return {
 			// height: `calc(100% - ${element.offsetTop}px)`,
-			height: 'calc(100% - 50px)',
+			height: "calc(100% - 50px)",
 			width: `calc(100% - ${element.offsetLeft}px)`,
 		};
 	}

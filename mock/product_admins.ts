@@ -1,27 +1,27 @@
-import { IProductData } from '../src/core/api/types';
-import { productions} from './products';
-import { IAdminData } from '../src/core/api/types';
+import { IProductData } from "../src/core/api/types";
+import { productions } from "./products";
+import { IAdminData } from "../src/core/api/types";
 export let productAdmins = [
 	{
-		id:0,
-		product_id:0,
-		admin_id:0
+		id: 0,
+		product_id: 0,
+		admin_id: 0,
 	},
-		{
-		id:1,
-		product_id:2,
-		admin_id:0
-	}
+	{
+		id: 1,
+		product_id: 2,
+		admin_id: 0,
+	},
 ];
-export const addProductAdmin = (admin_id:number,product_id:number)=>{
-	const id = productAdmins[productAdmins.length-1].id + 1;
+export const addProductAdmin = (admin_id: number, product_id: number) => {
+	const id = productAdmins[productAdmins.length - 1].id + 1;
 	productAdmins.push({
 		id,
 		product_id,
-		admin_id
+		admin_id,
 	});
-}
-export const getProductsByAdminId = (admin_id:number):Array<IProductData>=>{
+};
+export const getProductsByAdminId = (admin_id: number): Array<IProductData> => {
 	const products: Array<IProductData> = [];
 	for (const productAdmin of productAdmins) {
 		if (productAdmin.admin_id === admin_id) {
@@ -33,11 +33,11 @@ export const getProductsByAdminId = (admin_id:number):Array<IProductData>=>{
 		}
 	}
 	return products;
-}
+};
 export const getProductsByAdmin = (admin: IAdminData): Array<IProductData> => {
 	return getProductsByAdminId(admin.id);
-}
+};
 
 export const deleteProductAdminsByProductId = (product_id: number) => {
-	productAdmins = productAdmins.filter(p => p.product_id !== product_id);
-}
+	productAdmins = productAdmins.filter((p) => p.product_id !== product_id);
+};

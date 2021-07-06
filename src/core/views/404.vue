@@ -3,15 +3,29 @@
 		<div class="wscn-http404">
 			<div class="pic-404">
 				<img class="pic-404__parent" src="@/assets/404_images/404.png" alt="404" />
-				<img class="pic-404__child left" src="@/assets/404_images/404_cloud.png" alt="404" />
-				<img class="pic-404__child mid" src="@/assets/404_images/404_cloud.png" alt="404" />
-				<img class="pic-404__child right" src="@/assets/404_images/404_cloud.png" alt="404" />
+				<img
+					class="pic-404__child left"
+					src="@/assets/404_images/404_cloud.png"
+					alt="404"
+				/>
+				<img
+					class="pic-404__child mid"
+					src="@/assets/404_images/404_cloud.png"
+					alt="404"
+				/>
+				<img
+					class="pic-404__child right"
+					src="@/assets/404_images/404_cloud.png"
+					alt="404"
+				/>
 			</div>
 			<div class="text-404">
 				<div class="text-404__oops">OOPS!</div>
 				<div class="text-404__info">
 					404エラー
-					<a class="link-type" href="https://wallstreetcn.com" target="_blank">404エラー</a>
+					<a class="link-type" href="https://wallstreetcn.com" target="_blank"
+						>404エラー</a
+					>
 				</div>
 				<div class="text-404__headline">{{ message }}</div>
 				<div class="text-404__info">コンテンツがありません</div>
@@ -22,13 +36,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from "vue-property-decorator";
 
 // @ts-ignore
 @Component
 export default class NotFound extends Vue {
 	get message() {
-		return '404 エラー';
+		return "404 エラー";
 	}
 }
 </script>

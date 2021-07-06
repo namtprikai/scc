@@ -7,13 +7,14 @@
     "build": "npm run icon && vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint",
+    "lint": "vue-cli-service lint --fix",
     "icon": "vsvg -s ./src/core/icons/svg -t ./src/core/icons/components --ext ts --es6",
     "lintes": "eslint --fix .",
     "mock": "cd mock && ts-node-dev mock-server.ts",
     "start": "vue-cli-service serve",
     "test": "yarn test:unit",
-    "test:api": "vue-cli-service test:unit ./src/core/utils/tests/unit/api.spec.ts"
+    "test:api": "vue-cli-service test:unit ./src/core/utils/tests/unit/api.spec.ts",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
@@ -59,6 +60,7 @@
     "echarts": "^4.8.0",
     "element-ui": "^2.14.0",
     "encoding-japanese": "^1.0.30",
+    "eslint-config-prettier": "^8.3.0",
     "express": "^4.17.1",
     "express-useragent": "^1.0.15",
     "faker": "^5.5.3",
@@ -97,6 +99,7 @@
     "vue": "^2.6.12",
     "vue-beautiful-chat": "^2.5.0",
     "vue-class-component": "^7.2.6",
+    "vue-eslint-parser": "^7.7.2",
     "vue-good-table": "^2.21.0",
     "vue-input-tag": "^2.0.7",
     "vue-js-modal": "^1.3.35",

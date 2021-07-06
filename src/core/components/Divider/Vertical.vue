@@ -26,14 +26,8 @@
 					<span class="divider__handle__dot"></span>
 				</div>
 				<div v-if="isTouch">
-					<div
-						class="divider__allow divider__allow--right"
-						@touchend="right"
-					></div>
-					<div
-						class="divider__allow divider__allow--left"
-						@touchend="left"
-					></div>
+					<div class="divider__allow divider__allow--right" @touchend="right"></div>
+					<div class="divider__allow divider__allow--left" @touchend="left"></div>
 				</div>
 			</div>
 			<div
@@ -259,7 +253,7 @@ $barWidth: 2px;
 	width: 100%;
 	height: 100%;
 	background: rgba(0, 0, 0, 0.2);
-  opacity: 0.5;
+	opacity: 0.5;
 }
 .relative {
 	position: relative;

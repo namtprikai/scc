@@ -1,9 +1,24 @@
 <template>
-	<div class="horizontal_divider" name="horizontal" :ref="refName" @touchstart="onTouchstartWrap">
+	<div
+		class="horizontal_divider"
+		name="horizontal"
+		:ref="refName"
+		@touchstart="onTouchstartWrap"
+	>
 		<div class="top" v-bind:style="topStyle">
 			<slot name="top"></slot>
 		</div>
-		<div ref="divider" class="divider" draggable="true" @touchmove="onTouchmove" @dragstart="onDragStart" @touchstart="onTouchstart" @touchend="onTouchend" @drag="onDrag" @dragend="onDragEnd">
+		<div
+			ref="divider"
+			class="divider"
+			draggable="true"
+			@touchmove="onTouchmove"
+			@dragstart="onDragStart"
+			@touchstart="onTouchstart"
+			@touchend="onTouchend"
+			@drag="onDrag"
+			@dragend="onDragEnd"
+		>
 			<div class="relative">
 				<div class="divider__handle">
 					<span class="divider__handle__dot"></span>
@@ -15,7 +30,11 @@
 					<div class="divider__allow divider__allow--bottom" @touchend="down"></div>
 				</div>
 			</div>
-			<div v-if="isGhoast" class="divider__ghoast" :style="{ top: ghoastY + 'px' }"></div>
+			<div
+				v-if="isGhoast"
+				class="divider__ghoast"
+				:style="{ top: ghoastY + 'px' }"
+			></div>
 		</div>
 		<div class="bottom" v-bind:style="bottomStyle">
 			<slot name="bottom"></slot>
@@ -24,12 +43,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import { polyfill } from 'mobile-drag-drop';
+import { Component, Vue } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import { polyfill } from "mobile-drag-drop";
 
 // optional import of scroll behaviour
-import { scrollBehaviourDragImageTranslateOverride } from 'mobile-drag-drop/scroll-behaviour';
+import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
 
 // options are optional ;)
 polyfill({
@@ -40,19 +59,19 @@ polyfill({
 @Component
 export default class Horizontal extends Vue {
 	private getDividerKey(): string {
-		let slotName = '';
+		let slotName = "";
 		for (const [key, items] of Object.entries(this.$slots)) {
 			if (items) {
 				for (const item of items) {
 					if (item.children) {
 						for (const child of item.children) {
-							slotName += child?.componentInstance?.$attrs['data-name'] || '';
+							slotName += child?.componentInstance?.$attrs["data-name"] || "";
 						}
 					}
 				}
 			}
 		}
-		return `${this.$router?.currentRoute?.path || ''}_${slotName}_h_y`;
+		return `${this.$router?.currentRoute?.path || ""}_${slotName}_h_y`;
 	}
 
 	private dividerHeight = 3;
@@ -106,7 +125,8 @@ export default class Horizontal extends Vue {
 	private mounted() {
 		// ドラッグ時のアイコンを非表示にするためのダミーエレメントを作成
 		const invisible = new Image();
-		invisible.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+		invisible.src =
+			"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
 		this.$refs.invisible = invisible;
 		const horizontal: any = this.$refs[this.refName];
 		const height = horizontal.clientHeight;
@@ -115,9 +135,12 @@ export default class Horizontal extends Vue {
 		if (strageParcentage) {
 			parcentage = parseInt(strageParcentage, 10);
 		}
-		this.$emit('top-height', `${height * (parcentage / 100) - this.offsetY}`);
-		this.$emit('bottom-height', `${height * ((100 - parcentage) / 100) - this.offsetY - 50}`);
-		eventHub.$on('resize', this.resize);
+		this.$emit("top-height", `${height * (parcentage / 100) - this.offsetY}`);
+		this.$emit(
+			"bottom-height",
+			`${height * ((100 - parcentage) / 100) - this.offsetY - 50}`
+		);
+		eventHub.$on("resize", this.resize);
 		this.y = height * (parcentage / 100) + this.offsetY - this.dividerHeight;
 		this.x = 0;
 		this.topStyle = {
@@ -143,7 +166,7 @@ export default class Horizontal extends Vue {
 
 		const height = horizontal.clientHeight;
 		// this.$emit("top-height", `${height / 2 - this.offsetY}`);
-		this.$emit('bottom-height', `${height - this.y - this.offsetY}`);
+		this.$emit("bottom-height", `${height - this.y - this.offsetY}`);
 	}
 
 	beforeDestroy() {
@@ -151,7 +174,7 @@ export default class Horizontal extends Vue {
 	}
 
 	private destroyed() {
-		eventHub.$off('resize', this.resize);
+		eventHub.$off("resize", this.resize);
 	}
 
 	private onDragStart(e: DragEvent) {
@@ -192,7 +215,7 @@ export default class Horizontal extends Vue {
 		this.x = e.x;
 		const horizontal: any = this.$refs[this.refName];
 		const height = horizontal.clientHeight;
-		this.$emit('bottom-height', `${height - e.y - this.offsetY + 80 + coeff}`);
+		this.$emit("bottom-height", `${height - e.y - this.offsetY + 80 + coeff}`);
 		this.save();
 		this.isGhoast = false;
 	}
@@ -216,10 +239,10 @@ export default class Horizontal extends Vue {
 			this.x = e.x;
 			// this.topHeight = `${e.y - this.offsetY}`;
 			// this.bottomHeight = `calc(100% - ${e.y - this.offsetY})`;
-			this.$emit('top-height', `${e.y - this.offsetY - 20}`);
+			this.$emit("top-height", `${e.y - this.offsetY - 20}`);
 			const horizontal: any = this.$refs[this.refName];
 			const height = horizontal.clientHeight;
-			this.$emit('bottom-height', `${height - e.y - this.offsetY + 80 + coeff}`);
+			this.$emit("bottom-height", `${height - e.y - this.offsetY + 80 + coeff}`);
 			// console.log(this.topHeight);
 			// this.save();
 		}, 300);
@@ -228,7 +251,7 @@ export default class Horizontal extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_variables.scss';
+@import "@/styles/_variables.scss";
 $barHeight: 3px;
 .relative {
 	position: relative;
@@ -294,7 +317,7 @@ $barHeight: 3px;
 			&::before {
 				overflow: hidden;
 				text-indent: -9999px;
-				content: '.';
+				content: ".";
 				position: absolute;
 				width: 100px;
 				border-color: #d9534f;
@@ -317,7 +340,7 @@ $barHeight: 3px;
 			bottom: auto;
 			background-color: transparent;
 			&::before {
-				content: '.';
+				content: ".";
 				overflow: hidden;
 				text-indent: -9999px;
 				position: absolute;

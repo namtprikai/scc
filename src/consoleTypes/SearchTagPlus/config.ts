@@ -8,12 +8,22 @@ import Frame5 from "@/frames/b_5.vue";
 import Frame6 from "@/frames/b_6.vue";
 import Frame7 from "@/frames/b_7.vue";
 import moment from "moment";
-import TicketCompParent, { Ticket, TicketData, TicketGroup, Condition, EnquateTicket } from "@/views/ticketTable";
+import TicketCompParent, {
+	Ticket,
+	TicketData,
+	TicketGroup,
+	Condition,
+	EnquateTicket,
+} from "@/views/ticketTable";
 export const NoneString = "なし";
 export const MaxFaqFile = 500;
-export const WindowTestPageUrl: string = process.env.DEV_WINDOW_URL || "https://service.ai-x-supporter-dev.com/search_tag_plus_demo_test/";
+export const WindowTestPageUrl: string =
+	process.env.DEV_WINDOW_URL ||
+	"https://service.ai-x-supporter-dev.com/search_tag_plus_demo_test/";
 export const MaxFaqSize = 500;
-export const WindowPageUrl: string = process.env.PRODUCT_WINDOW_URL || "https://service.ai-x-supporter-dev.com/search_tag_plus_demo/";
+export const WindowPageUrl: string =
+	process.env.PRODUCT_WINDOW_URL ||
+	"https://service.ai-x-supporter-dev.com/search_tag_plus_demo/";
 export const KeywordEditorButtons: Array<string> = [
 	"test",
 	"prod",
@@ -28,7 +38,10 @@ export const UploadModalDiscription = `
 	<p>2. 「テスト環境に反映」あるいは「本番環境に反映」を選択してください。サーバーに保存されているボット表示設定とFAQ設定の内容が選択した環境に反映されます。</p>
 	<p>※「保存して〇〇環境に反映」を選択すると保存と反映が同時に行われます。</p>
 `;
-export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vue>): RouterOptions {
+export function RouterConfig(
+	Layout: VueConstructor<Vue>,
+	Box: VueConstructor<Vue>
+): RouterOptions {
 	return {
 		mode: "hash",
 		scrollBehavior: (to, from, savedPosition) => {
@@ -42,7 +55,8 @@ export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vu
 		routes: [
 			{
 				path: "/login",
-				component: () => import(/* webpackChunkName: "login" */ "views/login/index.vue"),
+				component: () =>
+					import(/* webpackChunkName: "login" */ "views/login/index.vue"),
 				meta: {
 					hidden: true,
 				},
@@ -272,7 +286,8 @@ export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vu
 											{
 												label: "お知らせ設定",
 												key: "Oshirase",
-												discription: "管理画面のヘッダーに、お知らせやリンクを設定できます。",
+												discription:
+													"管理画面のヘッダーに、お知らせやリンクを設定できます。",
 											},
 										],
 									},
@@ -400,7 +415,8 @@ export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vu
 									icon: "edit",
 									confirmation: {
 										is: true,
-										message: "「反映ステップに進む」から内容を保存しないまま編集終了すると変更内容が失われます。本当に編集終了しますか？",
+										message:
+											"「反映ステップに進む」から内容を保存しないまま編集終了すると変更内容が失われます。本当に編集終了しますか？",
 										after: () => {
 											// EditModule.editUnlock();
 										},
@@ -440,7 +456,8 @@ export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vu
 									icon: "edit",
 									confirmation: {
 										is: true,
-										message: "「反映ステップに進む」から内容を保存しないまま編集終了すると変更内容が失われます。本当に編集終了しますか？",
+										message:
+											"「反映ステップに進む」から内容を保存しないまま編集終了すると変更内容が失われます。本当に編集終了しますか？",
 										after: () => {
 											// EditModule.editUnlock();
 										},
@@ -604,7 +621,8 @@ export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vu
 											{
 												label: "利用履歴",
 												key: "TicketAnalyzer",
-												discription: "検索ボタンを押すと利用履歴の集計結果をグラフなどで表示できます。",
+												discription:
+													"検索ボタンを押すと利用履歴の集計結果をグラフなどで表示できます。",
 											},
 										],
 									},
@@ -625,7 +643,8 @@ export function RouterConfig(Layout: VueConstructor<Vue>, Box: VueConstructor<Vu
 											{
 												label: "精度検証",
 												key: "ScriptEvaluation",
-												discription: "CSVファイルのA列に検索クエリ、B列にヒットさせたい質問文を記載してアップロードしてください",
+												discription:
+													"CSVファイルのA列に検索クエリ、B列にヒットさせたい質問文を記載してアップロードしてください",
 											},
 										],
 									},
@@ -819,50 +838,62 @@ export const conditionList: Array<Condition> = [
 	//   ]
 	// }
 ];
-const EnquateGet = (key: string, enquateKey: string) => (_enquate: EnquateTicket, ticket: any) => {
-	const enquate: EnquateTicket = ticket[enquateKey];
-	if (enquate) {
-		const ENQUATE_VALUE = enquate[key];
-		if (!Array.isArray(enquate) && typeof enquate === "object" && ENQUATE_VALUE) {
-			if (ENQUATE_VALUE.type === "radio") {
-				if (ENQUATE_VALUE.value) {
-					return ENQUATE_VALUE.value.label;
-				}
-			} else if (ENQUATE_VALUE.type === "checkbox") {
-				if (Array.isArray(ENQUATE_VALUE.value) && ENQUATE_VALUE.value.length > 0) {
-					return ENQUATE_VALUE.value.map((e) => e.label).join(", ");
-				}
-			} else if (ENQUATE_VALUE.type === "textarea") {
-				if (TicketGroup.noneSt !== ENQUATE_VALUE.value) {
-					return ENQUATE_VALUE.value;
-				}
-			}
-		}
-	}
-	return NoneString;
-};
-const EnquateMap = (key: string, enquateKey: string) => (_enquate: EnquateTicket, ticket: any) => {
-	const enquate: EnquateTicket = ticket[enquateKey];
-	if (enquate) {
-		const ENQUATE_VALUE = enquate[key];
-		if (!Array.isArray(enquate) && typeof enquate === "object" && ENQUATE_VALUE) {
-			if (ENQUATE_VALUE.type === "radio") {
-				if (ENQUATE_VALUE.value) {
-					return ENQUATE_VALUE.value.label;
-				}
-			} else if (ENQUATE_VALUE.type === "checkbox") {
-				if (Array.isArray(ENQUATE_VALUE.value)) {
-					return ENQUATE_VALUE.value.map((e) => e.label);
-				}
-			} else if (ENQUATE_VALUE.type === "textarea") {
-				if (TicketGroup.noneSt !== ENQUATE_VALUE.value) {
-					return ENQUATE_VALUE.value;
+const EnquateGet =
+	(key: string, enquateKey: string) =>
+	(_enquate: EnquateTicket, ticket: any) => {
+		const enquate: EnquateTicket = ticket[enquateKey];
+		if (enquate) {
+			const ENQUATE_VALUE = enquate[key];
+			if (
+				!Array.isArray(enquate) &&
+				typeof enquate === "object" &&
+				ENQUATE_VALUE
+			) {
+				if (ENQUATE_VALUE.type === "radio") {
+					if (ENQUATE_VALUE.value) {
+						return ENQUATE_VALUE.value.label;
+					}
+				} else if (ENQUATE_VALUE.type === "checkbox") {
+					if (Array.isArray(ENQUATE_VALUE.value) && ENQUATE_VALUE.value.length > 0) {
+						return ENQUATE_VALUE.value.map((e) => e.label).join(", ");
+					}
+				} else if (ENQUATE_VALUE.type === "textarea") {
+					if (TicketGroup.noneSt !== ENQUATE_VALUE.value) {
+						return ENQUATE_VALUE.value;
+					}
 				}
 			}
 		}
-	}
-	return TicketGroup.noneSt;
-};
+		return NoneString;
+	};
+const EnquateMap =
+	(key: string, enquateKey: string) =>
+	(_enquate: EnquateTicket, ticket: any) => {
+		const enquate: EnquateTicket = ticket[enquateKey];
+		if (enquate) {
+			const ENQUATE_VALUE = enquate[key];
+			if (
+				!Array.isArray(enquate) &&
+				typeof enquate === "object" &&
+				ENQUATE_VALUE
+			) {
+				if (ENQUATE_VALUE.type === "radio") {
+					if (ENQUATE_VALUE.value) {
+						return ENQUATE_VALUE.value.label;
+					}
+				} else if (ENQUATE_VALUE.type === "checkbox") {
+					if (Array.isArray(ENQUATE_VALUE.value)) {
+						return ENQUATE_VALUE.value.map((e) => e.label);
+					}
+				} else if (ENQUATE_VALUE.type === "textarea") {
+					if (TicketGroup.noneSt !== ENQUATE_VALUE.value) {
+						return ENQUATE_VALUE.value;
+					}
+				}
+			}
+		}
+		return TicketGroup.noneSt;
+	};
 export const tableKeyList = [
 	// {
 	//   key: "mode",
@@ -920,7 +951,9 @@ export const tableKeyList = [
 				return "-";
 			}
 			const startDate = String(ticketData.start_date || ticketData.start_time);
-			let endDate = String(ticketData.end_date || ticketData.end_time || ticketData.start_date);
+			let endDate = String(
+				ticketData.end_date || ticketData.end_time || ticketData.start_date
+			);
 			if (!String(endDate).match(/^\d+$/)) {
 				endDate = String(ticketData.start_time);
 			}

@@ -155,7 +155,9 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig) {
 
 		csvArray[csvArray.length - 1].push(row.scenarioId.replace(/^s/, ""));
 		csvArray[csvArray.length - 1].push(row.status == "published" ? "1" : "0");
-		csvArray[csvArray.length - 1].push(moment(row.updateDate).format("YYYY/MM/DD"));
+		csvArray[csvArray.length - 1].push(
+			moment(row.updateDate).format("YYYY/MM/DD")
+		);
 		for (let i = 0; i < MaxMenu; i++) {
 			csvArray[csvArray.length - 1].push(row.menu[i] || "");
 		}
@@ -205,7 +207,8 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig) {
 					}
 				}
 			}
-			retArray[rowCount][depth * 2] = String(sc.text).replace(/<(button|link):.+?>/g, "") + itemTagString;
+			retArray[rowCount][depth * 2] =
+				String(sc.text).replace(/<(button|link):.+?>/g, "") + itemTagString;
 
 			if (depth > 0) {
 				retArray[rowCount][depth * 2 - 1] = String(sc.label).replace(/^\d+\./, "");
@@ -216,7 +219,12 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig) {
 		});
 		// }
 		return retArray;
-		function ScenarioCrawler(scenario: BotConfigFlow, fn: (scenario: BotConfigFlow, depth: number) => void, parent = "root", depth = 0) {
+		function ScenarioCrawler(
+			scenario: BotConfigFlow,
+			fn: (scenario: BotConfigFlow, depth: number) => void,
+			parent = "root",
+			depth = 0
+		) {
 			// const step = scenarioGroup.getStep(scenario.step);
 			// const parentStep = scenarioGroup.getStep(parent);
 			fn(scenario, depth);

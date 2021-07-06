@@ -1,7 +1,6 @@
 <template>
 	<div>
 		<TabHeader>
-
 			<b-button
 				class="ml-2"
 				size="sm"
@@ -13,18 +12,22 @@
 		</TabHeader>
 
 		<div class="tab-body">
-<div>
+			<div>
 				<b-form-group label="Using options array:">
-			<b-form-checkbox-group
-      id="checkbox-1"
-      v-model="currentProducts"
+					<b-form-checkbox-group
+						id="checkbox-1"
+						v-model="currentProducts"
 						:options="ProductOptions"
-      name="checkbox-1"
-    >
-    </b-form-checkbox-group>
+						name="checkbox-1"
+					>
+					</b-form-checkbox-group>
 				</b-form-group>
-<b-form-input type="text" placeholder="検索文" v-model="searchText"></b-form-input>
-</div>
+				<b-form-input
+					type="text"
+					placeholder="検索文"
+					v-model="searchText"
+				></b-form-input>
+			</div>
 			<div class="text-right mt-3">
 				<b-button class @click="addRoot()" variant="secondary">
 					<svg-icon name="arrows_plus" />
@@ -37,11 +40,15 @@
 						class="bot-message-config_editor_group section"
 						:visible="false"
 					>
-					<template v-slot:header>
-						<b-breadcrumb :items="[{text:'親カテ'},{text:'子カテ'}]"></b-breadcrumb>
-						{{question.title}}
-					</template>
-						<template v-slot:body="body"><Answer :questionId="question.id" :is_show="body.isShow" /> </template>
+						<template v-slot:header>
+							<b-breadcrumb
+								:items="[{ text: '親カテ' }, { text: '子カテ' }]"
+							></b-breadcrumb>
+							{{ question.title }}
+						</template>
+						<template v-slot:body="body"
+							><Answer :questionId="question.id" :is_show="body.isShow" />
+						</template>
 					</BCardAccordion>
 				</div>
 				<div id="End"></div>

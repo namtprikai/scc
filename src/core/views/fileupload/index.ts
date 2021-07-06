@@ -119,7 +119,8 @@ export default class FileuploadCompParent extends Vue {
 			const file: string | ArrayBuffer = readFile as string;
 			const files = file.split(",");
 			const base64Str = files[files.length - 1];
-			const fileName = this.fileNameList[i] == "" ? uploadFile.name : this.fileNameList[i];
+			const fileName =
+				this.fileNameList[i] == "" ? uploadFile.name : this.fileNameList[i];
 			console.log(fileName);
 			const message = "";
 			try {
@@ -148,7 +149,7 @@ export default class FileuploadCompParent extends Vue {
 			`
 		<div style="background-image:url(${imageUrl});width:400px;height:400px;background-size:contain;background-repeat:no-repeat;background-position:center center;">
 					</div>
-		`,
+		`
 		);
 	}
 
@@ -192,7 +193,9 @@ export default class FileuploadCompParent extends Vue {
 	get FileList() {
 		return FileModule.FileList.filter((file: { Key: string }) => {
 			const otherThumbReg = new RegExp("^[0-9]+_thumb.gif$|^[0-9]+_theme.gif$");
-			const thumbReg = new RegExp(`^${UserModule.id}_thumb.gif$|^${UserModule.id}_theme.gif$`);
+			const thumbReg = new RegExp(
+				`^${UserModule.id}_thumb.gif$|^${UserModule.id}_theme.gif$`
+			);
 			if (otherThumbReg.test(file.Key) && !thumbReg.test(file.Key)) {
 				return false;
 			}

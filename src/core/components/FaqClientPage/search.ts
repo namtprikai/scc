@@ -16,7 +16,14 @@ export class Search {
 	}
 
 	cleanText(text: any) {
-		return text && text.replace(/[Ａ-Ｚａ-ｚ０-９]/g, (s: any) => String.fromCharCode(s.charCodeAt(0) - 65248)).toLowerCase();
+		return (
+			text &&
+			text
+				.replace(/[Ａ-Ｚａ-ｚ０-９]/g, (s: any) =>
+					String.fromCharCode(s.charCodeAt(0) - 65248)
+				)
+				.toLowerCase()
+		);
 	}
 
 	searchScore(searchText: any) {
@@ -29,7 +36,9 @@ export class Search {
 
 	async search(searchText: any) {
 		if (searchText) {
-			return this.scriptMatchingManager.getSearchResult(this.cleanText(searchText));
+			return this.scriptMatchingManager.getSearchResult(
+				this.cleanText(searchText)
+			);
 		} else {
 			return ["170", "550", "588", "602", "503"];
 		}

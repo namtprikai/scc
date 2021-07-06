@@ -21,9 +21,18 @@ export default class AllInOneEditorCompParent extends Vue {
 		this.answer = {};
 		this.currentType = "";
 	}
-	public conditionList: Array<{ conditionGroup: IConditionGroupData; conditions: Array<IConditionData> }> = [];
+	public conditionList: Array<{
+		conditionGroup: IConditionGroupData;
+		conditions: Array<IConditionData>;
+	}> = [];
 
-	public async setAnswer(data: { answer: IAnswerData; conditionList: Array<{ conditionGroup: IConditionGroupData; conditions: Array<IConditionData> }> }) {
+	public async setAnswer(data: {
+		answer: IAnswerData;
+		conditionList: Array<{
+			conditionGroup: IConditionGroupData;
+			conditions: Array<IConditionData>;
+		}>;
+	}) {
 		this.isLoading = true;
 		this.currentType = "";
 		await Wait();

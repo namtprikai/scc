@@ -16,13 +16,12 @@
 				class="mx-auto"
 				v-model="page"
 				:records="inv.length"
-
 				:per-page="perPage"
 			/>
 		</b-row>
 
 		<b-list-group-item
-			v-for="(inverted, index) in inv.slice(From,To)"
+			v-for="(inverted, index) in inv.slice(From, To)"
 			v-bind:key="index"
 			class="text-center"
 		>
@@ -44,7 +43,6 @@
 				class="mx-auto"
 				v-model="page"
 				:records="inv.length"
-
 				:per-page="perPage"
 			/>
 		</b-row>
@@ -56,11 +54,16 @@
 </template>
 
 <script lang="ts">
-import { v4 } from 'uuid';
-import { apiUrl, scriptUrl, CLIENT_ID, packageUrl } from './../../utils/configration';
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import { Ajax } from '@/utils/parts';
+import { v4 } from "uuid";
+import {
+	apiUrl,
+	scriptUrl,
+	CLIENT_ID,
+	packageUrl,
+} from "./../../utils/configration";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import { Ajax } from "@/utils/parts";
 import Pagination from "vue-pagination-2";
 interface InvertedObj {
 	key: string;
@@ -76,9 +79,9 @@ interface InvertedObj {
 	filters: {
 		statusFilter(status: string) {
 			const statusMap: { [id: string]: string } = {
-				published: 'success',
-				draft: 'gray',
-				deleted: 'danger',
+				published: "success",
+				draft: "gray",
+				deleted: "danger",
 			};
 			return statusMap[status];
 		},
@@ -94,7 +97,7 @@ export default class KeywordShowComp extends Vue {
 	private step = 0.05;
 	private inv: any = [];
 	private is_load = false;
-	@Prop({ default: '' })
+	@Prop({ default: "" })
 	private discription?: string;
 
 	private inverted_index: {
@@ -106,7 +109,7 @@ export default class KeywordShowComp extends Vue {
 	} | null = null;
 
 	get Title() {
-		return this.$router.currentRoute.meta?.title||'';
+		return this.$router.currentRoute.meta?.title || "";
 	}
 	public page: any = 1;
 	public perPage = 100;
@@ -114,7 +117,7 @@ export default class KeywordShowComp extends Vue {
 		return this.perPage * (this.page - 1);
 	}
 	get To() {
-		return this.perPage * (this.page);
+		return this.perPage * this.page;
 	}
 
 	private async init() {
@@ -151,36 +154,36 @@ export default class KeywordShowComp extends Vue {
 			.http({
 				baseURL: `${scriptUrl}`,
 				url: `update_inverted_index?${new Date().getTime()}`,
-				method: 'PUT',
+				method: "PUT",
 				data: {
 					product_id: parseInt(CLIENT_ID),
 					inverted_index: this.inverted_index,
 				},
 			})
 			.then(
-				res => {
+				(res) => {
 					this.fetchInverted_indexView();
-					this.$modal.show('dialog', {
-						title: '正常に更新されました',
-						text: '',
+					this.$modal.show("dialog", {
+						title: "正常に更新されました",
+						text: "",
 						buttons: [
 							{
-								title: 'OK',
+								title: "OK",
 							},
 						],
 					});
 				},
-				res => {
-					this.$modal.show('dialog', {
-						title: '更新が失敗しました',
-						text: '',
+				(res) => {
+					this.$modal.show("dialog", {
+						title: "更新が失敗しました",
+						text: "",
 						buttons: [
 							{
-								title: 'OK',
+								title: "OK",
 							},
 						],
 					});
-				},
+				}
 			);
 	}
 
@@ -190,7 +193,7 @@ export default class KeywordShowComp extends Vue {
 				.http({
 					baseURL: `${packageUrl}`,
 					url: `${CLIENT_ID}/tag_package_test.json?${time}`,
-					method: 'GET',
+					method: "GET",
 				})
 				.then((res: any) => {
 					r(res.inverted_index);
@@ -212,7 +215,10 @@ export default class KeywordShowComp extends Vue {
 					manual_weight: this.inverted_index[o].manual_weight,
 					original_weight: this.inverted_index[o].original_weight,
 					weight: (() => {
-						return this.inverted_index[o].original_weight + this.inverted_index[o].manual_weight;
+						return (
+							this.inverted_index[o].original_weight +
+							this.inverted_index[o].manual_weight
+						);
 					})(),
 				};
 				return obj;
@@ -230,11 +236,11 @@ export default class KeywordShowComp extends Vue {
 
 	private async created() {
 		this.init();
-		eventHub.$on('keywordUpdate', this.getKeyword);
+		eventHub.$on("keywordUpdate", this.getKeyword);
 	}
 
 	private destroyed() {
-		eventHub.$off('keywordUpdate', this.getKeyword);
+		eventHub.$off("keywordUpdate", this.getKeyword);
 	}
 }
 </script>

@@ -78,8 +78,12 @@ export namespace TagService {
 				for (let i = 0; i < this._tags.length; i++) {
 					if (this._tags[i].is_category() == false && this._tags[i].parent != null) {
 						const parentTags: any = this._tags[i].parent;
-						console.log(this._tags.find((tag: Tag) => tag.id == this._tags[i].parent));
-						if (this._tags.find((tag: Tag) => tag.id == this._tags[i].parent) != null) {
+						console.log(
+							this._tags.find((tag: Tag) => tag.id == this._tags[i].parent)
+						);
+						if (
+							this._tags.find((tag: Tag) => tag.id == this._tags[i].parent) != null
+						) {
 							this._tags[i].category = (
 								this._tags.find((tag: Tag) => tag.id === parentTags) || {
 									name: null,
@@ -111,7 +115,10 @@ export namespace TagService {
 
 		public conveartCategory() {}
 		// ＠Function 状態変化なし
-		public extendTags(oldTags: Array<Tag> | null, tags: Array<Tag> | null): Array<Tag> {
+		public extendTags(
+			oldTags: Array<Tag> | null,
+			tags: Array<Tag> | null
+		): Array<Tag> {
 			tags = this.addCategory(tags);
 			oldTags = this.addCategory(oldTags);
 			const flg = false;
@@ -215,7 +222,9 @@ export namespace TagService {
 				if (tags[i] == null) {
 					continue;
 				}
-				nowTagCategorys = nowTagCategorys.filter((tag: any) => tag.category === tags[i].category);
+				nowTagCategorys = nowTagCategorys.filter(
+					(tag: any) => tag.category === tags[i].category
+				);
 				const category: any = oldTags[i].category;
 				if (category in nowTagMap) {
 					nowTagMap[category].push(tags[i]);

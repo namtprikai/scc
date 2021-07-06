@@ -1,38 +1,38 @@
-
-function Main(args:string){
-const [[N],ansers,...oinput] = args.split('\n')
-.map(a=>a.split(' ').map(a=>parseInt(a,10)));
-const tgMapper:any = {};
-const tgmapList = oinput.slice(N*2+1);
-let tgList = [];
-for(let i =0;i< tgmapList.length;i=i+2){
-	const tgmap = tgmapList[i];
-		tgList.push(tgmap.slice(0,2));
+function Main(args: string) {
+	const [[N], ansers, ...oinput] = args
+		.split("\n")
+		.map((a) => a.split(" ").map((a) => parseInt(a, 10)));
+	const tgMapper: any = {};
+	const tgmapList = oinput.slice(N * 2 + 1);
+	let tgList = [];
+	for (let i = 0; i < tgmapList.length; i = i + 2) {
+		const tgmap = tgmapList[i];
+		tgList.push(tgmap.slice(0, 2));
 		const tl = tgmap.slice(2);
-		for(const t of tl){
+		for (const t of tl) {
 			tgMapper[t] = tgmap[0];
 		}
-}
-console.log(tgList);
-tgList = tgList.sort((a,b)=>a[1]-b[1]).map(t=>t[0]);
-const anserList = [];
-for(let i = 0;i<N;i++){
-	const t = oinput[i*2+1];
-	const tMap = {};
-	for(const o of t){
-		if(!tMap[tgMapper[o]]){
-			tMap[tgMapper[o]]=new Set();
-		}
-		tMap[tgMapper[o]].add(o);
 	}
+	console.log(tgList);
+	tgList = tgList.sort((a, b) => a[1] - b[1]).map((t) => t[0]);
+	const anserList = [];
+	for (let i = 0; i < N; i++) {
+		const t = oinput[i * 2 + 1];
+		const tMap = {};
+		for (const o of t) {
+			if (!tMap[tgMapper[o]]) {
+				tMap[tgMapper[o]] = new Set();
+			}
+			tMap[tgMapper[o]].add(o);
+		}
 
-	anserList.push({
-		id:ansers[i],
-		tMap
-	})
-}
-console.log(tgList);
-console.log(anserList);
+		anserList.push({
+			id: ansers[i],
+			tMap,
+		});
+	}
+	console.log(tgList);
+	console.log(anserList);
 }
 Main(`4
 0 1 2 3

@@ -33,12 +33,12 @@
 	</b-container>-->
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { mixins } from 'vue-class-component';
+import { Component, Vue } from "vue-property-decorator";
+import { mixins } from "vue-class-component";
 // import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
 // import {} from "router.ts";
-import FitStyle from '@/frames/mixin/fitStyle.vue';
-import { eventHub } from '@/init/eventHub';
+import FitStyle from "@/frames/mixin/fitStyle.vue";
+import { eventHub } from "@/init/eventHub";
 // @ts-ignore
 @Component
 export default class Hirizontal extends mixins(FitStyle) {

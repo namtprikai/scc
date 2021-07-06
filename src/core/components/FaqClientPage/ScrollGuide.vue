@@ -7,9 +7,9 @@
 	</div>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import ScrollGuideContent from './ScrollGuideContent.vue';
+import Vue from "vue";
+import Component from "vue-class-component";
+import ScrollGuideContent from "./ScrollGuideContent.vue";
 // @ts-ignore
 @Component({
 	components: { ScrollGuideContent },
@@ -22,15 +22,17 @@ export default class ScrollGuide extends Vue {
 	}
 
 	mounted() {
-		this.scrollContainer = this.$el.querySelector('.scrollY');
-		this.scrollContainer && this.scrollContainer.addEventListener('scroll', this.onScroll);
+		this.scrollContainer = this.$el.querySelector(".scrollY");
+		this.scrollContainer &&
+			this.scrollContainer.addEventListener("scroll", this.onScroll);
 		setTimeout(() => {
 			this.onScroll(null, true);
 		}, 100);
 	}
 
 	unmounted() {
-		this.scrollContainer && this.scrollContainer.removeEventListener('scroll', this.onScroll);
+		this.scrollContainer &&
+			this.scrollContainer.removeEventListener("scroll", this.onScroll);
 	}
 
 	updateScrollGuide() {
@@ -40,7 +42,8 @@ export default class ScrollGuide extends Vue {
 	onScroll(event: any, forceSet: any) {
 		if (
 			this.scrollContainer.scrollTop > 30 || // 動かす
-			this.scrollContainer.scrollHeight < this.scrollContainer.clientHeight + this.scrollContainer.scrollTop + 5 // 最後までスクロール
+			this.scrollContainer.scrollHeight <
+				this.scrollContainer.clientHeight + this.scrollContainer.scrollTop + 5 // 最後までスクロール
 		) {
 			this.showGuide = false;
 		} else if (forceSet) {

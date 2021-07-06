@@ -78,8 +78,12 @@ export namespace TagService {
 				for (let i = 0; i < this._tags.length; i++) {
 					if (this._tags[i].is_category() == false && this._tags[i].parent != null) {
 						const parentTags: any = this._tags[i].parent;
-						console.log(this._tags.find((tag: Tag) => tag.id == this._tags[i].parent));
-						if (this._tags.find((tag: Tag) => tag.id == this._tags[i].parent) != null) {
+						console.log(
+							this._tags.find((tag: Tag) => tag.id == this._tags[i].parent)
+						);
+						if (
+							this._tags.find((tag: Tag) => tag.id == this._tags[i].parent) != null
+						) {
 							this._tags[i].category = (
 								this._tags.find((tag: Tag) => tag.id === parentTags) || {
 									name: null,

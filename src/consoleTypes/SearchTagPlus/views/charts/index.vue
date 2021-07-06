@@ -5,10 +5,10 @@
 </template>
 
 <script>
-import Chart from '../../components/Charts/mixChart';
+import Chart from "../../components/Charts/mixChart";
 
 export default {
-	name: 'MixChart',
+	name: "MixChart",
 	components: { Chart },
 };
 </script>

@@ -3,27 +3,27 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { mixins } from 'vue-class-component';
-import echarts from 'echarts';
-import { eventHub } from '@/init/eventHub';
-import { IDatum } from './index.i';
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { mixins } from "vue-class-component";
+import echarts from "echarts";
+import { eventHub } from "@/init/eventHub";
+import { IDatum } from "./index.i";
 
 // @ts-ignore
 @Component
 export default class Bar extends Vue {
-	@Prop({ default: '500px' }) readonly height!: string;
-	@Prop({ default: '500px' }) readonly width!: string;
-	@Prop({ default: 'bar_chart' }) readonly id!: string;
-	@Prop({ default: 'bar-chart' }) readonly className!: string;
-	@Prop({ default: 'titleText' }) readonly titleText!: string;
-	@Prop({ default: 'value' }) readonly valueUnit!: string;
+	@Prop({ default: "500px" }) readonly height!: string;
+	@Prop({ default: "500px" }) readonly width!: string;
+	@Prop({ default: "bar_chart" }) readonly id!: string;
+	@Prop({ default: "bar-chart" }) readonly className!: string;
+	@Prop({ default: "titleText" }) readonly titleText!: string;
+	@Prop({ default: "value" }) readonly valueUnit!: string;
 	@Prop({ default: false }) readonly xLabelAll!: boolean;
 	@Prop({
 		default: () => [
-			{ value: 200, name: 'hoge' },
-			{ value: 100, name: 'fuga' },
-			{ value: 300, name: 'piyo' },
+			{ value: 200, name: "hoge" },
+			{ value: 100, name: "fuga" },
+			{ value: 300, name: "piyo" },
 		],
 	})
 	readonly data!: IDatum[];
@@ -36,56 +36,56 @@ export default class Bar extends Vue {
 
 	private mounted() {
 		this.initChart();
-		eventHub.$on('tabclick', this.initChart);
+		eventHub.$on("tabclick", this.initChart);
 	}
 
 	private destroyed() {
-		eventHub.$off('tabclick', this.initChart);
+		eventHub.$off("tabclick", this.initChart);
 	}
 
 	private beforeDestroy() {
 		this.chart.dispose();
 	}
 
-	@Watch('data')
+	@Watch("data")
 	private initChart() {
-		console.log('initChart');
+		console.log("initChart");
 
 		const title: echarts.EChartTitleOption = {
 			text: this.titleText,
-			left: '20',
-			top: '20',
+			left: "20",
+			top: "20",
 			textStyle: {
-				color: '#fff',
+				color: "#fff",
 				fontSize: 22,
 			},
 			subtextStyle: {
-				color: '#90979c',
+				color: "#90979c",
 				fontSize: 16,
 			},
 		};
 
 		const tooltip: echarts.EChartOption.Tooltip = {
-			trigger: 'axis',
+			trigger: "axis",
 			formatter: `{b}: {c}${this.valueUnit}`,
 		};
 
 		const grid = {
-			left: '10%',
-			right: '10%',
+			left: "10%",
+			right: "10%",
 			borderWidth: 0,
 			top: 100,
 			bottom: 100,
 			textStyle: {
-				color: '#fff',
+				color: "#fff",
 			},
 		};
 
 		const xAxis: echarts.EChartOption.XAxis = {
-			type: 'category',
+			type: "category",
 			axisLine: {
 				lineStyle: {
-					color: '#90979c',
+					color: "#90979c",
 				},
 			},
 			splitLine: {
@@ -108,7 +108,8 @@ export default class Bar extends Vue {
 				xAxis.axisLabel.interval = 0;
 				xAxis.axisLabel.rotate = 90;
 				xAxis.axisLabel.fontSize = 10;
-				xAxis.axisLabel.formatter = (v: any) => (v.length > 8 ? v.slice(0, 8) + '...' : v);
+				xAxis.axisLabel.formatter = (v: any) =>
+					v.length > 8 ? v.slice(0, 8) + "..." : v;
 			}
 			if (grid) {
 				grid.bottom = 150;
@@ -116,13 +117,13 @@ export default class Bar extends Vue {
 		}
 
 		const yAxis: echarts.EChartOption.YAxis = {
-			type: 'value',
+			type: "value",
 			splitLine: {
 				show: false,
 			},
 			axisLine: {
 				lineStyle: {
-					color: '#90979c',
+					color: "#90979c",
 				},
 			},
 			axisTick: {
@@ -142,35 +143,36 @@ export default class Bar extends Vue {
 			{
 				show: true,
 				xAxisIndex: [0],
-				height: '20',
-				bottom: '20',
-				handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
-				handleSize: '110%',
+				height: "20",
+				bottom: "20",
+				handleIcon:
+					"path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z",
+				handleSize: "110%",
 				handleStyle: {
-					color: '#d3dee5',
+					color: "#d3dee5",
 				},
 				textStyle: {
-					color: '#fff',
+					color: "#fff",
 				},
-				borderColor: '#90979c',
+				borderColor: "#90979c",
 			},
 			{
-				type: 'inside',
+				type: "inside",
 				show: true,
 			},
 		];
 
 		const series: echarts.EChartOption.Series[] = [
 			{
-				type: 'bar',
+				type: "bar",
 				itemStyle: {
 					normal: {
-						color: 'rgba(0,191,183,1)',
+						color: "rgba(0,191,183,1)",
 						barBorderRadius: 0,
 						label: {
 							show: true,
-							position: 'top',
-							formatter: (p: IDatum) => (p.value > 0 ? p.value : ''),
+							position: "top",
+							formatter: (p: IDatum) => (p.value > 0 ? p.value : ""),
 						},
 					},
 				},
@@ -179,7 +181,7 @@ export default class Bar extends Vue {
 		];
 
 		this.chart.setOption({
-			backgroundColor: '#1f2d3d',
+			backgroundColor: "#1f2d3d",
 			title,
 			tooltip,
 			grid,

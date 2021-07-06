@@ -4,7 +4,13 @@ import { eventHub } from "@/init/eventHub";
 
 import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
 import { Ajax } from "@/utils/parts";
-import type { KeyData, TableKeyList, TicketData, EnquateTicket, Condition } from "./index.i";
+import type {
+	KeyData,
+	TableKeyList,
+	TicketData,
+	EnquateTicket,
+	Condition,
+} from "./index.i";
 import { AdminUserModule } from "@/store/modules/adminUser";
 export { Condition, TicketData, KeyData, EnquateTicket };
 export class TicketGroup {
@@ -17,7 +23,10 @@ export class TicketGroup {
 		return this.tableKeyList;
 	}
 
-	public setTicketList(ticketDataList: Array<TicketData>, filter: (ticket: Ticket) => boolean) {
+	public setTicketList(
+		ticketDataList: Array<TicketData>,
+		filter: (ticket: Ticket) => boolean
+	) {
 		this.ticketList = [];
 		for (const ticketData of ticketDataList) {
 			const ticket = new Ticket(ticketData);
@@ -46,7 +55,9 @@ export class TicketGroup {
 					const tableKeyObj = this.tableKeyList[i];
 					let dataText: any = TicketGroup.noneSt;
 					if (tableKeyObj.valueMapper) {
-						dataText = tableKeyObj.valueMapper(data[tableKeyObj.key], data) || TicketGroup.noneSt;
+						dataText =
+							tableKeyObj.valueMapper(data[tableKeyObj.key], data) ||
+							TicketGroup.noneSt;
 					} else if (tableKeyObj.key in data) {
 						dataText = data[tableKeyObj.key] || TicketGroup.noneSt;
 					}
@@ -95,7 +106,9 @@ export class TicketGroup {
 					const tableKeyObj = this.tableKeyList[i];
 					let dataText: any = TicketGroup.noneSt;
 					if (tableKeyObj.valueMapper) {
-						dataText = tableKeyObj.valueMapper(data[tableKeyObj.key], data) || TicketGroup.noneSt;
+						dataText =
+							tableKeyObj.valueMapper(data[tableKeyObj.key], data) ||
+							TicketGroup.noneSt;
 					} else if (tableKeyObj.key in data) {
 						dataText = data[tableKeyObj.key] || TicketGroup.noneSt;
 					}
@@ -223,7 +236,10 @@ export default class TicketCompParent extends Vue {
 		const data = ticket.getNativeData();
 		const start = String(data.start_date || data.start_time || data.rangeKey);
 		console.log(`${parseInt(start, 10)}  ${this.startdate.getTime()}`);
-		if (typeof start === "string" && parseInt(start, 10) < this.startdate.getTime()) {
+		if (
+			typeof start === "string" &&
+			parseInt(start, 10) < this.startdate.getTime()
+		) {
 			return false;
 		}
 		const EndDate = this.$moment(this.enddate).add(1, "day").toDate();
@@ -240,7 +256,9 @@ export default class TicketCompParent extends Vue {
 				if (
 					check.flg === false &&
 					check.value.find((v) => {
-						const ticketItem = condition.mapper ? condition.mapper(data) : data[condition.key];
+						const ticketItem = condition.mapper
+							? condition.mapper(data)
+							: data[condition.key];
 						if (Array.isArray(ticketItem)) {
 							return ticketItem.indexOf(v) !== -1;
 						}
@@ -262,12 +280,14 @@ export default class TicketCompParent extends Vue {
 				condition.checkList.every(
 					(c) =>
 						!c.value.find((v) => {
-							const ticketItem = condition.mapper ? condition.mapper(data) : data[condition.key];
+							const ticketItem = condition.mapper
+								? condition.mapper(data)
+								: data[condition.key];
 							if (Array.isArray(ticketItem)) {
 								return ticketItem.indexOf(v) !== -1;
 							}
 							return ticketItem === v;
-						}),
+						})
 				)
 			) {
 				// 項目にチェックが有る場合、項目にない場合は

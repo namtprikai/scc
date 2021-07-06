@@ -2,7 +2,11 @@
 declare let window: any;
 export const getScrollableAnscesterWithDelta = (element: any, delta: any) => {
 	const selector = ".scrollX,.scrollY";
-	for (let target = element; target; target = target.parentElement && target.parentElement.closest(selector)) {
+	for (
+		let target = element;
+		target;
+		target = target.parentElement && target.parentElement.closest(selector)
+	) {
 		if (target.classList.contains("scrollX") && delta.x !== 0) {
 			// 横スクロールに関しては、propagationしない
 			return target;
@@ -10,7 +14,10 @@ export const getScrollableAnscesterWithDelta = (element: any, delta: any) => {
 			// 縦スクロールに関しては、実際にスクロール可能範囲になければ、propagationする
 			if (delta.y < 0 && target.scrollTop > 0) {
 				return target;
-			} else if (delta.y > 0 && target.scrollHeight - target.clientHeight > target.scrollTop) {
+			} else if (
+				delta.y > 0 &&
+				target.scrollHeight - target.clientHeight > target.scrollTop
+			) {
 				return target;
 			}
 		}
@@ -20,7 +27,9 @@ export const getScrollableAnscesterWithDelta = (element: any, delta: any) => {
 
 // directionで示した方向で、スクロールできるエレメントを探す
 export const getScrollableAnscester = (element: any, direction: any) => {
-	const selector = direction ? ".scroll" + direction.toUpperCase() : ".scrollX,.scrollY";
+	const selector = direction
+		? ".scroll" + direction.toUpperCase()
+		: ".scrollX,.scrollY";
 	const target = element.closest(selector);
 	return target || window;
 };
@@ -29,7 +38,14 @@ const getOffsetTop = (element: any, scrollableElement: any) => {
 	const scrollOffsetParent = scrollableElement.offsetParent;
 	let offsetTop = 0;
 	/* eslint-disable no-unmodified-loop-condition */
-	for (let target = element; scrollOffsetParent && target && target !== scrollOffsetParent && scrollOffsetParent.contains(target); target = target.offsetParent) {
+	for (
+		let target = element;
+		scrollOffsetParent &&
+		target &&
+		target !== scrollOffsetParent &&
+		scrollOffsetParent.contains(target);
+		target = target.offsetParent
+	) {
 		offsetTop += target.offsetTop;
 	}
 	return offsetTop - (scrollableElement ? scrollableElement.offsetTop : 0);
@@ -52,20 +68,28 @@ export function scrollIntoViewX(element: any, mode: any) {
 		});
 	} else if (mode === "center") {
 		scrollElement.scrollTo({
-			left: element.offsetLeft - firstElement.offsetLeft + element.offsetWidth / 2 - scrollElement.clientWidth / 2,
+			left:
+				element.offsetLeft -
+				firstElement.offsetLeft +
+				element.offsetWidth / 2 -
+				scrollElement.clientWidth / 2,
 			behavior: "smooth",
 		});
 	}
 }
 
-export function scrollIntoViewY(element: any, { behavior = "smooth", mode }: any = {}) {
+export function scrollIntoViewY(
+	element: any,
+	{ behavior = "smooth", mode }: any = {}
+) {
 	const mainHeight = 320; // Math.max(element.offsetHeight, 320);
 	const upperHeight = 520;
 
 	const scrollElement = getScrollableAnscester(element.parentElement, "y");
 	const offsetTop = getOffsetTop(element, scrollElement);
 
-	const scrollElementHeight = scrollElement.clientHeight || scrollElement.innerHeight;
+	const scrollElementHeight =
+		scrollElement.clientHeight || scrollElement.innerHeight;
 
 	let newOffsetHeight = null;
 	if (mode === "exact" || scrollElementHeight < mainHeight) {
@@ -102,7 +126,8 @@ export function scrollIntoViewDualY(mainElement: any, optionalElement: any) {
 	// );
 	window.scrollElement = scrollElement;
 	const optionalHeight = mainElement.offsetTop - optionalElement.offsetTop;
-	const scrollElementHeight = scrollElement.clientHeight || scrollElement.innerHeight;
+	const scrollElementHeight =
+		scrollElement.clientHeight || scrollElement.innerHeight;
 	if (scrollElementHeight < requiredMainHeight) {
 		console.log("#");
 		scrollElement.scrollTo({

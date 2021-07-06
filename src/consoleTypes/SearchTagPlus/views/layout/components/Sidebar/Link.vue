@@ -8,8 +8,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { isExternal } from '@/utils/validate';
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { isExternal } from "@/utils/validate";
 
 // @ts-ignore
 @Component

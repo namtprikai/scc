@@ -27,9 +27,9 @@
 <script lang="ts">
 // import FaqClientMixin from '../mixins/FaqClientMixin';
 // import { getViewSections } from '../common/resourceNavigationUtil';
-import * as scrollUtil from './scrollUtil';
-import ColumnNavigation from './ColumnNavigation.vue';
-import { Watch, Component, Vue, Prop } from 'vue-property-decorator';
+import * as scrollUtil from "./scrollUtil";
+import ColumnNavigation from "./ColumnNavigation.vue";
+import { Watch, Component, Vue, Prop } from "vue-property-decorator";
 
 // @ts-ignore
 @Component({
@@ -41,7 +41,7 @@ export default class FaqClientPage extends Vue {
 
 	get Style() {
 		return {
-			height: this.height || '400px',
+			height: this.height || "400px",
 		};
 	}
 
@@ -49,10 +49,10 @@ export default class FaqClientPage extends Vue {
 		return { talkScript: [] }; // getViewSections(this.navigationStore.state.routes);
 	}
 
-	@Watch('navigationStore.state.routes')
+	@Watch("navigationStore.state.routes")
 	onRouteChanged() {
 		this.$nextTick(() => {
-			const target = document.querySelector('.active');
+			const target = document.querySelector(".active");
 			if (target) {
 				scrollUtil.scrollIntoViewY(target);
 			}

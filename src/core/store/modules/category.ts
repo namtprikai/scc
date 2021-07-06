@@ -1,5 +1,11 @@
 import Cookies from "js-cookie";
-import { VuexModule, Module, Mutation, Action, getModule } from "vuex-module-decorators";
+import {
+	VuexModule,
+	Module,
+	Mutation,
+	Action,
+	getModule,
+} from "vuex-module-decorators";
 import store from "@/store";
 import { Ajax } from "@/utils/parts";
 import { CLIENT_ID } from "@consoletype/utils/configration";
@@ -20,7 +26,9 @@ class CategoryStore extends VuexModule implements ICategoryState {
 
 	@Mutation
 	private SET_ADMINLIST(categoryUser: Array<ICategoryData>) {
-		this.categoryList = categoryUser.sort((a: ICategoryData, b: ICategoryData) => Number(a.id) - Number(b.id));
+		this.categoryList = categoryUser.sort(
+			(a: ICategoryData, b: ICategoryData) => Number(a.id) - Number(b.id)
+		);
 	}
 
 	@Action({
@@ -53,7 +61,14 @@ class CategoryStore extends VuexModule implements ICategoryState {
 	}
 
 	@Action
-	public async addCategory(categoryUser: { role: number; name: string; email: string; password: string; config: any; is_master: boolean }) {
+	public async addCategory(categoryUser: {
+		role: number;
+		name: string;
+		email: string;
+		password: string;
+		config: any;
+		is_master: boolean;
+	}) {
 		const { role, name, email, password, is_master, config } = categoryUser;
 		const category = await ajax.http({
 			url: `/category/`,

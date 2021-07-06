@@ -40,7 +40,11 @@ export namespace MessageListService {
 		});
 		socket.on("objectupdate", (message: any) => {
 			console.info(message);
-			if (message.method == "insert" && !message.body.is_admin && !(message.object == "admin_user")) {
+			if (
+				message.method == "insert" &&
+				!message.body.is_admin &&
+				!(message.object == "admin_user")
+			) {
 				if (message.object == "message") {
 					notification("新規メッセージがあります", "AIChatSupporter");
 				}
@@ -62,7 +66,10 @@ export namespace MessageListService {
 				// }
 
 				// this.doGetMessageList();
-			} else if (message.object == "message" && message.body.assignee_id !== UserModule.id) {
+			} else if (
+				message.object == "message" &&
+				message.body.assignee_id !== UserModule.id
+			) {
 				// this.notification("新規メッセージ","AIChatSupporter");
 				// this.doGetMessageList();
 			}
@@ -101,7 +108,7 @@ export namespace MessageListService {
 				() => {
 					r();
 				},
-				false,
+				false
 			);
 			audio.play();
 		});

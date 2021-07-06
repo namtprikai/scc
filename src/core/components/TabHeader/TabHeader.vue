@@ -1,7 +1,13 @@
 <template>
 	<div class="TabHeader" :class="{ 'TabHeader--pin': isPin }">
 		<div class="TabHeader__control">
-			<svg-icon class="TabHeader__icon" name="basic_pin2" @click="togglePin()" :class="{ active: isPin }" :style="{ transform: 'rotate(' + rotate + 'deg)' }" />
+			<svg-icon
+				class="TabHeader__icon"
+				name="basic_pin2"
+				@click="togglePin()"
+				:class="{ active: isPin }"
+				:style="{ transform: 'rotate(' + rotate + 'deg)' }"
+			/>
 		</div>
 		<div class="TabHeader__contents">
 			<slot />
@@ -9,11 +15,11 @@
 	</div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, PropSync } from 'vue-property-decorator';
-import { Type } from '@/components/Charts';
-import { TabHeader } from '@/components/TabHeader';
+import { Vue, Component, Prop, PropSync } from "vue-property-decorator";
+import { Type } from "@/components/Charts";
+import { TabHeader } from "@/components/TabHeader";
 // @ts-ignore
-@Component({ name: 'BCardAccordion' })
+@Component({ name: "BCardAccordion" })
 export default class BCardAccordion extends Vue {
 	private isShow = true;
 	private get rotate(): number {
@@ -31,7 +37,7 @@ export default class BCardAccordion extends Vue {
 }
 </script>
 <style lang="scss" type="scss" scoped>
-@import '~@consoletype/styles/_variables.scss';
+@import "~@consoletype/styles/_variables.scss";
 $TabHeaderHeitht: 44px;
 // .TabHeaderWrap {
 // 	position: relative;

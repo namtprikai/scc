@@ -18,18 +18,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch, Prop, Emit } from 'vue-property-decorator';
-import { RouteRecord } from 'vue-router';
-import pathToRegexp from 'path-to-regexp';
-import { eventHub } from '@/init/eventHub';
-import { UpdateServer } from '@/api/updateServer';
-import { clearTimeout, setTimeout } from 'timers';
+import { Component, Vue, Watch, Prop, Emit } from "vue-property-decorator";
+import { RouteRecord } from "vue-router";
+import pathToRegexp from "path-to-regexp";
+import { eventHub } from "@/init/eventHub";
+import { UpdateServer } from "@/api/updateServer";
+import { clearTimeout, setTimeout } from "timers";
 // import { TalkScript } from "@/store/modules/talkscript";
-import { v4 } from 'uuid';
+import { v4 } from "uuid";
 
-import { OldScenario } from '@/utils/allInOneCsv/scenario';
-import { BModal } from 'bootstrap-vue';
-import { chown } from 'fs';
+import { OldScenario } from "@/utils/allInOneCsv/scenario";
+import { BModal } from "bootstrap-vue";
+import { chown } from "fs";
 // @ts-ignore
 @Component
 export default class AutoComplete extends Vue {
@@ -48,12 +48,12 @@ export default class AutoComplete extends Vue {
 	arrowCounter = -1;
 	onArrowDown(): void {} // ↓ キーイベント
 	onArrowUp(): void {} // ↑ キーイベント
-	@Emit('input')
+	@Emit("input")
 	setResult(result: string): string {
 		return result;
 	} // 候補リストの選択イベントと親へのEmit
 
-	@Watch('option')
+	@Watch("option")
 	onOptionChanged(newVal: string, oldVal: string): void {} // 確定内容でフォーム表示
 
 	handleClickOutside(evt: any): void {} // 候補リストの領域外クリックでリスト非表示

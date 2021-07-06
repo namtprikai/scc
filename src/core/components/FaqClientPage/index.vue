@@ -8,11 +8,11 @@
 
 <script lang="ts">
 // import { getViewSections } from "../resourceNavigationUtil";
-import * as scrollUtil from './scrollUtil';
-import { Watch, Prop, Component, Vue } from 'vue-property-decorator';
-import { navigationStoreModule } from './store/navigationStore';
-import FaqClientPage from './FaqClientPage.vue';
-import ResourceList from './columns/ResourceList.vue';
+import * as scrollUtil from "./scrollUtil";
+import { Watch, Prop, Component, Vue } from "vue-property-decorator";
+import { navigationStoreModule } from "./store/navigationStore";
+import FaqClientPage from "./FaqClientPage.vue";
+import ResourceList from "./columns/ResourceList.vue";
 // import FaqClientPage from '@/components/FaqClientPage/index.vue';
 // @ts-ignore
 @Component({
@@ -34,10 +34,10 @@ export default class FaqClientPageWrapper extends Vue {
 	@Prop()
 	height: any;
 
-	@Watch('navigationStoreModule.routes')
+	@Watch("navigationStoreModule.routes")
 	onRouteChanged() {
 		this.$nextTick(() => {
-			const target = document.querySelector('.active');
+			const target = document.querySelector(".active");
 			if (target) {
 				scrollUtil.scrollIntoViewY(target);
 			}

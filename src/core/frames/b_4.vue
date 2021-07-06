@@ -14,12 +14,12 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
-import { mixins } from 'vue-class-component';
-import FitStyle from '@/frames/mixin/fitStyle.vue';
-import Horizontal from '@/components/Divider/Horizontal.vue';
-import Vertical from '@/components/Divider/Vertical.vue';
-import { eventHub } from '@/init/eventHub';
+import { Component } from "vue-property-decorator";
+import { mixins } from "vue-class-component";
+import FitStyle from "@/frames/mixin/fitStyle.vue";
+import Horizontal from "@/components/Divider/Horizontal.vue";
+import Vertical from "@/components/Divider/Vertical.vue";
+import { eventHub } from "@/init/eventHub";
 
 // @ts-ignore
 @Component({
@@ -33,10 +33,10 @@ export default class Divider extends mixins(FitStyle) {
 
 	mounted() {
 		this.style = this.fitStyle();
-		eventHub.$on('fitStyle', () => {
+		eventHub.$on("fitStyle", () => {
 			this.style = this.fitStyle();
 		});
-		window.addEventListener('resize', () => {
+		window.addEventListener("resize", () => {
 			this.style = this.fitStyle();
 		});
 	}

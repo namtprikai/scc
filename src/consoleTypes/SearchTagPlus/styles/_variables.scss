@@ -11,16 +11,16 @@ $White: #fff;
 $Black: #000;
 
 $colors: (
-	'primary': $Primary,
-	'secondary': $Secondary,
-	'denger': $Denger,
-	'warning': $Warning,
-	'success': $Success,
-	'info': $Info,
-	'light': $Light,
-	'dark': $Dark,
-	'white': $White,
-	'black': $Black,
+	"primary": $Primary,
+	"secondary": $Secondary,
+	"denger": $Denger,
+	"warning": $Warning,
+	"success": $Success,
+	"info": $Info,
+	"light": $Light,
+	"dark": $Dark,
+	"white": $White,
+	"black": $Black,
 ) !default;
 /* Background */
 $Background--Primary: lighten($Primary, 10%);

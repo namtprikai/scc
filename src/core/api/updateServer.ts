@@ -22,7 +22,7 @@ export namespace UpdateServer {
 					time: new Date().getTime(),
 				},
 				defaultParam,
-				extendPram || {},
+				extendPram || {}
 			),
 		});
 	export const deployInvertedIndex = (extendPram?: Object): Promise<any> =>
@@ -41,7 +41,7 @@ export namespace UpdateServer {
 					time: new Date().getTime(),
 				},
 				defaultParam,
-				extendPram || {},
+				extendPram || {}
 			),
 		});
 	export const update = (param?: Object): Promise<any> =>
@@ -66,7 +66,7 @@ export namespace UpdateServer {
 					},
 					sitemap || {},
 					param || {},
-					defaultParam || {},
+					defaultParam || {}
 				),
 			})
 				.then((): void => {

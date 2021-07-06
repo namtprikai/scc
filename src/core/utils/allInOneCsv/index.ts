@@ -1,5 +1,12 @@
 import { Main } from "./makeCsv";
-import { makeScriptAndScenario, UpdateInfoMessage, CleanRegExp, GetRootMenu, makeScriptAndScenarioByData, validateAllInOneCsv } from "./makeScript";
+import {
+	makeScriptAndScenario,
+	UpdateInfoMessage,
+	CleanRegExp,
+	GetRootMenu,
+	makeScriptAndScenarioByData,
+	validateAllInOneCsv,
+} from "./makeScript";
 export namespace AllInOneCsvMaker {
 	export const makeCsv = Main;
 	export const start = makeScriptAndScenario;

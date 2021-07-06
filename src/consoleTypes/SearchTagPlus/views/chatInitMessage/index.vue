@@ -17,38 +17,70 @@
 		</div>
 
 		<!-- <edit-wrap/> -->
-		<draggable :list="messageList" class="list-group" ghost-class="ghost" handle=".handle">
-			<div class="list-group-item" v-for="(element, i) in messageList" :key="element.id">
+		<draggable
+			:list="messageList"
+			class="list-group"
+			ghost-class="ghost"
+			handle=".handle"
+		>
+			<div
+				class="list-group-item"
+				v-for="(element, i) in messageList"
+				:key="element.id"
+			>
 				<b-form-group label="メッセージ">
 					<i class="fa fa-align-justify handle"></i>
-					<b-form-input name="title" class="form-control" type="text" v-model="element.text" />
-					<b-form-checkbox v-model="element.isEscalated" @change="messageEscalatedChange($event, i)">有人メッセージ</b-form-checkbox>
+					<b-form-input
+						name="title"
+						class="form-control"
+						type="text"
+						v-model="element.text"
+					/>
+					<b-form-checkbox
+						v-model="element.isEscalated"
+						@change="messageEscalatedChange($event, i)"
+						>有人メッセージ</b-form-checkbox
+					>
 				</b-form-group>
 				<button @click="removeScript(i)">-</button>
 			</div>
 		</draggable>
 		<div class="yokuarushitsumon__buttonWrap mt-2">
-			<b-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" v-on:click="addMessage()">追加</b-button>
+			<b-button
+				class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+				v-on:click="addMessage()"
+				>追加</b-button
+			>
 		</div>
 		<div class="yokuarushitsumon__buttonWrap mt-2">
-			<b-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent questionUpdateBtn" v-on:click="updateMessage()">更新</b-button>
+			<b-button
+				class="
+					mdl-button mdl-js-button
+					mdl-button--raised
+					mdl-js-ripple-effect
+					mdl-button--accent
+					questionUpdateBtn
+				"
+				v-on:click="updateMessage()"
+				>更新</b-button
+			>
 		</div>
 		<wrap-sppiner v-if="isLoad" />
 	</div>
 </template>
 
 <script lang="ts">
-import { v4 } from 'uuid';
-import axios from 'axios';
-import { getList } from '@/api/table';
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import { Ajax } from '@/utils/parts';
-import { CLIENT_ID, s3, subsystemUrl } from './../../utils/configration';
-import { UpdateServer } from '@/api/updateServer';
-import draggable from 'vuedraggable';
+import { v4 } from "uuid";
+import axios from "axios";
+import { getList } from "@/api/table";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import { Ajax } from "@/utils/parts";
+import { CLIENT_ID, s3, subsystemUrl } from "./../../utils/configration";
+import { UpdateServer } from "@/api/updateServer";
+import draggable from "vuedraggable";
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
-import InputTag from '@/components/InputTag/index.vue';
+import InputTag from "@/components/InputTag/index.vue";
 // @ts-ignore
 @Component({
 	filters: {},
@@ -65,21 +97,21 @@ export default class Yokuaru extends Vue {
 	private currentScript: any = {};
 	private isPull = false;
 	private isLoad = false;
-	@Prop({ default: '' })
+	@Prop({ default: "" })
 	private discription?: string;
 
 	doThis(event: any) {
 		console.log(event);
-		return '';
+		return "";
 	}
 
 	public created() {
 		this.pullScript();
-		eventHub.$on('setScript', this.setCurrentScript);
+		eventHub.$on("setScript", this.setCurrentScript);
 	}
 
 	private destroyed() {
-		eventHub.$off('setCurrentMessage', this.setCurrentScript);
+		eventHub.$off("setCurrentMessage", this.setCurrentScript);
 	}
 
 	public setCurrentScript(data: any) {
@@ -101,13 +133,13 @@ export default class Yokuaru extends Vue {
 		axios({
 			baseURL: `${s3}/${CLIENT_ID}`,
 			url: `category.json?version=${new Date().getTime()}`,
-			method: 'GET',
+			method: "GET",
 		}).then(
 			(res: any) => {
 				this.messageList = [];
 				console.log(res);
 				for (const key in res.data) {
-					if (key == 'escalated') {
+					if (key == "escalated") {
 						this.messageList.push({ text: res.data[key], isEscalated: true });
 					} else {
 						this.messageList.push({ text: res.data[key], isEscalated: false });
@@ -116,14 +148,14 @@ export default class Yokuaru extends Vue {
 				this.isPull = true;
 			},
 
-			res => {
+			(res) => {
 				this.isPull = true;
-			},
+			}
 		);
 	}
 
 	public addMessage() {
-		this.messageList.push({ text: '', isEscalated: false });
+		this.messageList.push({ text: "", isEscalated: false });
 	}
 
 	public removeScript(index: number) {
@@ -134,12 +166,12 @@ export default class Yokuaru extends Vue {
 		return new Promise((resolve, reject) => {
 			try {
 				if (!blob) {
-					throw new Error('file undefined.');
+					throw new Error("file undefined.");
 				}
 
 				const reader: any = new FileReader();
 				reader.onloadend = () => {
-					const base64Str = reader.result.split(',')[1];
+					const base64Str = reader.result.split(",")[1];
 					resolve(base64Str);
 				};
 				reader.readAsDataURL(blob);
@@ -152,7 +184,7 @@ export default class Yokuaru extends Vue {
 	public async updateMessage() {
 		this.isLoad = true;
 		// const jsonList=btoa(unescape(encodeURIComponent(JSON.stringify(this.talkScriptList))));
-		const object = { key: 'data', n: 10 };
+		const object = { key: "data", n: 10 };
 		const data: any = {};
 		let count = 1;
 		for (const item of this.messageList) {
@@ -160,47 +192,47 @@ export default class Yokuaru extends Vue {
 			if (item.isEscalated) {
 				data.escalated = text;
 			} else {
-				data[`menu${('0' + count++).slice(-2)}`] = text;
+				data[`menu${("0" + count++).slice(-2)}`] = text;
 			}
 		}
 		const json = JSON.stringify(data);
-		const blob = new Blob([json], { type: 'application/json' });
+		const blob = new Blob([json], { type: "application/json" });
 		const reader: any = new FileReader();
 		const base64Str = await this.loadFileAsBase64(blob);
 		this.ajax
 			.http({
 				baseURL: `${subsystemUrl}/product/${CLIENT_ID}`,
-				url: 'upload',
-				method: 'POST',
+				url: "upload",
+				method: "POST",
 				headers: {
-					'Content-Type': 'application/json',
+					"Content-Type": "application/json",
 				},
 				data: {
 					data: base64Str,
-					fileName: '/category.json',
+					fileName: "/category.json",
 				},
 			})
 			.then(
 				(res: any) => {
 					this.isLoad = false;
-					this.$modal.show('アップロードしました');
-					this.$modal.show('dialog', {
-						title: 'アップロードしました',
-						text: '',
+					this.$modal.show("アップロードしました");
+					this.$modal.show("dialog", {
+						title: "アップロードしました",
+						text: "",
 						buttons: [
 							{
-								title: 'はい',
+								title: "はい",
 								handler: () => {
-									this.$modal.hide('dialog');
+									this.$modal.hide("dialog");
 								},
 							},
 						],
 					});
 				},
 				// tslint:disable-next-line:no-empty
-				res => {
+				(res) => {
 					this.isLoad = false;
-				},
+				}
 			);
 	}
 }

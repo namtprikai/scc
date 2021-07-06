@@ -12,7 +12,16 @@
 				<b-button v-on:click="fetchData()">更新</b-button>
 			</b-col>
 		</b-row>
-		<el-table v-loading="listLoading" :data="MessageList" element-loading-text="Loading" border fit highlight-current-row @row-click="setCurrentMessage" :row-class-name="tableRowClassName">
+		<el-table
+			v-loading="listLoading"
+			:data="MessageList"
+			element-loading-text="Loading"
+			border
+			fit
+			highlight-current-row
+			@row-click="setCurrentMessage"
+			:row-class-name="tableRowClassName"
+		>
 			<el-table-column align="center" label="ユーザー名" width="95">
 				<template slot-scope="scope">{{ scope.row.user.displayname }}</template>
 			</el-table-column>
@@ -22,14 +31,18 @@
 			<el-table-column align="center" prop="created_at" label="日時" width="160">
 				<template slot-scope="scope">
 					<i class="el-icon-time" />
-					<span>{{ scope.row.created_date | moment('MM/DD HH:mm') }}</span>
+					<span>{{ scope.row.created_date | moment("MM/DD HH:mm") }}</span>
 				</template>
 			</el-table-column>
 			<el-table-column align="center" prop="created_at" label width="auto">
 				<template slot-scope="scope">
 					<b-button v-if="scope.row.is_replied" variant="primary">対応完了</b-button>
-					<p v-else-if="isOthersTaiouchu(scope.row)">({{ getAdminName(scope.row.user) }})</p>
-					<b-button v-else-if="isMyTaiouchu(scope.row)" pill variant="secondary">対応中</b-button>
+					<p v-else-if="isOthersTaiouchu(scope.row)">
+						({{ getAdminName(scope.row.user) }})
+					</p>
+					<b-button v-else-if="isMyTaiouchu(scope.row)" pill variant="secondary"
+						>対応中</b-button
+					>
 
 					<b-button
 						v-else-if="
@@ -41,7 +54,7 @@
 						"
 						variant="outline-primary"
 						v-on:click="setResponse(scope.row)"
-					>返信する</b-button
+						>返信する</b-button
 					>
 					<b-button
 						v-if="
@@ -52,15 +65,22 @@
 							})
 						"
 						variant="outline-secondary"
-					>下書き</b-button
+						>下書き</b-button
 					>
-					<b-button v-if="isHikitugu(scope.row.user, scope.row.id)" v-on:click="hikitsugi(scope.row, scope.row.user)">引き継ぐ</b-button>
+					<b-button
+						v-if="isHikitugu(scope.row.user, scope.row.id)"
+						v-on:click="hikitsugi(scope.row, scope.row.user)"
+						>引き継ぐ</b-button
+					>
 					<!-- <b-button
 						v-if="isReplied(scope.row)"
 						pill
 						variant="secondary"
 					>対応完了</b-button>-->
-					<div class="messageList__balloon__delbutton" v-on:click="deleteMessage(scope.row.id)">
+					<div
+						class="messageList__balloon__delbutton"
+						v-on:click="deleteMessage(scope.row.id)"
+					>
 						X
 					</div>
 				</template>
@@ -70,25 +90,25 @@
 </template>
 
 <script lang="ts">
-import { getList } from '@/api/table';
-import { MessageList } from '@/api/messageList';
-import { Component, Vue } from 'vue-property-decorator';
-import { MessageListModule } from '@/store/modules/messageList';
-import { UserModule } from '@/store/modules/user';
-import { eventHub } from '@/init/eventHub';
-import { Ajax, MessageObj } from '@/utils/parts';
-import { CLIENT_ID } from './../../utils/configration';
-import { Message, MessageBox } from 'element-ui';
-import { AdminUserModule } from '@/store/modules/adminUser';
-import MessageListCompParent from '@/views/messageList/index';
+import { getList } from "@/api/table";
+import { MessageList } from "@/api/messageList";
+import { Component, Vue } from "vue-property-decorator";
+import { MessageListModule } from "@/store/modules/messageList";
+import { UserModule } from "@/store/modules/user";
+import { eventHub } from "@/init/eventHub";
+import { Ajax, MessageObj } from "@/utils/parts";
+import { CLIENT_ID } from "./../../utils/configration";
+import { Message, MessageBox } from "element-ui";
+import { AdminUserModule } from "@/store/modules/adminUser";
+import MessageListCompParent from "@/views/messageList/index";
 // @ts-ignore
 @Component({
 	filters: {
 		statusFilter(status: string) {
 			const statusMap: { [id: string]: string } = {
-				published: 'success',
-				draft: 'gray',
-				deleted: 'danger',
+				published: "success",
+				draft: "gray",
+				deleted: "danger",
 			};
 			return statusMap[status];
 		},

@@ -27,7 +27,13 @@ interface ScriptGroupInterface<T> {
 	getScriptList: () => Array<T>;
 }
 const IdLabelMapper = new Map();
-IdLabelMapper.set("1", "ID").set("2", "非公開フラグ").set("3", "最終更新日").set("4", "メニュー").set("5", "キーワード").set("6", "Q").set("7", ["A", "選択肢"]);
+IdLabelMapper.set("1", "ID")
+	.set("2", "非公開フラグ")
+	.set("3", "最終更新日")
+	.set("4", "メニュー")
+	.set("5", "キーワード")
+	.set("6", "Q")
+	.set("7", ["A", "選択肢"]);
 class ScenarioGroup implements ScenarioGroupInterface {
 	constructor(private scenario: BotConfig) {}
 	private leafSize(flow: BotConfigFlow) {
@@ -55,7 +61,10 @@ class ScriptGroup implements ScriptGroupInterface<TalkScript> {
 		let parentId = "#";
 		const retMenuList = [];
 		for (const script of this.scriptList) {
-			if (script.scenario === scenarioId || script.items.scenario_id === scenarioId) {
+			if (
+				script.scenario === scenarioId ||
+				script.items.scenario_id === scenarioId
+			) {
 				parentId = script.parent;
 				retMenuList.unshift(script.text);
 				break;
@@ -81,7 +90,10 @@ class ScriptGroup implements ScriptGroupInterface<TalkScript> {
 		let parentId = "#";
 		const retMenuList = [];
 		for (const script of this.scriptList) {
-			if (script.scenario === scenarioId || script.items.scenario_id === scenarioId) {
+			if (
+				script.scenario === scenarioId ||
+				script.items.scenario_id === scenarioId
+			) {
 				parentId = script.parent;
 				retMenuList.unshift(script);
 				break;
@@ -105,7 +117,10 @@ class ScriptGroup implements ScriptGroupInterface<TalkScript> {
 	}
 	getScriptByScenarioId(scenarioId: string): TalkScript | undefined {
 		for (const script of this.scriptList) {
-			if (script.scenario == scenarioId || script.items.scenario_id === scenarioId) {
+			if (
+				script.scenario == scenarioId ||
+				script.items.scenario_id === scenarioId
+			) {
 				return script;
 			}
 		}
@@ -120,18 +135,29 @@ class ScriptGroup implements ScriptGroupInterface<TalkScript> {
  * @param  {OldScenario.BotConfig} 旧フォーマット
  * @returns BotConfig　新フォーマット
  */
-export function changeNewBotConfig(_botConfig: OldScenario.BotConfig): BotConfig {
-	const botConfig: OldScenario.BotConfig = JSON.parse(JSON.stringify(_botConfig));
+export function changeNewBotConfig(
+	_botConfig: OldScenario.BotConfig
+): BotConfig {
+	const botConfig: OldScenario.BotConfig = JSON.parse(
+		JSON.stringify(_botConfig)
+	);
 	const oldBotConfig: BotConfig = {
 		title: botConfig.scenario.title,
 		description: botConfig.scenario.description,
 		flow: {
 			step: "init",
-			next: convertFlow(botConfig.scenario.flow.root.next, botConfig.scenario.steps),
+			next: convertFlow(
+				botConfig.scenario.flow.root.next,
+				botConfig.scenario.steps
+			),
 		},
 	};
 	return oldBotConfig;
-	function convertFlow(_flows: Array<OldScenario.BotConfigFlow>, steps: { [key: string]: OldScenario.BotConfigStep }, parent?: OldScenario.BotConfigFlow): Array<BotConfigFlow> {
+	function convertFlow(
+		_flows: Array<OldScenario.BotConfigFlow>,
+		steps: { [key: string]: OldScenario.BotConfigStep },
+		parent?: OldScenario.BotConfigFlow
+	): Array<BotConfigFlow> {
 		const flows: Array<BotConfigFlow> = JSON.parse(JSON.stringify(_flows));
 		cloler(flows, parent);
 		return flows;
@@ -151,23 +177,37 @@ export function changeNewBotConfig(_botConfig: OldScenario.BotConfig): BotConfig
 		}
 	}
 }
-export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig, isOutputTag = false): Promise<string> {
+export async function Main(
+	talkScript: Array<TalkScript>,
+	scenario: BotConfig,
+	isOutputTag = false
+): Promise<string> {
 	const talkScriptGroup = new ScriptGroup(talkScript);
 	const scenarioGroup = new ScenarioGroup(scenario);
 	const rowList: Array<RowObject> = [];
-	const sortedScenarioNext = scenario.flow.next.sort((a: BotConfigFlow, b: BotConfigFlow) => {
-		const positionLista = talkScriptGroup.getObjectMenuListByScenarioId(a.id).map((t) => t.position || 0);
-		const positionListb = talkScriptGroup.getObjectMenuListByScenarioId(b.id).map((t) => t.position || 0);
-		for (let i = 0; i < Math.min(positionLista.length, positionListb.length); i++) {
-			if (positionLista[i] > positionListb[i]) {
-				return 1;
+	const sortedScenarioNext = scenario.flow.next.sort(
+		(a: BotConfigFlow, b: BotConfigFlow) => {
+			const positionLista = talkScriptGroup
+				.getObjectMenuListByScenarioId(a.id)
+				.map((t) => t.position || 0);
+			const positionListb = talkScriptGroup
+				.getObjectMenuListByScenarioId(b.id)
+				.map((t) => t.position || 0);
+			for (
+				let i = 0;
+				i < Math.min(positionLista.length, positionListb.length);
+				i++
+			) {
+				if (positionLista[i] > positionListb[i]) {
+					return 1;
+				}
+				if (positionLista[i] < positionListb[i]) {
+					return -1;
+				}
 			}
-			if (positionLista[i] < positionListb[i]) {
-				return -1;
-			}
+			return 0;
 		}
-		return 0;
-	});
+	);
 	for (const flow of sortedScenarioNext) {
 		if (flow.items.is_category) {
 			continue;
@@ -181,7 +221,9 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig, i
 			updateDate: "",
 		};
 		// 自然文検索を削除
-		row.menu = talkScriptGroup.getMenuListByScenarioId(flow.id).map((st) => (st === OTHER_TEXT ? "" : st));
+		row.menu = talkScriptGroup
+			.getMenuListByScenarioId(flow.id)
+			.map((st) => (st === OTHER_TEXT ? "" : st));
 		const currentScript = talkScriptGroup.getScriptByScenarioId(flow.id);
 		row.scenarioId = flow.id;
 		if (flow.items?.update_date) {
@@ -243,7 +285,9 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig, i
 			labelcount++;
 		}
 		if (Array.isArray(label)) {
-			csvArray[0][count] = `${csvArray[0][count]}(${label[labelcount % label.length]})`;
+			csvArray[0][count] = `${csvArray[0][count]}(${
+				label[labelcount % label.length]
+			})`;
 		} else {
 			csvArray[0][count] = `${csvArray[0][count]}(${label})`;
 		}
@@ -257,7 +301,11 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig, i
 
 		csvArray[csvArray.length - 1].push(row.scenarioId || "");
 		csvArray[csvArray.length - 1].push(row.status == "editing" ? "1" : "");
-		csvArray[csvArray.length - 1].push(row.updateDate && /^\d+$/.test(row.updateDate) ? moment(parseInt(row.updateDate, 10)).format("YYYY/MM/DD") : "");
+		csvArray[csvArray.length - 1].push(
+			row.updateDate && /^\d+$/.test(row.updateDate)
+				? moment(parseInt(row.updateDate, 10)).format("YYYY/MM/DD")
+				: ""
+		);
 		for (let i = 0; i < MaxMenu; i++) {
 			csvArray[csvArray.length - 1].push(row.menu[i] || "");
 		}
@@ -319,7 +367,8 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig, i
 				}
 			}
 
-			retArray[rowCount][depth * 2] = String(sc.text).replace(/<(button|link):.+?>/g, "") + itemTagString;
+			retArray[rowCount][depth * 2] =
+				String(sc.text).replace(/<(button|link):.+?>/g, "") + itemTagString;
 
 			if (depth > 0) {
 				retArray[rowCount][depth * 2 - 1] = String(sc.label).replace(/^\d+\./, "");
@@ -330,7 +379,12 @@ export async function Main(talkScript: Array<TalkScript>, scenario: BotConfig, i
 		});
 		// }
 		return retArray;
-		function ScenarioCrawler(scenario: BotConfigFlow, fn: (scenario: BotConfigFlow, depth: number) => void, parent = "root", depth = 0) {
+		function ScenarioCrawler(
+			scenario: BotConfigFlow,
+			fn: (scenario: BotConfigFlow, depth: number) => void,
+			parent = "root",
+			depth = 0
+		) {
 			// const step = scenarioGroup.getStep(scenario.step);
 			// const parentStep = scenarioGroup.getStep(parent);
 			fn(scenario, depth);

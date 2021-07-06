@@ -1,11 +1,14 @@
 <template>
-	<div :class="[{ 'is-active': isActive }, 'hamburger-container']" @click="toggleClick">
+	<div
+		:class="[{ 'is-active': isActive }, 'hamburger-container']"
+		@click="toggleClick"
+	>
 		<svg-icon name="hamburger" width="20" height="20" class="active" />
 	</div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 // @ts-ignore
 @Component

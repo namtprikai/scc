@@ -9,7 +9,9 @@ export class TalkScriptResource {
 	}
 
 	getList(params: any) {
-		const list = params.talkScriptId ? this.talkScript.listByParentId(params.talkScriptId) : this.talkScript.list();
+		const list = params.talkScriptId
+			? this.talkScript.listByParentId(params.talkScriptId)
+			: this.talkScript.list();
 		return list && list.map(this.convertItem);
 	}
 
@@ -84,7 +86,7 @@ export class TalkScriptResource {
 						resourceName: "talkScript",
 						viewType: "talkScript",
 						talkScriptType: "node",
-					}),
+					})
 				);
 			} else if (item.type === "leaf" && item.scenario) {
 				this.cache.set(
@@ -94,7 +96,7 @@ export class TalkScriptResource {
 						scenarioId: item.scenario,
 						viewType: "scenario",
 						talkScriptType: "leaf",
-					}),
+					})
 				);
 			} else if (item.type === "leaf" && item.items) {
 				this.cache.set(
@@ -104,7 +106,7 @@ export class TalkScriptResource {
 						scenarioId: item.items.scenario_id,
 						viewType: "result",
 						talkScriptType: "leaf",
-					}),
+					})
 				);
 			} else {
 				this.cache.set(
@@ -113,7 +115,7 @@ export class TalkScriptResource {
 						resourceName: "talkScript",
 						viewType: "result",
 						talkScriptType: "leaf",
-					}),
+					})
 				);
 			}
 		}

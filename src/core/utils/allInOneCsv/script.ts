@@ -20,7 +20,11 @@ export interface TalkScript {
 	items: { [key: string]: Array<string> | string };
 	scenario?: string;
 }
-export function ScriptDataTreeCrawler(datas_: Array<any>, callback: Function, deep = 0): void {
+export function ScriptDataTreeCrawler(
+	datas_: Array<any>,
+	callback: Function,
+	deep = 0
+): void {
 	for (let i = 0; i < datas_.length; i++) {
 		if (datas_[i].children == null) {
 			datas_[i].children = [];

@@ -1,6 +1,11 @@
 <template>
 	<div class="scrollpanel">
-		<div v-if="is_ready" v-bind:is="ComponentName"  :tabtype="tabtype" :discription="discription"></div>
+		<div
+			v-if="is_ready"
+			v-bind:is="ComponentName"
+			:tabtype="tabtype"
+			:discription="discription"
+		></div>
 	</div>
 </template>
 
@@ -20,38 +25,38 @@
 
 <script lang="ts">
 // asdf
-import { CLIENT_ID } from './utils/configration';
-import upperFirst from 'lodash/upperFirst';
-import camelCase from 'lodash/camelCase';
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { CLIENT_ID } from "./utils/configration";
+import upperFirst from "lodash/upperFirst";
+import camelCase from "lodash/camelCase";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 const requireComponent = require.context(
 	// The relative path of the components folder
-	'./views',
+	"./views",
 	// Whether or not to look in subfolders
 	true,
 	// The regular expression used to match base component filenames
-	/index\.(vue|js)$/,
+	/index\.(vue|js)$/
 );
 const componentNames: any = [];
 console.log(requireComponent);
 const nameMap: any = {};
-requireComponent.keys().forEach(fileName => {
+requireComponent.keys().forEach((fileName) => {
 	const componentConfig = requireComponent(fileName);
-	const fileNamepathList = fileName.split('/');
+	const fileNamepathList = fileName.split("/");
 	if (fileNamepathList.length >= 3) {
 		const componentName = upperFirst(
 			camelCase(
 				// Gets the file name regardless of folder depth
-				fileNamepathList[fileNamepathList.length - 2].replace(/\.\w+$/, ''),
-			),
+				fileNamepathList[fileNamepathList.length - 2].replace(/\.\w+$/, "")
+			)
 		);
 		componentNames.push(
 			upperFirst(
 				camelCase(
 					// Gets the file name regardless of folder depth
-					fileNamepathList[fileNamepathList.length - 2].replace(/\.\w+$/, ''),
-				),
-			),
+					fileNamepathList[fileNamepathList.length - 2].replace(/\.\w+$/, "")
+				)
+			)
 		);
 		// Vue.component(componentName, componentConfig.default || componentConfig);
 		nameMap[componentName] = componentConfig.default || componentConfig;
@@ -64,18 +69,18 @@ requireComponent.keys().forEach(fileName => {
 @Component
 export default class Panels extends Vue {
 	private is_ready = false;
-	@Prop({ default: 'Tree' })
+	@Prop({ default: "Tree" })
 	private defaultpanel?: any;
 
-	@Prop({ default: 'Tree' })
+	@Prop({ default: "Tree" })
 	private component?: string;
 
-	@Prop({ default: '' })
+	@Prop({ default: "" })
 	private discription?: string;
-	@Prop({ default: '' })
+	@Prop({ default: "" })
 	private tabtype?: string;
 	// componentName: string = this.defaultpanel;
-	@Watch('component')
+	@Watch("component")
 	private async changeComponent(component: string) {
 		if (component in nameMap) {
 			await Vue.component(component, nameMap[component]);

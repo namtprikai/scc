@@ -2,7 +2,11 @@
 	<div class="VerticalNavigation">
 		<div class="navigationContentWrapper">
 			<div ref="navigationContent" class="navigationContent">
-				<div class="page clearfix" v-for="(route, routeIndex) in routes" :key="routeIndex">
+				<div
+					class="page clearfix"
+					v-for="(route, routeIndex) in routes"
+					:key="routeIndex"
+				>
 					<component
 						:is="route.componentName"
 						:index="routeIndex"
@@ -22,8 +26,8 @@
 </template>
 
 <script>
-import Component, { mixins } from 'vue-class-component';
-import NavigationMixin from '../mixins/NavigationMixin';
+import Component, { mixins } from "vue-class-component";
+import NavigationMixin from "../mixins/NavigationMixin";
 
 // @ts-ignore
 @Component
@@ -31,7 +35,7 @@ export default class VerticalNavigation extends mixins(NavigationMixin) {}
 </script>
 <style lang="scss" scoped>
 %bottomTriangle {
-	content: '';
+	content: "";
 	position: absolute;
 	right: 50px;
 	bottom: -40px;

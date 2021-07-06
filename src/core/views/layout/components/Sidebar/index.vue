@@ -1,15 +1,29 @@
 <template>
 	<el-scrollbar wrap-class="scrollbar-wrapper">
-		<el-menu :show-timeout="200" :default-active="$route.path" :collapse="isCollapse" background-color="#304156" text-color="#bfcbd9" active-text-color="#409EFF" mode="vertical">
-			<sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" :collapse="collapse" />
+		<el-menu
+			:show-timeout="200"
+			:default-active="$route.path"
+			:collapse="isCollapse"
+			background-color="#304156"
+			text-color="#bfcbd9"
+			active-text-color="#409EFF"
+			mode="vertical"
+		>
+			<sidebar-item
+				v-for="route in routes"
+				:key="route.path"
+				:item="route"
+				:base-path="route.path"
+				:collapse="collapse"
+			/>
 		</el-menu>
 	</el-scrollbar>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { AppModule } from '@/store/modules/app';
-import SidebarItem from './SidebarItem.vue';
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { AppModule } from "@/store/modules/app";
+import SidebarItem from "./SidebarItem.vue";
 
 // @ts-ignore
 @Component({
@@ -36,7 +50,8 @@ export default class SideBar extends Vue {
 
 <style lang="scss">
 .horizontal-collapse-transition {
-	transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
+	transition: 0s width ease-in-out, 0s padding-left ease-in-out,
+		0s padding-right ease-in-out;
 }
 
 .scrollbar-wrapper {
@@ -59,7 +74,7 @@ export default class SideBar extends Vue {
 </style>
 
 <style lang="scss" scoped>
-@import 'src/core/styles/variables.scss';
+@import "src/core/styles/variables.scss";
 
 .el-menu {
 	border: none;

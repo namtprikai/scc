@@ -1,13 +1,28 @@
 <template>
 	<ScrollGuide ref="scrollGuide">
-		<div :class="[active && 'active', 'ResourceList', 'scrollY']" v-scroll="onScroll">
-			<div class="caption" v-show="item && item.caption" v-html="item && item.caption"></div>
+		<div
+			:class="[active && 'active', 'ResourceList', 'scrollY']"
+			v-scroll="onScroll"
+		>
+			<div
+				class="caption"
+				v-show="item && item.caption"
+				v-html="item && item.caption"
+			></div>
 			<div ref="items" class="items">
-				<div :class="['item', isSelected(item) && 'selected']" v-for="(item, index) in List()" :key="index">
+				<div
+					:class="['item', isSelected(item) && 'selected']"
+					v-for="(item, index) in List()"
+					:key="index"
+				>
 					<div class="relation">
 						<div class="relation-line"></div>
 					</div>
-					<div class="itemContent" @click="open(item)" :item-debug="JSON.stringify(item)">
+					<div
+						class="itemContent"
+						@click="open(item)"
+						:item-debug="JSON.stringify(item)"
+					>
 						<!-- 要実装：itemクラスにleafクラスを付与するとQアイコンが表示される。-->
 						<span>
 							<span class="itemIcon"></span>
@@ -32,20 +47,20 @@
 	</ScrollGuide>
 </template>
 <script lang="ts">
-import Vue2 from 'vue';
+import Vue2 from "vue";
 // import Component from 'vue-class-component';
-import { Watch } from 'vue-property-decorator';
+import { Watch } from "vue-property-decorator";
 // import dataResource from "../dataResource";
-import { updateRelation, getSelectionPosition } from '../relation';
-import { AsyncComputed } from '../libs/vue-async-computed-decorator';
+import { updateRelation, getSelectionPosition } from "../relation";
+import { AsyncComputed } from "../libs/vue-async-computed-decorator";
 // import { modalService } from "../common/modalService";
 // import ModalSample from "../ModalSample";
-import { scrollIntoViewY } from '../scrollUtil';
-import _ from 'lodash';
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import ScrollGuide from '../ScrollGuide.vue';
-import { navigationStoreModule } from '../store/navigationStore';
-import { eventHub } from '../../../init/eventHub';
+import { scrollIntoViewY } from "../scrollUtil";
+import _ from "lodash";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import ScrollGuide from "../ScrollGuide.vue";
+import { navigationStoreModule } from "../store/navigationStore";
+import { eventHub } from "../../../init/eventHub";
 // Vue.directive("scroll", {
 // 	inserted: function(el, binding) {
 // 		let f = function(evt: any) {
@@ -64,13 +79,13 @@ import { eventHub } from '../../../init/eventHub';
 	},
 	directives: {
 		scroll: {
-			inserted: function(el, binding) {
-				const f = function(evt: any) {
+			inserted: function (el, binding) {
+				const f = function (evt: any) {
 					if (binding.value(evt, el)) {
 						// window.removeEventListener('scroll', f);
 					}
 				};
-				el.addEventListener('scroll', f);
+				el.addEventListener("scroll", f);
 			},
 		},
 	},
@@ -120,14 +135,14 @@ export default class ResourceList extends Vue {
 	// @AsyncComputed()
 	Item() {
 		const dataResource = navigationStoreModule.DataResource;
-		if (dataResource && 'getItem' in dataResource) {
+		if (dataResource && "getItem" in dataResource) {
 			const item = dataResource.getItem(this.currentValue);
 			return item;
 		}
 		return {};
 	}
 
-	@Watch('list')
+	@Watch("list")
 	onUpdateList(list: any, oldList: any) {
 		if (_.isEqual(list, oldList)) {
 			return;
@@ -139,7 +154,7 @@ export default class ResourceList extends Vue {
 		});
 	}
 
-	@Watch('item')
+	@Watch("item")
 	onUpdateItem(item: any, oldItem: any) {
 		if (_.isEqual(item, oldItem)) {
 			return;
@@ -155,7 +170,7 @@ export default class ResourceList extends Vue {
 		const index: any = this.index === undefined ? 0 : this.index;
 		// index++;
 		if (eventHub) {
-			eventHub.$emit('setScript', route);
+			eventHub.$emit("setScript", route);
 		}
 		navigationStoreModule.open({ route, index });
 	}
@@ -173,18 +188,21 @@ export default class ResourceList extends Vue {
 	}
 
 	onScroll(e: any) {
-		if (e.target.scrollTop >= 0 && e.target.scrollTop <= e.target.scrollHeight - e.target.clientHeight) {
+		if (
+			e.target.scrollTop >= 0 &&
+			e.target.scrollTop <= e.target.scrollHeight - e.target.clientHeight
+		) {
 			this.currentLocal.scrollPosition = e.target.scrollTop;
 			this.updateRelation();
 		}
 	}
 
-	@Watch('prevLocal.scrollPosition', { deep: true, immediate: true })
+	@Watch("prevLocal.scrollPosition", { deep: true, immediate: true })
 	onPrevLocalChange(scrollPosition: any) {
 		this.updateRelation();
 	}
 
-	@Watch('prevLocal.selectedPosition', { deep: true, immediate: true })
+	@Watch("prevLocal.selectedPosition", { deep: true, immediate: true })
 	onPrevLocalChange2(scrollPosition: any) {
 		this.updateRelation();
 	}
@@ -193,7 +211,7 @@ export default class ResourceList extends Vue {
 		this.currentLocal.selectedPosition = getSelectionPosition({
 			items: this.$refs.items,
 		});
-		const selectedElement = this.$el.querySelector('.selected');
+		const selectedElement = this.$el.querySelector(".selected");
 		if (selectedElement) {
 			setTimeout(() => {
 				scrollIntoViewY(selectedElement);
@@ -222,9 +240,21 @@ export default class ResourceList extends Vue {
 @mixin gradation($gradationColor1, $gradationColor2) {
 	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#3b679e+0,7db9e8+100 */
 	background: $gradationColor2; /* Old browsers */
-	background: -moz-linear-gradient(top, $gradationColor1 30%, $gradationColor2 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(top, $gradationColor1 30%, $gradationColor2 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom, $gradationColor1 30%, $gradationColor2 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	background: -moz-linear-gradient(
+		top,
+		$gradationColor1 30%,
+		$gradationColor2 100%
+	); /* FF3.6-15 */
+	background: -webkit-linear-gradient(
+		top,
+		$gradationColor1 30%,
+		$gradationColor2 100%
+	); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(
+		to bottom,
+		$gradationColor1 30%,
+		$gradationColor2 100%
+	); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$gradationColor1}', endColorstr='#{$gradationColor2}',GradientType=1 ); /* IE6-9 */
 }
 
@@ -329,7 +359,7 @@ $headerImageWidth: 92px !default;
 		opacity: 0.3;
 	}
 	&::before {
-		content: '';
+		content: "";
 		position: absolute;
 		top: 5px;
 		bottom: 5px;
@@ -425,7 +455,7 @@ $headerImageWidth: 92px !default;
 }
 
 .ColumnNavigation {
-	[ref='anchor'],
+	[ref="anchor"],
 	.scrollGuide {
 		display: none;
 	}

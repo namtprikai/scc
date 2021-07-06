@@ -9,7 +9,9 @@
 					<b-input type="text" v-model="item.text" />
 				</b-form-checkbox>
 			</b-list-group-item>
-			<b-list-group-item class="text-center" button v-on:click="addCandidate('')">+</b-list-group-item>
+			<b-list-group-item class="text-center" button v-on:click="addCandidate('')"
+				>+</b-list-group-item
+			>
 		</b-list-group>
 		<b-button v-on:click="async">保存</b-button>
 		<div class="backWrap d-flex justify-content-center mb-3" v-if="is_canload">
@@ -18,10 +20,10 @@
 	</div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
-import { apiUrl, scriptUrl, CLIENT_ID } from '@consoletype/utils/configration';
-import { UpdateServer } from '@/api/updateServer';
-import { Ajax } from '@/utils/parts';
+import { Component, Vue, Watch, Prop } from "vue-property-decorator";
+import { apiUrl, scriptUrl, CLIENT_ID } from "@consoletype/utils/configration";
+import { UpdateServer } from "@/api/updateServer";
+import { Ajax } from "@/utils/parts";
 // @ts-ignore
 @Component
 export default class Synonym extends Vue {
@@ -35,16 +37,16 @@ export default class Synonym extends Vue {
 	private is_cans = false;
 	private ajax = new Ajax();
 	private created() {
-		console.log('created');
+		console.log("created");
 		this.getCandidate();
 	}
 
 	private mounted() {
-		console.log('mounted');
+		console.log("mounted");
 	}
 
-	addText = '';
-	addCandidate(text = '') {
+	addText = "";
+	addCandidate(text = "") {
 		try {
 			if (this.cans == null || !this.cans[0].is) {
 				this.cans = [];
@@ -59,7 +61,7 @@ export default class Synonym extends Vue {
 			word: this.synonymvalue,
 		});
 		setTimeout(() => {
-			this.addText = '';
+			this.addText = "";
 		}, 100);
 	}
 
@@ -71,7 +73,7 @@ export default class Synonym extends Vue {
 		} catch (e) {
 			this.cans = [];
 		}
-		this.cans = this.cans.filter(o => o.text != text);
+		this.cans = this.cans.filter((o) => o.text != text);
 		// this.updateCandidate(data,this.cans.map(o=>o.text));
 	}
 
@@ -81,22 +83,22 @@ export default class Synonym extends Vue {
 				.http({
 					baseURL: `${scriptUrl}`,
 					url: `get_script/?path=${CLIENT_ID}/synonym_dict.json`,
-					method: 'GET',
+					method: "GET",
 				})
 				.then(
-					res => {
+					(res) => {
 						resolve({ synonym: res, error: false });
 					},
-					res => {
+					(res) => {
 						resolve({ synonym: res, error: true });
-					},
+					}
 				);
 		});
 	}
 
-	@Watch('synonymvalue')
+	@Watch("synonymvalue")
 	getCandidate() {
-		console.log('getCandidate');
+		console.log("getCandidate");
 		const text = this.synonymvalue;
 		if (!text) {
 			return;
@@ -107,8 +109,8 @@ export default class Synonym extends Vue {
 		this.ajax
 			.http({
 				baseURL: `${scriptUrl}`,
-				url: 'get_synonym/',
-				method: 'GET',
+				url: "get_synonym/",
+				method: "GET",
 				params: {
 					q: text,
 					product_id: CLIENT_ID,
@@ -116,7 +118,7 @@ export default class Synonym extends Vue {
 			})
 			.then(
 				(res: any) => {
-					if (typeof res === 'string') {
+					if (typeof res === "string") {
 						this.cans = [{ text: res, is: false }];
 					} else {
 						this.cans = res.map((el: any) => {
@@ -127,11 +129,11 @@ export default class Synonym extends Vue {
 						this.is_synonymload = false;
 					}, 100);
 				},
-				res => {
+				(res) => {
 					setTimeout(() => {
 						this.is_synonymload = false;
 					});
-				},
+				}
 			);
 	}
 
@@ -139,18 +141,18 @@ export default class Synonym extends Vue {
 		// console.log(data);
 		this.updateCandidate(
 			this.synonymvalue,
-			this.cans.filter(o => o.flag).map(o => o.text),
+			this.cans.filter((o) => o.flag).map((o) => o.text)
 		);
 	}
 
 	async getKeyAndCans(
 		key: string,
-		cans: Array<string> = [],
+		cans: Array<string> = []
 	): Promise<{
-			key: string | null;
-			cans: Array<string> | null;
-			error: boolean | null;
-		}> {
+		key: string | null;
+		cans: Array<string> | null;
+		error: boolean | null;
+	}> {
 		const valueList = cans;
 		valueList.push(key);
 		const { synonym, error } = await this.getSynonim();
@@ -179,8 +181,8 @@ export default class Synonym extends Vue {
 			this.ajax
 				.http({
 					baseURL: `${scriptUrl}`,
-					url: 'update_synonym/',
-					method: 'PUT',
+					url: "update_synonym/",
+					method: "PUT",
 					data: {
 						product_id: CLIENT_ID,
 						word: key,
@@ -195,7 +197,7 @@ export default class Synonym extends Vue {
 					},
 					() => {
 						this.is_canload = false;
-					},
+					}
 				);
 		} else {
 			// エラー通知処理

@@ -43,7 +43,11 @@ export class TalkScript {
 		const target = this.getSync(id);
 		if (target && !target.ancesters) {
 			target.ancesters = [];
-			for (let current = this.getSync(target.parent); current; current = this.getSync(current.parent)) {
+			for (
+				let current = this.getSync(target.parent);
+				current;
+				current = this.getSync(current.parent)
+			) {
 				target.ancesters.unshift(current);
 			}
 		}
@@ -88,11 +92,13 @@ export class TalkScript {
 			}
 		}
 		this.categoryMap = categoryMap;
-		this.categories = Object.values(categoryMap).map((items: any, index: number) => ({
-			id: "category" + index,
-			title: items[0].title,
-			items,
-		}));
+		this.categories = Object.values(categoryMap).map(
+			(items: any, index: number) => ({
+				id: "category" + index,
+				title: items[0].title,
+				items,
+			})
+		);
 	}
 	// async filterList({ selectedTagSet, byStep, searchText }) {
 	//   console.log('searchText', searchText);

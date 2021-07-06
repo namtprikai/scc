@@ -86,4 +86,9 @@ export default class TicketComp extends TicketCompParent {
 }
 </script>
 <style type="sass" lang="scss" src="@/views/ticketTable/style.scss"></style>
-<style type="sass" scoped lang="scss" src="@/views/ticketTable/scopedStyle.scss"></style>
+<style
+	type="sass"
+	scoped
+	lang="scss"
+	src="@/views/ticketTable/scopedStyle.scss"
+></style>

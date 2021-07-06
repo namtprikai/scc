@@ -3,22 +3,37 @@
 		<h2>{{ Title }}</h2>
 		<p>
 			<!-- <input type="file" id="file" @change="selectedFile" /> -->
-			<b-form-file @change="selectedFile" placeholder="ファイルを選択してください" class="mb-4"></b-form-file>
+			<b-form-file
+				@change="selectedFile"
+				placeholder="ファイルを選択してください"
+				class="mb-4"
+			></b-form-file>
 			<label id="output"></label>
-			<b-button v-on:click="confirmOpened = true" v-bind:disabled="uploadFile == null" style="margin-right: 10px">アップロード</b-button>
+			<b-button
+				v-on:click="confirmOpened = true"
+				v-bind:disabled="uploadFile == null"
+				style="margin-right: 10px"
+				>アップロード</b-button
+			>
 			<b-button v-on:click="reload()">リロード</b-button>
 		</p>
 		<div class="upload-list">
 			<li v-for="file in FileList" v-bind:key="file.Key">
 				<span class="file">
-					<div class="upload-image" :style="{ backgroundImage: 'url(' + file.url + ')' }" v-on:click="imagemodal(file.url)">
+					<div
+						class="upload-image"
+						:style="{ backgroundImage: 'url(' + file.url + ')' }"
+						v-on:click="imagemodal(file.url)"
+					>
 						<!-- <img class="upload-image" :src="file.url"> -->
 					</div>
 					<h2 class="upload-text-title">ファイル名:</h2>
 					<div class="upload-text">{{ file.Key }}</div>
 					<h2 class="upload-text-title">最終更新日:</h2>
 					<div class="upload-text">{{ file.LastModified }}</div>
-					<b-button class="clipcopy" :data-clipboard-text="getTag(file.Key)">コピー</b-button>
+					<b-button class="clipcopy" :data-clipboard-text="getTag(file.Key)"
+						>コピー</b-button
+					>
 				</span>
 			</li>
 		</div>
@@ -39,7 +54,11 @@
 								<tr>
 									<td>{{ uploadFile.name }}</td>
 									<td>
-										<input type="text" v-model="fileName" :placeholder="uploadFile.name" />
+										<input
+											type="text"
+											v-model="fileName"
+											:placeholder="uploadFile.name"
+										/>
 									</td>
 								</tr>
 							</table>

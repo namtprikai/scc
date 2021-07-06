@@ -1,9 +1,18 @@
 <template>
 	<div class="ColumnNavigation" ref="ColumnNavigation">
 		<!-- <Breadcrumbs :navigationStore="navigationStore" :range="range" /> -->
-		<div class="navigationContentWrapper" @touchmove="onTouchmove" @touchstart="onTouchstart" @touchend="onTouchend">
+		<div
+			class="navigationContentWrapper"
+			@touchmove="onTouchmove"
+			@touchstart="onTouchstart"
+			@touchend="onTouchend"
+		>
 			<!-- 要実装：isRootクラスのオンオフ -->
-			<div ref="navigationContent" :class="{ navigationContent: true, isRoot: routes.length <= 1 }" :style="{ left: navigationLeft + 'px' }">
+			<div
+				ref="navigationContent"
+				:class="{ navigationContent: true, isRoot: routes.length <= 1 }"
+				:style="{ left: navigationLeft + 'px' }"
+			>
 				<div
 					class="page"
 					v-if="route.talkScriptType != 'leaf'"
@@ -29,29 +38,37 @@
 				</div>
 			</div>
 		</div>
-		<div v-show="canMovePositionBy(-1)" class="navigationButton navigationButtonLeft" @click="movePositionBy(-1)">
+		<div
+			v-show="canMovePositionBy(-1)"
+			class="navigationButton navigationButtonLeft"
+			@click="movePositionBy(-1)"
+		>
 			<i class="fa fa-chevron-left"></i>
 		</div>
 
-		<div v-show="canMovePositionBy(1)" class="navigationButton navigationButtonRight" @click="movePositionBy(1)">
+		<div
+			v-show="canMovePositionBy(1)"
+			class="navigationButton navigationButtonRight"
+			@click="movePositionBy(1)"
+		>
 			<i class="fa fa-chevron-right"></i>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import ResourceList from './columns/ResourceList.vue';
-import { mixins } from 'vue-class-component';
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import NavigationMixin from './mixins/NavigationMixin';
+import ResourceList from "./columns/ResourceList.vue";
+import { mixins } from "vue-class-component";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import NavigationMixin from "./mixins/NavigationMixin";
 // import Breadcrumbs from "./Breadcrumbs";
-import _ from 'lodash';
-import { navigationStoreModule } from './store/navigationStore';
+import _ from "lodash";
+import { navigationStoreModule } from "./store/navigationStore";
 // import { createNavigationStore } from "../store/navigationStore";
 // import { createAutocompleteStore } from "../store/autocompleteStore";
 // import { createHistoryStore } from '../store/historyStore';
-import { Watch } from 'vue-property-decorator';
-import * as scrollUtil from './scrollUtil';
+import { Watch } from "vue-property-decorator";
+import * as scrollUtil from "./scrollUtil";
 // import { getBoundedNavigationStore } from "./store/navigationStore";
 const bound = (value: any, min: any, max: any) => {
 	return Math.min(Math.max(value, min), max);
@@ -112,7 +129,10 @@ export default class ColumnNavigation extends Vue {
 	localParamsMap = new Map();
 	canMovePositionBy(relative: any) {
 		const newLocalIndex = this.localIndex + relative;
-		return newLocalIndex >= 0 && newLocalIndex < this.routes.filter(r => r.viewType !== 'result').length;
+		return (
+			newLocalIndex >= 0 &&
+			newLocalIndex < this.routes.filter((r) => r.viewType !== "result").length
+		);
 	}
 
 	movePositionBy(relative: any) {
@@ -142,12 +162,19 @@ export default class ColumnNavigation extends Vue {
 	}
 
 	get localIndex() {
-		return bound(navigationStoreModule.Index - this.baseIndex, 0, this.routes.length - 1);
+		return bound(
+			navigationStoreModule.Index - this.baseIndex,
+			0,
+			this.routes.length - 1
+		);
 	}
 
 	get navigationLeft() {
 		console.log(this.componentWidth);
-		return Math.min(this.componentWidth - this.columnWidth - this.localIndex * this.columnWidth, 0);
+		return Math.min(
+			this.componentWidth - this.columnWidth - this.localIndex * this.columnWidth,
+			0
+		);
 	}
 
 	onTouchstart(e: Event) {
@@ -183,7 +210,7 @@ export default class ColumnNavigation extends Vue {
 		e.stopPropagation();
 	}
 
-	@Watch('routes', { immediate: true })
+	@Watch("routes", { immediate: true })
 	onUpdateRoute(routes: any) {
 		const oldLocalMap = this.localMap;
 		const localMap = new Map();
@@ -218,15 +245,18 @@ export default class ColumnNavigation extends Vue {
 			this.updateComponentWidth();
 		}, 1000);
 
-		window.addEventListener('resize', this.updateComponentWidth);
+		window.addEventListener("resize", this.updateComponentWidth);
 	}
 
 	unmounted() {
-		window.removeEventListener('resize', this.updateComponentWidth);
+		window.removeEventListener("resize", this.updateComponentWidth);
 	}
 
 	updateComponentWidth() {
-		if (this.$refs.ColumnNavigation && 'clientWidth' in this.$refs.ColumnNavigation) {
+		if (
+			this.$refs.ColumnNavigation &&
+			"clientWidth" in this.$refs.ColumnNavigation
+		) {
 			this.componentWidth = this.$refs.ColumnNavigation.clientWidth;
 		}
 	}
@@ -239,9 +269,9 @@ export default class ColumnNavigation extends Vue {
 	getColumnWidth(index: any) {
 		return this.columnWidth;
 	}
-// getBoundedNavigationStore(index: any) {
-// 	return getBoundedNavigationStore(navigationStoreModule, index);
-// }
+	// getBoundedNavigationStore(index: any) {
+	// 	return getBoundedNavigationStore(navigationStoreModule, index);
+	// }
 }
 </script>
 <style lang="scss" scoped>

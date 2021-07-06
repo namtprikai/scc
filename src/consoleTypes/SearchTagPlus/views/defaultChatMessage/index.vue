@@ -2,14 +2,29 @@
 	<div>
 		<TabHeader v-if="tabtype === 'dev'">
 			<EditEnd />
-			<b-button size="sm" class="ml-2" v-on:click="save()" variant="primary" v-if="tabtype === 'dev'" :disabled="isLoad">反映ステップへ進む</b-button>
+			<b-button
+				size="sm"
+				class="ml-2"
+				v-on:click="save()"
+				variant="primary"
+				v-if="tabtype === 'dev'"
+				:disabled="isLoad"
+				>反映ステップへ進む</b-button
+			>
 		</TabHeader>
 		<div class="tab-body">
 			<b-alert show variant="info" v-if="discription">
-				<span class="text-discription __Info" v-html="$sanitize(discription)"></span>
+				<span
+					class="text-discription __Info"
+					v-html="$sanitize(discription)"
+				></span>
 			</b-alert>
 			<div v-for="(jpMap, index) in JpMapGroupList" :key="index">
-				<BCardAccordion :title="jpMap.label" class="bot-message-config_editor_group section" :visible="tabtype !== 'dev'">
+				<BCardAccordion
+					:title="jpMap.label"
+					class="bot-message-config_editor_group section"
+					:visible="tabtype !== 'dev'"
+				>
 					<template slot="body">
 						<!-- <b-form-group :label="m.label" v-for="(m, i) in messageGroup[key].messages" :key="i">
 
@@ -24,17 +39,39 @@
 						</b-form-group>-->
 						<div v-for="(value, key, j) in jpMap.jpMapper" :key="j">
 							<div v-if="value.type == 'boolean'" class>
-								<b-form-checkbox :id="'checkbox-' + j" v-model="data[key]" :name="'checkbox-' + j" value="true" :disabled="IsDisable" unchecked-value="false">{{ key }}</b-form-checkbox>
+								<b-form-checkbox
+									:id="'checkbox-' + j"
+									v-model="data[key]"
+									:name="'checkbox-' + j"
+									value="true"
+									:disabled="IsDisable"
+									unchecked-value="false"
+									>{{ key }}</b-form-checkbox
+								>
 							</div>
 							<div v-if="value.type == 'textarea'" class>
 								<b-form-group :label="value.text">
-									<b-form-textarea :disabled="IsDisable" class="form-control" type="text" v-model="data[key]" />
+									<b-form-textarea
+										:disabled="IsDisable"
+										class="form-control"
+										type="text"
+										v-model="data[key]"
+									/>
 								</b-form-group>
 							</div>
 							<div v-if="value.type == 'object'" class>
-								<b-form-group :label="value.text + ' (' + (value['keyMapper'][oKey] || oKey) + ')'" v-for="(oValue, oKey, j) in data[key]" :key="j">
+								<b-form-group
+									:label="value.text + ' (' + (value['keyMapper'][oKey] || oKey) + ')'"
+									v-for="(oValue, oKey, j) in data[key]"
+									:key="j"
+								>
 									<div>
-										<b-form-textarea class="form-control" :disabled="IsDisable" type="text" v-model="data[key][oKey]" />
+										<b-form-textarea
+											class="form-control"
+											:disabled="IsDisable"
+											type="text"
+											v-model="data[key][oKey]"
+										/>
 									</div>
 								</b-form-group>
 							</div>
@@ -80,9 +117,17 @@
 							<div v-if="value.type == 'stringArray'" class>
 								<b-form-group :label="key">
 									<b-input-group v-for="(item, j) in data[key]" :key="j">
-										<b-form-input class="form-control" type="text" v-model="data[key][j]" />
+										<b-form-input
+											class="form-control"
+											type="text"
+											v-model="data[key][j]"
+										/>
 										<b-input-group-append>
-											<b-button v-on:click="removeArray(data[key], j)" variant="outline-success">削除</b-button>
+											<b-button
+												v-on:click="removeArray(data[key], j)"
+												variant="outline-success"
+												>削除</b-button
+											>
 										</b-input-group-append>
 									</b-input-group>
 									<b-button v-on:click="addArray(data[key])">追加</b-button>
@@ -98,104 +143,104 @@
 </template>
 
 <script lang="ts">
-import WrapSppiner from '@/components/WrapSinner/index.vue';
-import { v4 } from 'uuid';
-import axios from 'axios';
-import { getList } from '@/api/table';
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import { Ajax } from '@/utils/parts';
-import { CLIENT_ID, s3, subsystemUrl } from './../../utils/configration';
-import { UpdateServer } from '@/api/updateServer';
-import draggable from 'vuedraggable';
+import WrapSppiner from "@/components/WrapSinner/index.vue";
+import { v4 } from "uuid";
+import axios from "axios";
+import { getList } from "@/api/table";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import { Ajax } from "@/utils/parts";
+import { CLIENT_ID, s3, subsystemUrl } from "./../../utils/configration";
+import { UpdateServer } from "@/api/updateServer";
+import draggable from "vuedraggable";
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
-import InputTag from '@/components/InputTag/index.vue';
-import { UserModule } from '@/store/modules/user';
+import InputTag from "@/components/InputTag/index.vue";
+import { UserModule } from "@/store/modules/user";
 const jpMapGroupList = [
 	{
-		label: '初期表示の文言',
+		label: "初期表示の文言",
 		jpMapper: {
 			CHAT_WINDOW_TITLE: {
-				type: 'textarea',
-				text: 'ヘッダータイトル',
+				type: "textarea",
+				text: "ヘッダータイトル",
 			},
 			BOT_NAME: {
-				type: 'textarea',
-				text: 'ボットネーム',
+				type: "textarea",
+				text: "ボットネーム",
 			},
 			INIT_MESSAGE: {
-				type: 'textarea',
-				text: '初期メッセージ',
+				type: "textarea",
+				text: "初期メッセージ",
 			},
 			DEFAULT_INPUT_MESSAGE: {
-				type: 'textarea',
-				text: '検索窓の初期メッセージ',
+				type: "textarea",
+				text: "検索窓の初期メッセージ",
 			},
 		},
 	},
 	{
-		label: '検索中の文言',
+		label: "検索中の文言",
 		jpMapper: {
 			INFO_MESSAGE_PARENT: {
-				type: 'textarea',
-				text: '親カテゴリの案内文',
+				type: "textarea",
+				text: "親カテゴリの案内文",
 			},
 			INFO_MESSAGE_CHILD: {
-				type: 'textarea',
-				text: '子カテゴリの案内文',
+				type: "textarea",
+				text: "子カテゴリの案内文",
 			},
 			SCRIPT_NOT_FOUND_MESSAGE: {
-				type: 'textarea',
-				text: '未収録時メッセージ',
+				type: "textarea",
+				text: "未収録時メッセージ",
 			},
 			OTHER_CHOICE_MESSAGE: {
-				type: 'textarea',
-				text: '検索失敗時メッセージ',
+				type: "textarea",
+				text: "検索失敗時メッセージ",
 			},
 		},
 	},
 	{
-		label: 'フィードバックの文言',
+		label: "フィードバックの文言",
 		jpMapper: {
 			ASK_FEEDBACK_MESSAGE: {
-				type: 'textarea',
-				text: '回答終了後メッセージ',
+				type: "textarea",
+				text: "回答終了後メッセージ",
 			},
 			ASK_FEEDBACK_CHOICES: {
-				type: 'object',
-				text: 'フィードバックボタン',
+				type: "object",
+				text: "フィードバックボタン",
 				keyMapper: {
-					complete: '解決ボタン',
-					unsolved: '未解決ボタン',
+					complete: "解決ボタン",
+					unsolved: "未解決ボタン",
 				},
 			},
 			FEEDBACK_DONE_MESSAGE: {
-				type: 'textarea',
-				text: '解決時メッセージ',
+				type: "textarea",
+				text: "解決時メッセージ",
 			},
 			FEEDBACK_ERROR_MESSAGE: {
-				type: 'textarea',
-				text: '未解決時メッセージ',
+				type: "textarea",
+				text: "未解決時メッセージ",
 			},
 			ENQUETE_UNRESOLVED_DESCRIPTION: {
-				type: 'textarea',
-				text: '目安箱リード文',
+				type: "textarea",
+				text: "目安箱リード文",
 			},
 			ENQUETE_UNRESOLVED_CLOSE_MESSAGE: {
-				type: 'textarea',
-				text: '目安箱未回答メッセージ',
+				type: "textarea",
+				text: "目安箱未回答メッセージ",
 			},
 			ENQUETE_UNRESOLVED_MESSAGE: {
-				type: 'textarea',
-				text: '目安箱回答後メッセージ',
+				type: "textarea",
+				text: "目安箱回答後メッセージ",
 			},
 			ENQUETE_RESOLVED_DESCRIPTION: {
-				type: 'textarea',
-				text: 'アンケートリード文',
+				type: "textarea",
+				text: "アンケートリード文",
 			},
 			ENQUETE_RESOLVED_MESSAGE: {
-				type: 'textarea',
-				text: 'アンケート回答後メッセージ',
+				type: "textarea",
+				text: "アンケート回答後メッセージ",
 			},
 		},
 	},
@@ -226,16 +271,16 @@ const jpMapper = {
 	// 	text: "window開いた時のヘッダー"
 	// },
 	CHAT_WINDOW_TITLE: {
-		type: 'textarea',
-		text: 'ヘッダータイトル',
+		type: "textarea",
+		text: "ヘッダータイトル",
 	},
 	BOT_NAME: {
-		type: 'textarea',
-		text: 'ボットネーム',
+		type: "textarea",
+		text: "ボットネーム",
 	},
 	INIT_MESSAGE: {
-		type: 'textarea',
-		text: '初期メッセージ',
+		type: "textarea",
+		text: "初期メッセージ",
 	},
 	// FINAL_MESSAGE: {
 	// 	type: "textarea",
@@ -250,52 +295,52 @@ const jpMapper = {
 	// 	text: "検索失敗メッセージ"
 	// },
 	SCRIPT_NOT_FOUND_MESSAGE: {
-		type: 'textarea',
-		text: '未収録時メッセージ',
+		type: "textarea",
+		text: "未収録時メッセージ",
 	},
 	OTHER_CHOICE_MESSAGE: {
-		type: 'textarea',
-		text: '検索失敗時メッセージ',
+		type: "textarea",
+		text: "検索失敗時メッセージ",
 	},
 	ASK_FEEDBACK_MESSAGE: {
-		type: 'textarea',
-		text: '回答終了後メッセージ',
+		type: "textarea",
+		text: "回答終了後メッセージ",
 	},
 	ASK_FEEDBACK_CHOICES: {
-		type: 'object',
-		text: 'フィードバックボタン',
+		type: "object",
+		text: "フィードバックボタン",
 		keyMapper: {
-			complete: '解決時',
-			unsolved: '未解決時',
+			complete: "解決時",
+			unsolved: "未解決時",
 		},
 	},
 	FEEDBACK_DONE_MESSAGE: {
-		type: 'textarea',
-		text: '解決時メッセージ',
+		type: "textarea",
+		text: "解決時メッセージ",
 	},
 	FEEDBACK_ERROR_MESSAGE: {
-		type: 'textarea',
-		text: '未解決時メッセージ',
+		type: "textarea",
+		text: "未解決時メッセージ",
 	},
 	ENQUETE_RESOLVED_DESCRIPTION: {
-		type: 'textarea',
-		text: 'アンケートリード文',
+		type: "textarea",
+		text: "アンケートリード文",
 	},
 	ENQUETE_RESOLVED_MESSAGE: {
-		type: 'textarea',
-		text: 'アンケート回答後メッセージ',
+		type: "textarea",
+		text: "アンケート回答後メッセージ",
 	},
 	ENQUETE_UNRESOLVED_DESCRIPTION: {
-		type: 'textarea',
-		text: '目安箱リード文',
+		type: "textarea",
+		text: "目安箱リード文",
 	},
 	ENQUETE_UNRESOLVED_CLOSE_MESSAGE: {
-		type: 'textarea',
-		text: '目安箱未回答メッセージ',
+		type: "textarea",
+		text: "目安箱未回答メッセージ",
 	},
 	ENQUETE_UNRESOLVED_MESSAGE: {
-		type: 'textarea',
-		text: '目安箱回答後メッセージ',
+		type: "textarea",
+		text: "目安箱回答後メッセージ",
 	},
 	// CONNECT_OFFICIAL_INQUERY: {
 	// 	type: "textarea",
@@ -311,8 +356,8 @@ const jpMapper = {
 	// 	text: "ウィンドウが初期状態で開いているか"
 	// },
 	DEFAULT_INPUT_MESSAGE: {
-		type: 'textarea',
-		text: '検索窓の初期メッセージ',
+		type: "textarea",
+		text: "検索窓の初期メッセージ",
 	},
 	// DEFAULT_INPUT_USERID: {
 	// 	type: "textarea",
@@ -418,11 +463,11 @@ const jpMapper = {
 	// }
 };
 type Template = { [key: string]: string | Template };
-const initTemplate = (template: Template, text = '') => {
+const initTemplate = (template: Template, text = "") => {
 	_parse(template);
 	function _parse(item: Template) {
 		for (const [key, value] of Object.entries(item)) {
-			if (typeof value === 'string') {
+			if (typeof value === "string") {
 				item[key] = text;
 			} else {
 				_parse(value);
@@ -437,24 +482,24 @@ const template = {
 	// HAS_ENQUETE: false,
 	// HAS_OPERATOR: false,
 	// LAUNCHER_TITLE: "",
-	CHAT_WINDOW_TITLE: '-',
-	BOT_NAME: '-',
-	INIT_MESSAGE: '-',
+	CHAT_WINDOW_TITLE: "-",
+	BOT_NAME: "-",
+	INIT_MESSAGE: "-",
 	// INIT_CATEGORY: {
 	// 	menu01: "",
 	// 	menu02: "",
 	// 	menu03: ""
 	// },
 	// CHAT_WINDOW_SUB_TITLE: "",
-	DEFAULT_INPUT_MESSAGE: '-',
+	DEFAULT_INPUT_MESSAGE: "-",
 	// DEFAULT_INPUT_USERID: "",
 	// CHOICES_LIMIT: 3,
 	// CHOICES_TITLE: "",
 	// OTHER_CHOICE: "",
-	OTHER_CHOICE_MESSAGE: '-',
+	OTHER_CHOICE_MESSAGE: "-",
 	// SEARCH_FAILED_MESSAGE:
 	// 	"-",
-	SCRIPT_NOT_FOUND_MESSAGE: '-',
+	SCRIPT_NOT_FOUND_MESSAGE: "-",
 	// ERROR_MESSAGE: "",
 	// INTERRUPTION_MESSAGE: "",
 	// INTERRUPTION_CHOICES: {
@@ -467,22 +512,22 @@ const template = {
 	// RESET_BOTTON_MESSAGE: "",
 	// RESET_MESSAGE:
 	// 	"-",
-	INFO_MESSAGE_PARENT: '-',
-	INFO_MESSAGE_CHILD: '-',
-	ASK_FEEDBACK_MESSAGE: '-',
+	INFO_MESSAGE_PARENT: "-",
+	INFO_MESSAGE_CHILD: "-",
+	ASK_FEEDBACK_MESSAGE: "-",
 	ASK_FEEDBACK_CHOICES: {
-		complete: '-',
-		unsolved: '-',
+		complete: "-",
+		unsolved: "-",
 	},
-	FEEDBACK_DONE_MESSAGE: '-',
-	FEEDBACK_ERROR_MESSAGE: '-',
-	ENQUETE_RESOLVED_DESCRIPTION: '-',
-	ENQUETE_RESOLVED_MESSAGE: '-',
-	ENQUETE_UNRESOLVED_DESCRIPTION: '-',
-	ENQUETE_UNRESOLVED_CLOSE_MESSAGE: '-',
-	ENQUETE_UNRESOLVED_MESSAGE: '-',
-	CONNECT_OFFICIAL_INQUERY: '-',
-	NO_NEED_CONNECT_MESSAGE: '-',
+	FEEDBACK_DONE_MESSAGE: "-",
+	FEEDBACK_ERROR_MESSAGE: "-",
+	ENQUETE_RESOLVED_DESCRIPTION: "-",
+	ENQUETE_RESOLVED_MESSAGE: "-",
+	ENQUETE_UNRESOLVED_DESCRIPTION: "-",
+	ENQUETE_UNRESOLVED_CLOSE_MESSAGE: "-",
+	ENQUETE_UNRESOLVED_MESSAGE: "-",
+	CONNECT_OFFICIAL_INQUERY: "-",
+	NO_NEED_CONNECT_MESSAGE: "-",
 	// CONNECT_OPERATOR_CHOICES: {
 	// 	request_connect: "-",
 	// 	no_connect: "-"
@@ -542,69 +587,69 @@ export default class DefaultChatMessage extends Vue {
 	private isCanload = false;
 	private isSynonymload = false;
 	private readonly = false;
-	private initMessage = '';
+	private initMessage = "";
 	private selected: any = {};
 	private currentScript: any = {};
 	private isPull = false;
 	private isLoad = true;
 	private data: object = {};
-	@Prop({ default: '' })
+	@Prop({ default: "" })
 	private discription?: string;
 
-	@Prop({ default: 'dev' })
-	private tabtype?: 'dev' | 'test' | 'prod';
+	@Prop({ default: "dev" })
+	private tabtype?: "dev" | "test" | "prod";
 
 	private jpMapper = jpMapper;
 	doThis(event: any) {
 		console.log(event);
-		return '';
+		return "";
 	}
 
-  get Role(){
-    return UserModule.role;
-  }
+	get Role() {
+		return UserModule.role;
+	}
 
 	public created() {
 		this.init();
-		eventHub.$on('setScript', this.setCurrentScript);
-		eventHub.$on('saveScript', this.init);
+		eventHub.$on("setScript", this.setCurrentScript);
+		eventHub.$on("saveScript", this.init);
 	}
 
 	public init() {
-		initTemplate(template, '＜未設定＞');
+		initTemplate(template, "＜未設定＞");
 		this.pullScript();
 	}
-  public reset(){
-    this.init();
-  }
+	public reset() {
+		this.init();
+	}
 	get JpMapGroupList() {
 		return jpMapGroupList;
 	}
 
 	get FileName() {
 		switch (this.tabtype) {
-			case 'dev':
-				return 'defaultMessage_dev.json';
+			case "dev":
+				return "defaultMessage_dev.json";
 				break;
-			case 'test':
-				return 'defaultMessage_test.json';
+			case "test":
+				return "defaultMessage_test.json";
 				break;
-			case 'prod':
-				return 'defaultMessage.json';
+			case "prod":
+				return "defaultMessage.json";
 				break;
 		}
-		return 'defaultMessage_dev.json';
+		return "defaultMessage_dev.json";
 	}
 
 	get IsDisable() {
 		switch (this.tabtype) {
-			case 'dev':
+			case "dev":
 				return false;
 				break;
-			case 'test':
+			case "test":
 				return true;
 				break;
-			case 'prod':
+			case "prod":
 				return true;
 				break;
 		}
@@ -612,8 +657,8 @@ export default class DefaultChatMessage extends Vue {
 	}
 
 	private destroyed() {
-		eventHub.$off('setCurrentMessage', this.setCurrentScript);
-		eventHub.$off('saveScript', this.init);
+		eventHub.$off("setCurrentMessage", this.setCurrentScript);
+		eventHub.$off("saveScript", this.init);
 	}
 
 	public setCurrentScript(data: any) {
@@ -624,10 +669,10 @@ export default class DefaultChatMessage extends Vue {
 		const data: any = this.data;
 
 		const json = JSON.stringify(data);
-		const blob = new Blob([json], { type: 'application/json' });
+		const blob = new Blob([json], { type: "application/json" });
 		const reader: any = new FileReader();
 		const base64Str = await this.loadFileAsBase64(blob);
-		eventHub.$emit('BoxModalOpen', 'uploadModal', {
+		eventHub.$emit("BoxModalOpen", "uploadModal", {
 			file: null,
 			synonimFile: null,
 			defaultMessage: base64Str,
@@ -639,13 +684,13 @@ export default class DefaultChatMessage extends Vue {
 		axios({
 			baseURL: `${s3}/${CLIENT_ID}`,
 			url: `${this.FileName}?version=${new Date().getTime()}`,
-			method: 'GET',
+			method: "GET",
 		}).then(
 			(res: any) => {
-				this.initMessage = '';
+				this.initMessage = "";
 				console.log(res);
 				if (res.data) {
-					if (this.tabtype === 'dev') {
+					if (this.tabtype === "dev") {
 						this.data = Object.assign({}, template, res.data);
 					} else {
 						this.data = res.data;
@@ -658,10 +703,10 @@ export default class DefaultChatMessage extends Vue {
 				this.isLoad = false;
 			},
 
-			res => {
+			(res) => {
 				console.log(res);
 				if (res?.response?.status === 403) {
-					if (this.tabtype === 'dev') {
+					if (this.tabtype === "dev") {
 						this.data = Object.assign({}, template, res?.data || {});
 					} else {
 						this.data = res.data;
@@ -669,7 +714,7 @@ export default class DefaultChatMessage extends Vue {
 					this.isPull = true;
 					this.isLoad = false;
 				}
-			},
+			}
 		);
 	}
 
@@ -677,12 +722,12 @@ export default class DefaultChatMessage extends Vue {
 		return new Promise((resolve, reject) => {
 			try {
 				if (!blob) {
-					throw new Error('file undefined.');
+					throw new Error("file undefined.");
 				}
 
 				const reader: any = new FileReader();
 				reader.onloadend = () => {
-					const base64Str = reader.result.split(',')[1];
+					const base64Str = reader.result.split(",")[1];
 					resolve(base64Str);
 				};
 				reader.readAsDataURL(blob);
@@ -697,21 +742,21 @@ export default class DefaultChatMessage extends Vue {
 	}
 
 	public resetFile() {
-		this.$modal.show('dialog', {
-			title: '本当に初期化しますか？',
-			text: '基本的にこの機能はアカウント立ち上げ初期以外は使わないでください',
+		this.$modal.show("dialog", {
+			title: "本当に初期化しますか？",
+			text: "基本的にこの機能はアカウント立ち上げ初期以外は使わないでください",
 			buttons: [
 				{
-					title: '初期化',
+					title: "初期化",
 					handler: () => {
 						this.doResetFile();
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 				{
-					title: 'キャンセル',
+					title: "キャンセル",
 					handler: () => {
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 			],
@@ -723,11 +768,11 @@ export default class DefaultChatMessage extends Vue {
 	}
 
 	public addArray(items: Array<any>) {
-		items.push('');
+		items.push("");
 	}
 
 	public addBotAnser(items: Array<any>, index: number) {
-		items.push({ value: '', index: items.length + 1 });
+		items.push({ value: "", index: items.length + 1 });
 		for (let i = 0; i < items.length; i++) {
 			items[i].index = i + 1;
 		}
@@ -740,49 +785,49 @@ export default class DefaultChatMessage extends Vue {
 	public async updateMessage() {
 		this.isLoad = true;
 		// const jsonList=btoa(unescape(encodeURIComponent(JSON.stringify(this.talkScriptList))));
-		const object = { key: 'data', n: 10 };
+		const object = { key: "data", n: 10 };
 		const data: any = this.data;
 
 		const json = JSON.stringify(data);
-		const blob = new Blob([json], { type: 'application/json' });
+		const blob = new Blob([json], { type: "application/json" });
 		const reader: any = new FileReader();
 		const base64Str = await this.loadFileAsBase64(blob);
 		this.ajax
 			.http({
 				baseURL: `${subsystemUrl}/product/${CLIENT_ID}`,
-				url: 'upload',
-				method: 'POST',
+				url: "upload",
+				method: "POST",
 				headers: {
-					'Content-Type': 'application/json',
+					"Content-Type": "application/json",
 				},
 				data: {
 					data: base64Str,
-					fileName: '/defaultMessage.json',
+					fileName: "/defaultMessage.json",
 				},
 			})
 			.then(
 				(res: any) => {
 					this.isPull = true;
 					this.isLoad = false;
-					this.$modal.show('アップロードしました');
-					this.$modal.show('dialog', {
-						title: 'アップロードしました',
-						text: '',
+					this.$modal.show("アップロードしました");
+					this.$modal.show("dialog", {
+						title: "アップロードしました",
+						text: "",
 						buttons: [
 							{
-								title: 'はい',
+								title: "はい",
 								handler: () => {
-									this.$modal.hide('dialog');
+									this.$modal.hide("dialog");
 								},
 							},
 						],
 					});
 				},
 				// tslint:disable-next-line:no-empty
-				res => {
+				(res) => {
 					this.isPull = true;
 					this.isLoad = false;
-				},
+				}
 			);
 	}
 }

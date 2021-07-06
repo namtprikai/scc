@@ -1,5 +1,14 @@
 declare module "*.vue" {
-	import Vue, { PluginFunction, PluginObject, PluginFunction, PluginObject, PluginFunction, PluginObject, PluginFunction, PluginObject } from "vue";
+	import Vue, {
+		PluginFunction,
+		PluginObject,
+		PluginFunction,
+		PluginObject,
+		PluginFunction,
+		PluginObject,
+		PluginFunction,
+		PluginObject,
+	} from "vue";
 
 	export default Vue;
 }

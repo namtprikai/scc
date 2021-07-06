@@ -22,11 +22,17 @@ export class ScenarioResource {
 		} else {
 			step = scenario.rootStep;
 		}
-		return step.options.map((option: any) => this.convertOption({ scenario, step, option }));
+		return step.options.map((option: any) =>
+			this.convertOption({ scenario, step, option })
+		);
 	}
 
 	isEquals(a: any, b: any) {
-		return a.scenarioId === b.scenarioId && a.stepId === b.stepId && a.talkScriptId === b.talkScriptId;
+		return (
+			a.scenarioId === b.scenarioId &&
+			a.stepId === b.stepId &&
+			a.talkScriptId === b.talkScriptId
+		);
 	}
 
 	getItem(params: any) {

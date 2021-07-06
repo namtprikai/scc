@@ -29,7 +29,13 @@ export default class ScriptEditorCompParent extends Vue {
 		log_faq_title: "FAQタイトル",
 	};
 
-	protected LOG_LIST_ORDER_LIST = ["log_scenario", "log_faq", "log_faq_parent_category", "log_faq_child_category", "log_faq_title"];
+	protected LOG_LIST_ORDER_LIST = [
+		"log_scenario",
+		"log_faq",
+		"log_faq_parent_category",
+		"log_faq_child_category",
+		"log_faq_title",
+	];
 
 	@Watch("item.data.scenario")
 	protected setScenarioIdItem(scenarioId: string) {
@@ -137,7 +143,9 @@ export default class ScriptEditorCompParent extends Vue {
 						} else if (itemInput.value in this.Items) {
 							this.$modal.show("すでにその項目名がついた項目が存在します");
 						} else {
-							this.$modal.show("項目名はlog_のあとに小文字アルファベットもしくはアンダーバーの形式のみ利用できます。");
+							this.$modal.show(
+								"項目名はlog_のあとに小文字アルファベットもしくはアンダーバーの形式のみ利用できます。"
+							);
 						}
 						// this.Items
 						this.$modal.hide("dialog");

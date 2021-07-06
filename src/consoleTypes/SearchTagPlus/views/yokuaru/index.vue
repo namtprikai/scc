@@ -6,9 +6,11 @@
 			>
 		</TabHeader>
 		<div class="tab-body">
-      <b-alert show variant="info" v-if="discription">
-
-				<span class="text-discription __Info" v-html="$sanitize(discription)"></span>
+			<b-alert show variant="info" v-if="discription">
+				<span
+					class="text-discription __Info"
+					v-html="$sanitize(discription)"
+				></span>
 			</b-alert>
 			<h4 class="yokuarushitsumon__subtitle">選択したQ&A</h4>
 			<div
@@ -55,15 +57,15 @@
 </template>
 
 <script lang="ts">
-import { v4 } from 'uuid';
-import axios from 'axios';
-import { getList } from '@/api/table';
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import { Ajax } from '@/utils/parts';
-import { CLIENT_ID, s3, subsystemUrl } from './../../utils/configration';
-import { UpdateServer } from '@/api/updateServer';
-import draggable from 'vuedraggable';
+import { v4 } from "uuid";
+import axios from "axios";
+import { getList } from "@/api/table";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import { Ajax } from "@/utils/parts";
+import { CLIENT_ID, s3, subsystemUrl } from "./../../utils/configration";
+import { UpdateServer } from "@/api/updateServer";
+import draggable from "vuedraggable";
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 // @ts-ignore
 @Component({
@@ -71,7 +73,7 @@ import draggable from 'vuedraggable';
 	components: { draggable },
 })
 export default class Yokuaru extends Vue {
-  @Prop({ default: '' })
+	@Prop({ default: "" })
 	private discription?: string;
 	private ajax: Ajax = new Ajax();
 	private cans: Array<any> = [];
@@ -84,11 +86,11 @@ export default class Yokuaru extends Vue {
 	private isPull = false;
 	public created() {
 		this.pullScript();
-		eventHub.$on('setScript', this.setCurrentScript);
+		eventHub.$on("setScript", this.setCurrentScript);
 	}
 
 	private destroyed() {
-		eventHub.$off('setCurrentMessage', this.setCurrentScript);
+		eventHub.$off("setCurrentMessage", this.setCurrentScript);
 	}
 
 	public setCurrentScript(data: any) {
@@ -98,40 +100,46 @@ export default class Yokuaru extends Vue {
 	public pullScript() {
 		axios({
 			baseURL: `${s3}/${CLIENT_ID}`,
-			url: 'yokuaru.json',
-			method: 'GET',
+			url: "yokuaru.json",
+			method: "GET",
 		}).then(
 			(res: any) => {
 				this.talkScriptList = res.data;
 				this.isPull = true;
 			},
 
-			res => {
+			(res) => {
 				this.isPull = true;
-			},
+			}
 		);
 	}
 
 	public addScript() {
-		if (this.selected && 'id' in this.selected && this.talkScriptList.filter(o => o.id === this.selected.id).length === 0) {
+		if (
+			this.selected &&
+			"id" in this.selected &&
+			this.talkScriptList.filter((o) => o.id === this.selected.id).length === 0
+		) {
 			this.talkScriptList.push(this.selected);
 		}
 	}
 
 	public removeScript(id: string) {
-		this.talkScriptList = this.talkScriptList.filter((o: any) => String(o.id) !== String(id));
+		this.talkScriptList = this.talkScriptList.filter(
+			(o: any) => String(o.id) !== String(id)
+		);
 	}
 
 	protected loadFileAsBase64(blob: Blob): Promise<string> {
 		return new Promise((resolve, reject) => {
 			try {
 				if (!blob) {
-					throw new Error('file undefined.');
+					throw new Error("file undefined.");
 				}
 
 				const reader: any = new FileReader();
 				reader.onloadend = () => {
-					const base64Str = reader.result.split(',')[1];
+					const base64Str = reader.result.split(",")[1];
 					resolve(base64Str);
 				};
 				reader.readAsDataURL(blob);
@@ -140,43 +148,43 @@ export default class Yokuaru extends Vue {
 			}
 		});
 	}
-  public isSave:boolean = false;
+	public isSave: boolean = false;
 	public async updateScript() {
-    this.isSave=true;
+		this.isSave = true;
 		// const jsonList=btoa(unescape(encodeURIComponent(JSON.stringify(this.talkScriptList))));
-		const object = { key: 'data', n: 10 };
+		const object = { key: "data", n: 10 };
 		const json = JSON.stringify(this.talkScriptList);
-		const blob = new Blob([json], { type: 'application/json' });
+		const blob = new Blob([json], { type: "application/json" });
 		const reader: any = new FileReader();
 		const base64Str = await this.loadFileAsBase64(blob);
 		this.ajax
 			.http({
 				baseURL: `${subsystemUrl}/product/${CLIENT_ID}`,
-				url: 'upload',
-				method: 'POST',
+				url: "upload",
+				method: "POST",
 				headers: {
-					'Content-Type': 'application/json',
+					"Content-Type": "application/json",
 				},
 				data: {
 					data: base64Str,
-					fileName: '/yokuaru.json',
+					fileName: "/yokuaru.json",
 				},
 			})
 			.then(
 				(res: any) => {
-          		this.$bvToast.toast("正常にアップロードしました", {
-			// title: `挿入されました`,
-			toaster: "b-toaster-top-center",
-			solid: true,
-			appendToast: true,
-		});
+					this.$bvToast.toast("正常にアップロードしました", {
+						// title: `挿入されました`,
+						toaster: "b-toaster-top-center",
+						solid: true,
+						appendToast: true,
+					});
 				},
 				// tslint:disable-next-line:no-empty
-				res => {},
-      )
-      .finally(()=>{
-        this.isSave=false;
-      });
+				(res) => {}
+			)
+			.finally(() => {
+				this.isSave = false;
+			});
 	}
 }
 </script>

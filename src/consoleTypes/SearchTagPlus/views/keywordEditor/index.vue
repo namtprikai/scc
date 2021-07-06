@@ -61,14 +61,13 @@
 					class="mx-auto"
 					v-model="page"
 					:records="inv.length"
-
 					:per-page="perPage"
 				/>
 			</b-row>
 
 			<b-list-group v-if="inv">
 				<b-list-group-item
-					v-for="(inverted, index) in inv.slice(From,To)"
+					v-for="(inverted, index) in inv.slice(From, To)"
 					v-bind:key="index"
 					class="text-center"
 				>
@@ -89,7 +88,6 @@
 					class="mx-auto"
 					v-model="page"
 					:records="inv.length"
-
 					:per-page="perPage"
 				/>
 			</b-row>
@@ -102,13 +100,18 @@
 </template>
 
 <script lang="ts">
-import { v4 } from 'uuid';
-import { apiUrl, scriptUrl, CLIENT_ID, packageUrl } from './../../utils/configration';
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { UpdateServer } from '@/api/updateServer';
-import { eventHub } from '@/init/eventHub';
-import { Ajax, Wait } from '@/utils/parts';
-import { KeywordEditorButtons } from '../../config';
+import { v4 } from "uuid";
+import {
+	apiUrl,
+	scriptUrl,
+	CLIENT_ID,
+	packageUrl,
+} from "./../../utils/configration";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { UpdateServer } from "@/api/updateServer";
+import { eventHub } from "@/init/eventHub";
+import { Ajax, Wait } from "@/utils/parts";
+import { KeywordEditorButtons } from "../../config";
 import Pagination from "vue-pagination-2";
 
 interface InvertedObj {
@@ -125,9 +128,9 @@ interface InvertedObj {
 	filters: {
 		statusFilter(status: string) {
 			const statusMap: { [id: string]: string } = {
-				published: 'success',
-				draft: 'gray',
-				deleted: 'danger',
+				published: "success",
+				draft: "gray",
+				deleted: "danger",
 			};
 			return statusMap[status];
 		},
@@ -137,7 +140,6 @@ interface InvertedObj {
 		},
 	},
 	components: { Pagination },
-
 })
 export default class KeywordEditorComp extends Vue {
 	private ajax = new Ajax();
@@ -146,7 +148,7 @@ export default class KeywordEditorComp extends Vue {
 	private is_load = false;
 	private isTestSave = false;
 	private isSave = false;
-	@Prop({ default: '' })
+	@Prop({ default: "" })
 	private discription?: string;
 
 	private KeywordEditorButtons = KeywordEditorButtons;
@@ -159,7 +161,7 @@ export default class KeywordEditorComp extends Vue {
 	} | null = null;
 
 	get Title() {
-		return this.$router.currentRoute.meta?.title||'';
+		return this.$router.currentRoute.meta?.title || "";
 	}
 	public page: any = 1;
 	public perPage = 100;
@@ -167,7 +169,7 @@ export default class KeywordEditorComp extends Vue {
 		return this.perPage * (this.page - 1);
 	}
 	get To() {
-		return this.perPage * (this.page);
+		return this.perPage * this.page;
 	}
 
 	private async init() {
@@ -200,13 +202,13 @@ export default class KeywordEditorComp extends Vue {
 		UpdateServer.deployPackageFromTest();
 		await this.fetchInverted_indexView();
 		await Wait(10000);
-		eventHub.$emit('keywordUpdate');
-		this.$modal.show('dialog', {
-			title: '正常に更新されました',
-			text: '',
+		eventHub.$emit("keywordUpdate");
+		this.$modal.show("dialog", {
+			title: "正常に更新されました",
+			text: "",
 			buttons: [
 				{
-					title: 'OK',
+					title: "OK",
 				},
 			],
 		});
@@ -228,25 +230,25 @@ export default class KeywordEditorComp extends Vue {
 		await this.ajax.http({
 			baseURL: `${scriptUrl}`,
 			url: `update_inverted_index?time=${new Date().getTime()}`,
-			method: 'PUT',
+			method: "PUT",
 			data: {
 				product_id: parseInt(CLIENT_ID),
 				inverted_index: this.inverted_index,
 			},
 		});
 		await Wait(500);
-		await UpdateServer.deployInvertedIndex({ env: 'prod' });
+		await UpdateServer.deployInvertedIndex({ env: "prod" });
 		// await Wait(5000);
 		// await UpdateServer.deployPackageFromTest();
 		await this.fetchInverted_indexView();
 		await Wait(10000);
-		eventHub.$emit('keywordUpdate');
-		this.$modal.show('dialog', {
-			title: '正常に更新されました',
-			text: '',
+		eventHub.$emit("keywordUpdate");
+		this.$modal.show("dialog", {
+			title: "正常に更新されました",
+			text: "",
 			buttons: [
 				{
-					title: 'OK',
+					title: "OK",
 				},
 			],
 		});
@@ -272,45 +274,45 @@ export default class KeywordEditorComp extends Vue {
 			.http({
 				baseURL: `${scriptUrl}`,
 				url: `update_inverted_index?time=${new Date().getTime()}`,
-				method: 'PUT',
+				method: "PUT",
 				data: {
 					product_id: parseInt(CLIENT_ID),
 					inverted_index: this.inverted_index,
 				},
 			})
 			.then(
-				async res => {
+				async (res) => {
 					await UpdateServer.deployInvertedIndex();
 					// await UpdateServer.update({
 					// 	env: isTest ? "test" : "prod",
 					// 	time: new Date().getTime(),
 					// });
 					await this.fetchInverted_indexView();
-					this.$modal.show('dialog', {
-						title: '正常に更新されました',
-						text: '',
+					this.$modal.show("dialog", {
+						title: "正常に更新されました",
+						text: "",
 						buttons: [
 							{
-								title: 'OK',
+								title: "OK",
 							},
 						],
 					});
 					await Wait(10000);
-					eventHub.$emit('keywordUpdate');
+					eventHub.$emit("keywordUpdate");
 					this.isTestSave = false;
 				},
-				res => {
-					this.$modal.show('dialog', {
-						title: '更新が失敗しました',
-						text: '',
+				(res) => {
+					this.$modal.show("dialog", {
+						title: "更新が失敗しました",
+						text: "",
 						buttons: [
 							{
-								title: 'OK',
+								title: "OK",
 							},
 						],
 					});
 					this.isTestSave = false;
-				},
+				}
 			);
 	}
 
@@ -333,7 +335,7 @@ export default class KeywordEditorComp extends Vue {
 				.http({
 					baseURL: `${scriptUrl}`,
 					url: `inverted_index_data/?product_id=${CLIENT_ID}&time=${new Date().getTime()}`,
-					method: 'GET',
+					method: "GET",
 				})
 				.then((res: any) => {
 					r(res);
@@ -355,7 +357,10 @@ export default class KeywordEditorComp extends Vue {
 					manual_weight: this.inverted_index[o].manual_weight,
 					original_weight: this.inverted_index[o].original_weight,
 					weight: (() => {
-						return this.inverted_index[o].original_weight + this.inverted_index[o].manual_weight;
+						return (
+							this.inverted_index[o].original_weight +
+							this.inverted_index[o].manual_weight
+						);
 					})(),
 				};
 				return obj;

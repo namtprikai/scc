@@ -10,7 +10,7 @@
 	</div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
+import { Component, Vue, Watch, Prop } from "vue-property-decorator";
 // @ts-ignore
 @Component
 export default class WrapMessage extends Vue {

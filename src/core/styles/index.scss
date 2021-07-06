@@ -1,12 +1,12 @@
 /* icon font path, required */
-$--font-path: '~element-ui/lib/theme-chalk/fonts';
+$--font-path: "~element-ui/lib/theme-chalk/fonts";
 
-@import '~element-ui/packages/theme-chalk/src/index';
+@import "~element-ui/packages/theme-chalk/src/index";
 
-@import './variables.scss';
-@import './mixin.scss';
-@import './transition.scss';
-@import './svgicon.scss';
+@import "./variables.scss";
+@import "./mixin.scss";
+@import "./transition.scss";
+@import "./svgicon.scss";
 
 body {
 	-moz-osx-font-smoothing: grayscale;
@@ -34,7 +34,7 @@ div:focus {
 
 .clearfix {
 	&:after {
-		content: '';
+		content: "";
 		display: table;
 		clear: both;
 	}
@@ -183,12 +183,12 @@ div:focus {
 		}
 	}
 }
-.controlButtons__inner{
+.controlButtons__inner {
 	z-index: 99;
-	position:relative;
+	position: relative;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	right:0px;
-	margin:auto;
+	right: 0px;
+	margin: auto;
 }

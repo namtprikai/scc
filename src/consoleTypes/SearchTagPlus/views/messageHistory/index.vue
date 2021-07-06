@@ -13,12 +13,15 @@
 				v-bind:id="'message' + item.id"
 			>
 				<div class="replyDate">
-					{{ item.created_date | moment('MM/DD HH:mm') }}
+					{{ item.created_date | moment("MM/DD HH:mm") }}
 				</div>
 				<div
 					class="sub__sidebar__tolk__balloon"
 					v-bind:class="{
-						__image: item.type == 'sticker' || item.type == 'image' || item.type == 'imagemap',
+						__image:
+							item.type == 'sticker' ||
+							item.type == 'image' ||
+							item.type == 'imagemap',
 					}"
 				>
 					<div class="message_text replyHistory__message_text">
@@ -29,7 +32,15 @@
 								__draft: item.is_draft,
 							}"
 						>
-							<span v-if="item.type != 'imagemap' && item.type != 'image' && item.type != 'sticker' && !item.is_draft" v-html="$sanitize(item.text)"></span>
+							<span
+								v-if="
+									item.type != 'imagemap' &&
+									item.type != 'image' &&
+									item.type != 'sticker' &&
+									!item.is_draft
+								"
+								v-html="$sanitize(item.text)"
+							></span>
 							<span v-if="isTicket(item.text)">
 								チケット情報
 								<span v-if="isShow(item.id)">
@@ -37,14 +48,23 @@
 										{{ t }}
 									</p>
 								</span>
-								<b-button v-if="!isShow(item.id)" v-on:click="show(item.id)" class="ml-2">詳細</b-button>
+								<b-button
+									v-if="!isShow(item.id)"
+									v-on:click="show(item.id)"
+									class="ml-2"
+									>詳細</b-button
+								>
 							</span>
 
 							<div v-if="item.is_draft">
 								<span>{{ item.text }}</span>
 								<div class="mx-auto">
-									<b-button pill size="sm" class="mx-auto" v-on:click="select(item)">下書き選択</b-button>
-									<b-button pill size="sm" class="mx-auto" v-on:click="deleteDraft(item)">下書き削除</b-button>
+									<b-button pill size="sm" class="mx-auto" v-on:click="select(item)"
+										>下書き選択</b-button
+									>
+									<b-button pill size="sm" class="mx-auto" v-on:click="deleteDraft(item)"
+										>下書き削除</b-button
+									>
 								</div>
 							</div>
 						</div>
@@ -74,21 +94,21 @@
 </template>
 
 <script lang="ts">
-import { getList } from '@/api/table';
-import { MessageList } from '@/api/messageList';
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { MessageListModule } from '@/store/modules/messageList';
-import { eventHub } from '@/init/eventHub';
-import { MessageObj, Ajax, VirtualStreamData } from '@/utils/parts';
-import { CLIENT_ID, subsystemUrl } from './../../utils/configration';
+import { getList } from "@/api/table";
+import { MessageList } from "@/api/messageList";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { MessageListModule } from "@/store/modules/messageList";
+import { eventHub } from "@/init/eventHub";
+import { MessageObj, Ajax, VirtualStreamData } from "@/utils/parts";
+import { CLIENT_ID, subsystemUrl } from "./../../utils/configration";
 // @ts-ignore
 @Component({
 	filters: {
 		statusFilter(status: string) {
 			const statusMap: { [id: string]: string } = {
-				published: 'success',
-				draft: 'gray',
-				deleted: 'danger',
+				published: "success",
+				draft: "gray",
+				deleted: "danger",
 			};
 			return statusMap[status];
 		},
@@ -124,11 +144,11 @@ export default class MessageHistory extends Vue {
 
 	mapper(key: string) {
 		const mapper = new Map();
-		mapper.set('log_faq', 'FAQ番号');
-		mapper.set('log_faq_child_category', '子カテゴリ');
-		mapper.set('log_faq_parent_category', '親カテゴリ');
-		mapper.set('log_faq_title', 'FAQタイトル');
-		mapper.set('log_scenario', 'シナリオログ');
+		mapper.set("log_faq", "FAQ番号");
+		mapper.set("log_faq_child_category", "子カテゴリ");
+		mapper.set("log_faq_parent_category", "親カテゴリ");
+		mapper.set("log_faq_title", "FAQタイトル");
+		mapper.set("log_scenario", "シナリオログ");
 		if (mapper.has(key)) {
 			return mapper.get(key);
 		}
@@ -145,19 +165,19 @@ export default class MessageHistory extends Vue {
 				return this.ticketData[rangeKey];
 			}
 			const keyMepper = new Map();
-			keyMepper.set('child_category', '子カテゴリー');
-			keyMepper.set('parent_category', '親カテゴリ');
-			keyMepper.set('faq_title', 'タイトル');
-			keyMepper.set('faq_id', 'faq_id');
-			keyMepper.set('mode', 'モード');
-			keyMepper.set('step_id', 'ステップID');
-			keyMepper.set('query', 'クエリ');
+			keyMepper.set("child_category", "子カテゴリー");
+			keyMepper.set("parent_category", "親カテゴリ");
+			keyMepper.set("faq_title", "タイトル");
+			keyMepper.set("faq_id", "faq_id");
+			keyMepper.set("mode", "モード");
+			keyMepper.set("step_id", "ステップID");
+			keyMepper.set("query", "クエリ");
 			this.ajax
 				.http({
 					baseURL: subsystemUrl,
 					url: `product/${CLIENT_ID}/data_get`,
-					method: 'get',
-					params: { type: 'ticket', rangeKey, partitionKey },
+					method: "get",
+					params: { type: "ticket", rangeKey, partitionKey },
 				})
 				.then((data: any) => {
 					console.log(data);
@@ -178,7 +198,7 @@ export default class MessageHistory extends Vue {
 					this.$forceUpdate();
 				});
 		}
-		return '';
+		return "";
 	}
 
 	private async setCurrentMessage(message: any, is_scroll = false) {
@@ -192,15 +212,15 @@ export default class MessageHistory extends Vue {
 		}
 		console.log(scrollId);
 		this.$scrollTo(scrollId, 500, {
-			container: '#MessageHistory',
-			easing: 'ease-in',
+			container: "#MessageHistory",
+			easing: "ease-in",
 			offset: -60,
 			force: true,
 			cancelable: true,
-			onStart: element => {
+			onStart: (element) => {
 				// scrolling started
 			},
-			onDone: element => {
+			onDone: (element) => {
 				// scrolling is done
 			},
 			onCancel: () => {
@@ -212,13 +232,13 @@ export default class MessageHistory extends Vue {
 	}
 
 	public select(message: any) {
-		eventHub.$emit('draftMessage', message);
+		eventHub.$emit("draftMessage", message);
 	}
 
 	public async setMessages(userId: string) {
 		const data: any = await this.ajax.http({
 			url: `product/${CLIENT_ID}/user/${userId}/message`,
-			method: 'get',
+			method: "get",
 			data: {
 				limit: 100,
 			},
@@ -229,17 +249,17 @@ export default class MessageHistory extends Vue {
 		});
 		for (let i = this.messages.length - 1; i >= 0; i--) {
 			if (this.messages[i].is_draft) {
-				eventHub.$emit('draftMessage', this.messages[i]);
+				eventHub.$emit("draftMessage", this.messages[i]);
 				break;
 			}
 		}
 		if (this.messages) {
-			this.messageList = this.messages.map(o => {
+			this.messageList = this.messages.map((o) => {
 				const message: VirtualStreamData = {
-					author: o.is_admin ? 'support' : 'me',
+					author: o.is_admin ? "support" : "me",
 					id: o.id,
 					index: o.id,
-					avatar: '',
+					avatar: "",
 					message: o.text,
 					attachment: null,
 					isRight: o.is_admin,
@@ -253,36 +273,34 @@ export default class MessageHistory extends Vue {
 		const tagRegexp = /<log-(.+?):.+?>/g;
 		const tags = String(t).match(tagRegexp) || [];
 		const attachment: object[] = [];
-		tags.forEach(tag => {
+		tags.forEach((tag) => {
 			const [_, key, value] = tag.match(/<log-(.+?):(.+?)>/) || [null, null, null];
 			if (key && value) attachment.push({ [key]: value });
 		});
 		return {
-			text: String(t)
-				.replace(tagRegexp, '')
-				.trim(),
+			text: String(t).replace(tagRegexp, "").trim(),
 			attachment,
 		};
 	}
 
 	deleteDraft(message: MessageObj) {
-		this.$modal.show('dialog', {
+		this.$modal.show("dialog", {
 			title: `以下の下書きを削除してよろしいでしょうか？
 			<div>
 			<span class="response__modalTitle">下書き:</span><span class="response__modalVal">${message.text}</span>
 			</div>`,
 			buttons: [
 				{
-					title: 'OK',
+					title: "OK",
 					handler: () => {
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 						this.doDelete(message);
 					},
 				},
 				{
-					title: 'CANCEL',
+					title: "CANCEL",
 					handler: () => {
-						this.$modal.hide('dialog');
+						this.$modal.hide("dialog");
 					},
 				},
 			],
@@ -293,32 +311,32 @@ export default class MessageHistory extends Vue {
 		this.ajax
 			.http({
 				url: `product/${CLIENT_ID}/draft/${message.id}`,
-				method: 'DELETE',
+				method: "DELETE",
 				data: {
-					type: 'text',
+					type: "text",
 					message_id: message.message_id,
 					text: message.text,
 				},
 			})
 			.then(
-				res => {
+				(res) => {
 					if (this.currentMessage) {
 						this.setCurrentMessage(this.currentMessage);
 					}
 				},
-				res => {
-					this.$modal.show('下書きを削除出来ませんでした');
-				},
+				(res) => {
+					this.$modal.show("下書きを削除出来ませんでした");
+				}
 			);
 	}
 
 	private created() {
 		this.listLoading = false;
-		eventHub.$on('setCurrentMessage', this.setCurrentMessage);
+		eventHub.$on("setCurrentMessage", this.setCurrentMessage);
 	}
 
 	private destroyed() {
-		eventHub.$off('setCurrentMessage', this.setCurrentMessage);
+		eventHub.$off("setCurrentMessage", this.setCurrentMessage);
 	}
 }
 </script>
@@ -363,7 +381,7 @@ export default class MessageHistory extends Vue {
 		height: 40px;
 		text-align: center;
 		&::after {
-			content: '';
+			content: "";
 		}
 	}
 	&__title--absolute {
@@ -438,7 +456,7 @@ export default class MessageHistory extends Vue {
 		background-repeat: no-repeat;
 		cursor: pointer;
 		&::after {
-			content: '';
+			content: "";
 			position: absolute;
 			top: 50%;
 			left: -10px;
@@ -474,7 +492,7 @@ export default class MessageHistory extends Vue {
 				text-align: right;
 				background-position: center center;
 				&::after {
-					content: '';
+					content: "";
 					position: absolute;
 					top: 50%;
 					left: -10px;

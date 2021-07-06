@@ -56,7 +56,9 @@ export class CSVFactPlus {
 						cf.addText(row[hi.field] ?? "");
 						break;
 					case "number":
-						cf.addNumber(hi?.index !== undefined ? row[hi.field][hi.index] : row[hi.field]);
+						cf.addNumber(
+							hi?.index !== undefined ? row[hi.field][hi.index] : row[hi.field]
+						);
 						break;
 				}
 			}

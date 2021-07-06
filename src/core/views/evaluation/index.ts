@@ -4,9 +4,19 @@ import Tinymce from "@/components/Tinymce/index.vue";
 import InputTag from "@/components/InputTag/index.vue";
 import Synonym from "@/components/Synonym/index.vue";
 import { Ajax, MessageObj, Message, MessageList } from "@/utils/parts";
-import { subsystemUrl, CLIENT_ID, script_logUrl } from "@consoletype/utils/configration";
+import {
+	subsystemUrl,
+	CLIENT_ID,
+	script_logUrl,
+} from "@consoletype/utils/configration";
 
-import { TicketModule, ticketMapper, ticketLabelsGenerator, Ticket, RawTicket } from "@/store/modules/ticket";
+import {
+	TicketModule,
+	ticketMapper,
+	ticketLabelsGenerator,
+	Ticket,
+	RawTicket,
+} from "@/store/modules/ticket";
 
 import axios from "axios";
 import { PublicTicket } from "@/api/publicTicket";
@@ -53,7 +63,9 @@ export default class EvaluationCompParent extends Vue {
 
 	public async getMessages() {
 		this.listLoading = true;
-		const st = this.$moment(this.startdate).subtract(1, "days").format("YYYY-MM-DD");
+		const st = this.$moment(this.startdate)
+			.subtract(1, "days")
+			.format("YYYY-MM-DD");
 		const en = this.$moment(this.enddate).add(1, "days").format("YYYY-MM-DD");
 		const { startdate, enddate } = this;
 		this.listLoading = true;
@@ -63,7 +75,9 @@ export default class EvaluationCompParent extends Vue {
 			startdate: this.$moment(startdate).startOf("day").toDate(),
 			enddate: this.$moment(enddate).endOf("day").toDate(),
 		});
-		this.message = TicketModule.Ticket.filter((o: any) => /none/gi.test(o.script_id) && o.is_processed == "0");
+		this.message = TicketModule.Ticket.filter(
+			(o: any) => /none/gi.test(o.script_id) && o.is_processed == "0"
+		);
 		this.listLoading = false;
 		// this.ajax
 		// 	.http({
@@ -116,7 +130,7 @@ export default class EvaluationCompParent extends Vue {
 			},
 			(res) => {
 				console.log(res);
-			},
+			}
 		);
 		// axios({
 		// 	baseURL: `${script_logUrl}`,

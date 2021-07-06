@@ -39,9 +39,17 @@ export class DataResource {
 	public isEquals(obj: { a: any; b: any }): any {
 		const { a, b } = obj;
 		if (Array.isArray(a) && Array.isArray(b)) {
-			return a.length === b.length && a.every((item, index) => this.isEquals({ a: item, b: b[index] }));
+			return (
+				a.length === b.length &&
+				a.every((item, index) => this.isEquals({ a: item, b: b[index] }))
+			);
 		}
-		return a && b && a.resourceName === b.resourceName && this.dataResourceFactory[a.resourceName].isEquals(a, b);
+		return (
+			a &&
+			b &&
+			a.resourceName === b.resourceName &&
+			this.dataResourceFactory[a.resourceName].isEquals(a, b)
+		);
 	}
 }
 

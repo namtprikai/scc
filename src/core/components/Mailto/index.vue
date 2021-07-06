@@ -3,47 +3,47 @@
 		<!-- <div v-if="IsShow">
 			<b-card no-body>
 				<b-card-body> -->
-					<b-alert show variant="info">
-						mailto:の件名と本文にユーザーの検索情報を挿入することができます。
-					</b-alert>
-					<div class="section">
-						<b-form-group>
-							<b-row>
-								<b-col sm="3">件名</b-col>
-								<b-col sm="9">
-									<b-input-group inline>
-										<b-select v-model="ticketTag2" v-bind:options="ticketTagList" />
-										<b-input-group-append>
-											<b-button @click="inToTagSubject(ticketTag2)">挿入</b-button>
-										</b-input-group-append>
-									</b-input-group>
-								</b-col>
-							</b-row>
-							<b-form-input
-								name="title"
-								type="text"
-								v-model="subject"
-								ref="mailSubject"
-								placeholder="例：sAI Chatのお問い合わせ[start-time]"
-							/>
-						</b-form-group>
-					</div>
-					<div class="section">
-						<b-form-group>
-							<b-row>
-								<b-col sm="3">本文</b-col>
-								<b-col sm="9">
-									<b-input-group>
-										<b-select v-model="ticketTag" v-bind:options="ticketTagList" />
-										<b-input-group-append>
-											<b-button @click="inToTag(ticketTag)">挿入</b-button>
-										</b-input-group-append>
-									</b-input-group>
-								</b-col>
-							</b-row>
-							<b-form-textarea
-								ref="mailText"
-								placeholder="例：
+		<b-alert show variant="info">
+			mailto:の件名と本文にユーザーの検索情報を挿入することができます。
+		</b-alert>
+		<div class="section">
+			<b-form-group>
+				<b-row>
+					<b-col sm="3">件名</b-col>
+					<b-col sm="9">
+						<b-input-group inline>
+							<b-select v-model="ticketTag2" v-bind:options="ticketTagList" />
+							<b-input-group-append>
+								<b-button @click="inToTagSubject(ticketTag2)">挿入</b-button>
+							</b-input-group-append>
+						</b-input-group>
+					</b-col>
+				</b-row>
+				<b-form-input
+					name="title"
+					type="text"
+					v-model="subject"
+					ref="mailSubject"
+					placeholder="例：sAI Chatのお問い合わせ[start-time]"
+				/>
+			</b-form-group>
+		</div>
+		<div class="section">
+			<b-form-group>
+				<b-row>
+					<b-col sm="3">本文</b-col>
+					<b-col sm="9">
+						<b-input-group>
+							<b-select v-model="ticketTag" v-bind:options="ticketTagList" />
+							<b-input-group-append>
+								<b-button @click="inToTag(ticketTag)">挿入</b-button>
+							</b-input-group-append>
+						</b-input-group>
+					</b-col>
+				</b-row>
+				<b-form-textarea
+					ref="mailText"
+					placeholder="例：
 以下のついてご回答をお願いします。
 ----------------------
 ■検索情報
@@ -51,17 +51,17 @@
 子カテゴリ：[child-category]
 質問：[question]
 ----------------------"
-								name="text"
-								type="text"
-								rows="14"
-								v-model="text"
-							></b-form-textarea>
-							<div class="text-center section">
-								<b-button @click="setData()" center>反映</b-button>
-							</div>
-						</b-form-group>
-					</div>
-				<!-- </b-card-body>
+					name="text"
+					type="text"
+					rows="14"
+					v-model="text"
+				></b-form-textarea>
+				<div class="text-center section">
+					<b-button @click="setData()" center>反映</b-button>
+				</div>
+			</b-form-group>
+		</div>
+		<!-- </b-card-body>
 			</b-card>
 		</div> -->
 	</div>
@@ -107,8 +107,7 @@ export default class MailToComp extends Vue {
 	protected plugins = Plugins;
 	protected ticketTag: string = "";
 	protected ticketTag2: string = "";
-	protected message =
-		"要編集リクエストが送られた当時のアイテムが存在しません。";
+	protected message = "要編集リクエストが送られた当時のアイテムが存在しません。";
 	@PropSync("value", { type: String })
 	public dataValue!: string;
 	protected isMessage = false;
@@ -154,7 +153,7 @@ export default class MailToComp extends Vue {
 						subject: this.subject,
 						body: this.text,
 					});
-					a.href = href.replace(/%5D/g,"]").replace(/%5B/g,"[");
+					a.href = href.replace(/%5D/g, "]").replace(/%5B/g, "[");
 					a.target = "_blank";
 				}
 			}
@@ -173,9 +172,7 @@ export default class MailToComp extends Vue {
 		const textarea = this.$refs.mailText;
 		const corsolPosition = textarea.selectionStart;
 		this.text =
-			this.text.slice(0, corsolPosition) +
-			tag +
-			this.text.slice(corsolPosition);
+			this.text.slice(0, corsolPosition) + tag + this.text.slice(corsolPosition);
 	}
 	protected created() {
 		// eventHub.$on("tabclick", this.tabClick);

@@ -41,7 +41,10 @@ export namespace PublicTicket {
 		ticketData = null;
 		resetStartTime();
 	};
-	export const ticketPost = (log: TicketData, isPost = true): Promise<[boolean, TicketData | null]> => {
+	export const ticketPost = (
+		log: TicketData,
+		isPost = true
+	): Promise<[boolean, TicketData | null]> => {
 		if (start_time === null) {
 			setStartTime();
 		}

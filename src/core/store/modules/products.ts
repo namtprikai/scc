@@ -1,4 +1,11 @@
-import { VuexModule, Module, Mutation, Action, getModule, MutationAction } from "vuex-module-decorators";
+import {
+	VuexModule,
+	Module,
+	Mutation,
+	Action,
+	getModule,
+	MutationAction,
+} from "vuex-module-decorators";
 import store from "@/store";
 import { AjaxService } from "@/services/ajax";
 import { IProductData, IQuestionData } from "@/api/types";

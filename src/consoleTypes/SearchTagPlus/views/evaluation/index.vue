@@ -31,14 +31,25 @@
 				</div>
 			</li>
 		</ul>-->
-		<el-table v-loading="listLoading" :data="MessageList" element-loading-text="Loading" border fit highlight-current-row @row-click="setCurrentMessage">
+		<el-table
+			v-loading="listLoading"
+			:data="MessageList"
+			element-loading-text="Loading"
+			border
+			fit
+			highlight-current-row
+			@row-click="setCurrentMessage"
+		>
 			<el-table-column align="center" label="Q" width="95">
 				<template slot-scope="scope">{{ scope.row.query }}</template>
 			</el-table-column>
 
 			<el-table-column align="center" label width="80">
 				<template slot-scope="scope">
-					<button class="mdl-button evaluation__button evaluation__button--center" v-on:click="done2(scope.row)">
+					<button
+						class="mdl-button evaluation__button evaluation__button--center"
+						v-on:click="done2(scope.row)"
+					>
 						登録済み
 					</button>
 				</template>
@@ -48,18 +59,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import Tinymce from '@/components/Tinymce/index.vue';
-import InputTag from '@/components/InputTag/index.vue';
-import Synonym from '@/components/Synonym/index.vue';
-import { Ajax, MessageObj, Message, MessageList } from '@/utils/parts';
-import { subsystemUrl, CLIENT_ID, script_logUrl } from './../../utils/configration';
-import axios from 'axios';
-import EvaluationCompParent from '../../../../core/views/evaluation/index';
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import Tinymce from "@/components/Tinymce/index.vue";
+import InputTag from "@/components/InputTag/index.vue";
+import Synonym from "@/components/Synonym/index.vue";
+import { Ajax, MessageObj, Message, MessageList } from "@/utils/parts";
+import {
+	subsystemUrl,
+	CLIENT_ID,
+	script_logUrl,
+} from "./../../utils/configration";
+import axios from "axios";
+import EvaluationCompParent from "../../../../core/views/evaluation/index";
 // @ts-ignore
 @Component({
-	components: { Tinymce, InputTag, Synonym, },
+	components: { Tinymce, InputTag, Synonym },
 })
 export default class EvaluationComp extends EvaluationCompParent {}
 </script>

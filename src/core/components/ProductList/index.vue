@@ -1,20 +1,21 @@
 <template>
 	<div class="tab-body">
 		<div>
-<b-card-group>
-<b-card v-for="(product) in productList" :key="product.id" :title="product.name">
-	<b-card-text>
-		{{product.config}}
-</b-card-text>
-</b-card>
-
-</b-card-group>
-</div>
+			<b-card-group>
+				<b-card
+					v-for="product in productList"
+					:key="product.id"
+					:title="product.name"
+				>
+					<b-card-text>
+						{{ product.config }}
+					</b-card-text>
+				</b-card>
+			</b-card-group>
+		</div>
 	</div>
 </template>
-<style type="scss" lang="scss" scoped>
-
-</style>
+<style type="scss" lang="scss" scoped></style>
 
 <script lang="ts">
 import { Component, Vue, Watch, Prop, PropSync } from "vue-property-decorator";
@@ -22,7 +23,7 @@ import Plugins from "@/components/Tinymce/plugins";
 import Toolbar from "@/components/Tinymce/toolbar";
 import _ from "lodash";
 import { IProductData } from "@/api/types";
-import {AjaxService} from "@/services/ajax";
+import { AjaxService } from "@/services/ajax";
 import { AxiosResponse } from "axios";
 // @ts-ignore
 @Component({

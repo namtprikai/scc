@@ -5,7 +5,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CLIENT_ID = (process.env.CLIENT_ID || '392').trim();
 const API_CLIENT_ID = (process.env.API_CLIENT_ID || CLIENT_ID || '392').trim();
 console.log('API_CLIENT_ID', API_CLIENT_ID);
-const CONFIG_CLIENT_ID = (process.env.CONFIG_CLIENT_ID||'').trim();
+const CONFIG_CLIENT_ID = (process.env.CONFIG_CLIENT_ID || '').trim();
 const FOLDER = process.env.FOLDER || 'test';
 const CONSOLE_TYPE = (process.env.CONSOLE_TYPE || '').trim();
 const PRODUCT_WINDOW_URL = (process.env.PRODUCT_WINDOW_URL || '').trim();
@@ -15,7 +15,7 @@ const fs = require('fs');
 const TerserPlugin = require('terser-webpack-plugin');
 const mockServerPort = 9528 // TODO: get this variable from setting.ts
 const tsconfig = JSON.parse(fs.readFileSync('./tsconfigrc.json', 'utf-8'));
-let pconfigPath = `src/productConfigById/${CONFIG_CLIENT_ID||CLIENT_ID}/*`;
+let pconfigPath = `src/productConfigById/${CONFIG_CLIENT_ID || CLIENT_ID}/*`;
 tsconfig['compilerOptions']['paths']['@consoletype/*'] = [`src/consoleTypes/${CONSOLE_TYPE}/*`];
 tsconfig['compilerOptions']['paths']['@pconfig/*'] = [pconfigPath];
 // exclude
@@ -71,14 +71,14 @@ module.exports = {
 			// change xxx-api/login => /mock-api/v1/login
 			// detail: https://cli.vuejs.org/config/#devserver-proxy
 			[process.env.VUE_APP_BASE_API]: {
-					target: `http://127.0.0.1:${mockServerPort}/${process.env.VUE_APP_BASE_API}`,
-					changeOrigin: true, // needed for virtual hosted sites
-					ws: true, // proxy websockets
-					pathRewrite: {
-							['^' + process.env.VUE_APP_BASE_API]: ''
-					}
+				target: `http://127.0.0.1:${mockServerPort}/${process.env.VUE_APP_BASE_API}`,
+				changeOrigin: true, // needed for virtual hosted sites
+				ws: true, // proxy websockets
+				pathRewrite: {
+					['^' + process.env.VUE_APP_BASE_API]: ''
+				}
 			}
-	}
+		}
 	},
 	configureWebpack: {
 		entry: {
@@ -86,6 +86,15 @@ module.exports = {
 		},
 		module: {
 			rules: [
+				// {
+				// 	enforce: 'pre',
+				// 	test: /\.(jsx?|tsx?|vue)$/,
+				// 	exclude: /node_modules/,
+				// 	loader: 'eslint-loader',
+				// 	options: {
+				// 		fix: true
+				// 	}
+				// }
 				// {
 				// 	test: /\.vue$/,
 				// 	loader: 'vue-loader',
@@ -142,9 +151,9 @@ module.exports = {
 				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || ''),
 				'process.env.CLIENT_ID': JSON.stringify(CLIENT_ID || ''),
 				'process.env.API_CLIENT_ID': JSON.stringify(API_CLIENT_ID || ''),
-        'process.env.CONSOLE_TYPE': JSON.stringify(process.env.CONSOLE_TYPE || ''),
-        'process.env.PRODUCT_WINDOW_URL': JSON.stringify(process.env.PRODUCT_WINDOW_URL || ''),
-        'process.env.DEV_WINDOW_URL': JSON.stringify(process.env.DEV_WINDOW_URL || ''),
+				'process.env.CONSOLE_TYPE': JSON.stringify(process.env.CONSOLE_TYPE || ''),
+				'process.env.PRODUCT_WINDOW_URL': JSON.stringify(process.env.PRODUCT_WINDOW_URL || ''),
+				'process.env.DEV_WINDOW_URL': JSON.stringify(process.env.DEV_WINDOW_URL || ''),
 			}),
 			new webpack.HotModuleReplacementPlugin(),
 			new ForkTsCheckerWebpackPlugin(),
@@ -157,12 +166,12 @@ module.exports = {
 				vue$: 'vue/dist/vue.esm.js',
 				'@': path.resolve(__dirname, `src/core`),
 				'~': path.resolve(__dirname, 'src/'),
-				'@pconfig': path.resolve(__dirname, `src/productConfigById/${CONFIG_CLIENT_ID||CLIENT_ID}`),
+				'@pconfig': path.resolve(__dirname, `src/productConfigById/${CONFIG_CLIENT_ID || CLIENT_ID}`),
 				'@consoletype': path.resolve(__dirname, `src/consoleTypes/${CONSOLE_TYPE}`),
 				'bootstrap-components': path.resolve(__dirname, 'node_modules/bootstrap-vue/es/components'),
 			},
 			modules: [
-				path.resolve(__dirname, `src/productConfigById/${CONFIG_CLIENT_ID||CLIENT_ID}`),
+				path.resolve(__dirname, `src/productConfigById/${CONFIG_CLIENT_ID || CLIENT_ID}`),
 				path.resolve(__dirname, `src/consoleTypes/${CONSOLE_TYPE}`),
 				path.resolve(__dirname, `./src`),
 				path.resolve(__dirname, `./`),

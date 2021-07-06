@@ -1,9 +1,19 @@
 import Cookies from "js-cookie";
-import { VuexModule, Module, Mutation, Action, getModule } from "vuex-module-decorators";
+import {
+	VuexModule,
+	Module,
+	Mutation,
+	Action,
+	getModule,
+} from "vuex-module-decorators";
 import store from "@/store";
 
 import { Ajax, RequeuestWokersService } from "@/utils/parts";
-import { CLIENT_ID, subsystemUrl, apiUrl } from "@consoletype/utils/configration";
+import {
+	CLIENT_ID,
+	subsystemUrl,
+	apiUrl,
+} from "@consoletype/utils/configration";
 import { v4 } from "uuid";
 import { MessageList } from "@/api/messageList";
 import axios from "axios";
@@ -52,7 +62,9 @@ function cleanFixScenario(scenario: Scenario) {
 					for (const itemName in step[stepName].items) {
 						const items = step[stepName].items;
 						if (isArray(items[itemName])) {
-							items[itemName] = items[itemName].filter((o: any) => o != null && o != "");
+							items[itemName] = items[itemName].filter(
+								(o: any) => o != null && o != ""
+							);
 							if (items[itemName].length == 0) {
 								delete items[itemName];
 								continue;
@@ -67,7 +79,11 @@ function cleanFixScenario(scenario: Scenario) {
 	}
 	return scenario;
 }
-function getFlow(flowList: Array<ScenarioFlow>, step: string, parentStep = "root"): any {
+function getFlow(
+	flowList: Array<ScenarioFlow>,
+	step: string,
+	parentStep = "root"
+): any {
 	for (const flow of flowList) {
 		if (flow.step === step) {
 			return { flow, flowList, parentStep };
@@ -151,7 +167,17 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 	}
 
 	@Mutation
-	private ADD_FLOW({ step, index, scenario, newStepId = v4() }: { step: string; index: number; scenario: Scenario; newStepId: string }) {
+	private ADD_FLOW({
+		step,
+		index,
+		scenario,
+		newStepId = v4(),
+	}: {
+		step: string;
+		index: number;
+		scenario: Scenario;
+		newStepId: string;
+	}) {
 		// const newStepId: any = v4();
 		for (const _scenario of this.scenarioList) {
 			if (scenario.id == _scenario.id) {
@@ -317,27 +343,36 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 		commit: "SET_SCENARIOLIST",
 	})
 	public async saveScenario(scenario?: Scenario | any) {
-		const currentScenario = cleanFixScenario(Object.assign({}, scenario || this.CurrentScenario));
+		const currentScenario = cleanFixScenario(
+			Object.assign({}, scenario || this.CurrentScenario)
+		);
 		console.log(currentScenario);
 		if (currentScenario) {
-			await axios.delete(`${apiUrl}/product/${CLIENT_ID}/scenario/${currentScenario.id}`, {
-				baseURL: apiUrl,
-				url: `product/${CLIENT_ID}/scenario/${currentScenario.id}`,
-				method: "DELETE",
-				headers: {
-					"Content-type": "application/json",
-					"If-Modified-Since": "null",
-					Authorization: `Bearer ${ajax.getToken()}`,
-				},
-			});
+			await axios.delete(
+				`${apiUrl}/product/${CLIENT_ID}/scenario/${currentScenario.id}`,
+				{
+					baseURL: apiUrl,
+					url: `product/${CLIENT_ID}/scenario/${currentScenario.id}`,
+					method: "DELETE",
+					headers: {
+						"Content-type": "application/json",
+						"If-Modified-Since": "null",
+						Authorization: `Bearer ${ajax.getToken()}`,
+					},
+				}
+			);
 			// this.scenarioList.push(newScenario);
-			await axios.post(`${apiUrl}/product/${CLIENT_ID}/scenario`, JSON.stringify(currentScenario), {
-				headers: {
-					"Content-type": "application/json",
-					"If-Modified-Since": "null",
-					Authorization: `Bearer ${ajax.getToken()}`,
-				},
-			});
+			await axios.post(
+				`${apiUrl}/product/${CLIENT_ID}/scenario`,
+				JSON.stringify(currentScenario),
+				{
+					headers: {
+						"Content-type": "application/json",
+						"If-Modified-Since": "null",
+						Authorization: `Bearer ${ajax.getToken()}`,
+					},
+				}
+			);
 			const scenarioList = await this.getScenario();
 			return scenarioList;
 		}
@@ -383,7 +418,7 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 					});
 				},
 				() => {},
-				-1,
+				-1
 			);
 		}
 		for (const scenario of scenarioList) {
@@ -408,7 +443,7 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 					});
 				},
 				() => {},
-				2,
+				2
 			);
 		}
 		console.log("start");

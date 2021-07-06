@@ -1,17 +1,24 @@
 <template>
 	<div class="file-input-widget">
-		<b-form-file v-model="file" :state="isState" :placeholder="placeholder" :drop-placeholder="dropPlaceholder" @input="fileChanged" class="file-input-widget_input"></b-form-file>
+		<b-form-file
+			v-model="file"
+			:state="isState"
+			:placeholder="placeholder"
+			:drop-placeholder="dropPlaceholder"
+			@input="fileChanged"
+			class="file-input-widget_input"
+		></b-form-file>
 	</div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 // @ts-ignore
-@Component({ name: 'FileInputWidget' })
+@Component({ name: "FileInputWidget" })
 export default class FileInputWidget extends Vue {
-	@Prop({ type: String, default: '' })
+	@Prop({ type: String, default: "" })
 	private placeholder!: string;
 
-	@Prop({ type: String, default: '' })
+	@Prop({ type: String, default: "" })
 	private dropPlaceholder!: string;
 
 	private file: File | null = null;
@@ -21,7 +28,7 @@ export default class FileInputWidget extends Vue {
 	}
 
 	private fileChanged() {
-		this.$emit('input', this.file);
+		this.$emit("input", this.file);
 	}
 }
 </script>

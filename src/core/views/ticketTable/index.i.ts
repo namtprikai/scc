@@ -12,20 +12,20 @@ export interface TicketData {
 }
 export interface EnquateTicket {
 	[id: string]:
-	| {
-		type: "radio";
-		label: string;
-		value: { value: string; label: string } | null;
+		| {
+				type: "radio";
+				label: string;
+				value: { value: string; label: string } | null;
 		  }
-	| {
-		type: "checkbox";
-		label: string;
-		value: Array<{ value: string; label: string }>;
+		| {
+				type: "checkbox";
+				label: string;
+				value: Array<{ value: string; label: string }>;
 		  }
-	| {
-		type: "textarea";
-		label: string;
-		value: string;
+		| {
+				type: "textarea";
+				label: string;
+				value: string;
 		  };
 }
 export interface Condition {

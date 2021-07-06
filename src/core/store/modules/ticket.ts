@@ -1,5 +1,11 @@
 import Cookies from "js-cookie";
-import { VuexModule, Module, Mutation, Action, getModule } from "vuex-module-decorators";
+import {
+	VuexModule,
+	Module,
+	Mutation,
+	Action,
+	getModule,
+} from "vuex-module-decorators";
 import store from "@/store";
 import { Ajax } from "@/utils/parts";
 import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
@@ -192,7 +198,9 @@ const ignoreLabels = [
 	"clientUserId",
 ];
 
-export const ticketLabelsGenerator = (rs: Array<Ticket | FaqTicket>): object => {
+export const ticketLabelsGenerator = (
+	rs: Array<Ticket | FaqTicket>
+): object => {
 	const ls: Set<string> = new Set();
 	rs.forEach((r) => {
 		Object.keys(r).forEach((k) => ls.add(k));
@@ -207,7 +215,8 @@ export const ticketLabelsGenerator = (rs: Array<Ticket | FaqTicket>): object => 
 	return { ...ticketLabels, ...labels };
 };
 export const FaqTicketMapper = (rs: FaqRawTicket[]): FaqTicket[] => {
-	const getLast = (array?: any[]): any | undefined => array && array.length > 0 && array[array.length - 1];
+	const getLast = (array?: any[]): any | undefined =>
+		array && array.length > 0 && array[array.length - 1];
 	const statusMapper = (s?: string): string | undefined => {
 		const label: any = {
 			ok: "解決",
@@ -256,8 +265,11 @@ export const FaqTicketMapper = (rs: FaqRawTicket[]): FaqTicket[] => {
 			duration_time = me.diff(ms, "seconds") || 0;
 			const diffHours = me.diff(ms, "hours") || 0;
 			const diffMinute = me.diff(ms, "minutes") - 60 * diffHours || 0;
-			const diffSecond = me.diff(ms, "seconds") - 3600 * diffHours - 60 * diffMinute || 0;
-			duration = `${diffHours ? diffHours + "時間" : ""}${diffMinute ? diffMinute + "分" : ""}${diffSecond ? diffSecond + "秒" : "0秒"}`;
+			const diffSecond =
+				me.diff(ms, "seconds") - 3600 * diffHours - 60 * diffMinute || 0;
+			duration = `${diffHours ? diffHours + "時間" : ""}${
+				diffMinute ? diffMinute + "分" : ""
+			}${diffSecond ? diffSecond + "秒" : "0秒"}`;
 			year = ms.format("YYYY") || "-";
 			month = ms.format("MM") || "-";
 			day = ms.format("DD") || "-";
@@ -303,8 +315,13 @@ export const FaqTicketMapper = (rs: FaqRawTicket[]): FaqTicket[] => {
 	return rs.map(converter);
 };
 export const ticketMapper = (rs: RawTicket[]): Ticket[] => {
-	const getLast = (array?: any[]): any | undefined => array && array.length > 0 && array[array.length - 1];
-	const getIfExist = <T>(dict: { [k: string]: T }, key?: string, defaultValue?: T): T | undefined => {
+	const getLast = (array?: any[]): any | undefined =>
+		array && array.length > 0 && array[array.length - 1];
+	const getIfExist = <T>(
+		dict: { [k: string]: T },
+		key?: string,
+		defaultValue?: T
+	): T | undefined => {
 		if (key && dict[key]) {
 			return dict[key];
 		}
@@ -387,8 +404,11 @@ export const ticketMapper = (rs: RawTicket[]): Ticket[] => {
 				endDateString = me.format("YYYY年MM月DD日 HH:mm:ss");
 				const diffHours = me.diff(ms, "hours");
 				const diffMinute = me.diff(ms, "minutes") - 60 * diffHours;
-				const diffSecond = me.diff(ms, "seconds") - 3600 * diffHours - 60 * diffMinute;
-				duration = `${diffHours ? diffHours + "時間" : ""}${diffMinute ? diffMinute + "分" : ""}${diffSecond ? diffSecond + "秒" : ""}`;
+				const diffSecond =
+					me.diff(ms, "seconds") - 3600 * diffHours - 60 * diffMinute;
+				duration = `${diffHours ? diffHours + "時間" : ""}${
+					diffMinute ? diffMinute + "分" : ""
+				}${diffSecond ? diffSecond + "秒" : ""}`;
 			}
 		}
 
@@ -435,7 +455,12 @@ class TicketStore extends VuexModule implements IScenarioState {
 	@Action({
 		commit: "SET_TICKET",
 	})
-	public async getTicket(ob: { st: string; en: string; startdate: Date; enddate: Date }) {
+	public async getTicket(ob: {
+		st: string;
+		en: string;
+		startdate: Date;
+		enddate: Date;
+	}) {
 		const { st, en, startdate, enddate } = ob;
 		const data: any = await ajax.http({
 			baseURL: subsystemUrl,

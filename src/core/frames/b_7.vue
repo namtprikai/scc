@@ -1,6 +1,10 @@
 <template>
 	<div class="b_4" v-bind:style="style">
-		<horizontal slot="right" @bottom-height="bottomHeight" @top-height="topHeight">
+		<horizontal
+			slot="right"
+			@bottom-height="bottomHeight"
+			@top-height="topHeight"
+		>
 			<router-view name="v1" data-name="v1" slot="top" :height="topheight" />
 			<router-view name="v2" data-name="v2" slot="bottom" :height="bottomheight" />
 		</horizontal>
@@ -8,12 +12,12 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
-import { mixins } from 'vue-class-component';
-import FitStyle from '@/frames/mixin/fitStyle.vue';
-import Horizontal from '@/components/Divider/Horizontal.vue';
-import Vertical from '@/components/Divider/Vertical.vue';
-import { eventHub } from '@/init/eventHub';
+import { Component } from "vue-property-decorator";
+import { mixins } from "vue-class-component";
+import FitStyle from "@/frames/mixin/fitStyle.vue";
+import Horizontal from "@/components/Divider/Horizontal.vue";
+import Vertical from "@/components/Divider/Vertical.vue";
+import { eventHub } from "@/init/eventHub";
 
 // @ts-ignore
 @Component({
@@ -24,8 +28,8 @@ import { eventHub } from '@/init/eventHub';
 })
 export default class Divider extends mixins(FitStyle) {
 	style: Object = {};
-	topheight: any = 'auto';
-	bottomheight: any = 'auto';
+	topheight: any = "auto";
+	bottomheight: any = "auto";
 	topHeight(size: any) {
 		this.topheight = size;
 	}
@@ -37,10 +41,10 @@ export default class Divider extends mixins(FitStyle) {
 
 	mounted() {
 		this.style = this.fitStyle();
-		eventHub.$on('fitStyle', () => {
+		eventHub.$on("fitStyle", () => {
 			this.style = this.fitStyle();
 		});
-		window.addEventListener('resize', () => {
+		window.addEventListener("resize", () => {
 			this.style = this.fitStyle();
 		});
 	}

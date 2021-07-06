@@ -17,7 +17,11 @@ export default class MessageSearch extends Vue {
 	public timeFormatText = "YYYY/MM/DD HH:mm:ss";
 
 	get options() {
-		return [{ value: "all", text: "すべて" }, { value: "user", text: "ユーザー" }, ...this.AdminList.map(({ id, name }: any) => ({ text: name, value: id }))];
+		return [
+			{ value: "all", text: "すべて" },
+			{ value: "user", text: "ユーザー" },
+			...this.AdminList.map(({ id, name }: any) => ({ text: name, value: id })),
+		];
 	}
 
 	get AdminList() {
@@ -39,7 +43,12 @@ export default class MessageSearch extends Vue {
 			if (admin) {
 				adminName = admin.name;
 			}
-			return [message.user.displayname || "-", this.getLocalString(message.created_date, this.timeFormatText) || "-", adminName || "-", message.text || "-"];
+			return [
+				message.user.displayname || "-",
+				this.getLocalString(message.created_date, this.timeFormatText) || "-",
+				adminName || "-",
+				message.text || "-",
+			];
 		});
 		console.log(dataList);
 		const data: any = dataList

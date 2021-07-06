@@ -1,6 +1,11 @@
 import { Scenario, ScenarioFlow } from "@/store/modules/scenario";
 
-function search(flowList: Array<ScenarioFlow>, parentStep: string, fn: Function, depth = 0) {
+function search(
+	flowList: Array<ScenarioFlow>,
+	parentStep: string,
+	fn: Function,
+	depth = 0
+) {
 	if (flowList) {
 		let index = 0;
 		let beforeLeafSize = 0;
@@ -18,7 +23,12 @@ function search(flowList: Array<ScenarioFlow>, parentStep: string, fn: Function,
 		}
 	}
 }
-function search2(flowList: Array<ScenarioFlow>, parentStep: string, fn: Function, depth = 0) {
+function search2(
+	flowList: Array<ScenarioFlow>,
+	parentStep: string,
+	fn: Function,
+	depth = 0
+) {
 	const que = [];
 	let y = 0;
 	let leafSizeNumber = 0;
@@ -102,7 +112,7 @@ export const parseListToCsv = (scenarioList: Array<Scenario>) => {
 					leafCount++;
 				}
 			},
-			0,
+			0
 		);
 
 		csvListList = csvListList.concat(csvList);
@@ -176,7 +186,9 @@ export const parseScenario = (bot_json_list: any) => {
 				text: o.value,
 				scenarioId: o.scenario,
 				// tslint:disable-next-line:max-line-length
-				options: o.options.map((p: any) => Object.assign(p, { value: p.value.replace(/(<log-.+?:.+?>)/g, "") })),
+				options: o.options.map((p: any) =>
+					Object.assign(p, { value: p.value.replace(/(<log-.+?:.+?>)/g, "") })
+				),
 				items,
 			};
 			// }
@@ -286,7 +298,8 @@ export const horizontaltojson = (bot_csv: any) => {
 			} else if (is_null(bot_csv[o_.y][o_.x + 1])) {
 				nextNumber = 0;
 			}
-			const TITLETEXT = o_.x == 0 ? bot_csv[o_.y][o_.x] : bot_csv[o_.y][o_.x + nextNumber - 1];
+			const TITLETEXT =
+				o_.x == 0 ? bot_csv[o_.y][o_.x] : bot_csv[o_.y][o_.x + nextNumber - 1];
 			const title = String(TITLETEXT)
 				.replace(/(<log-.+?:.+?>)/g, "")
 				.replace(/<scenario-id:(.+?)>/g, "");
@@ -295,13 +308,16 @@ export const horizontaltojson = (bot_csv: any) => {
 			// 	scenarioId = matchScenarioId[1];
 			// }
 			const conditionTEXT = o_.x == 0 ? bot_csv[o_.y][0] : String(i + 1);
-			const log_itemsMATCH = conditionTEXT.match(/<log-(.+?):(.+?)>/g) || TITLETEXT.match(/<log-(.+?):(.+?)>/g);
+			const log_itemsMATCH =
+				conditionTEXT.match(/<log-(.+?):(.+?)>/g) ||
+				TITLETEXT.match(/<log-(.+?):(.+?)>/g);
 			console.log(log_itemsMATCH);
 			const log: any = {};
 			if (log_itemsMATCH) {
 				console.log(log_itemsMATCH);
 				for (const matchTag of log_itemsMATCH) {
-					const [_matchText, matchKey, matchId] = matchTag.match(/<(log-.+?):(.+?)>/);
+					const [_matchText, matchKey, matchId] =
+						matchTag.match(/<(log-.+?):(.+?)>/);
 					const matchKeySt = matchKey.replace(/\-/g, "_");
 					if (!(matchKeySt in log)) {
 						log[matchKeySt] = [];
@@ -396,7 +412,11 @@ export const horizontaltojson = (bot_csv: any) => {
 	function start(values: any, callback: any) {
 		for (let i = 0; i < values.length; i++) {
 			callback(values[i], i);
-			const nexts = getNextsForValue(values[i].x == 0 ? values[i].x + 2 : values[i].x + 1, values[i].y, bot_csv);
+			const nexts = getNextsForValue(
+				values[i].x == 0 ? values[i].x + 2 : values[i].x + 1,
+				values[i].y,
+				bot_csv
+			);
 			if (nexts.length !== 0) {
 				start(nexts, callback);
 			}

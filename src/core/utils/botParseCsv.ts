@@ -5,7 +5,14 @@ const scenarioList = (data: any) => ({
 
 const regexSelection = /<button:[0-9]+./;
 
-const recursiveFlow = (result: any, flow: any, next: any, isRoot: any = false, selection?: any, deep: any = 0) => {
+const recursiveFlow = (
+	result: any,
+	flow: any,
+	next: any,
+	isRoot: any = false,
+	selection?: any,
+	deep: any = 0
+) => {
 	// rootからの深さ計算
 	deep++;
 
@@ -17,7 +24,9 @@ const recursiveFlow = (result: any, flow: any, next: any, isRoot: any = false, s
 			const btnText = selection[index];
 			const cnt = String(btnText).search(/\./);
 			// 選択肢の場合、<>を外す。それ以外はそのまま
-			cnt > 0 ? (selectText = btnText.slice(cnt + 1, btnText.length - 1)) : (selectText = btnText);
+			cnt > 0
+				? (selectText = btnText.slice(cnt + 1, btnText.length - 1))
+				: (selectText = btnText);
 		}
 		// 選択肢を外したテキスト抽出
 		let title = n.title;
@@ -108,7 +117,7 @@ function parseCSVToArray(bot_csv: any) {
 	const max =
 		Math.max.apply(
 			null,
-			result.map((record: any) => record.length),
+			result.map((record: any) => record.length)
 		) + 1;
 	result.unshift([""]);
 	// 配列を文字列の,区切りにする

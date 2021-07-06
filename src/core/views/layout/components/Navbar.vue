@@ -1,6 +1,10 @@
 <template>
 	<div class="navbar">
-		<hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container" />
+		<hamburger
+			:toggle-click="toggleSideBar"
+			:is-active="sidebar.opened"
+			class="hamburger-container"
+		/>
 		<!-- <breadcrumb/> -->
 		<router-link class="inlineBlock" to="/">
 			<div class="logo"></div>
@@ -15,7 +19,10 @@
 		<el-dropdown class="avatar-container" trigger="click">
 			<div class="avatar-wrapper">
 				<!-- <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar"> -->
-				<div class="user-avatar" :style="{ backgroundImage: 'url(' + avatar + ')' }"></div>
+				<div
+					class="user-avatar"
+					:style="{ backgroundImage: 'url(' + avatar + ')' }"
+				></div>
 				<div class="version">{{ version }}</div>
 				<i class="el-icon-caret-bottom" />
 			</div>
@@ -32,16 +39,16 @@
 </template>
 
 <script lang="ts">
-import Breadcrumb from '@/components/Breadcrumb/index.vue';
-import Hamburger from '@/components/Hamburger/index.vue';
-import { Component, Vue } from 'vue-property-decorator';
-import { AppModule } from '@/store/modules/app';
-import { UserModule } from '@/store/modules/user';
-import { CLIENT_ID } from '@consoletype/utils/configration';
-import { Ajax } from '../../../utils/parts';
-import { url } from 'inspector';
-import axios from 'axios';
-import { eventHub } from '@/init/eventHub';
+import Breadcrumb from "@/components/Breadcrumb/index.vue";
+import Hamburger from "@/components/Hamburger/index.vue";
+import { Component, Vue } from "vue-property-decorator";
+import { AppModule } from "@/store/modules/app";
+import { UserModule } from "@/store/modules/user";
+import { CLIENT_ID } from "@consoletype/utils/configration";
+import { Ajax } from "../../../utils/parts";
+import { url } from "inspector";
+import axios from "axios";
+import { eventHub } from "@/init/eventHub";
 
 // @ts-ignore
 @Component({
@@ -60,8 +67,8 @@ export default class Navbar extends Vue {
 		return `https://file.ai-x-supporter.com/${CLIENT_ID}/${UserModule.id}.gif`;
 	}
 
-	oshirase = '';
-	link = '';
+	oshirase = "";
+	link = "";
 	get Oshirase() {
 		return this.oshirase;
 	}
@@ -76,31 +83,34 @@ export default class Navbar extends Vue {
 			this.updateOshirase();
 		}, 1000 * 60 * 15);
 		this.updateOshirase();
-		eventHub.$on('updateoshirase', this.setOshirase);
+		eventHub.$on("updateoshirase", this.setOshirase);
 	}
 
 	setOshirase({ text, link }: any) {
-		this.oshirase = text || '';
-		this.link = link || '';
+		this.oshirase = text || "";
+		this.link = link || "";
 	}
 
 	destroy() {
 		if (this.updateOshiraseId != null) {
 			clearInterval(this.updateOshiraseId);
 		}
-		eventHub.$off('updateoshirase', this.setOshirase);
+		eventHub.$off("updateoshirase", this.setOshirase);
 	}
 
 	async updateOshirase() {
 		try {
-			const { data } = await axios.get(`https://file.ai-x-supporter.com/${CLIENT_ID}/oshirase.json`, {
-				params: {
-					h: Date.now(),
-				},
-			});
+			const { data } = await axios.get(
+				`https://file.ai-x-supporter.com/${CLIENT_ID}/oshirase.json`,
+				{
+					params: {
+						h: Date.now(),
+					},
+				}
+			);
 			console.log(data);
-			this.oshirase = data.text || '';
-			this.link = data.link || '';
+			this.oshirase = data.text || "";
+			this.link = data.link || "";
 			// this.$forceUpdate();
 		} catch (e) {}
 	}

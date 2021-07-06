@@ -2,9 +2,25 @@
 	<div>
 		<TabHeader>
 			<span v-for="(type, i) in KeywordEditorButtons" :key="i">
-				<b-button size="sm" @click="syncKeyword(true)" class="mr-2" v-if="type == 'test'"> <b-spinner small v-if="isTestSave"></b-spinner>テスト環境に反映 </b-button>
-				<b-button size="sm" @click="syncProdKeyword()" variant="primary" v-if="type == 'test'"> <b-spinner small v-if="isSave"></b-spinner>本番環境に反映 </b-button>
-				<b-button size="sm" v-on:click="syncAllKeyword()" v-if="type == 'all'"> <b-spinner small v-if="isSave"></b-spinner>本番環境に反映 </b-button>
+				<b-button
+					size="sm"
+					@click="syncKeyword(true)"
+					class="mr-2"
+					v-if="type == 'test'"
+				>
+					<b-spinner small v-if="isTestSave"></b-spinner>テスト環境に反映
+				</b-button>
+				<b-button
+					size="sm"
+					@click="syncProdKeyword()"
+					variant="primary"
+					v-if="type == 'test'"
+				>
+					<b-spinner small v-if="isSave"></b-spinner>本番環境に反映
+				</b-button>
+				<b-button size="sm" v-on:click="syncAllKeyword()" v-if="type == 'all'">
+					<b-spinner small v-if="isSave"></b-spinner>本番環境に反映
+				</b-button>
 			</span>
 		</TabHeader>
 		<div class="tab-body">
@@ -17,7 +33,10 @@
 						'キーワードの重みを調整すると、AIがレコメンドするQ&Aを調整できます。キーワードの重みが大きいと、そのキーワードがユーザーの入力と一致したときに、そのキーワードが付いているQ&Aを優先的にレコメンドします。詳しくは担当者からお送りするマニュアルをご覧ください。'
 					"
 				></b-icon>
-				<span class="text-discription __Info" v-html="$sanitize(discription)"></span>
+				<span
+					class="text-discription __Info"
+					v-html="$sanitize(discription)"
+				></span>
 			</b-alert>
 			<!-- <b-button v-on:click="getKeyword">更新</b-button> -->
 
@@ -38,11 +57,20 @@
 				</b-list-group-item>
 			</b-list-group>-->
 			<b-list-group v-if="inv">
-				<b-list-group-item v-for="(inverted, index) in inv" v-bind:key="index" class="text-center">
+				<b-list-group-item
+					v-for="(inverted, index) in inv"
+					v-bind:key="index"
+					class="text-center"
+				>
 					<h3 class="h2">{{ inverted.key }}</h3>
 					<div variant="light">{{ inverted.weight | number }}</div>
 					<b-collapse :id="'collapse-' + index" visible>
-						<el-slider :step="0.05" v-model="inverted.weight" :min="0" :max="10"></el-slider>
+						<el-slider
+							:step="0.05"
+							v-model="inverted.weight"
+							:min="0"
+							:max="10"
+						></el-slider>
 					</b-collapse>
 				</b-list-group-item>
 			</b-list-group>
@@ -55,13 +83,18 @@
 </template>
 
 <script lang="ts">
-import { v4 } from 'uuid';
-import { apiUrl, scriptUrl, CLIENT_ID, packageUrl } from './../../utils/configration';
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { UpdateServer } from '@/api/updateServer';
-import { eventHub } from '@/init/eventHub';
-import { Ajax, Wait } from '@/utils/parts';
-import { KeywordEditorButtons } from '../../config';
+import { v4 } from "uuid";
+import {
+	apiUrl,
+	scriptUrl,
+	CLIENT_ID,
+	packageUrl,
+} from "./../../utils/configration";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { UpdateServer } from "@/api/updateServer";
+import { eventHub } from "@/init/eventHub";
+import { Ajax, Wait } from "@/utils/parts";
+import { KeywordEditorButtons } from "../../config";
 interface InvertedObj {
 	key: string;
 	manual_weight: number;
@@ -76,9 +109,9 @@ interface InvertedObj {
 	filters: {
 		statusFilter(status: string) {
 			const statusMap: { [id: string]: string } = {
-				published: 'success',
-				draft: 'gray',
-				deleted: 'danger',
+				published: "success",
+				draft: "gray",
+				deleted: "danger",
 			};
 			return statusMap[status];
 		},
@@ -95,7 +128,7 @@ export default class TagsComp extends Vue {
 	private is_load = false;
 	private isTestSave = false;
 	private isSave = false;
-	@Prop({ default: '' })
+	@Prop({ default: "" })
 	private discription?: string;
 
 	private KeywordEditorButtons = KeywordEditorButtons;
@@ -108,7 +141,7 @@ export default class TagsComp extends Vue {
 	} | null = null;
 
 	get Title() {
-		return this.$router.currentRoute.meta?.title||'';
+		return this.$router.currentRoute.meta?.title || "";
 	}
 
 	private async init() {

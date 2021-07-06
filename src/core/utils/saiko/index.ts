@@ -11,7 +11,11 @@ const emotionMapper = {
 	surprise: "びっくり",
 };
 export namespace Saiko {
-	const kanjo = (text: string, tokenizer: { [key: string]: number }, maxlen = 280) =>
+	const kanjo = (
+		text: string,
+		tokenizer: { [key: string]: number },
+		maxlen = 280
+	) =>
 		// return tf.tensor([1, 2, 3]);
 		tf.tensor([
 			new Array(maxlen)
@@ -54,7 +58,9 @@ export namespace Saiko {
 			if (!Array.isArray(ans)) {
 				const [d]: any = await ans.array();
 				if (Array.isArray(d)) {
-					const [happy, sad, disgust, angry, fear, surprise] = d.map((n) => Math.round(n * 100));
+					const [happy, sad, disgust, angry, fear, surprise] = d.map((n) =>
+						Math.round(n * 100)
+					);
 					return { happy, sad, disgust, angry, fear, surprise };
 				}
 			}
@@ -69,7 +75,9 @@ export namespace Saiko {
 			if (!Array.isArray(ans)) {
 				const [d]: any = ans.arraySync();
 				if (Array.isArray(d)) {
-					const [happy, sad, disgust, angry, fear, surprise] = d.map((n) => Math.round(n * 100));
+					const [happy, sad, disgust, angry, fear, surprise] = d.map((n) =>
+						Math.round(n * 100)
+					);
 					console.table([happy, sad, disgust, angry, fear, surprise]);
 					return { happy, sad, disgust, angry, fear, surprise };
 				}

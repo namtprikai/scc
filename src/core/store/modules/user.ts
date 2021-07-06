@@ -1,4 +1,11 @@
-import { VuexModule, Module, MutationAction, Mutation, Action, getModule } from "vuex-module-decorators";
+import {
+	VuexModule,
+	Module,
+	MutationAction,
+	Mutation,
+	Action,
+	getModule,
+} from "vuex-module-decorators";
 import { Login } from "@/api/login";
 import { Auth } from "@/utils/auth";
 import store from "@/store";

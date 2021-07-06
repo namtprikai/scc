@@ -71,7 +71,7 @@ paths:
                       items:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Role'
+                          $ref: "#/components/schemas/Role"
     post:
       tags:
         - roles
@@ -86,7 +86,7 @@ paths:
           required: true
           description: The data for new role.
           schema:
-            $ref: '#/components/schemas/Role'
+            $ref: "#/components/schemas/Role"
       responses:
         200:
           description: OK
@@ -105,7 +105,7 @@ paths:
                         type: integer
                         format: int64
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
   /roles/{id}:
     put:
       tags:
@@ -128,7 +128,7 @@ paths:
           required: true
           description: The data for updated role.
           schema:
-            $ref: '#/components/schemas/Role'
+            $ref: "#/components/schemas/Role"
       responses:
         200:
           description: OK
@@ -144,11 +144,11 @@ paths:
                     type: object
                     properties:
                       role:
-                        $ref: '#/components/schemas/Role'
+                        $ref: "#/components/schemas/Role"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
         404:
-          $ref: '#/components/responses/NotFound'
+          $ref: "#/components/responses/NotFound"
     delete:
       tags:
         - roles
@@ -177,9 +177,9 @@ paths:
                     type: integer
                     format: int32
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
         404:
-          $ref: '#/components/responses/NotFound'
+          $ref: "#/components/responses/NotFound"
   /ansers/{question_id}:
     get:
       tags:
@@ -216,11 +216,11 @@ paths:
                       flow:
                         type: object
         400:
-          $ref: '#/components/responses/InvalidAdmin'
+          $ref: "#/components/responses/InvalidAdmin"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
         404:
-          $ref: '#/components/responses/NotFound'
+          $ref: "#/components/responses/NotFound"
   # getPolicyGroupByAdminId
   /policygroup/{admin_id}:
     get:
@@ -254,11 +254,11 @@ paths:
                     type: object
 
         400:
-          $ref: '#/components/responses/InvalidAdmin'
+          $ref: "#/components/responses/InvalidAdmin"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
         404:
-          $ref: '#/components/responses/NotFound'
+          $ref: "#/components/responses/NotFound"
   /admin:
     get:
       tags:
@@ -291,9 +291,9 @@ paths:
                       items:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Admin'
+                          $ref: "#/components/schemas/Admin"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
   /admin/login:
     post:
       tags:
@@ -307,13 +307,13 @@ paths:
           required: true
           description: The user name for login.
           schema:
-            $ref: '#/components/schemas/Admin/properties/email'
+            $ref: "#/components/schemas/Admin/properties/email"
         - name: password
           in: query
           required: true
           description: The password for login in clear text.
           schema:
-            $ref: '#/components/schemas/Admin/properties/password'
+            $ref: "#/components/schemas/Admin/properties/password"
       responses:
         200:
           description: OK
@@ -343,7 +343,7 @@ paths:
                         type: string
                         example: admin-token
         400:
-          $ref: '#/components/responses/InvalidUser'
+          $ref: "#/components/responses/InvalidUser"
   /admin/logout:
     post:
       tags:
@@ -394,13 +394,13 @@ paths:
                     type: object
                     properties:
                       user:
-                        $ref: '#/components/schemas/Admin'
+                        $ref: "#/components/schemas/Admin"
         400:
-          $ref: '#/components/responses/InvalidAdmin'
+          $ref: "#/components/responses/InvalidAdmin"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
         404:
-          $ref: '#/components/responses/NotFound'
+          $ref: "#/components/responses/NotFound"
     put:
       tags:
         - users
@@ -437,13 +437,13 @@ paths:
                     type: object
                     properties:
                       user:
-                        $ref: '#/components/schemas/User'
+                        $ref: "#/components/schemas/User"
         400:
-          $ref: '#/components/responses/InvalidUser'
+          $ref: "#/components/responses/InvalidUser"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
         404:
-          $ref: '#/components/responses/NotFound'
+          $ref: "#/components/responses/NotFound"
     delete:
       tags:
         - users
@@ -471,11 +471,11 @@ paths:
                     type: integer
                     format: int32
         400:
-          $ref: '#/components/responses/InvalidUser'
+          $ref: "#/components/responses/InvalidUser"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
         404:
-          $ref: '#/components/responses/NotFound'
+          $ref: "#/components/responses/NotFound"
   /admininfo:
     get:
       tags:
@@ -501,9 +501,9 @@ paths:
                     type: object
                     properties:
                       admin:
-                        $ref: '#/components/schemas/Admin'
+                        $ref: "#/components/schemas/Admin"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
   /admin/{admin_id}/product:
     get:
       tags:
@@ -535,9 +535,9 @@ paths:
                     type: object
                     properties:
                       admin:
-                        $ref: '#/components/schemas/Product'
+                        $ref: "#/components/schemas/Product"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
   /product:
     post:
       tags:
@@ -596,9 +596,9 @@ paths:
                       items:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Category'
+                          $ref: "#/components/schemas/Category"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
   /questions:
     get:
       tags:
@@ -624,7 +624,7 @@ paths:
                     type: object
                     properties:
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
   /users:
     get:
       tags:
@@ -657,9 +657,9 @@ paths:
                       items:
                         type: array
                         items:
-                          $ref: '#/components/schemas/User'
+                          $ref: "#/components/schemas/User"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
   /users/register:
     post:
       tags:
@@ -673,7 +673,7 @@ paths:
           required: true
           description: The data for created user.
           schema:
-            $ref: '#/components/schemas/User'
+            $ref: "#/components/schemas/User"
       responses:
         200:
           description: OK
@@ -698,13 +698,13 @@ paths:
           required: true
           description: The user name for login.
           schema:
-            $ref: '#/components/schemas/User/properties/name'
+            $ref: "#/components/schemas/User/properties/name"
         - name: password
           in: query
           required: true
           description: The password for login in clear text.
           schema:
-            $ref: '#/components/schemas/User/properties/password'
+            $ref: "#/components/schemas/User/properties/password"
       responses:
         200:
           description: OK
@@ -734,7 +734,7 @@ paths:
                         type: string
                         example: admin-token
         400:
-          $ref: '#/components/responses/InvalidUser'
+          $ref: "#/components/responses/InvalidUser"
   /users/logout:
     post:
       tags:
@@ -786,13 +786,13 @@ paths:
                     type: object
                     properties:
                       user:
-                        $ref: '#/components/schemas/User'
+                        $ref: "#/components/schemas/User"
         400:
-          $ref: '#/components/responses/InvalidUser'
+          $ref: "#/components/responses/InvalidUser"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
         404:
-          $ref: '#/components/responses/NotFound'
+          $ref: "#/components/responses/NotFound"
     put:
       tags:
         - users
@@ -829,13 +829,13 @@ paths:
                     type: object
                     properties:
                       user:
-                        $ref: '#/components/schemas/User'
+                        $ref: "#/components/schemas/User"
         400:
-          $ref: '#/components/responses/InvalidUser'
+          $ref: "#/components/responses/InvalidUser"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
         404:
-          $ref: '#/components/responses/NotFound'
+          $ref: "#/components/responses/NotFound"
     delete:
       tags:
         - users
@@ -863,11 +863,11 @@ paths:
                     type: integer
                     format: int32
         400:
-          $ref: '#/components/responses/InvalidUser'
+          $ref: "#/components/responses/InvalidUser"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
         404:
-          $ref: '#/components/responses/NotFound'
+          $ref: "#/components/responses/NotFound"
   /users/info:
     get:
       tags:
@@ -892,9 +892,9 @@ paths:
                     type: object
                     properties:
                       user:
-                        $ref: '#/components/schemas/User'
+                        $ref: "#/components/schemas/User"
         401:
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
 components:
   securitySchemes:
     AccessTokenAuth:
@@ -907,19 +907,19 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
     Unauthorized:
       description: Unauthorized
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
     InvalidUser:
       description: Invalid username supplied
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
   schemas:
     Error:
       type: object
@@ -944,7 +944,7 @@ components:
           type: string
           example: json
         routes:
-          $ref: '#/components/schemas/AnyValue'
+          $ref: "#/components/schemas/AnyValue"
       required:
         - id
         - name
@@ -961,7 +961,7 @@ components:
           type: string
           example: Super Administrator. Have access to view all pages.
         routes:
-          $ref: '#/components/schemas/AnyValue'
+          $ref: "#/components/schemas/AnyValue"
       required:
         - key
         - name
@@ -1079,10 +1079,10 @@ components:
         - title
     Timestamp:
       oneOf:
-      - type: integer
-        format: int32
-        example: 1559605283
-      - type: string
-        format: date-time
-        example: 2017-07-21T17:32:28Z
+        - type: integer
+          format: int32
+          example: 1559605283
+        - type: string
+          format: date-time
+          example: 2017-07-21T17:32:28Z
     AnyValue: {}

@@ -2,7 +2,14 @@ import Cookies from "js-cookie";
 import { UserModule } from "@/store/modules/user";
 import { CLIENT_ID } from "@consoletype/utils/configration";
 class AdminUser {
-	constructor(private id: string = "", private name: string = "", private pw: string = "", private product_id: string, private email: string, private role?: number) {}
+	constructor(
+		private id: string = "",
+		private name: string = "",
+		private pw: string = "",
+		private product_id: string,
+		private email: string,
+		private role?: number
+	) {}
 
 	public get Id() {
 		return this.id;

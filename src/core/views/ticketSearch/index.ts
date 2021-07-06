@@ -5,7 +5,12 @@ import Pareto from "@/components/Charts/Pareto.vue";
 import _ from "lodash";
 import moment, { duration } from "moment";
 
-import { TicketModule, ticketMapper, Ticket, FaqTicket } from "@/store/modules/ticket";
+import {
+	TicketModule,
+	ticketMapper,
+	Ticket,
+	FaqTicket,
+} from "@/store/modules/ticket";
 import { AdminUserModule } from "@/store/modules/adminUser";
 
 // @ts-ignore
@@ -90,8 +95,12 @@ export default class TicketSearchParent extends Vue {
 
 		const groupByDate = _.chain(tickets)
 			.filter((t) => t.start_date || parseInt(t.startTime))
-			.groupBy((t) => moment(t.start_date || parseInt(t.startTime)).format(format));
-		const ticketCountsFromStartToEnd = _.times(endDate.diff(startDate, "days") + 1).map((diff) => {
+			.groupBy((t) =>
+				moment(t.start_date || parseInt(t.startTime)).format(format)
+			);
+		const ticketCountsFromStartToEnd = _.times(
+			endDate.diff(startDate, "days") + 1
+		).map((diff) => {
 			const date: string = startDate.clone().add(diff, "days").format(format);
 			return {
 				name: date,
@@ -109,7 +118,9 @@ export default class TicketSearchParent extends Vue {
 
 		const groupByWeekday = _.chain(tickets)
 			.filter((t) => t.start_date || parseInt(t.startTime))
-			.groupBy((t) => moment(t.start_date || parseInt(t.startTime)).format("dddd"));
+			.groupBy((t) =>
+				moment(t.start_date || parseInt(t.startTime)).format("dddd")
+			);
 		return moment.weekdays().map((h) => ({
 			name: h,
 			value: groupByWeekday.get(h).size().value(),
@@ -123,7 +134,9 @@ export default class TicketSearchParent extends Vue {
 
 		const groupByMonth = _.chain(tickets)
 			.filter((t) => t.start_date || parseInt(t.startTime))
-			.groupBy((t) => moment(t.start_date || parseInt(t.startTime)).format("MMMM"));
+			.groupBy((t) =>
+				moment(t.start_date || parseInt(t.startTime)).format("MMMM")
+			);
 		return moment.months().map((h) => ({
 			name: h,
 			value: groupByMonth.get(h).size().value(),
@@ -268,7 +281,10 @@ export default class TicketSearchParent extends Vue {
 			return [];
 		}
 
-		const assigneeMap = this.AdminList.reduce((dic: any, admin: any) => ({ ...dic, [admin.id]: admin.name }), {});
+		const assigneeMap = this.AdminList.reduce(
+			(dic: any, admin: any) => ({ ...dic, [admin.id]: admin.name }),
+			{}
+		);
 		const group = _.chain(tickets)
 			.filter((t) => t.assignee_id)
 			.groupBy((t) => t.assignee_id);

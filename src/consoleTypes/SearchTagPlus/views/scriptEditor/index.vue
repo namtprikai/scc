@@ -3,19 +3,58 @@
 		<wrap-message v-if="isMessage" :message="message" />
 		<div v-if="Is_show">
 			<b-form-group label="編集理由" v-if="item.feedback">
-				<b-form-textarea id="editmeentextarea" name="text" type="text" rows="6" v-model="item.feedback.feedback" disabled></b-form-textarea>
+				<b-form-textarea
+					id="editmeentextarea"
+					name="text"
+					type="text"
+					rows="6"
+					v-model="item.feedback.feedback"
+					disabled
+				></b-form-textarea>
 			</b-form-group>
 			<!-- <edit-wrap/> -->
 			<b-form-group label="データ種別">
-				<b-form-radio value="node" v-model="item.data.type" name="some-radios" inline disabled>カテゴリ</b-form-radio>
-				<b-form-radio value="leaf" v-model="item.data.type" name="some-radios" inline disabled>スクリプト</b-form-radio>
+				<b-form-radio
+					value="node"
+					v-model="item.data.type"
+					name="some-radios"
+					inline
+					disabled
+					>カテゴリ</b-form-radio
+				>
+				<b-form-radio
+					value="leaf"
+					v-model="item.data.type"
+					name="some-radios"
+					inline
+					disabled
+					>スクリプト</b-form-radio
+				>
 			</b-form-group>
 			<b-form-group label="公開状態">
-				<b-form-radio value="published" v-model="item.data.status" name="status-radios" inline checked>公開</b-form-radio>
-				<b-form-radio value="editing" v-model="item.data.status" name="status-radios" inline>非公開</b-form-radio>
+				<b-form-radio
+					value="published"
+					v-model="item.data.status"
+					name="status-radios"
+					inline
+					checked
+					>公開</b-form-radio
+				>
+				<b-form-radio
+					value="editing"
+					v-model="item.data.status"
+					name="status-radios"
+					inline
+					>非公開</b-form-radio
+				>
 			</b-form-group>
 			<b-form-group label="タイトル">
-				<b-form-input id="textinput" name="title" type="text" v-model="item.data.text" />
+				<b-form-input
+					id="textinput"
+					name="title"
+					type="text"
+					v-model="item.data.text"
+				/>
 			</b-form-group>
 			<!-- <div v-if="isLog_script(item.data)">
 			<b-form-group :label="key" v-for="(logdatas,key) in item.data.items" v-bind:key="key">
@@ -36,7 +75,12 @@
 					<b-form-textarea id="textarea" name="text" type="text" rows="17" v-model="item.data.value"></b-form-textarea>
 				</b-form-group> -->
 				<b-form-group label="シナリオID">
-					<b-form-input id="textinput" name="title" type="text" v-model="item.data.scenario" />
+					<b-form-input
+						id="textinput"
+						name="title"
+						type="text"
+						v-model="item.data.scenario"
+					/>
 				</b-form-group>
 				<div class="mb-2">
 					<router-link
@@ -45,11 +89,15 @@
 							path: '/botconfig/index/botconfigedit',
 							query: { scenarioId: item.data.items.scenario_id },
 						}"
-					>シナリオ編集へ</router-link
+						>シナリオ編集へ</router-link
 					>
 				</div>
 				<h3>キーワード</h3>
-				<div v-for="(question, index) in item.data.questions" :key="index" class="question">
+				<div
+					v-for="(question, index) in item.data.questions"
+					:key="index"
+					class="question"
+				>
 					<div class="input">
 						<input-tag v-model="item.data.questions[index]" :item-click="tagClick">
 							<!-- <div slot="menu" v-if="is_menu_show">
@@ -66,7 +114,13 @@
 				</div>
 				<b-container class="bv-example-row">
 					<b-row class="justify-content-md-center">
-						<b-button class="addButton" v-if="item.isLeaf" @click="addQuestion" variant="outline-secondary">+</b-button>
+						<b-button
+							class="addButton"
+							v-if="item.isLeaf"
+							@click="addQuestion"
+							variant="outline-secondary"
+							>+</b-button
+						>
 					</b-row>
 				</b-container>
 			</div>
@@ -97,13 +151,13 @@
 </style>
 
 <script lang="ts">
-import WrapMessage from '@/components/WrapMessage/index.vue';
-import { Component, Vue, Watch, Mixins } from 'vue-property-decorator';
-import { eventHub } from '@/init/eventHub';
-import Tinymce from '@/components/Tinymce/index.vue';
-import InputTag from '@/components/InputTag/index.vue';
-import Synonym from '@/components/Synonym/index.vue';
-import ScriptEditorCompParent from '@/views/scriptEditor/index';
+import WrapMessage from "@/components/WrapMessage/index.vue";
+import { Component, Vue, Watch, Mixins } from "vue-property-decorator";
+import { eventHub } from "@/init/eventHub";
+import Tinymce from "@/components/Tinymce/index.vue";
+import InputTag from "@/components/InputTag/index.vue";
+import Synonym from "@/components/Synonym/index.vue";
+import ScriptEditorCompParent from "@/views/scriptEditor/index";
 // @ts-ignore
 @Component({
 	components: { Tinymce, InputTag, Synonym, WrapMessage },

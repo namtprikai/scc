@@ -7,7 +7,12 @@ import { CLIENT_ID } from "@consoletype/utils/configration";
 import { eventHub } from "@/init/eventHub";
 import { v4 } from "uuid";
 import { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
-import { Scenario, ScenarioModule, ScenarioFlow, ScenarioStep } from "@/store/modules/scenario";
+import {
+	Scenario,
+	ScenarioModule,
+	ScenarioFlow,
+	ScenarioStep,
+} from "@/store/modules/scenario";
 import { leafSize } from "@/utils/scenarioParseCsv";
 import axios from "axios";
 import { watch } from "fs";
@@ -73,7 +78,13 @@ export default class ScenarioParent extends Vue {
 		}
 	}
 
-	public setScenarioData(data: { flow: ScenarioFlow; step: ScenarioStep; scenario: Scenario; parentstep: ScenarioStep; sibling: ScenarioStep[] }) {
+	public setScenarioData(data: {
+		flow: ScenarioFlow;
+		step: ScenarioStep;
+		scenario: Scenario;
+		parentstep: ScenarioStep;
+		sibling: ScenarioStep[];
+	}) {
 		console.log(data);
 		this.flow = data.flow;
 		this.step = data.step;
@@ -183,7 +194,9 @@ export default class ScenarioParent extends Vue {
 						} else if (itemInput.value in this.Items) {
 							this.$modal.show("すでにその項目名がついた項目が存在します");
 						} else {
-							this.$modal.show("項目名はlog_のあとに小文字アルファベットもしくはアンダーバーの形式のみ利用できます。");
+							this.$modal.show(
+								"項目名はlog_のあとに小文字アルファベットもしくはアンダーバーの形式のみ利用できます。"
+							);
 						}
 						// this.Items
 						this.$modal.hide("dialog");
@@ -319,7 +332,7 @@ export default class ScenarioParent extends Vue {
 										});
 									}
 								},
-							},
+							}
 						);
 					},
 				},
@@ -356,7 +369,9 @@ export default class ScenarioParent extends Vue {
 					for (const __flow of _flow.next) {
 						for (let i = 0; i < idlist.length; i++) {
 							if (__flow.step === idlist[i]) {
-								_flow.next = _flow.next.filter((o: ScenarioFlow) => o.step !== this.flow.step);
+								_flow.next = _flow.next.filter(
+									(o: ScenarioFlow) => o.step !== this.flow.step
+								);
 								break;
 							} else {
 								deleateFlowStepList(__flow);
@@ -370,8 +385,12 @@ export default class ScenarioParent extends Vue {
 			}
 
 			if (this.sibling) {
-				this.sibling = this.sibling.filter((o: any) => this.scenario && o.step !== this.flow.step);
-				this.parentstep.options = this.sibling.map((o: any) => Object.assign({}, o.condition));
+				this.sibling = this.sibling.filter(
+					(o: any) => this.scenario && o.step !== this.flow.step
+				);
+				this.parentstep.options = this.sibling.map((o: any) =>
+					Object.assign({}, o.condition)
+				);
 			}
 			removeFlg = true;
 			if (removeFlg) {
