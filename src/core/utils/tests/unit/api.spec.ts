@@ -116,5 +116,43 @@ describe("APItest1", () => {
 		//　テーブルをすべて削除したあと、アドミン、プロダクト、ロールなど、各項目の登録、紐付けを行い、各項目のgetAPI、patchを行い、モックと同等の結果が得られるかをテストする。
 		// expect(scenario).toEqual(scenarioBot);
 	});
-	test("add Question", async () => { });
+	test("add Question", async () => {
+		const N = 10;
+		for (let i = 0; i < N;i++) {
+			const question = {
+				title: faker.hacker.noun() + "ってなんですか？",
+				label: faker.hacker.noun() + "ってなんですか？",
+				is_public: true,
+				config: {},
+			};
+			for (const target of targets) {
+				const { data } = await axios({
+					baseURL: `${target.url}`,
+					url: `question`,
+					method: "post",
+					headers: {
+						Authorization: target.token,
+					},
+					data: question,
+				});
+				console.log(data);
+
+				/**
+					* プロダクトとロールの紐付けをする。
+					*/
+				/**
+					* ポストしたものをゲットする。モックと比較する
+					*/
+					/**
+					* アンサーを登録し、プロダクトとロールの紐付けをする。
+					*/
+				/**
+					* ポストしたものをゲットする。モックと比較する
+					*/
+				/**
+					* ポストしたものをユーザー用APIでゲットする。モックと比較する
+					*/
+			}
+		}
+	});
 });
