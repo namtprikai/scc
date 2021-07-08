@@ -5,20 +5,26 @@ export interface ISAIAPIData {
 	modified?: Date;
 }
 export interface IAPIResponce extends Response {
-	json: (args: {
-		status: number;
-		data: { [key: string]: any } | Array<{ [key: string]: any }>;
-	}) => any;
+	json: (args: { status: number; data: { [key: string]: any } | Array<{ [key: string]: any }> }) => any;
 }
 export interface IRoleData extends ISAIAPIData {
 	[key: any]: any;
 	label: string;
 }
+/**
+	* productsテーブル
+	*/
 export interface IProductData extends ISAIAPIData {
 	name: string;
 	config: any;
 	max_failure_count_user: number;
 	max_failure_time_user: number;
+}
+export interface ILook extends ISAIAPIData{
+	admin_id: number;
+	table_name: string;
+	table_id:number;
+	lock_time:Date;
 }
 export interface IConditionGroupData extends ISAIAPIData {
 	id: number;
@@ -53,11 +59,7 @@ export interface IAdminData extends ISAIAPIData {
 	created?: Date;
 	modified?: Date;
 }
-export interface IConditionMap
-	extends Map<
-		number,
-		{ conditionGroup: IConditionGroupData; conditions: Array<IConditionData> }
-	> {}
+export interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData; conditions: Array<IConditionData> }> {}
 export type IConditionObj = {
 	[key: number]: {
 		conditionGroup: IConditionGroupData;
@@ -89,9 +91,17 @@ export interface IPolicyGroupData extends ISAIAPIData {
 	label: string;
 	config?: any;
 }
+/**
+	* 管理システムの機能の権限を管理するテーブル。
+テーブルに存在しない機能は誰でも利用できる。
+テーブルに存在し、「is_active」が0の場合、マスターアカウント以外は利用できない。
+	*/
 export interface IPolicyData extends ISAIAPIData {
 	label: string;
 	is_sharing: boolean;
+	url: string;
+	method: string;
+	is_active: string;
 }
 
 export interface IQuestionData extends ISAIAPIData {
@@ -129,4 +139,11 @@ export interface IScenarioTree {
 export interface IScenarioTreeCondition {
 	condition: IConditionData;
 	next?: IScenarioTree;
+}
+export interface IMailTemp extends ISAIAPIData {
+	account_id: number;
+	cd_user_type: number;
+	cd_mail_type: number;
+	hash: string;
+	expire_time: Date;
 }
