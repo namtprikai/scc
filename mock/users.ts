@@ -3,7 +3,7 @@ import { Response, Request } from "express";
 import { IUserData, IAPIResponce } from "../src/core/api/types";
 import { secureObjectCreateByAdmin } from "./security";
 import { userProducts } from "./user_products";
-import { IProductData } from "@/api/types";
+import { IProductData } from "../src/core/api/types";
 import { productions } from "./products";
 import { getAdminByToken } from "./admins";
 let userList: IUserData[] = [
