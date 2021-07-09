@@ -268,7 +268,7 @@ paths:
       operationId: getAdmins
       security:
         - AccessTokenAuth: []
-      parameters:
+      # parameters:
         # - name: name
         #   in: query
         #   description: Used to filter users by matched username substring
@@ -485,7 +485,7 @@ paths:
       operationId: getAdminInfo
       security:
         - AccessTokenAuth: []
-      parameters:
+      # parameters:
       responses:
         200:
           description: OK
@@ -545,7 +545,17 @@ paths:
       summary: Get users list
       description: Return a list of users
       operationId: addProduct
-      parameters:
+      # parameters:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: object
   /product/{product_id}:
     delete:
       tags:
@@ -553,12 +563,24 @@ paths:
       summary: Get users list
       description: Return a list of users
       operationId: deleteProduct
+      security:
+        - AccessTokenAuth: []
       parameters:
         - name: product_id
           in: path
           description: 該当プロダクトIDのカテゴリのみ
-          schema:
-            type: string
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: object
   /product/{product_id}/role/{role_id}/category:
     get:
       tags:
