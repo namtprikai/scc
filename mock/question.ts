@@ -1,16 +1,17 @@
 import faker from "faker";
 import { Response, Request } from "express";
-import { IProductData, IQuestionData } from "../src/core/api/types";
+import { IProductData, IQuestionData, IRoleData } from "../src/core/api/types";
 import { IAPIResponce } from "../src/core/api/types";
-import { secureObjectCreateByAdmin } from "./security";
+import { secureObjectCreateByAdmin, secureObjectCreateByUser } from './security';
 import {
 	questionProducts,
 	deleteQuestionProductsByQuestionId,
 } from "./question_products";
+import { question_roles } from "./question_roles";
 import { productions } from "./products";
 import { getAdminByToken } from "./admins";
 import { deleteQuestionKeywordsByQuestionId } from "./question_keywords";
-import { getId } from "./utils";
+import { getId, SAITableModel } from "./utils";
 export let questions: Array<IQuestionData> = [
 	{
 		id: 0,
@@ -62,6 +63,24 @@ const Questions = secureObjectCreateByAdmin<IQuestionData>(
 		return products;
 	}
 );
+const QuestionsByUser = secureObjectCreateByUser<IQuestionData>(
+	() => questions,
+	(q) => {
+		const roles: Array<IRoleData> = [];
+		for (const qr of question_roles) {
+			if (q.id === qr.question_id) {
+				for (const role of roles) {
+					if (qr.role_id === role.id) {
+						roles.push(role);
+						break;
+					}
+				}
+			}
+		}
+		return roles;
+	}
+);
+const questionsModel = new SAITableModel(questions, Questions, QuestionsByUser);
 export const addQuestion = (req: Request, res: IAPIResponce): Response => {
 	const { title, config, label, is_public } = req.body;
 	const accessToken = req.header("Authorization") || "";

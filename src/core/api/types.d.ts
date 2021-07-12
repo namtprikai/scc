@@ -20,11 +20,11 @@ export interface IProductData extends ISAIAPIData {
 	max_failure_count_user: number;
 	max_failure_time_user: number;
 }
-export interface ILook extends ISAIAPIData{
+export interface ILook extends ISAIAPIData {
 	admin_id: number;
 	table_name: string;
-	table_id:number;
-	lock_time:Date;
+	table_id: number;
+	lock_time: Date;
 }
 export interface IConditionGroupData extends ISAIAPIData {
 	id: number;
@@ -59,7 +59,7 @@ export interface IAdminData extends ISAIAPIData {
 	created?: Date;
 	modified?: Date;
 }
-export interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData; conditions: Array<IConditionData> }> {}
+export interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData; conditions: Array<IConditionData> }> { }
 export type IConditionObj = {
 	[key: number]: {
 		conditionGroup: IConditionGroupData;

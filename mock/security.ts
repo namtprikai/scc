@@ -54,7 +54,7 @@ export const authAdmin = (admin: IAdminData, products: Array<IProductData>) => {
 	return [false, adminProducts];
 };
 
-class ProductRoleFilter<T> {
+export class ProductRoleFilter<T> {
 	constructor(
 		protected getDataList: () => Array<T>,
 		protected getProductsFunc: (data: T) => Array<IProductData>
@@ -83,7 +83,7 @@ class ProductRoleFilter<T> {
 		return res;
 	}
 }
-class RoleFilter<T> {
+export class RoleFilter<T> {
 	constructor(
 		protected getDataList: () => Array<T>,
 		protected getRoleFunc: (data: T) => Array<IRoleData>
