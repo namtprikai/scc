@@ -72,3 +72,18 @@ export const getCategoryList = (req: Request, res: IAPIResponce): Response => {
 		data: [],
 	});
 };
+
+export const addCategory = (req: Request, res: IAPIResponce): Response => {
+	const { parent_id ,} = req.query;
+	if(typeof parent_id === 'string'){
+		const row = CategoryModel.add({parent_id});
+		return res.json({
+			status: 20000,
+			data: row,
+		});
+	}
+	return res.json({
+		status: 400,
+		data: [],
+	});
+}

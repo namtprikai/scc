@@ -10,11 +10,34 @@ export function getId(rows: Array<{ id: number, [key: string]: any }>) {
 }
 export class SAITableModel<ISAIAPIData>{
 	constructor(protected table: Array<ISAIAPIData>, protected modelAdmin:ProductRoleFilter<ISAIAPIData>,protected modelUser:RoleFilter<ISAIAPIData>) { }
-	public add(row: ISAIAPIData) {
+	public add(data: {[key:string]:string}) {
+		const row: ISAIAPIData = {
+			id:this.getMaxId(this.table),
+			...data,
+			created:new Date(),
+			modified:new Date(),
+		};
 		this.table.push(row);
+		return row;
 	}
-	public delete(id: number) {
-		this.table = this.table.filter(r=>r.id !== id);
+	private getMaxId(table: Array<ISAIAPIData>):number {
+		let maxId = 0;
+		for (const row of table) {
+			maxId = Math.max(row.id, maxId);
+		}
+		return (maxId += 1);
+	}
+	public delete(id: number, admin: IAdminData) {
+		const row = this.table.find(r=>r.id === id);
+		if(row){
+			const isWhite = this.modelAdmin.isWhite(admin,row);
+			if(isWhite){
+				this.table = this.table.filter(r=>r.id !== id);
+			}else{
+				throw "権限エラー";
+			}
+		}
+		throw "not found"
 	}
 	getListByAdmin(admin: IAdminData) {
 		return this.modelAdmin.getData(admin);

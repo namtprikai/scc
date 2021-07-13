@@ -35,7 +35,7 @@ export const auth = (user: IUserData, roles: Array<IRoleData>) => {
 	}
 	return false;
 };
-export const authAdmin = (admin: IAdminData, products: Array<IProductData>) => {
+export const authAdminRead = (admin: IAdminData, products: Array<IProductData>):[boolean,Array<IProductData>] => {
 	// masterであれば無条件に返す
 	if (admin.is_master) {
 		return [true, products];
@@ -53,12 +53,43 @@ export const authAdmin = (admin: IAdminData, products: Array<IProductData>) => {
 	// }
 	return [false, adminProducts];
 };
-
+export const authAdminWhite = (admin: IAdminData, products: Array<IProductData>):[boolean,Array<IProductData>] => {
+	// masterであれば無条件に返す
+	if (admin.is_master) {
+		return [true, products];
+	}
+	const adminProducts = getProductsByAdminId(admin.id);
+	const authList = [];
+	for (const product of products) {
+		if (adminProducts.find((ap) => ap.id === product.id)) {
+			authList.push(true);
+		} else {
+			return [false, adminProducts];
+		}
+	}
+	if(authList.length>0){
+	return [true, adminProducts];
+	}
+	// if(roles.find(r=>r.id === adminRoles.id)){
+	// 	return true;
+	// }
+	return [false, adminProducts];
+};
 export class ProductRoleFilter<T> {
 	constructor(
 		protected getDataList: () => Array<T>,
 		protected getProductsFunc: (data: T) => Array<IProductData>
 	) {}
+	public  isWhite(admin: IAdminData,data:T):boolean{
+		const dataProducts = this.getProductsFunc(data);
+		const [isAuth, adminProducts] = authAdminWhite(admin, dataProducts);
+		return isAuth;
+	}
+	public  isRead(admin: IAdminData,data:T):boolean{
+		const dataProducts = this.getProductsFunc(data);
+		const [isAuth, adminProducts] = authAdminRead(admin, dataProducts);
+		return isAuth;
+	}
 	public getData(
 		admin: IAdminData,
 		mapFunc?: (data: T, intersectionProducts: Array<IProductData>) => T,
@@ -71,7 +102,7 @@ export class ProductRoleFilter<T> {
 				continue;
 			}
 			const dataProducts = this.getProductsFunc(data);
-			const [isAuth, adminProducts] = authAdmin(admin, dataProducts);
+			const [isAuth, adminProducts] = authAdminRead(admin, dataProducts);
 			console.log(isAuth);
 			if (isAuth) {
 				if (mapFunc) {
