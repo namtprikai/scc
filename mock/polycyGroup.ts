@@ -46,6 +46,12 @@ export const getPolicyGroupByAdminId = (req: Request, res: IAPIResponce) => {
 		},
 	});
 };
+/**
+	* アドミンにあるポリシーを取得する内部用
+	*/
+	export const getPolicyListByAdminId = (id: number)=>{
+
+	}
 export const getPolicyList = (req: Request, res: IAPIResponce): Response => {
 	const { parent_id } = req.query;
 

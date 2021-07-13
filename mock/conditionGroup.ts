@@ -33,3 +33,4 @@ export const getConditionGroupList = (
 export const getConditionGroupById = (id: number) => {
 	return conditionGroups.find((c) => c.id === id);
 };
+
