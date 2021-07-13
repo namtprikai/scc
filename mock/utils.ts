@@ -17,10 +17,10 @@ export class SAITableModel<ISAIAPIData>{
 		this.table = this.table.filter(r=>r.id !== id);
 	}
 	getListByAdmin(admin: IAdminData) {
-
+		return this.modelAdmin.getData(admin);
 	}
 	getListByUser(user: IUserData) {
-
+		return this.modelUser.getData(user);
 	}
 }
 export class CrossReferenceTable {
@@ -42,6 +42,8 @@ export class CrossReferenceTable {
 			[this.bName]: bId,
 		});
 	}
+	protected getBByA(){}
+	protected getAByB(){}
 	getByAdmin(admin: IAdminData, name: string, table: Array<ISAIAPIData>, targetTable: Array<ISAIAPIData>) { }
 	getByUser(user: IUserData, name: string, table: Array<ISAIAPIData>, targetTable: Array<ISAIAPIData>) { }
 	deleteById(id: number, name: string, table: Array<ISAIAPIData>) {

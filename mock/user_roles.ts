@@ -1,5 +1,6 @@
 import { IRoleData } from "../src/core/api/types";
 import { roles } from "./roles";
+import {CrossReferenceTable} from "./utils";
 export const userRoles = [
 	{
 		id: 0,
@@ -17,14 +18,10 @@ export const userRoles = [
 		user_id: 0,
 	},
 ];
+const UserRoleModule = new CrossReferenceTable("role_id","user_id");
 
 export const addUserRole = (user_id: number, role_id: number) => {
-	const id = userRoles[userRoles.length - 1].id + 1;
-	userRoles.push({
-		id,
-		user_id,
-		role_id,
-	});
+	UserRoleModule.add(role_id,user_id,userRoles);
 };
 export const getUserRolesByUserId = (user_id: number): Array<IRoleData> => {
 	// @ts-ignore
