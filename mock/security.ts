@@ -75,7 +75,7 @@ export const authAdminWhite = (admin: IAdminData, products: Array<IProductData>)
 	// }
 	return [false, adminProducts];
 };
-export class ProductRoleFilter<T> {
+export class ProductRoleFilter<T extends  ISAIAPIData> {
 	constructor(
 		protected getDataList: () => Array<T>,
 		protected getProductsFunc: (data: T) => Array<IProductData>
@@ -114,7 +114,7 @@ export class ProductRoleFilter<T> {
 		return res;
 	}
 }
-export class RoleFilter<T> {
+export class RoleFilter<T extends  ISAIAPIData> {
 	constructor(
 		protected getDataList: () => Array<T>,
 		protected getRoleFunc: (data: T) => Array<IRoleData>
@@ -129,13 +129,13 @@ export class RoleFilter<T> {
 		});
 	}
 }
-export const secureObjectCreateByAdmin = <T>(
+export const secureObjectCreateByAdmin = <T extends  ISAIAPIData>(
 	getDataList: () => Array<T>,
 	getProductsFunc: (data: T) => Array<IProductData>
 ): ProductRoleFilter<T> => {
 	return new ProductRoleFilter<T>(getDataList, getProductsFunc);
 };
-export const secureObjectCreateByUser = <T>(
+export const secureObjectCreateByUser = <T extends  ISAIAPIData>(
 	getDataList: () => Array<T>,
 	getRoleFunc: (data: T) => Array<IRoleData>
 ): RoleFilter<T> => {

@@ -103,10 +103,11 @@ export interface IPolicyGroupData extends ISAIAPIData {
 	*/
 export interface IPolicyData extends ISAIAPIData {
 	label: string;
-	is_sharing: boolean;
+	// is_sharing: 0|1;
 	url: string;
 	method: string;
-	is_active: string;
+	is_active: 0 | 1;
+	description: string;
 }
 
 export interface IQuestionData extends ISAIAPIData {
