@@ -8,19 +8,19 @@ export function getId(rows: Array<{ id: number, [key: string]: any }>) {
 	}
 	return (maxId += 1);
 }
-export class SAITableModel<ISAIAPIData>{
-	constructor(protected table: Array<ISAIAPIData>, protected modelAdmin:ProductRoleFilter<ISAIAPIData>,protected modelUser:RoleFilter<ISAIAPIData>) { }
-	public add(data: {[key:string]:string}) {
-		const row: ISAIAPIData = {
-			id:this.getMaxId(this.table),
+export class SAITableModel<T extends ISAIAPIData>{
+	constructor(protected table: Array<T>, protected modelAdmin:ProductRoleFilter<T>,protected modelUser:RoleFilter<T>) { }
+	public add(data: T) {
+		const row = {
 			...data,
 			created:new Date(),
 			modified:new Date(),
 		};
+		row.id = this.getMaxId(this.table);
 		this.table.push(row);
 		return row;
 	}
-	private getMaxId(table: Array<ISAIAPIData>):number {
+	private getMaxId(table: Array<T>):number {
 		let maxId = 0;
 		for (const row of table) {
 			maxId = Math.max(row.id, maxId);
@@ -47,7 +47,7 @@ export class SAITableModel<ISAIAPIData>{
 	}
 }
 export class CrossReferenceTable {
-	constructor(private aName: string, private bName) {
+	constructor(private aName: string, private bName: string) {
 
 	}
 	private getMaxId(table: Array<ISAIAPIData>) {
