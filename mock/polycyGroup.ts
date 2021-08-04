@@ -5,6 +5,9 @@ import {
 	IAdminPolicyGroupData,
 	IAPIResponce,
 } from "../src/core/api/types";
+import { productions } from "./products";
+import { getId, SAITableModel } from "./utils";
+import { secureObjectCreateByAdmin } from "./security";
 const admin_policyGroup: Array<IAdminPolicyGroupData> = [
 	{
 		id: 0,
@@ -21,6 +24,13 @@ const policyGroups: Array<IPolicyGroupData> = [
 		},
 	},
 ];
+const PolicyGroups = secureObjectCreateByAdmin<IPolicyGroupData>(
+	() => policyGroups,
+	(q) => {
+		return productions;
+	}
+);
+const polycyGroupModel = new SAITableModel(policyGroups, PolicyGroups);
 export const getPolicyGroupByAdminId = (req: Request, res: IAPIResponce) => {
 	const { admin_id } = req.params;
 	console.log(admin_id);

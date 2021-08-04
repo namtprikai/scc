@@ -1,6 +1,12 @@
 import { IRoleData } from "../src/core/api/types";
 import { roles } from "./roles";
-import {CrossReferenceTable} from "./utils";
+import { CrossReferenceTable } from "./utils";
+class UserRoleModel extends CrossReferenceTable {
+
+	public getUserRolesByUserId(user_id: number,table) {
+		return this.getAByB(user_id,table);
+	}
+}
 export const userRoles = [
 	{
 		id: 0,
