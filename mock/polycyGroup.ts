@@ -8,13 +8,7 @@ import {
 import { productions } from "./products";
 import { getId, SAITableModel } from "./utils";
 import { secureObjectCreateByAdmin } from "./security";
-const admin_policyGroup: Array<IAdminPolicyGroupData> = [
-	{
-		id: 0,
-		admin_id: 0,
-		policy_group_id: 0,
-	},
-];
+import {getPolidyGroupListByAdminId} from "./admin_policy_groups";
 const policyGroups: Array<IPolicyGroupData> = [
 	{
 		id: 0,
@@ -35,15 +29,13 @@ export const getPolicyGroupByAdminId = (req: Request, res: IAPIResponce) => {
 	const { admin_id } = req.params;
 	console.log(admin_id);
 	if (typeof admin_id === "string") {
-		const policyGroupIdList = admin_policyGroup
-			.filter((o) => o.admin_id === parseInt(admin_id))
-			.map((o) => o.policy_group_id);
+		const policyGroupIdSet = new Set(getPolidyGroupListByAdminId(parseInt(admin_id)));
 		// for (const admin of adminList) {
 		// 		if (String(admin.id) === id) {
 		return res.json({
 			status: 20000,
 			data: [
-				...policyGroups.filter((p) => policyGroupIdList.indexOf(p.id) !== -1),
+				...policyGroups.filter((p) => policyGroupIdSet.has(p.id)),
 			],
 		});
 	}
@@ -59,7 +51,7 @@ export const getPolicyGroupByAdminId = (req: Request, res: IAPIResponce) => {
 /**
 	* アドミンにあるポリシーを取得する内部用
 	*/
-	export const getPolicyListByAdminId = (id: number)=>{
+	export const getPolicyListByAdminId = (admin_id: number)=>{
 
 	}
 export const getPolicyList = (req: Request, res: IAPIResponce): Response => {
