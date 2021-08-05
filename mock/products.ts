@@ -161,7 +161,10 @@ export const addProduct = (
 		data: {},
 	});
 };
-
+/**
+	* api/product/{product_id}
+	delete
+	*/
 export const deleteProduct = (
 	req: Request,
 	res: IAPIResponce
@@ -170,7 +173,7 @@ export const deleteProduct = (
 	const admin = getAdminByToken(accessToken);
 	if (admin) {
 		const { product_id } = req.params;
-		const productList = Productions.getData(admin);
+		const productList = Productions.getData(admin,'/api/product/{product_id}/','delete');
 		for (const product of productList) {
 			if (product.id === parseInt(product_id, 10)) {
 				productions = productions.filter((p) => p.id !== parseInt(product_id, 10));
