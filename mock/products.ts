@@ -78,7 +78,7 @@ export const getProducts = (
 	const accessToken = req.header("Authorization") || "";
 	const admin = getAdminByToken(accessToken);
 	if (admin) {
-		const productList = Productions.getData(admin);
+		const productList = Productions.getData(admin,"/api/products/","get");
 
 		return res.json({
 			status: 20000,
@@ -100,6 +100,9 @@ export const getProductsByAdminId = (
 		const { admin_id } = req.params;
 		const productList = Productions.getData(
 			admin,
+			'/api/products/',
+			'get'
+			,
 			(d) => d,
 			(p) => {
 				for (const pa of productAdmins) {

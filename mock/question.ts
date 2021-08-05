@@ -116,7 +116,7 @@ export const getQuestionList = (req: Request, res: IAPIResponce): Response => {
 	if (admin && category_id == null) {
 		return res.json({
 			status: 20000,
-			data: [...Questions.getData(admin)],
+			data: [...Questions.getData(admin,'/api/questions/','get')],
 		});
 	}
 	return res.status(400).json({
@@ -126,6 +126,12 @@ export const getQuestionList = (req: Request, res: IAPIResponce): Response => {
 		},
 	});
 };
+/**
+	*
+		*
+		*
+		url /api/question/{question_id}/
+	*/
 export const deleteQuestion = (req: Request, res: IAPIResponce): Response => {
 	const { question_id, text } = req.params;
 	if (!/\d/.test(question_id)) {
@@ -140,7 +146,7 @@ export const deleteQuestion = (req: Request, res: IAPIResponce): Response => {
 	const admin = getAdminByToken(accessToken);
 	if (
 		admin &&
-		Questions.getData(admin).find((q) => q.id === parseInt(question_id, 10))
+		Questions.getData(admin,'/api/question/{question_id}/','delete').find((q) => q.id === parseInt(question_id, 10))
 	) {
 		questions = questions.filter((q) => q.id !== parseInt(question_id, 10));
 		deleteIntermadiateTables(parseInt(question_id, 10));

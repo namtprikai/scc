@@ -180,7 +180,11 @@ export const updateUser = (req: Request, res: IAPIResponce) => {
 		},
 	});
 };
-
+/**
+	* user delete
+	method: delete
+	url: /api/user
+	*/
 export const deleteUser = (req: Request, res: IAPIResponce) => {
 	const { user_id, text } = req.params;
 	if (!/\d/.test(user_id)) {
@@ -195,13 +199,13 @@ export const deleteUser = (req: Request, res: IAPIResponce) => {
 	const admin = getAdminByToken(accessToken);
 	if (
 		admin &&
-		UserList.getData(admin).find((q) => q.id === parseInt(user_id, 10))
+		UserList.getData(admin,"/api/user/","delete").find((q) => q.id === parseInt(user_id, 10))
 	) {
 		userList = userList.filter((u) => u.id !== parseInt(user_id, 10));
 		deleteIntermadiateTables(parseInt(user_id, 10));
 		return res.json({
 			status: 20000,
-			data: [...UserList.getData(admin)],
+			data: [...UserList.getData(admin,"/api/user/","delete")],
 		});
 	}
 	return res.json({

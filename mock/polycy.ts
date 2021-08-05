@@ -783,8 +783,8 @@ const policys: Array<IPolicyData> = [
 	{
 		"id": 98,
 		"label": "質問のリスト取得",
-		"method": "",
-		"url": "",
+		"method": "get",
+		"url": "/api/questions/",
 		"description": "-",
 		"is_active": 1
 	},
