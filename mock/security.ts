@@ -35,11 +35,14 @@ export const auth = (user: IUserData, roles: Array<IRoleData>) => {
 	}
 	return false;
 };
-export const authAdminRead = (admin: IAdminData, products: Array<IProductData>):[boolean,Array<IProductData>] => {
+export const authAdminRead = (admin: IAdminData, products: Array<IProductData>,uri:string):[boolean,Array<IProductData>] => {
 	// masterであれば無条件に返す
 	if (admin.is_master) {
 		return [true, products];
 	}
+	/**
+	* ここでポリシー検証
+	*/
 	const adminProducts = getProductsByAdminId(admin.id);
 	for (const product of products) {
 		if (adminProducts.find((ap) => ap.id === product.id)) {
@@ -53,11 +56,14 @@ export const authAdminRead = (admin: IAdminData, products: Array<IProductData>):
 	// }
 	return [false, adminProducts];
 };
-export const authAdminWhite = (admin: IAdminData, products: Array<IProductData>):[boolean,Array<IProductData>] => {
+export const authAdminWhite = (admin: IAdminData, products: Array<IProductData>,uri:string):[boolean,Array<IProductData>] => {
 	// masterであれば無条件に返す
 	if (admin.is_master) {
 		return [true, products];
 	}
+/**
+	* ここでポリシー検証
+	*/
 	const adminProducts = getProductsByAdminId(admin.id);
 	const authList = [];
 	for (const product of products) {
@@ -80,18 +86,19 @@ export class ProductRoleFilter<T extends  ISAIAPIData> {
 		protected getDataList: () => Array<T>,
 		protected getProductsFunc: (data: T) => Array<IProductData>
 	) {}
-	public  isWhite(admin: IAdminData,data:T):boolean{
+	public  isWhite(admin: IAdminData,data:T,uri:string):boolean{
 		const dataProducts = this.getProductsFunc(data);
-		const [isAuth, adminProducts] = authAdminWhite(admin, dataProducts);
+		const [isAuth, adminProducts] = authAdminWhite(admin, dataProducts,uri);
 		return isAuth;
 	}
-	public  isRead(admin: IAdminData,data:T):boolean{
+	public  isRead(admin: IAdminData,data:T,uri:string):boolean{
 		const dataProducts = this.getProductsFunc(data);
-		const [isAuth, adminProducts] = authAdminRead(admin, dataProducts);
+		const [isAuth, adminProducts] = authAdminRead(admin, dataProducts,uri);
 		return isAuth;
 	}
 	public getData(
 		admin: IAdminData,
+		uri:string,
 		mapFunc?: (data: T, intersectionProducts: Array<IProductData>) => T,
 		filter?: (d: T) => boolean
 	): Array<T> {
@@ -102,7 +109,7 @@ export class ProductRoleFilter<T extends  ISAIAPIData> {
 				continue;
 			}
 			const dataProducts = this.getProductsFunc(data);
-			const [isAuth, adminProducts] = authAdminRead(admin, dataProducts);
+			const [isAuth, adminProducts] = authAdminRead(admin, dataProducts,uri);
 			console.log(isAuth);
 			if (isAuth) {
 				if (mapFunc) {

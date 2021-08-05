@@ -16,6 +16,6 @@ class PolicyGroupPolicy extends CrossReferenceTable{
 
 const policyGroupPolicyModel = new PolicyGroupPolicy("policy_group_id","policy_id");
 
-export const getPolycyByPolicyGroupId = (policyGroupId:number)=>{
+export const getPolycyByPolicyGroupId = (policyGroupId:number):Array<number>=>{
 	return policyGroupPolicyModel.getPolycyByPolycyGroupId(policyGroupId,policyGroup_policy);
 }

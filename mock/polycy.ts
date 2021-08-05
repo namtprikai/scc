@@ -1,6 +1,8 @@
 import faker from "faker";
 import { Response, Request } from "express";
-import { IPolicyData, IAPIResponce } from "../src/core/api/types";
+import { IPolicyData, IAPIResponce, IAdminData } from "../src/core/api/types";
+import { getPolidyGroupListByAdminId } from "./admin_policy_groups";
+import { getPolycyByPolicyGroupId } from "./polycyGroup_policy";
 const policys: Array<IPolicyData> = [
 	{
 		"id": 1,
@@ -1155,3 +1157,14 @@ export const getPolicyList = (req: Request, res: IAPIResponce): Response => {
 		data: [...policys],
 	});
 };
+export const getPolicyListByAdmin = (admin:IAdminData)=>{
+	const policyGroupIdList = getPolidyGroupListByAdminId(admin.id);
+	const policyIdSet = new Set();
+	for(const policyGroupId of policyGroupIdList){
+		const policyList = getPolycyByPolicyGroupId(policyGroupId);
+		for(const policyId of policyList){
+			policyIdSet.add(policyId);
+		}
+	}
+	return policys.filter(p=>policyIdSet.has(p.id));
+}
