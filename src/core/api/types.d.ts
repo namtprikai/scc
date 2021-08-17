@@ -4,6 +4,9 @@ export interface ISAIAPIData {
 	created?: Date;
 	modified?: Date;
 }
+export interface ICrossReferenceTable extends ISAIAPIData {
+	[key: string]: number;
+}
 export interface IAPIResponce extends Response {
 	json: (args: { status: number; data: { [key: string]: any } | Array<{ [key: string]: any }> }) => any;
 }

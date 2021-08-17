@@ -1,14 +1,14 @@
-import { IAdminData } from "../src/core/api/types";
+import { IAdminData, ICrossReferenceTable } from "../src/core/api/types";
 import { CrossReferenceTable } from "./utils";
-let policyGroup_policy = [];
+let policyGroup_policy:Array<ICrossReferenceTable> = [];
 class PolicyGroupPolicy extends CrossReferenceTable{
-	public getPolycyByPolycyGroupId(polycyGroup_id: number,table) {
+	public getPolycyByPolycyGroupId(polycyGroup_id: number,table:Array<ICrossReferenceTable>) {
 		return this.getBByA(polycyGroup_id,table);
 	}
-	public deletebyPolycyGroupId(polycyGroup_id: number,table){
+	public deletebyPolycyGroupId(polycyGroup_id: number,table:Array<ICrossReferenceTable>){
 		this.deleteByAId(polycyGroup_id,table);
 	}
-	public deletebyPolicyId(policy_id: number,table){
+	public deletebyPolicyId(policy_id: number,table:Array<ICrossReferenceTable>){
 		this.deleteByBId(policy_id,table);
 	}
 }

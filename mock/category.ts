@@ -21,7 +21,10 @@ const categorys: Array<ICategoryData> = [
 ];
 const CategoryModel = new SAITableModel(
 	categorys,
-	new ProductRoleFilter(() => categorys, (c) => {
+	'category'
+	,
+	new ProductRoleFilter(() => categorys,
+	 (c) => {
 	const products: Array<IProductData> = [];
 	for (const up of userProducts) {
 		if (c.id === up.user_id) {
@@ -74,9 +77,15 @@ export const getCategoryList = (req: Request, res: IAPIResponce): Response => {
 };
 
 export const addCategory = (req: Request, res: IAPIResponce): Response => {
-	const { parent_id ,} = req.query;
+	let { parent_id ,} = req.query;
 	if(typeof parent_id === 'string'){
-		const row = CategoryModel.add({parent_id});
+		const row = CategoryModel.add({
+			parent_id:parseInt(parent_id,10),
+			created:new Date(),
+			modified:new Date(),
+			label:"",
+			text:"",
+		});
 		return res.json({
 			status: 20000,
 			data: row,

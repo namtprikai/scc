@@ -24,7 +24,9 @@ const PolicyGroups = secureObjectCreateByAdmin<IPolicyGroupData>(
 		return productions;
 	}
 );
-const polycyGroupModel = new SAITableModel(policyGroups, PolicyGroups);
+const polycyGroupModel = new SAITableModel(policyGroups,
+	"polycygroup",
+	PolicyGroups);
 export const getPolicyGroupByAdminId = (req: Request, res: IAPIResponce) => {
 	const { admin_id } = req.params;
 	console.log(admin_id);

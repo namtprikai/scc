@@ -1,9 +1,9 @@
-import { IRoleData, ISAIAPIData } from "../src/core/api/types";
+import { ICrossReferenceTable, IRoleData, ISAIAPIData } from "../src/core/api/types";
 import { roles } from "./roles";
 import { CrossReferenceTable } from "./utils";
 class UserRoleModel extends CrossReferenceTable {
 
-	public getUserRolesByUserId(user_id: number,table:Array<ISAIAPIData>) {
+	public getUserRolesByUserId(user_id: number,table:Array<ICrossReferenceTable>) {
 		return this.getAByB(user_id,table);
 	}
 }
