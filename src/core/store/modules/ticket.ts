@@ -9,7 +9,7 @@ import {
 import store from "@/store";
 import { Ajax } from "@/utils/parts";
 import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
-import moment from "moment";
+import { moment } from '@/init/moment';
 import { v4 } from "uuid";
 import { start } from "repl";
 import { UserModule } from "@/store/modules/user";

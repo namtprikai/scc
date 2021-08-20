@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import moment from "moment";
+import { moment } from '@/init/moment';
 import { MessageList } from "@/api/messageList";
 import { eventHub } from "@/init/eventHub";
 import { AdminUserModule } from "@/store/modules/adminUser";

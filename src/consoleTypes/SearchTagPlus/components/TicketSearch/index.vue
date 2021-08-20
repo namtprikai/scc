@@ -6,7 +6,7 @@ import Pie from "@/components/Charts/Pie.vue";
 import Bar from "@/components/Charts/Bar.vue";
 import Pareto from "@/components/Charts/Pareto.vue";
 import _ from "lodash";
-import moment, { duration } from "moment";
+import { moment } from '@/init/moment';
 import TicketSearchParent, {
 	GrafhConf,
 	EnquateMapperRadio,

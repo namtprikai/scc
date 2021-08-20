@@ -3,7 +3,8 @@ import Pie from "@/components/Charts/Pie.vue";
 import Bar from "@/components/Charts/Bar.vue";
 import Pareto from "@/components/Charts/Pareto.vue";
 import _ from "lodash";
-import moment, { duration } from "moment";
+import { moment } from '@/init/moment';
+import { duration } from "moment";
 import { Saiko } from "@/utils/saiko/index";
 // import { TicketModule, ticketMapper, Ticket, FaqTicket } from "@/store/modules/ticket";
 import TicketCompParent, {

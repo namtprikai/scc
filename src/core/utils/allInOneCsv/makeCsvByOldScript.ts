@@ -6,7 +6,7 @@ import csvParser from "csv-parse";
 import csvPtringify from "csv-stringify";
 // import talkScript from '../../components/FaqClientPage/talkScriptApi';
 // import { Scenario } from '../../../products/185/store/modules/scenario';
-const moment = require("moment");
+import { moment } from '@/init/moment';
 // const talkScript = JSON.parse(fs.readFileSync("./talkScript.json", "utf-8"));
 // const scenario: BotConfig = JSON.parse(fs.readFileSync("./scenario.json", "utf-8"));
 interface RowObject {

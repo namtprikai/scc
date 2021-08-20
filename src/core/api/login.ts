@@ -33,7 +33,7 @@ export namespace Login {
 
 	export const getInfo = async (token: string,admin_id: number): Promise<IAdmin | null> => {
 		const data: AxiosResponse<any> = await AjaxService.ajax.http({
-			url: `/admininfo/${admin_id}`,
+			url: `/admin/${admin_id}`,
 			method: "get",
 			headers: {
 				"X-Requested-With": "XMLHttpRequest",
