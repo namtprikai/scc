@@ -10,6 +10,7 @@ import store from "@/store";
 import { AjaxService } from "@/services/ajax";
 import { IProductData, IQuestionData } from "@/api/types";
 import { AxiosResponse } from "axios";
+import { Product } from "@/api/product";
 @Module({ dynamic: true, store, name: "products" })
 class ProductsStore extends VuexModule {
 	productList: Array<IProductData> = [];
@@ -18,11 +19,7 @@ class ProductsStore extends VuexModule {
 	}
 	@Mutation
 	public async GetProducts() {
-		const { data }: AxiosResponse<any> = await AjaxService.ajax.http({
-			url: `/products`,
-			method: "get",
-			params: {},
-		});
+		const  data = await Product.getList();
 		this.productList = data.products;
 	}
 }
