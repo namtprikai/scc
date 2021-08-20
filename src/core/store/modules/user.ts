@@ -60,7 +60,7 @@ class User extends VuexModule implements IUserState {
 		if (UserModule.Id === null) {
 			throw Error("GetInfo: id is undefined!");
 		}
-		const data = await Login.getInfo(token);
+		const data = await Login.getInfo(token,this.id);
 		if (data?.role) {
 			return {
 				id: data.id,
@@ -99,6 +99,18 @@ class User extends VuexModule implements IUserState {
 	private SET_TOKEN({ id, token }: { id: number; token: string }) {
 		this.token = token;
 		this.id = id;
+	}
+	@Mutation
+	private SET_INFO({ id,role,name,is_master,email, token,config }: { id: number;role:number,name:string,is_master:boolean,email:string; token: string;config:any }){
+		return {
+			id,
+			role,
+			name,
+			is_master,
+			avatar: "",
+			email,
+			token,
+		};
 	}
 }
 
