@@ -57,6 +57,7 @@ export let productions: Array<IProductData> = [
 		max_failure_time_user: 5,
 	},
 ];
+const URL = "/api/products/";
 interface IProductsAPIResponce extends Response {
 	json: (args: {
 		status: number;
