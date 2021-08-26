@@ -19,3 +19,6 @@ const policyGroupPolicyModel = new PolicyGroupPolicy("policy_group_id","policy_i
 export const getPolycyByPolicyGroupId = (policyGroupId:number):Array<number>=>{
 	return policyGroupPolicyModel.getPolycyByPolycyGroupId(policyGroupId,policyGroup_policy);
 }
+export const deleteByPolicyGroupId = (policyGroupId:number):void=>{
+	return policyGroupPolicyModel.deletebyPolycyGroupId(policyGroupId,policyGroup_policy);
+}
