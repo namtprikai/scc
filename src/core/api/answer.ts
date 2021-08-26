@@ -1,3 +1,5 @@
 import { AjaxService } from "@/services/ajax";
 import { AxiosResponse } from "axios";
-namespace Answer{}
+namespace Answer{
+	const URL = "api/answer/";
+}
