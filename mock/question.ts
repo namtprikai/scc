@@ -80,7 +80,7 @@ const QuestionsByUser = secureObjectCreateByUser<IQuestionData>(
 		return roles;
 	}
 );
-const questionsModel = new SAITableModel(questions, Questions, QuestionsByUser);
+const questionsModel = new SAITableModel(questions,'/question/', Questions, QuestionsByUser);
 export const addQuestion = (req: Request, res: IAPIResponce): Response => {
 	const { title, config, label, is_public } = req.body;
 	const accessToken = req.header("Authorization") || "";
