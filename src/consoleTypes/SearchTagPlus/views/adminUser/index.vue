@@ -112,11 +112,13 @@ export default class AdminUser extends Vue {
 	];
 
 	public addAdminUser() {
-		Admin.add({
+		AdminUserModule.addAdminUser({
 					name: this.newAdminUser.name,
 					email: this.newAdminUser.email,
 					password: this.newAdminUser.password,
 					role: this.newAdminUser.role,
+					config:{},
+					is_master:0
 				})
 			.then((data) => {
 				this.$modal.show("dialog", {

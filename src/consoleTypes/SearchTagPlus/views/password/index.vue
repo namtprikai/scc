@@ -96,6 +96,7 @@ import PanThumb from "@/components/PanThumb/index.vue";
 import { CLIENT_ID } from "../../utils/configration";
 import { Ajax, AndyPasswordValidator } from "@/utils/parts";
 import { valid } from "mockjs";
+import { Admin } from "@/api/admin";
 // tslint:disable-next-line:no-var-requires
 const PasswordValidator = require("password-validator");
 // const passwordValidator = new PasswordValidator();
@@ -112,7 +113,6 @@ export default class Password extends Vue {
 	private newpw2 = "";
 	private isEdit = false;
 	private isSendmail = false;
-	private ajax: Ajax = new Ajax();
 	passwordValidator = new AndyPasswordValidator(PasswordValidator);
 	@Watch("newpw")
 	public pwEditing() {
@@ -187,14 +187,9 @@ export default class Password extends Vue {
 		if (!this.isChangePassword) {
 			return;
 		}
-		this.ajax
-			.http({
-				url: `product/${CLIENT_ID}/admin_user/${UserModule.id}`,
-				method: "PATCH",
-				data: {
+		Admin.changePw(UserModule.id,{
 					old_password: this.oldpw,
 					new_password: this.newpw,
-				},
 			})
 			.then(
 				(res: any) => {

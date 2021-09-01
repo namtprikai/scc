@@ -33,4 +33,14 @@ export namespace Admin {
 			data,
 		});
 	}
+	export const changePw = (id:number,data: {
+		old_password: string,
+		new_password: string,
+	})=>{
+		return AjaxService.ajax.http({
+			url: `/admin/changepw/${id}/`,
+			method: "PATCH",
+			data,
+		});
+	}
 }

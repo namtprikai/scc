@@ -37,11 +37,14 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 		this.getAdminUserList();
 	}
 
-	@Action
+	@Action({
+		commit: "SET_ADMINLIST",
+	})
 	public async addAdminUser(adminUser: { role: number; name: string; email: string; password: string; config: any; is_master: number }) {
 		const { role, name, email, password, is_master, config } = adminUser;
 		const admin = await Admin.add({ role, name, email, password, is_master, config });
 		this.getAdminUserList();
+		return admin;
 	}
 }
 
