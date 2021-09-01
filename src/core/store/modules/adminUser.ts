@@ -1,17 +1,10 @@
 import Cookies from "js-cookie";
-import {
-	VuexModule,
-	Module,
-	Mutation,
-	Action,
-	getModule,
-} from "vuex-module-decorators";
+import { VuexModule, Module, Mutation, Action, getModule } from "vuex-module-decorators";
 import store from "@/store";
-import { Ajax } from "@/utils/parts";
 import { CLIENT_ID } from "@consoletype/utils/configration";
 import { IAdminData } from "@/api/types";
+import { Admin } from "@/api/admin";
 import { v4 } from "uuid";
-const ajax: Ajax = new Ajax();
 export interface IAdminUserState {
 	AdminList: any;
 	// TalkScriptTree:any;
@@ -26,58 +19,28 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 
 	@Mutation
 	private SET_ADMINLIST(adminUser: Array<IAdminData>) {
-		this.adminList = adminUser.sort(
-			(a: IAdminData, b: IAdminData) => Number(a.id) - Number(b.id)
-		);
+		this.adminList = adminUser.sort((a: IAdminData, b: IAdminData) => Number(a.id) - Number(b.id));
 	}
 
 	@Action({
 		commit: "SET_ADMINLIST",
 	})
 	public async getAdminUserList() {
-		const { data } = await ajax.http({
-			url: `/admin/`,
-			method: "get",
-			headers: {
-				"Content-type": "application/json",
-			},
-			params: {},
-		});
+		const { data } = await Admin.get();
 		return data;
 	}
 
 	@Action
 	public async setAdminUser(adminUser: IAdminData) {
 		console.log("SETADMINUSER");
-		const admin = await ajax.http({
-			url: `/admin/${adminUser.id}/`,
-			method: "patch",
-			headers: {
-				"Content-type": "application/json",
-			},
-			data: { name: adminUser.name },
-		});
+		const admin = await Admin.patch(adminUser.id, { name: adminUser.name });
 		this.getAdminUserList();
 	}
 
 	@Action
-	public async addAdminUser(adminUser: {
-		role: number;
-		name: string;
-		email: string;
-		password: string;
-		config: any;
-		is_master: boolean;
-	}) {
+	public async addAdminUser(adminUser: { role: number; name: string; email: string; password: string; config: any; is_master: number }) {
 		const { role, name, email, password, is_master, config } = adminUser;
-		const admin = await ajax.http({
-			url: `/admin/`,
-			method: "post",
-			headers: {
-				"Content-type": "application/json",
-			},
-			data: { role, name, email, password, is_master, config },
-		});
+		const admin = await Admin.add({ role, name, email, password, is_master, config });
 		this.getAdminUserList();
 	}
 }

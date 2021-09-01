@@ -85,11 +85,12 @@ import DashboardParent from "@/views/dashboard/index";
 import PanThumb from "@/components/PanThumb/index.vue";
 import { CLIENT_ID } from "../../utils/configration";
 import { AndyPasswordValidator } from "@/utils/parts";
-import { AjaxService } from "@/services/ajax";
+
 import { AdminUserModule } from "@/store/modules/adminUser";
 import Breadcrumb from "@/components/Breadcrumb/index.vue";
 const PasswordValidator = require("password-validator");
 import { IAdminData } from "@/api/types";
+import {Admin} from "@/api/admin";
 // @ts-ignore
 @Component({
 	components: {},
@@ -111,17 +112,12 @@ export default class AdminUser extends Vue {
 	];
 
 	public addAdminUser() {
-		AjaxService.ajax
-			.http({
-				url: `product/${CLIENT_ID}/admin_user/`,
-				method: "POST",
-				data: {
+		Admin.add({
 					name: this.newAdminUser.name,
 					email: this.newAdminUser.email,
 					password: this.newAdminUser.password,
 					role: this.newAdminUser.role,
-				},
-			})
+				})
 			.then((data) => {
 				this.$modal.show("dialog", {
 					title: "成功",
