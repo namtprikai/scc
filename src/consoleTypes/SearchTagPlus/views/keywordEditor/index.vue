@@ -108,9 +108,8 @@ import {
 	packageUrl,
 } from "./../../utils/configration";
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { UpdateServer } from "@/api/updateServer";
 import { eventHub } from "@/init/eventHub";
-import { Ajax, Wait } from "@/utils/parts";
+import { Wait } from "@/utils/parts";
 import { KeywordEditorButtons } from "../../config";
 import Pagination from "vue-pagination-2";
 
@@ -142,7 +141,6 @@ interface InvertedObj {
 	components: { Pagination },
 })
 export default class KeywordEditorComp extends Vue {
-	private ajax = new Ajax();
 	private step = 0.05;
 	private inv: any = [];
 	private is_load = false;
@@ -199,7 +197,6 @@ export default class KeywordEditorComp extends Vue {
 
 	async syncProdKeyword() {
 		this.isSave = true;
-		UpdateServer.deployPackageFromTest();
 		await this.fetchInverted_indexView();
 		await Wait(10000);
 		eventHub.$emit("keywordUpdate");
@@ -227,17 +224,16 @@ export default class KeywordEditorComp extends Vue {
 				this.inverted_index[o.key] = o;
 			}
 		});
-		await this.ajax.http({
-			baseURL: `${scriptUrl}`,
-			url: `update_inverted_index?time=${new Date().getTime()}`,
-			method: "PUT",
-			data: {
-				product_id: parseInt(CLIENT_ID),
-				inverted_index: this.inverted_index,
-			},
-		});
+		// await this.ajax.http({
+		// 	baseURL: `${scriptUrl}`,
+		// 	url: `update_inverted_index?time=${new Date().getTime()}`,
+		// 	method: "PUT",
+		// 	data: {
+		// 		product_id: parseInt(CLIENT_ID),
+		// 		inverted_index: this.inverted_index,
+		// 	},
+		// });
 		await Wait(500);
-		await UpdateServer.deployInvertedIndex({ env: "prod" });
 		// await Wait(5000);
 		// await UpdateServer.deployPackageFromTest();
 		await this.fetchInverted_indexView();
@@ -270,23 +266,20 @@ export default class KeywordEditorComp extends Vue {
 				this.inverted_index[o.key] = o;
 			}
 		});
-		this.ajax
-			.http({
-				baseURL: `${scriptUrl}`,
-				url: `update_inverted_index?time=${new Date().getTime()}`,
-				method: "PUT",
-				data: {
-					product_id: parseInt(CLIENT_ID),
-					inverted_index: this.inverted_index,
-				},
-			})
+Promise.resolve()
+		// this.ajax
+		// 	.http({
+		// 		baseURL: `${scriptUrl}`,
+		// 		url: `update_inverted_index?time=${new Date().getTime()}`,
+		// 		method: "PUT",
+		// 		data: {
+		// 			product_id: parseInt(CLIENT_ID),
+		// 			inverted_index: this.inverted_index,
+		// 		},
+		// 	})
 			.then(
 				async (res) => {
-					await UpdateServer.deployInvertedIndex();
-					// await UpdateServer.update({
-					// 	env: isTest ? "test" : "prod",
-					// 	time: new Date().getTime(),
-					// });
+
 					await this.fetchInverted_indexView();
 					this.$modal.show("dialog", {
 						title: "正常に更新されました",
@@ -316,27 +309,15 @@ export default class KeywordEditorComp extends Vue {
 			);
 	}
 
-	// private fetchInvertedIndex(): Promise<any> {
-	// 	return new Promise((r: any) => {
-	// 		this.ajax
-	// 			.http({
-	// 				baseURL: `${packageUrl}`,
-	// 				url: `${CLIENT_ID}/bot_package_test.json?${new Date().getTime()}`,
-	// 				method: "GET"
-	// 			})
-	// 			.then((res: any) => {
-	// 				r(res.inverted_index);
-	// 			});
-	// 	});
-	// }
 	private fetchInvertedIndex(): Promise<any> {
 		return new Promise((r: any) => {
-			this.ajax
-				.http({
-					baseURL: `${scriptUrl}`,
-					url: `inverted_index_data/?product_id=${CLIENT_ID}&time=${new Date().getTime()}`,
-					method: "GET",
-				})
+			// this.ajax
+			// 	.http({
+			// 		baseURL: `${scriptUrl}`,
+			// 		url: `inverted_index_data/?product_id=${CLIENT_ID}&time=${new Date().getTime()}`,
+			// 		method: "GET",
+			// 	})
+Promise.resolve()
 				.then((res: any) => {
 					r(res);
 				});

@@ -42,7 +42,7 @@ import {
 	CLIENT_ID,
 	subsystemUrl,
 } from "./../../utils/configration";
-import { Ajax, Message } from "@/utils/parts";
+import { Message } from "@/utils/parts";
 @Component({
 	components: {},
 })
@@ -50,7 +50,6 @@ export default class FeedbackAdmin extends Vue {
 	currentMessage: Message | null = null;
 	loadFlg = false;
 	show = false;
-	protected ajax: Ajax = new Ajax();
 	messages: Array<Message> = [];
 	adminmessages: Array<Message> = [];
 	date = "1";
@@ -75,19 +74,20 @@ export default class FeedbackAdmin extends Vue {
 			return num;
 		};
 		// let utcDate=new Date(Date.UTC(nowDate.getFullYear(),nowDate.getMonth()+1,nowDate.getDay()));
-		this.ajax
-			.http({
-				url: `product/${CLIENT_ID}/search_message`,
-				method: "GET",
-				params: {
-					mode: "and",
-					q: "",
-					owner: "admin",
-					st: `${yesterdayDate.getUTCFullYear()}-${toDoubleDigits(
-						yesterdayDate.getUTCMonth() + 1
-					)}-${toDoubleDigits(yesterdayDate.getUTCDate())}`,
-				},
-			})
+Promise.resolve()
+		// this.ajax
+		// 	.http({
+		// 		url: `product/${CLIENT_ID}/search_message`,
+		// 		method: "GET",
+		// 		params: {
+		// 			mode: "and",
+		// 			q: "",
+		// 			owner: "admin",
+		// 			st: `${yesterdayDate.getUTCFullYear()}-${toDoubleDigits(
+		// 				yesterdayDate.getUTCMonth() + 1
+		// 			)}-${toDoubleDigits(yesterdayDate.getUTCDate())}`,
+		// 		},
+		// 	})
 			.then(
 				(res: any) => {
 					console.log(res);
@@ -121,11 +121,12 @@ export default class FeedbackAdmin extends Vue {
 	}
 
 	getMessages() {
-		this.ajax
-			.http({
-				url: `product/${CLIENT_ID}/message_feedback`,
-				method: "GET",
-			})
+		// this.ajax
+		// 	.http({
+		// 		url: `product/${CLIENT_ID}/message_feedback`,
+		// 		method: "GET",
+		// 	})
+Promise.resolve()
 			.then(
 				(res: any) => {
 					this.messages = res;

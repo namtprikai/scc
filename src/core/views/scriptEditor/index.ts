@@ -3,7 +3,6 @@ import { eventHub } from "@/init/eventHub";
 import Tinymce from "@/components/Tinymce/index.vue";
 import InputTag from "@/components/InputTag/index.vue";
 import Synonym from "@/components/Synonym/index.vue";
-import { Ajax } from "@/utils/parts";
 import _ from "lodash";
 import { bartUrl } from "@consoletype/utils/configration";
 import { ScenarioModule } from "@/store/modules/scenario";
@@ -225,17 +224,17 @@ export default class ScriptEditorCompParent extends Vue {
 		this.resetItem();
 	}
 
-	ajax: Ajax = new Ajax();
 	isBartSearch = false;
 	makeKeyword() {
 		this.isBartSearch = true;
-		this.ajax
-			.http({
-				method: "POST",
-				baseURL: bartUrl,
-				url: "",
-				data: { text: this.item.data.text || "" },
-			})
+		Promise.resolve()
+		// this.ajax
+		// 	.http({
+		// 		method: "POST",
+		// 		baseURL: bartUrl,
+		// 		url: "",
+		// 		data: { text: this.item.data.text || "" },
+		// 	})
 			.then((data: any) => {
 				console.log(data);
 				const { tokens } = data;

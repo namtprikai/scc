@@ -387,20 +387,20 @@ export class UserList {
 			this.getUser(id, (updateUser: User) => {
 				updateUser.Attribute = attribute;
 				if (serverSend) {
-					this.ajax
-						.http({
-							url: `product/${updateUser.product_id}/user/${id}`,
-							method: "PATCH",
-							data: { attribute: updateUser.Attribute },
-						})
-						.then(
-							(res: {} | PromiseLike<{}> | undefined) => {
-								sucsess(res);
-							},
-							(res: any) => {
-								error(res);
-							}
-						);
+					// this.ajax
+					// 	.http({
+					// 		url: `product/${updateUser.product_id}/user/${id}`,
+					// 		method: "PATCH",
+					// 		data: { attribute: updateUser.Attribute },
+					// 	})
+					// 	.then(
+					// 		(res: {} | PromiseLike<{}> | undefined) => {
+					// 			sucsess(res);
+					// 		},
+					// 		(res: any) => {
+					// 			error(res);
+					// 		}
+					// 	);
 				} else {
 					sucsess(updateUser);
 				}

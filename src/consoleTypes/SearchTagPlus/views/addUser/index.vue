@@ -94,9 +94,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { Ajax, AndyPasswordValidator } from "@/utils/parts";
+import { AndyPasswordValidator } from "@/utils/parts";
 import { Type } from "@/components/Charts";
-
+import { Admin } from "@/api/admin";
 import { CLIENT_ID } from "../../utils/configration";
 const PasswordValidator = require("password-validator");
 
@@ -116,7 +116,6 @@ export default class AddUser extends Vue {
 	];
 
 	passwordValidator = new AndyPasswordValidator(PasswordValidator);
-	private ajax: Ajax = new Ajax();
 
 	@Watch("pw1")
 	public pwEditing() {
@@ -138,16 +137,11 @@ export default class AddUser extends Vue {
 		if (!this.isAddUser) {
 			return;
 		}
-		this.ajax
-			.http({
-				url: `product/${CLIENT_ID}/admin_user/`,
-				method: "POST",
-				data: {
+		Admin.add({
 					name: this.name,
 					email: this.email,
 					password: this.pw1,
 					role: this.role,
-				},
 			})
 			.then((data) => {
 				this.$modal.show("dialog", {

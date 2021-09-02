@@ -69,7 +69,6 @@ import { mapGetters } from "vuex";
 import DashboardParent from "@/views/dashboard/index";
 import PanThumb from "@/components/PanThumb/index.vue";
 import { CLIENT_ID } from "./../../utils/configration";
-import { Ajax } from "@/utils/parts";
 import { eventHub } from "@/init/eventHub";
 import { AdminUserModule } from "@/store/modules/adminUser";
 import Breadcrumb from "@/components/Breadcrumb/index.vue";
@@ -85,7 +84,6 @@ import UserDetailParent from "@/views/userDetail/index";
 	},
 })
 export default class UserDetail extends Vue {
-	private ajax = new Ajax();
 	private isShow = false;
 	private items: Array<any> = [
 		{
@@ -225,16 +223,16 @@ export default class UserDetail extends Vue {
 		const displayname = this.user.displayname;
 		const attribute = JSON.stringify(this.attr) || "";
 		const status = this.user.status;
-		this.ajax.http({
-			url: `product/${CLIENT_ID}/user/${id}`,
-			method: "PATCH",
-			data: {
-				tags,
-				status,
-				attribute,
-				displayname,
-			},
-		});
+		// this.ajax.http({
+		// 	url: `product/${CLIENT_ID}/user/${id}`,
+		// 	method: "PATCH",
+		// 	data: {
+		// 		tags,
+		// 		status,
+		// 		attribute,
+		// 		displayname,
+		// 	},
+		// });
 	}
 
 	private getTagsByCategory(category: string) {

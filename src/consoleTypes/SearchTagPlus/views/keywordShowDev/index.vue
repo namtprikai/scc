@@ -63,7 +63,6 @@ import {
 } from "./../../utils/configration";
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { eventHub } from "@/init/eventHub";
-import { Ajax } from "@/utils/parts";
 import Pagination from "vue-pagination-2";
 interface InvertedObj {
 	key: string;
@@ -93,7 +92,6 @@ interface InvertedObj {
 	components: { Pagination },
 })
 export default class KeywordShowComp extends Vue {
-	private ajax = new Ajax();
 	private step = 0.05;
 	private inv: any = [];
 	private is_load = false;
@@ -150,16 +148,17 @@ export default class KeywordShowComp extends Vue {
 				this.inverted_index[o.key] = o;
 			}
 		});
-		this.ajax
-			.http({
-				baseURL: `${scriptUrl}`,
-				url: `update_inverted_index?${new Date().getTime()}`,
-				method: "PUT",
-				data: {
-					product_id: parseInt(CLIENT_ID),
-					inverted_index: this.inverted_index,
-				},
-			})
+		// this.ajax
+		// 	.http({
+		// 		baseURL: `${scriptUrl}`,
+		// 		url: `update_inverted_index?${new Date().getTime()}`,
+		// 		method: "PUT",
+		// 		data: {
+		// 			product_id: parseInt(CLIENT_ID),
+		// 			inverted_index: this.inverted_index,
+		// 		},
+		// 	})
+Promise.resolve()
 			.then(
 				(res) => {
 					this.fetchInverted_indexView();
@@ -189,12 +188,13 @@ export default class KeywordShowComp extends Vue {
 
 	private fetchInvertedIndex(time: number): Promise<any> {
 		return new Promise((r: any) => {
-			this.ajax
-				.http({
-					baseURL: `${packageUrl}`,
-					url: `${CLIENT_ID}/tag_package_test.json?${time}`,
-					method: "GET",
-				})
+			// this.ajax
+			// 	.http({
+			// 		baseURL: `${packageUrl}`,
+			// 		url: `${CLIENT_ID}/tag_package_test.json?${time}`,
+			// 		method: "GET",
+			// 	})
+Promise.resolve()
 				.then((res: any) => {
 					r(res.inverted_index);
 				});

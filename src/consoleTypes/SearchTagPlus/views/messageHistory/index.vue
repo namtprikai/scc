@@ -99,7 +99,7 @@ import { MessageList } from "@/api/messageList";
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { MessageListModule } from "@/store/modules/messageList";
 import { eventHub } from "@/init/eventHub";
-import { MessageObj, Ajax, VirtualStreamData } from "@/utils/parts";
+import { MessageObj, VirtualStreamData } from "@/utils/parts";
 import { CLIENT_ID, subsystemUrl } from "./../../utils/configration";
 // @ts-ignore
 @Component({
@@ -123,7 +123,6 @@ export default class MessageHistory extends Vue {
 	private currentMessage = null;
 	private messageList: Array<VirtualStreamData> = [];
 	private messages: Array<MessageObj> = [];
-	private ajax: Ajax = new Ajax();
 	private ticketData: any = {};
 	isTicket(text: string) {
 		return String(text).match(/<ticket-bot:\s*?(.+?)_(.+?)>/);
@@ -172,13 +171,14 @@ export default class MessageHistory extends Vue {
 			keyMepper.set("mode", "モード");
 			keyMepper.set("step_id", "ステップID");
 			keyMepper.set("query", "クエリ");
-			this.ajax
-				.http({
-					baseURL: subsystemUrl,
-					url: `product/${CLIENT_ID}/data_get`,
-					method: "get",
-					params: { type: "ticket", rangeKey, partitionKey },
-				})
+			// this.ajax
+			// 	.http({
+			// 		baseURL: subsystemUrl,
+			// 		url: `product/${CLIENT_ID}/data_get`,
+			// 		method: "get",
+			// 		params: { type: "ticket", rangeKey, partitionKey },
+			// 	})
+Promise.resolve()
 				.then((data: any) => {
 					console.log(data);
 					const text = [];
@@ -236,13 +236,14 @@ export default class MessageHistory extends Vue {
 	}
 
 	public async setMessages(userId: string) {
-		const data: any = await this.ajax.http({
-			url: `product/${CLIENT_ID}/user/${userId}/message`,
-			method: "get",
-			data: {
-				limit: 100,
-			},
-		});
+		const data: any = await Promise.resolve();
+// this.ajax.http({
+// 			url: `product/${CLIENT_ID}/user/${userId}/message`,
+// 			method: "get",
+// 			data: {
+// 				limit: 100,
+// 			},
+// 		});
 		this.messages = data.map((d: any) => {
 			const { text, ...others } = d;
 			return { text: this.textFormatter(text).text, ...others };
@@ -308,16 +309,17 @@ export default class MessageHistory extends Vue {
 	}
 
 	doDelete(message: MessageObj) {
-		this.ajax
-			.http({
-				url: `product/${CLIENT_ID}/draft/${message.id}`,
-				method: "DELETE",
-				data: {
-					type: "text",
-					message_id: message.message_id,
-					text: message.text,
-				},
-			})
+		// this.ajax
+		// 	.http({
+		// 		url: `product/${CLIENT_ID}/draft/${message.id}`,
+		// 		method: "DELETE",
+		// 		data: {
+		// 			type: "text",
+		// 			message_id: message.message_id,
+		// 			text: message.text,
+		// 		},
+		// 	})
+Promise.resolve()
 			.then(
 				(res) => {
 					if (this.currentMessage) {

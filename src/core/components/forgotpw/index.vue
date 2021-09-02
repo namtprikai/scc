@@ -15,23 +15,22 @@ import { Component, Vue, Watch, Prop } from "vue-property-decorator";
 import { RouteRecord } from "vue-router";
 import pathToRegexp from "path-to-regexp";
 import { eventHub } from "@/init/eventHub";
-import { Ajax } from "@/utils/parts";
 import { CLIENT_ID } from "@consoletype/utils/configration";
 // @ts-ignore
 @Component
 export default class ForgotpwComp extends Vue {
-	private ajax = new Ajax();
 	private mail = "";
 	private send() {
-		this.ajax
-			.http({
-				url: "remind",
-				method: "POST",
-				data: {
-					product_id: CLIENT_ID,
-					email: this.mail,
-				},
-			})
+		// this.ajax
+		// 	.http({
+		// 		url: "remind",
+		// 		method: "POST",
+		// 		data: {
+		// 			product_id: CLIENT_ID,
+		// 			email: this.mail,
+		// 		},
+		// 	})
+Promise.resolve()
 			.then(
 				(res: any) => {
 					this.$modal.show("dialog", {

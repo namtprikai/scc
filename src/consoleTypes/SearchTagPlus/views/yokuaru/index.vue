@@ -62,9 +62,7 @@ import axios from "axios";
 import { getList } from "@/api/table";
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { eventHub } from "@/init/eventHub";
-import { Ajax } from "@/utils/parts";
 import { CLIENT_ID, s3, subsystemUrl } from "./../../utils/configration";
-import { UpdateServer } from "@/api/updateServer";
 import draggable from "vuedraggable";
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 // @ts-ignore
@@ -75,7 +73,6 @@ import draggable from "vuedraggable";
 export default class Yokuaru extends Vue {
 	@Prop({ default: "" })
 	private discription?: string;
-	private ajax: Ajax = new Ajax();
 	private cans: Array<any> = [];
 	private isCanload = false;
 	private isSynonymload = false;
@@ -151,40 +148,40 @@ export default class Yokuaru extends Vue {
 	public isSave: boolean = false;
 	public async updateScript() {
 		this.isSave = true;
-		// const jsonList=btoa(unescape(encodeURIComponent(JSON.stringify(this.talkScriptList))));
-		const object = { key: "data", n: 10 };
-		const json = JSON.stringify(this.talkScriptList);
-		const blob = new Blob([json], { type: "application/json" });
-		const reader: any = new FileReader();
-		const base64Str = await this.loadFileAsBase64(blob);
-		this.ajax
-			.http({
-				baseURL: `${subsystemUrl}/product/${CLIENT_ID}`,
-				url: "upload",
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				data: {
-					data: base64Str,
-					fileName: "/yokuaru.json",
-				},
-			})
-			.then(
-				(res: any) => {
-					this.$bvToast.toast("正常にアップロードしました", {
-						// title: `挿入されました`,
-						toaster: "b-toaster-top-center",
-						solid: true,
-						appendToast: true,
-					});
-				},
-				// tslint:disable-next-line:no-empty
-				(res) => {}
-			)
-			.finally(() => {
-				this.isSave = false;
-			});
+	// 	// const jsonList=btoa(unescape(encodeURIComponent(JSON.stringify(this.talkScriptList))));
+	// 	const object = { key: "data", n: 10 };
+	// 	const json = JSON.stringify(this.talkScriptList);
+	// 	const blob = new Blob([json], { type: "application/json" });
+	// 	const reader: any = new FileReader();
+	// 	const base64Str = await this.loadFileAsBase64(blob);
+	// 	this.ajax
+	// 		.http({
+	// 			baseURL: `${subsystemUrl}/product/${CLIENT_ID}`,
+	// 			url: "upload",
+	// 			method: "POST",
+	// 			headers: {
+	// 				"Content-Type": "application/json",
+	// 			},
+	// 			data: {
+	// 				data: base64Str,
+	// 				fileName: "/yokuaru.json",
+	// 			},
+	// 		})
+	// 		.then(
+	// 			(res: any) => {
+	// 				this.$bvToast.toast("正常にアップロードしました", {
+	// 					// title: `挿入されました`,
+	// 					toaster: "b-toaster-top-center",
+	// 					solid: true,
+	// 					appendToast: true,
+	// 				});
+	// 			},
+	// 			// tslint:disable-next-line:no-empty
+	// 			(res) => {}
+	// 		)
+	// 		.finally(() => {
+	// 			this.isSave = false;
+	// 		});
 	}
 }
 </script>

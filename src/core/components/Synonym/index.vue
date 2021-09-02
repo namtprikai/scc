@@ -22,8 +22,6 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from "vue-property-decorator";
 import { apiUrl, scriptUrl, CLIENT_ID } from "@consoletype/utils/configration";
-import { UpdateServer } from "@/api/updateServer";
-import { Ajax } from "@/utils/parts";
 // @ts-ignore
 @Component
 export default class Synonym extends Vue {
@@ -35,7 +33,6 @@ export default class Synonym extends Vue {
 	private is_synonymload = false;
 	private readonly = false;
 	private is_cans = false;
-	private ajax = new Ajax();
 	private created() {
 		console.log("created");
 		this.getCandidate();
@@ -79,12 +76,7 @@ export default class Synonym extends Vue {
 
 	getSynonim() {
 		return new Promise<any>((resolve: any, reject: any) => {
-			this.ajax
-				.http({
-					baseURL: `${scriptUrl}`,
-					url: `get_script/?path=${CLIENT_ID}/synonym_dict.json`,
-					method: "GET",
-				})
+				Promise.resolve()
 				.then(
 					(res) => {
 						resolve({ synonym: res, error: false });
@@ -106,35 +98,35 @@ export default class Synonym extends Vue {
 		this.is_synonymload = true;
 		this.is_cans = false;
 		this.cans = [];
-		this.ajax
-			.http({
-				baseURL: `${scriptUrl}`,
-				url: "get_synonym/",
-				method: "GET",
-				params: {
-					q: text,
-					product_id: CLIENT_ID,
-				},
-			})
-			.then(
-				(res: any) => {
-					if (typeof res === "string") {
-						this.cans = [{ text: res, is: false }];
-					} else {
-						this.cans = res.map((el: any) => {
-							return { text: el, is: true, flag: true, word: text };
-						});
-					}
-					setTimeout(() => {
-						this.is_synonymload = false;
-					}, 100);
-				},
-				(res) => {
-					setTimeout(() => {
-						this.is_synonymload = false;
-					});
-				}
-			);
+		// this.ajax
+		// 	.http({
+		// 		baseURL: `${scriptUrl}`,
+		// 		url: "get_synonym/",
+		// 		method: "GET",
+		// 		params: {
+		// 			q: text,
+		// 			product_id: CLIENT_ID,
+		// 		},
+		// 	})
+		// 	.then(
+		// 		(res: any) => {
+		// 			if (typeof res === "string") {
+		// 				this.cans = [{ text: res, is: false }];
+		// 			} else {
+		// 				this.cans = res.map((el: any) => {
+		// 					return { text: el, is: true, flag: true, word: text };
+		// 				});
+		// 			}
+		// 			setTimeout(() => {
+		// 				this.is_synonymload = false;
+		// 			}, 100);
+		// 		},
+		// 		(res) => {
+		// 			setTimeout(() => {
+		// 				this.is_synonymload = false;
+		// 			});
+		// 		}
+		// 	);
 	}
 
 	async() {
@@ -178,27 +170,27 @@ export default class Synonym extends Vue {
 		console.info(cans);
 		this.is_canload = true;
 		if (!error) {
-			this.ajax
-				.http({
-					baseURL: `${scriptUrl}`,
-					url: "update_synonym/",
-					method: "PUT",
-					data: {
-						product_id: CLIENT_ID,
-						word: key,
-						synonyms: cans,
-					},
-				})
-				.then(
-					async () => {
-						await UpdateServer.update();
-						await this.getCandidate();
-						this.is_canload = false;
-					},
-					() => {
-						this.is_canload = false;
-					}
-				);
+			// this.ajax
+			// 	.http({
+			// 		baseURL: `${scriptUrl}`,
+			// 		url: "update_synonym/",
+			// 		method: "PUT",
+			// 		data: {
+			// 			product_id: CLIENT_ID,
+			// 			word: key,
+			// 			synonyms: cans,
+			// 		},
+			// 	})
+			// 	.then(
+			// 		async () => {
+			// 			await UpdateServer.update();
+			// 			await this.getCandidate();
+			// 			this.is_canload = false;
+			// 		},
+			// 		() => {
+			// 			this.is_canload = false;
+			// 		}
+			// 	);
 		} else {
 			// エラー通知処理
 		}

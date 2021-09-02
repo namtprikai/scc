@@ -356,12 +356,13 @@ export default class TicketCompParent extends Vue {
 			}
 			return true;
 		};
-		const data: any = await this.ajax.http({
-			baseURL: subsystemUrl,
-			url: `product/${CLIENT_ID}/data_get`,
-			method: "get",
-			params: { type: "ticket", en, st },
-		});
+		const data: any = await Promise.resolve(); // Ticket.get();
+		// 	this.ajax.http({
+		// 	baseURL: subsystemUrl,
+		// 	url: `product/${CLIENT_ID}/data_get`,
+		// 	method: "get",
+		// 	params: { type: "ticket", en, st },
+		// });
 		if (Array.isArray(data.message)) {
 			this.ticketGroup.setTicketList(data.message, filter);
 			this.ticketGroup.setTableData();

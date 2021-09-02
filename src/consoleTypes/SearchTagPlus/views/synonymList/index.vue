@@ -39,8 +39,7 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from "vue-property-decorator";
 import { apiUrl, scriptUrl, CLIENT_ID } from "./../../utils/configration";
-import { UpdateServer } from "@/api/updateServer";
-import { Ajax, RequeuestWokersService } from "@/utils/parts";
+import { RequeuestWokersService } from "@/utils/parts";
 import InputTag from "@/components/InputTag/index.vue";
 // @ts-ignore
 @Component({
@@ -52,10 +51,9 @@ export default class Synonym extends Vue {
 	private pureSynonym: any = {};
 	private oldsynonym: Array<any> = [];
 	private synonym: Array<any> = [];
-	private ajax = new Ajax();
 	private presearchText = "";
 	private searchText = "";
-	private requeuestWokersService = new RequeuestWokersService(new Ajax());
+	// private requeuestWokersService = new RequeuestWokersService(new Ajax());
 	private created() {
 		console.log("created");
 		this.fetchSynonim().then(() => {
@@ -154,12 +152,13 @@ export default class Synonym extends Vue {
 
 	private getSynonim() {
 		return new Promise<any>((resolve: any, reject: any) => {
-			this.ajax
-				.http({
-					baseURL: `${scriptUrl}`,
-					url: `get_script/?path=${CLIENT_ID}/synonym_dict.json`,
-					method: "GET",
-				})
+			// this.ajax
+			// 	.http({
+			// 		baseURL: `${scriptUrl}`,
+			// 		url: `get_script/?path=${CLIENT_ID}/synonym_dict.json`,
+			// 		method: "GET",
+			// 	})
+Promise.resolve()
 				.then(
 					(res) => {
 						resolve({ synonym: res, error: false });
@@ -172,53 +171,11 @@ export default class Synonym extends Vue {
 	}
 
 	public async pushSynonim() {
-		this.isSynonymload = true;
-		const synonymList: any = this.synonym.filter((sy: any) => {
-			for (let i = 0; i < this.oldsynonym.length; i++) {
-				if (JSON.stringify(sy) === JSON.stringify(this.oldsynonym[i])) {
-					return false;
-				}
-			}
-			return true;
-		});
-		// synonymList = [].concat(synonymList);
-		synonymList.forEach((syn: any) => {
-			const synonims = [].concat(syn.syn);
-			const { key, cans, error } = this.getKeyAndCans(syn.key, synonims);
-			if (!error) {
-				this.requeuestWokersService.setQueue(
-					{
-						baseURL: `${scriptUrl}`,
-						url: "update_synonym",
-						method: "PUT",
-						data: {
-							product_id: CLIENT_ID,
-							word: key,
-							synonyms: cans,
-						},
-					},
-					() => {}
-				);
-			}
-		});
-		// const data = await this.requeuestWokersService.start();
-		// console.log(data);
-		await this.requeuestWokersService.start();
-		// this.updateServer('');
-		await UpdateServer.update();
-		await this.fetchSynonim();
-		this.isSynonymload = false;
-		// return data;
 	}
 }
 </script>
 
 <style lang="scss">
-// .flip-complete-enter-active,
-// .flip-complete-leave-active,
-// .flip-complete-move {
-// 	transition: transform 1s;
-// }
 .list-complete-item {
 	transition: all 1s;
 	display: list-item !important;

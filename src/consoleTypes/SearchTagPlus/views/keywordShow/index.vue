@@ -70,7 +70,6 @@ import {
 } from "./../../utils/configration";
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { eventHub } from "@/init/eventHub";
-import { Ajax } from "@/utils/parts";
 import Pagination from "vue-pagination-2";
 interface InvertedObj {
 	key: string;
@@ -100,7 +99,6 @@ interface InvertedObj {
 	components: { Pagination },
 })
 export default class KeywordShowComp extends Vue {
-	private ajax = new Ajax();
 	private step = 0.05;
 	private inv: any = [];
 	private is_load = false;
@@ -149,29 +147,7 @@ export default class KeywordShowComp extends Vue {
 	}
 
 	private syncKeyword() {
-		// https://nlp.ai-x-supporter.com/api/update_inverted_index/api/update_inverted_index/
-		// data:{
-		// 		"product_id":parseInt(serviceConfiguration.product[0]),
-		const inverted_indexArray = this.inv.map((o: InvertedObj) => {
-			o.manual_weight = o.weight - o.original_weight;
-			return o;
-		});
-		this.inverted_index = {};
-		inverted_indexArray.forEach((o: any) => {
-			if (this.inverted_index) {
-				this.inverted_index[o.key] = o;
-			}
-		});
-		this.ajax
-			.http({
-				baseURL: `${scriptUrl}`,
-				url: `update_inverted_index?${new Date().getTime()}`,
-				method: "PUT",
-				data: {
-					product_id: parseInt(CLIENT_ID, 10),
-					inverted_index: this.inverted_index,
-				},
-			})
+			Promise.resolve()
 			.then(
 				(res) => {
 					this.fetchInverted_indexView();
@@ -201,21 +177,7 @@ export default class KeywordShowComp extends Vue {
 	}
 
 	private fetchInvertedIndex(time: number): Promise<any> {
-		return new Promise((r: any) => {
-			console.log(packageUrl);
-			this.ajax
-				.http({
-					baseURL: `${packageUrl}`,
-					url: `${CLIENT_ID}/tag_package.json?${time}`,
-					method: "GET",
-				})
-				.then((res: any) => {
-					r(res.inverted_index);
-				})
-				.catch((res: any) => {
-					r([]);
-				});
-		});
+		return Promise.resolve();
 	}
 
 	private fetchInverted_indexView() {

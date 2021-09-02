@@ -29,7 +29,7 @@ import {
 	CLIENT_ID,
 	subsystemUrl,
 } from "./../../utils/configration";
-import { Ajax, Message } from "@/utils/parts";
+import { Message } from "@/utils/parts";
 import { UserModule } from "@/store/modules/user";
 // @ts-ignore
 @Component({
@@ -37,17 +37,17 @@ import { UserModule } from "@/store/modules/user";
 })
 export default class FeedBackUser extends Vue {
 	messages: Array<Message> = [];
-	protected ajax: Ajax = new Ajax();
 	show = false;
 	is_talkscriptNone = false;
 	currentMessage: Message | null = null;
 	getMessages() {
 		this.show = false;
-		this.ajax
-			.http({
-				url: `product/${CLIENT_ID}/message_feedback`,
-				method: "GET",
-			})
+		// this.ajax
+		// 	.http({
+		// 		url: `product/${CLIENT_ID}/message_feedback`,
+		// 		method: "GET",
+		// 	})
+Promise.resolve()
 			.then(
 				(res: any) => {
 					this.messages = res.data.filter((feedback: any) => {
