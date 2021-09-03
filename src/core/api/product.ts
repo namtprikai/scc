@@ -9,4 +9,8 @@ export namespace Product {
 		});
 		return data;
 	};
+	export const get = ()=>{};
+	export const post = ()=>{};
+	export const patch = ()=>{};
+	export const deleteObject = ()=>{};
 }
