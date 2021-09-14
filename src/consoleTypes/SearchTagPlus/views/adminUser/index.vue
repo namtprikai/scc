@@ -116,8 +116,7 @@ export default class AdminUser extends Vue {
 					name: this.newAdminUser.name,
 					email: this.newAdminUser.email,
 					password: this.newAdminUser.password,
-					role: this.newAdminUser.role,
-					config:{},
+					config:{role:[this.newAdminUser.role]},
 					is_master:0
 				})
 			.then((data) => {

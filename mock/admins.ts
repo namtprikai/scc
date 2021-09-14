@@ -9,7 +9,7 @@ const adminList: IAdminData[] = [
 		password: "Anyany",
 		email: "admin@test.com",
 		is_master: true,
-		config: { role: 5 },
+		config: { role: [5] },
 		is_enabled: true,
 		is_lock: false,
 	},
@@ -23,7 +23,7 @@ for (let i = 2; i < userCount; i++) {
 		password: faker.random.alphaNumeric(20),
 		email: faker.internet.email(),
 		is_master: false,
-		config: { role: 5 },
+		config: { role: [5] },
 		is_enabled: true,
 		is_lock: false,
 	});

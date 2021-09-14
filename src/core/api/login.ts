@@ -49,26 +49,26 @@ export namespace Login {
 			name: data.data.name,
 			token: data.data.token,
 			is_master: data.data.is_master,
-			role: new Set(),
+			role: new Set(data.data.config.role),
 		};
-		const roledata: AxiosResponse<any> = await AjaxService.ajax.http({
-			url: `/policygroup/${admin.id}`,
-			method: "get",
-			headers: {
-				"X-Requested-With": "XMLHttpRequest",
-				Authorization: token,
-			},
-		});
-		if (roledata.data) {
-			for (const polycyGroup of roledata.data) {
-				if (Array.isArray(polycyGroup.config.role)) {
-					for (const _role of polycyGroup.config.role) {
-						const role: number = _role;
-						admin.role.add(role);
-					}
-				}
-			}
-		}
+		// const roledata: AxiosResponse<any> = await AjaxService.ajax.http({
+		// 	url: `/policygroup/${admin.id}`,
+		// 	method: "get",
+		// 	headers: {
+		// 		"X-Requested-With": "XMLHttpRequest",
+		// 		Authorization: token,
+		// 	},
+		// });
+		// if (roledata.data) {
+		// 	for (const polycyGroup of roledata.data) {
+		// 		if (Array.isArray(polycyGroup.config.role)) {
+		// 			for (const _role of polycyGroup.config.role) {
+		// 				const role: number = _role;
+		// 				admin.role.add(role);
+		// 			}
+		// 		}
+		// 	}
+		// }
 		return admin;
 	};
 	export const logout = () =>
