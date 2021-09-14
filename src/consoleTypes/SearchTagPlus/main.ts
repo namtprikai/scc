@@ -37,7 +37,7 @@ import "./styles/custom.scss";
 import { TagService } from "./services/tag";
 import VueScrollto from "vue-scrollto";
 import VueMoment from "vue-moment";
-import { UpdateServer } from "@/api/updateServer";
+
 import { TabHeader } from "@/components/TabHeader";
 import { BCardAccordion } from "@/components/BCardAccodion";
 import locale from "element-ui/lib/locale/lang/ja";
@@ -57,13 +57,6 @@ Vue.use(VirtualStream);
 Vue.use(VueSanitize);
 
 Vue.use(VModal, { dynamic: true, dialog: true });
-UpdateServer.setDefaultParam({
-	public: true,
-	with_tag_package: true,
-	with_bot_package: false,
-	version: "1",
-	...updateServerParams,
-});
 Vue.component("BCardAccordion", BCardAccordion);
 Vue.component("TabHeader", TabHeader);
 // Vue.component("accordion", Accordion);

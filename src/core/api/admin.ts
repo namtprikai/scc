@@ -16,9 +16,19 @@ export namespace Admin {
 			data,
 		});
 	};
-	export const get = ()=>{
+	export const getList = ()=>{
 		return AjaxService.ajax.http({
-			url: `/admin/`,
+			url: `/admins/`,
+			method: "get",
+			headers: {
+				"Content-type": "application/json",
+			},
+			params: {},
+		});
+	}
+	export const get = (id:number)=>{
+		return AjaxService.ajax.http({
+			url: `/admin/${id}/`,
 			method: "get",
 			headers: {
 				"Content-type": "application/json",

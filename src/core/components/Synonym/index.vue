@@ -183,7 +183,7 @@ export default class Synonym extends Vue {
 			// 	})
 			// 	.then(
 			// 		async () => {
-			// 			await UpdateServer.update();
+			//
 			// 			await this.getCandidate();
 			// 			this.is_canload = false;
 			// 		},

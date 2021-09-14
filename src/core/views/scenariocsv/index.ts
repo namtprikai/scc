@@ -17,7 +17,7 @@ import {
 	parseScenario,
 	parseListToCsv,
 } from "@/utils/scenarioParseCsv";
-import { UpdateServer } from "@/api/updateServer";
+
 import WrapMessage from "@/components/WrapMessage/index.vue";
 import { RequeuestWokersService, Ajax } from "@/utils/parts";
 import { CLIENT_ID } from "@consoletype/utils/configration";

@@ -18,7 +18,7 @@ import { v4 } from "uuid";
 import { MessageList } from "@/api/messageList";
 import axios from "axios";
 import { eventHub } from "../../init/eventHub";
-import { UpdateServer } from "@/api/updateServer";
+
 const ajax: Ajax = new Ajax();
 export interface IScenarioState {
 	ScenarioList: any;
@@ -451,7 +451,7 @@ class ScenarioStore extends VuexModule implements IScenarioState {
 		console.log("start2");
 		await worker2.start();
 		console.log("startdone");
-		await UpdateServer.update();
+
 		const afscenarioList: any = await this.getScenario();
 		return afscenarioList;
 	}

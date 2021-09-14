@@ -20,6 +20,7 @@ export namespace Login {
 			})
 				.then((res: any) => {
 					console.log(res);
+					debugger
 					r(res);
 					// setTimeout(()=>{
 					//   eventHub.$emit('loginAfterInit');
@@ -32,6 +33,7 @@ export namespace Login {
 		});
 
 	export const getInfo = async (token: string,admin_id: number): Promise<IAdmin | null> => {
+		debugger;
 		const data: AxiosResponse<any> = await AjaxService.ajax.http({
 			url: `/admin/${admin_id}`,
 			method: "get",

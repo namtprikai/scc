@@ -29,7 +29,7 @@ for (let i = 2; i < userCount; i++) {
 	});
 }
 export const signinAdmin = (req: Request, res: IAPIResponce) => {
-	const { email, password } = req.body;
+	const { name, password } = req.body;
 };
 export const loginAdmin = (req: Request, res: IAPIResponce) => {
 	const { name, password } = req.body;

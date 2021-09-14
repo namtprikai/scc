@@ -6,7 +6,7 @@ import { v4 } from "uuid";
 import { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 import { AjaxService } from "@/services/ajax";
 import { QuestionModule } from "@/store/modules/question";
-import { UpdateServer } from "@/api/updateServer";
+
 import WrapSppiner from "@/components/WrapSinner/index.vue";
 import { BCardAccordion } from "@/components/BCardAccodion";
 import { ProductsModule } from "@/store/modules/products";

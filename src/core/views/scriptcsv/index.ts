@@ -1,7 +1,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import { UserModule } from "@/store/modules/user";
 import { mapGetters } from "vuex";
-import { UpdateServer } from "@/api/updateServer";
+
 import { Ajax } from "@/utils/parts";
 import { eventHub } from "@/init/eventHub";
 import {
@@ -70,7 +70,6 @@ export default class ScriptcsvParent extends Vue {
 			},
 			data: formData,
 		});
-		UpdateServer.update();
 		eventHub.$emit("scriptCsvUploadDone");
 		this.$modal.show("dialog", {
 			title: "アップロード終了",
@@ -133,7 +132,7 @@ export default class ScriptcsvParent extends Vue {
 			},
 			data: formData,
 		});
-		await UpdateServer.update();
+
 		eventHub.$emit("scriptCsvUploadDone");
 		this.$modal.show("dialog", {
 			title: "アップロード終了",

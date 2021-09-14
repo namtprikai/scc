@@ -26,7 +26,7 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 		commit: "SET_ADMINLIST",
 	})
 	public async getAdminUserList() {
-		const { data } = await Admin.get();
+		const { data } = await Admin.getList();
 		return data;
 	}
 

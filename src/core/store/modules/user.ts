@@ -48,7 +48,6 @@ class User extends VuexModule implements IUserState {
 		Auth.removeToken();
 		return { token: "", id: "" };
 	}
-
 	@MutationAction({
 		mutate: ["id", "role", "name", "email", "avatar", "token", "is_master"],
 	})
@@ -60,7 +59,7 @@ class User extends VuexModule implements IUserState {
 		if (UserModule.Id === null) {
 			throw Error("GetInfo: id is undefined!");
 		}
-		const data = await Login.getInfo(token,this.id);
+		const data = await Login.getInfo(token,UserModule.Id);
 		if (data?.role) {
 			return {
 				id: data.id,

@@ -22,7 +22,7 @@ import { Component, Vue, Watch, Prop, Emit } from "vue-property-decorator";
 import { RouteRecord } from "vue-router";
 import pathToRegexp from "path-to-regexp";
 import { eventHub } from "@/init/eventHub";
-import { UpdateServer } from "@/api/updateServer";
+
 import { clearTimeout, setTimeout } from "timers";
 // import { TalkScript } from "@/store/modules/talkscript";
 import { v4 } from "uuid";

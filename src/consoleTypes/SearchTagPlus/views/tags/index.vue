@@ -91,7 +91,7 @@ import {
 	packageUrl,
 } from "./../../utils/configration";
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { UpdateServer } from "@/api/updateServer";
+
 import { eventHub } from "@/init/eventHub";
 import { Ajax, Wait } from "@/utils/parts";
 import { KeywordEditorButtons } from "../../config";

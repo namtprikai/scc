@@ -1,7 +1,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { UserModule } from "@/store/modules/user";
 import { mapGetters } from "vuex";
-import { UpdateServer } from "@/api/updateServer";
+
 import { Ajax } from "@/utils/parts";
 import { CLIENT_ID } from "@consoletype/utils/configration";
 import { eventHub } from "@/init/eventHub";
@@ -225,7 +225,7 @@ export default class ScenarioParent extends Vue {
 			],
 		});
 		this.isSave = false;
-		UpdateServer.update();
+
 
 		// console.log(this.ajax);
 		// return this.ajax.http({
@@ -275,7 +275,7 @@ export default class ScenarioParent extends Vue {
 			method: "DELETE",
 			data: {},
 		});
-		await UpdateServer.update();
+
 		await ScenarioModule.getScenario();
 		this.$modal.show("dialog", {
 			title: "削除完了",
@@ -399,7 +399,7 @@ export default class ScenarioParent extends Vue {
 						text: "削除情報を保存しました",
 					});
 					this.reset();
-					UpdateServer.update();
+
 				});
 			}
 		}
