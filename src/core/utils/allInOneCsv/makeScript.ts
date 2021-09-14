@@ -532,7 +532,7 @@ export function makeScriptAndScenarioByData(
 								is_category: true,
 								scenario_id: f.id,
 							});
-							// debugger;
+							//
 							// f.id = v4();
 							if (f.next && f.next.length > 0) {
 								nextQue.push(f.next);
@@ -1220,7 +1220,7 @@ export function makeScriptAndScenario(
 									is_category: true,
 									scenario_id: f.id,
 								});
-								// debugger;
+								//
 								// f.id = v4();
 								if (f.next && f.next.length > 0) {
 									nextQue.push(f.next);
