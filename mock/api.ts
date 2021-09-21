@@ -15,6 +15,6 @@ export {
 } from "./polycyGroup";
 export { getQuestionList } from "./question";
 export { getAnsers } from "./answer";
-
+export {getConditionGroupList,addConditionGroup} from "./conditionGroup";
 import { test } from "./answer";
 // test();

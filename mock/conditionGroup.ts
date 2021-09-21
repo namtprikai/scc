@@ -21,7 +21,7 @@ export const conditionGroups: Array<IConditionGroupData> = [
 		level: 2,
 	},
 ];
-const ConditionGroupModel = new SAITableModel(
+const ConditionGroupModel = new SAITableModel<IConditionGroupData>(
 	conditionGroups,
 	'condition_group'
 	,
