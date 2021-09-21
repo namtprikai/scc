@@ -273,7 +273,13 @@ export default class ScriptEditorComp extends Vue {
 		}
 		return false;
 	}
-	public addConditionGroup() {}
+	public addConditionGroup() {
+		//　既存の選択肢
+		// コンディショングループセット: set of コンディショングループ
+		// コンティショングループセット  {res | res in set コンディショングループセット & res not in set (コンディションクループ<:紐付いているコンディション)}
+		//　コンティショングループセットの選択肢を提示、ユーザーに選択を促す。もしなければ新規コンディショングループ追加動作になる
+		// ConditionGroup.add();
+	}
 	protected created() {}
 
 	protected destroyed() {}
