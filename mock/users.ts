@@ -54,8 +54,8 @@ const UserList = secureObjectCreateByAdmin<IUserData>(
 	}
 );
 export const register = (req: Request, res: IAPIResponce) => {
-	return res.json({
-		status: 20000,
+	return res.status(200).json({
+		is_error: false,message:"",type:"Array",
 		data: {},
 	});
 };
@@ -65,7 +65,7 @@ export const loginUser = (req: Request, res: IAPIResponce) => {
 	for (const user of userList) {
 		if (user.id === id) {
 			return res.json({
-				status: 20000,
+				is_error: false,message:"",type:"Array",
 				data: {
 					accessToken: name + "-token",
 				},
@@ -73,7 +73,7 @@ export const loginUser = (req: Request, res: IAPIResponce) => {
 		}
 	}
 	return res.status(400).json({
-		status: 50004,
+		is_error: true,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},
@@ -82,7 +82,7 @@ export const loginUser = (req: Request, res: IAPIResponce) => {
 
 export const logoutUser = (req: Request, res: IAPIResponce) => {
 	return res.json({
-		status: 20000,
+		is_error: false,message:"",type:"Object",
 		data: {},
 	});
 };
@@ -99,7 +99,7 @@ export const getUsers = (req: Request, res: IAPIResponce): Response => {
 			return { id, name, email };
 		});
 	return res.json({
-		status: 20000,
+		is_error: false,message:"",type:"Array",
 		data: [...users],
 	});
 };
@@ -107,7 +107,7 @@ export const getUsers = (req: Request, res: IAPIResponce): Response => {
 export const getUserInfo = (req: Request, res: IAPIResponce) => {
 	// Mock data based on access token
 	return res.json({
-		status: 20000,
+		is_error: false,message:"",type:"Array",
 		data: {
 			user:
 				req.header("X-Access-Token") === "admin-token" ? userList[0] : userList[1],
@@ -119,7 +119,7 @@ export const getUserById = (req: Request, res: IAPIResponce) => {
 	for (const user of userList) {
 		if (String(user.id) === id) {
 			return res.json({
-				status: 20000,
+				is_error: false,message:"",type:"Array",
 				data: {
 					user,
 				},
@@ -127,7 +127,7 @@ export const getUserById = (req: Request, res: IAPIResponce) => {
 		}
 	}
 	return res.status(400).json({
-		status: 50004,
+		is_error: true,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},
@@ -137,8 +137,8 @@ export const getUserByName = (req: Request, res: IAPIResponce) => {
 	const { name } = req.params;
 	for (const user of userList) {
 		if (user.name === name) {
-			return res.json({
-				status: 20000,
+			return res.status(200).json({
+				is_error: false,message:"",type:"Array",
 				data: {
 					user,
 				},
@@ -146,7 +146,7 @@ export const getUserByName = (req: Request, res: IAPIResponce) => {
 		}
 	}
 	return res.status(400).json({
-		status: 50004,
+		is_error: true,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},
@@ -166,7 +166,7 @@ export const updateUser = (req: Request, res: IAPIResponce) => {
 	for (const v of userList) {
 		if (v.name === name) {
 			return res.json({
-				status: 20000,
+				is_error: false,message:"",type:"Object",
 				data: {
 					user,
 				},
@@ -174,7 +174,7 @@ export const updateUser = (req: Request, res: IAPIResponce) => {
 		}
 	}
 	return res.status(400).json({
-		status: 50004,
+		is_error: true,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},
@@ -189,7 +189,7 @@ export const deleteUser = (req: Request, res: IAPIResponce) => {
 	const { user_id, text } = req.params;
 	if (!/\d/.test(user_id)) {
 		return res.status(400).json({
-			status: 50004,
+			is_error: true,message:"",type:"Object",
 			data: {
 				errors: [{ status: "validation_error" }],
 			},
@@ -204,12 +204,12 @@ export const deleteUser = (req: Request, res: IAPIResponce) => {
 		userList = userList.filter((u) => u.id !== parseInt(user_id, 10));
 		deleteIntermadiateTables(parseInt(user_id, 10));
 		return res.json({
-			status: 20000,
+			is_error: false,message:"",type:"Array",
 			data: [...UserList.getData(admin,"/api/user/","delete")],
 		});
 	}
 	return res.json({
-		status: 20000,
+		is_error: false,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},

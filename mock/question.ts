@@ -98,12 +98,12 @@ export const addQuestion = (req: Request, res: IAPIResponce): Response => {
 		};
 		questions.push(question);
 		return res.json({
-			status: 20000,
+			is_error: false,message:"",type:"Object",
 			data: question
 		});
 	}
 	return res.status(400).json({
-		status: 50004,
+		is_error: true,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},
@@ -115,12 +115,12 @@ export const getQuestionList = (req: Request, res: IAPIResponce): Response => {
 	const admin = getAdminByToken(accessToken);
 	if (admin && category_id == null) {
 		return res.json({
-			status: 20000,
+			is_error: false,message:"",type:"Array",
 			data: [...Questions.getData(admin,'/api/questions/','get')],
 		});
 	}
 	return res.status(400).json({
-		status: 50004,
+		is_error: true,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},
@@ -136,7 +136,7 @@ export const deleteQuestion = (req: Request, res: IAPIResponce): Response => {
 	const { question_id, text } = req.params;
 	if (!/\d/.test(question_id)) {
 		return res.status(400).json({
-			status: 50004,
+			is_error: true,message:"",type:"Object",
 			data: {
 				errors: [{ status: "validation_error" }],
 			},
@@ -151,12 +151,12 @@ export const deleteQuestion = (req: Request, res: IAPIResponce): Response => {
 		questions = questions.filter((q) => q.id !== parseInt(question_id, 10));
 		deleteIntermadiateTables(parseInt(question_id, 10));
 		return res.json({
-			status: 20000,
+			is_error: false,message:"",type:"Array",
 			data: [...questions],
 		});
 	}
 	return res.status(400).json({
-		status: 50004,
+		is_error: false,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},

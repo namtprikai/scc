@@ -1153,7 +1153,7 @@ export const getPolicyList = (req: Request, res: IAPIResponce): Response => {
 	const { parent_id } = req.query;
 
 	return res.json({
-		status: 20000,
+		is_error: false,message:"",type:"Array",
 		data: [...policys],
 	});
 };

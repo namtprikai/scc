@@ -37,7 +37,7 @@ export const loginAdmin = (req: Request, res: IAPIResponce) => {
 		if (user.name === name && user.password === password) {
 			const token = `${user.id}-${user.name}-token`;
 			return res.json({
-				status: 200,
+				is_error: false,message:"",type:"Object",
 				data: {
 					token,
 					user,
@@ -46,7 +46,7 @@ export const loginAdmin = (req: Request, res: IAPIResponce) => {
 		}
 	}
 	return res.status(400).json({
-		status: 50004,
+		is_error: true,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},
@@ -55,7 +55,7 @@ export const loginAdmin = (req: Request, res: IAPIResponce) => {
 
 export const logoutAdmin = (req: Request, res: IAPIResponce) => {
 	return res.json({
-		status: 200,
+		is_error: false,message:"",type:"Object",
 		data: {},
 	});
 };
@@ -68,7 +68,7 @@ export const getAdmins = (req: Request, res: IAPIResponce) => {
 	//   return !(name && lowerCaseName.indexOf((name as string).toLowerCase()) < 0)
 	// })
 	return res.json({
-		status: 200,
+		is_error: false,message:"",type:"Object",
 		data: [...users],
 	});
 };
@@ -87,13 +87,13 @@ export const getAdminInfo = (req: Request, res: IAPIResponce) => {
 	for (const admin of adminList) {
 		if (`${admin.id}-${admin.name}-token` === token) {
 			return res.json({
-				status: 20000,
+				is_error: false,message:"",type:"Object",
 				data: { ...admin },
 			});
 		}
 	}
 	return res.status(400).json({
-		status: 403,
+		is_error: true,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},
@@ -104,14 +104,14 @@ export const getAdminById = (req: Request, res: IAPIResponce) => {
 	const { id } = req.params;
 	for (const admin of adminList) {
 		if (String(admin.id) === id) {
-			return res.json({
-				status: 20000,
+			return res.status(200).json({
+				is_error: false,message:"",type:"Object",
 				data: { ...admin },
 			});
 		}
 	}
 	return res.status(400).json({
-		status: 50004,
+		is_error: true,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},
@@ -124,14 +124,14 @@ export const updateAdmin = (req: Request, res: IAPIResponce) => {
 	for (const admin of adminList) {
 		if (admin.name === name) {
 			Object.assign(admin, user);
-			return res.json({
-				status: 20000,
+			return res.status(200).json({
+				is_error: false,message:"",type:"Object",
 				data: { ...admin },
 			});
 		}
 	}
 	return res.status(400).json({
-		status: 50004,
+		is_error: true,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},
@@ -140,7 +140,7 @@ export const updateAdmin = (req: Request, res: IAPIResponce) => {
 
 export const deleteAdmin = (req: Request, res: IAPIResponce) => {
 	return res.json({
-		status: 20000,
+		is_error: false,message:"",type:"Object",
 		data: {},
 	});
 };

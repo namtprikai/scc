@@ -20,7 +20,7 @@ export const accessTokenAuth = (
 	const accessToken = req.header("Authorization");
 	if (!accessToken && false) {
 		return res.status(401).json({
-			status: 50001,
+			is_error: true,message:"",type:"Object",
 			data: {
 				errors: [{ status: "forbidden_error" }],
 			},

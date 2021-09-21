@@ -1,4 +1,10 @@
 import { Response, Request } from "express";
+export interface ISAISystemAPI{
+	is_error:boolean;
+	message:string;
+	type:"Object"|"Array";
+	data:Object|Array;
+}
 export interface ISAIAPIData {
 	id: number;
 	created?: Date;
@@ -8,7 +14,7 @@ export interface ICrossReferenceTable extends ISAIAPIData {
 	[key: string]: number;
 }
 export interface IAPIResponce extends Response {
-	json: (args: { status: number; data: { [key: string]: any } | Array<{ [key: string]: any }> }) => any;
+	json: (args: ISAISystemAPI) => any;
 }
 export interface IRoleData extends ISAIAPIData {
 	[key: any]: any;

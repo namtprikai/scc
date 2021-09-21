@@ -66,12 +66,12 @@ export const getCategoryList = (req: Request, res: IAPIResponce): Response => {
 	if(admin){
 		const categoryList = CategoryModel.getListByAdmin(admin);
 		return res.json({
-			status: 20000,
+			is_error: false,message:"",type:"Object",
 			data: [...categoryList],
 		});
 	}
 	return res.json({
-		status: 400,
+		is_error: true,message:"",type:"Array",
 		data: [],
 	});
 };
@@ -87,12 +87,12 @@ export const addCategory = (req: Request, res: IAPIResponce): Response => {
 			text:"",
 		});
 		return res.json({
-			status: 20000,
+			is_error: false,message:"",type:"Object",
 			data: row,
 		});
 	}
 	return res.json({
-		status: 400,
+		is_error: true,message:"",type:"Array",
 		data: [],
 	});
 }

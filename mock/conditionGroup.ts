@@ -26,7 +26,7 @@ export const getConditionGroupList = (
 	// 		return !(name && lowerCaseName.indexOf((name as string).toLowerCase()) < 0)
 	// })
 	return res.json({
-		status: 20000,
+		is_error: false,message:"",type:"Array",
 		data: [...conditionGroups],
 	});
 };

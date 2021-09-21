@@ -35,7 +35,7 @@ export const getPolicyGroupByAdminId = (req: Request, res: IAPIResponce) => {
 		// for (const admin of adminList) {
 		// 		if (String(admin.id) === id) {
 		return res.json({
-			status: 20000,
+			is_error: false,message:"",type:"Array",
 			data: [
 				...policyGroups.filter((p) => policyGroupIdSet.has(p.id)),
 			],
@@ -44,7 +44,7 @@ export const getPolicyGroupByAdminId = (req: Request, res: IAPIResponce) => {
 	// 		}
 	// }
 	return res.status(400).json({
-		status: 50004,
+		is_error: true,message:"",type:"Array",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},
@@ -64,7 +64,7 @@ export const getPolicyList = (req: Request, res: IAPIResponce): Response => {
 	// 		return !(name && lowerCaseName.indexOf((name as string).toLowerCase()) < 0)
 	// })
 	return res.json({
-		status: 20000,
+		is_error: false,message:"",type:"Array",
 		data: [...policyGroups],
 	});
 };
@@ -72,20 +72,20 @@ export const getPolicyGroup = (req: Request, res: IAPIResponce): Response => {
 	const { id } = req.query;
 	if (!/^\d$/.test(`${id}`)) {
 		return res.json({
-			status: 50000,
-			data: {},
+			is_error: true,message:"",type:"Array",
+			data: [],
 		});
 	}
 	for (const policyGroup of policyGroups) {
 		if (policyGroup.id === parseInt(String(id))) {
 			return res.json({
-				status: 20000,
+				is_error: false,message:"",type:"Array",
 				data: { ...policyGroup },
 			});
 		}
 	}
 	return res.json({
-		status: 50000,
-		data: {},
+		is_error: true,message:"",type:"Array",
+		data: [],
 	});
 };

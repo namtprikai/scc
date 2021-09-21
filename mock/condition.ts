@@ -35,7 +35,7 @@ export const getConditionList = (req: Request, res: IAPIResponce): Response => {
 	// 		return !(name && lowerCaseName.indexOf((name as string).toLowerCase()) < 0)
 	// })
 	return res.json({
-		status: 20000,
+		is_error: false,message:"",type:"Array",
 		data: [...conditions],
 	});
 };

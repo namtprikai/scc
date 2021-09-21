@@ -77,7 +77,7 @@ export const getAnsers = (
 		});
 		if (anserList.length === 1) {
 			return res.json({
-				status: 20000,
+				is_error: false,message:"",type:"Object",
 				data: { ansers: anserList },
 			});
 		}
@@ -169,7 +169,7 @@ export const getAnsers = (
 				return a;
 			});
 			return res.json({
-				status: 20000,
+				is_error: false,message:"",type:"Object",
 				data: { ansers: anserList },
 			});
 		}
@@ -206,7 +206,7 @@ export const getAnsers = (
 		});
 
 		return res.json({
-			status: 20000,
+			is_error: false,message:"",type:"Object",
 			data: {
 				ansers: anserList,
 				conditionList,
@@ -214,7 +214,7 @@ export const getAnsers = (
 		});
 	}
 	return res.status(400).json({
-		status: 50004,
+		is_error: true,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},

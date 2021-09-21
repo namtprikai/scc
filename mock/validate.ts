@@ -26,8 +26,8 @@ export const getValidation = (req: Request, res: IAPIResponce) => {
 	const { name } = req.params;
 	for (const valid of validList) {
 		if (valid.name === name) {
-			return res.json({
-				status: 20000,
+			return res.status(200).json({
+				is_error: false,message:"",type:"Object",
 				data: {
 					valid,
 				},
@@ -35,7 +35,7 @@ export const getValidation = (req: Request, res: IAPIResponce) => {
 		}
 	}
 	return res.status(400).json({
-		status: 50004,
+		is_error: true,message:"",type:"Object",
 		data: {
 			errors: [{ status: "forbidden_error" }],
 		},

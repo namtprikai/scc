@@ -82,13 +82,13 @@ export const getProducts = (
 		const productList = Productions.getData(admin,"/api/products/","get");
 
 		return res.json({
-			status: 20000,
-			data: { products: productList },
+			is_error: false,message:"",type:"Array",
+			data: [... productList ],
 		});
 	}
 	return res.json({
-		status: 400,
-		data: {},
+		is_error: true,message:"",type:"Array",
+		data: [],
 	});
 };
 export const getProductsByAdminId = (
@@ -116,12 +116,12 @@ export const getProductsByAdminId = (
 		);
 
 		return res.json({
-			status: 20000,
+			is_error: false,message:"",type:"Array",
 			data: { products: productList },
 		});
 	}
 	return res.json({
-		status: 400,
+		is_error: true,message:"",type:"Array",
 		data: {},
 	});
 };
@@ -153,13 +153,13 @@ export const addProduct = (
 		};
 		productions.push(product);
 		return res.json({
-			status: 200,
+			is_error: false,message:"",type:"Object",
 			data: product,
 		});
 	}
 	return res.json({
-		status: 400,
-		data: {},
+		is_error: true,message:"",type:"Array",
+		data: [],
 	});
 };
 /**
@@ -184,12 +184,12 @@ export const deleteProduct = (
 			}
 		}
 		return res.json({
-			status: 200,
+			is_error: false,message:"",type:"Object",
 			data: {},
 		});
 	}
 	return res.json({
-		status: 400,
-		data: {},
+		is_error: true,message:"",type:"Array",
+		data: [],
 	});
 };
