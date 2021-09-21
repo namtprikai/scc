@@ -18,7 +18,7 @@ export namespace Admin {
 	};
 	export const getList = ()=>{
 		return AjaxService.ajax.http({
-			url: `/admins/`,
+			url: `/admin/`,
 			method: "get",
 			headers: {
 				"Content-type": "application/json",

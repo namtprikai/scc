@@ -452,7 +452,7 @@ export function RouterConfig(
 									v2: Box,
 								},
 								meta: {
-									title: "直接編集",
+									title: "QA編集",
 									icon: "edit",
 									confirmation: {
 										is: true,
@@ -475,47 +475,47 @@ export function RouterConfig(
 									},
 								},
 							},
-							{
-								path: "keyword",
-								name: "keyword",
-								components: {
-									v1: Box,
-									v2: Box,
-								},
-								meta: {
-									title: "キーワードの重み",
-									icon: "edit",
-									v1: {
-										default: "KeywordEditor",
-										tabs: [
-											{
-												label: "重み編集",
-												key: "KeywordEditor",
-												discription: `キーワードの重みを変更できます。<br>
-                        編集の際は、まず「テスト環境に反映」をしてから「本番環境に反映」で本番環境に適用してください。<br>
-                        以下にはテスト環境の内容が表示されています。<br>
-                        `,
-											},
-										],
-									},
-									v2: {
-										default: "KeywordShow",
-										tabs: [
-											{
-												label: "テスト環境",
-												key: "KeywordShowDev",
-												discription: "テスト環境に適用されているキーワードの重みです。",
-											},
+							// {
+							// 	path: "keyword",
+							// 	name: "keyword",
+							// 	components: {
+							// 		v1: Box,
+							// 		v2: Box,
+							// 	},
+							// 	meta: {
+							// 		title: "キーワードの重み",
+							// 		icon: "edit",
+							// 		v1: {
+							// 			default: "KeywordEditor",
+							// 			tabs: [
+							// 				{
+							// 					label: "重み編集",
+							// 					key: "KeywordEditor",
+							// 					discription: `キーワードの重みを変更できます。<br>
+       //                  編集の際は、まず「テスト環境に反映」をしてから「本番環境に反映」で本番環境に適用してください。<br>
+       //                  以下にはテスト環境の内容が表示されています。<br>
+       //                  `,
+							// 				},
+							// 			],
+							// 		},
+							// 		v2: {
+							// 			default: "KeywordShow",
+							// 			tabs: [
+							// 				{
+							// 					label: "テスト環境",
+							// 					key: "KeywordShowDev",
+							// 					discription: "テスト環境に適用されているキーワードの重みです。",
+							// 				},
 
-											{
-												label: "本番環境",
-												key: "KeywordShow",
-												discription: "本番環境に適用されているキーワードの重みです。",
-											},
-										],
-									},
-								},
-							},
+							// 				{
+							// 					label: "本番環境",
+							// 					key: "KeywordShow",
+							// 					discription: "本番環境に適用されているキーワードの重みです。",
+							// 				},
+							// 			],
+							// 		},
+							// 	},
+							// },
 							// {
 							// 	path: 'tags',
 							// 	name: 'tags',
