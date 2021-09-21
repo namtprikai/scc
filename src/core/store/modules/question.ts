@@ -9,6 +9,7 @@ import {
 import store from "@/store";
 import { AjaxService } from "@/services/ajax";
 import { IQuestionData } from "@/api/types";
+import {Question} from "@/api/question";
 @Module({ dynamic: true, store, name: "question" })
 class QuestionStore extends VuexModule {
 	questions: Array<IQuestionData> = [];
@@ -17,12 +18,7 @@ class QuestionStore extends VuexModule {
 	}
 	@Mutation
 	public async GetQuestions() {
-		const { data }: any = await AjaxService.ajax.http({
-			url: `questions/`,
-			method: "get",
-			params: {},
-		});
-		console.log(data);
+		const data : any = await Question.getList();
 		this.questions = data;
 	}
 }

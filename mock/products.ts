@@ -80,7 +80,7 @@ export const getProducts = (
 	const admin = getAdminByToken(accessToken);
 	if (admin) {
 		const productList = Productions.getData(admin,"/api/products/","get");
-
+console.log(productList);
 		return res.json({
 			is_error: false,message:"",type:"Array",
 			data: [... productList ],

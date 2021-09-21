@@ -19,8 +19,8 @@ class ProductsStore extends VuexModule {
 	}
 	@Mutation
 	public async GetProducts() {
-		const  data = await Product.getList();
-		this.productList = data.products;
+		const data = await Product.getList();
+		this.productList = data;
 	}
 }
 export const ProductsModule = getModule(ProductsStore);
