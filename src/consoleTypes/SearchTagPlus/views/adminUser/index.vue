@@ -235,7 +235,7 @@ export default class AdminUser extends Vue {
 					title: "はい",
 					handler: () => {
 						// admin.role = 0;
-						AdminUserModule.setAdminUser(admin);
+						AdminUserModule.deleteAdminUser(admin.id);
 						this.$modal.hide("dialog");
 					},
 				},
@@ -258,7 +258,7 @@ export default class AdminUser extends Vue {
 					title: "はい",
 					handler: () => {
 						console.log("SETADMINUSER はい");
-						AdminUserModule.setAdminUser(admin);
+						AdminUserModule.editAdminUser(admin);
 						this.$modal.hide("dialog");
 					},
 				},

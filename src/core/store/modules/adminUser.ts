@@ -31,12 +31,11 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 	}
 
 	@Action
-	public async setAdminUser(adminUser: IAdminData) {
+	public async editAdminUser(adminUser: IAdminData) {
 		console.log("SETADMINUSER");
 		const admin = await Admin.patch(adminUser.id, { name: adminUser.name,config:adminUser.config });
 		this.getAdminUserList();
 	}
-
 	@Action({
 		commit: "SET_ADMINLIST",
 	})
@@ -45,6 +44,11 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 		const admin = await Admin.add({  name, email, password, is_master, config });
 		this.getAdminUserList();
 		return admin;
+	}
+	public async deleteAdminUser(id: number) {
+		console.log("SETADMINUSER");
+		const admin = await Admin.disabledObject(id);
+		this.getAdminUserList();
 	}
 }
 

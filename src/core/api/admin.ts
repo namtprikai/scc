@@ -36,6 +36,15 @@ export namespace Admin {
 			params: {},
 		});
 	}
+	export const disabledObject = async (id:number)=>{
+		const { data }: any = await AjaxService.ajax.http({
+			url: `${URL}/disabled/`,
+			method: "post",
+			data: {admin_id:id},
+		});
+		console.log(data);
+		return data;
+	};
 	export const patch = (id:number,data: AdminData)=>{
 		return AjaxService.ajax.http({
 			url: `/admin/${id}/`,
