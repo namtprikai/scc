@@ -21,6 +21,7 @@ class QuestionStore extends VuexModule {
 		const data : any = await Question.getList();
 		this.questions = data;
 	}
+	@Mutation
 	public async EditQuestion(id:number,input:IQuestionData){
 		const {is_error,message,type,data} = await Question.patch(id,input);
 		if(is_error){

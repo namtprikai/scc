@@ -10,6 +10,7 @@ import { QuestionModule } from "@/store/modules/question";
 import WrapSppiner from "@/components/WrapSinner/index.vue";
 import { BCardAccordion } from "@/components/BCardAccodion";
 import { ProductsModule } from "@/store/modules/products";
+import { IQuestionData } from "@/api/types";
 // @ts-ignore
 @Component({
 	components: { WrapSppiner, BCardAccordion },
@@ -41,7 +42,12 @@ export default class QuestionParent extends Vue {
 		]);
 		this.isLoad = false;
 	}
+	public edit(id:number,data:IQuestionData){
 
+	}
+	private doEdit(id:number,data:IQuestionData){
+		QuestionModule.EditQuestion(id,data);
+	}
 	get Questions() {
 		if (this.searchText === "") {
 			return QuestionModule.Questions;
