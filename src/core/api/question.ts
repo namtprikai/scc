@@ -1,7 +1,7 @@
 import { AjaxService } from "@/services/ajax";
 import {IQuestionData} from "@/api/types";
 export namespace Question{
-	const URL = "api/questions/";
+	const URL = "questions/";
 	export const getList = async ()=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url: `${URL}`,

@@ -2,7 +2,7 @@ import { AjaxService } from "@/services/ajax";
 import { AxiosResponse } from "axios";
 import { IProductData } from "./types";
 export namespace Product {
-	const URL = "api/product/";
+	const URL = "product/";
 	export const getList = async ()=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url: `${URL}`,
