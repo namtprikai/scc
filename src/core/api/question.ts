@@ -46,4 +46,23 @@ export namespace Question{
 		console.log(data);
 		return data;
 	};
+	export const lock = async (id:number)=>{
+		const { data }: any = await AjaxService.ajax.http({
+			url: `${URL}/{${id}}/lock`,
+			method: "GET",
+			params: {},
+		});
+		console.log(data);
+		return data;
+	}
+	export const unlock = async (id:number)=>{
+		const { data }: any = await AjaxService.ajax.http({
+			url: `${URL}/{${id}}/unlock`,
+			method: "GET",
+			params: {},
+		});
+		console.log(data);
+		return data;
+	}
 }
+
