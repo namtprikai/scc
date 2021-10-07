@@ -1,9 +1,7 @@
 import { AjaxService } from "@/services/ajax";
-import { AxiosResponse } from "axios";
-import { IConditionData, IConditionGroupData } from "./types";
-
-namespace ConditionGroup{
-	const URL = "condition_group/";
+import {IConditionData, IQuestionData} from "@/api/types";
+export namespace Condition{
+	const URL = "condition/";
 	export const getList = async ()=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url: `${URL}`,
@@ -13,7 +11,7 @@ namespace ConditionGroup{
 		console.log(data);
 		return data;
 	};
-	export const post = async(input:IConditionGroupData)=>{
+	export const post = async(input:IConditionData)=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url: `${URL}`,
 			method: "post",
@@ -41,3 +39,4 @@ namespace ConditionGroup{
 		return data;
 	};
 }
+
