@@ -43,6 +43,14 @@ export namespace Question{
 		});
 		return data;
 	};
+	export const editKeywordsByQuestionId = async(questionId:number,addKeyword:Array<{group_id:number,keyword_id:Array<number>}>,deleteKeyword:Array<{group_id:number,keyword_id:Array<number>}>):Promise<IKeywordGroupData[]>=>{
+		const { data,is_error,type }: any = await AjaxService.ajax.http({
+			url:  `${URL}${questionId}/keyword/`,
+			method: "post",
+			data: {add:addKeyword,delete:deleteKeyword},
+		});
+		return data;
+	};
 	export const post = async(input:IQuestionData)=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url: `${URL}`,
