@@ -47,8 +47,8 @@ export class SAITableModel<T extends ISAIAPIData>{
 		return this.modelUser?.getData(user)||[];
 	}
 }
-export class CrossReferenceTable {
-	constructor(private aName: string, private bName: string) {
+export class CrossReferenceTable<T extends ICrossReferenceTable> {
+	constructor(protected aName: string, protected bName: string) {
 
 	}
 	get AName(){
@@ -57,7 +57,7 @@ export class CrossReferenceTable {
 	get BName(){
 		return this.bName;
 	}
-	private getMaxId(table: Array<ISAIAPIData>) {
+	protected getMaxId(table: Array<ISAIAPIData>) {
 		let maxId = 0;
 		for (const row of table) {
 			maxId = Math.max(row.id, maxId);
@@ -72,7 +72,7 @@ export class CrossReferenceTable {
 			[this.bName]: bId,
 		});
 	}
-	protected getBByA(id: number, table: Array<ICrossReferenceTable>): Array<number> {
+	protected getBByA(id: number, table: Array<T>): Array<number> {
 		return table.filter(t => t[this.aName] === id)
 		.map(t =>{
 			let ret: number = 0;
@@ -85,7 +85,7 @@ export class CrossReferenceTable {
 			return ret;
 		});
 	}
-	protected getAByB(id: number, table: Array<ICrossReferenceTable>): Array<number> {
+	protected getAByB(id: number, table: Array<T>): Array<number> {
 		return table.filter(t => t[this.bName] === id).map(t => {
 			let ret: number = 0;
 			const aId = t[this.aName];
@@ -97,25 +97,25 @@ export class CrossReferenceTable {
 			return ret;
 		});
 	}
-	protected getAByBAdmin<T extends ISAIAPIData>(admin: IAdminData, id: number, table: Array<ICrossReferenceTable>, targetModel: SAITableModel<T>) {
+	protected getAByBAdmin<H extends ISAIAPIData>(admin: IAdminData, id: number, table: Array<T>, targetModel: SAITableModel<H>) {
 		const idSet = new Set(this.getAByB(id, table));
 		return targetModel.getListByAdmin(admin).filter(t => idSet.has(t.id));
 	}
-	protected getBByAAdmin<T extends ISAIAPIData>(admin: IAdminData, id: number, table: Array<ICrossReferenceTable>, targetModel: SAITableModel<T>) {
+	protected getBByAAdmin<H extends ISAIAPIData>(admin: IAdminData, id: number, table: Array<T>, targetModel: SAITableModel<H>) {
 		const idSet = new Set(this.getBByA(id, table));
 		return targetModel.getListByAdmin(admin).filter(t => idSet.has(t.id));
 	}
-	protected getAByBUser<T extends ISAIAPIData>(admin: IAdminData, id: number, table: Array<ICrossReferenceTable>, targetModel: SAITableModel<T>) {
+	protected getAByBUser<H extends ISAIAPIData>(admin: IAdminData, id: number, table: Array<T>, targetModel: SAITableModel<H>) {
 		const idSet = new Set(this.getAByB(id, table));
 		return targetModel.getListByUser(admin).filter(t => idSet.has(t.id));
 	}
-	protected deleteByAId( id: number, table: Array<ICrossReferenceTable>) {
+	protected deleteByAId( id: number, table: Array<T>) {
 		table = table.filter(t=>t[this.aName]!==id);
 	}
-	protected deleteByBId( id: number, table: Array<ICrossReferenceTable>) {
+	protected deleteByBId( id: number, table: Array<T>) {
 		table = table.filter(t=>t[this.bName]!==id);
 	}
-	public deleteByABId( aid: number,bid: number, table: Array<ICrossReferenceTable>) {
+	public deleteByABId( aid: number,bid: number, table: Array<T>) {
 		table = table.filter(t=>t[this.bName]!==bid&&t[this.aName]!==aid);
 	}
 }
