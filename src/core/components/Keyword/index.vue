@@ -51,7 +51,6 @@ export default class KeywordComp extends Vue {
 
 	async created() {}
 	async fetch() {
-		debugger;
 		const data = await Question.getKeywordsByQuestionId(this.questionId);
 		this.keywordGroups = data;
 	}

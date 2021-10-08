@@ -1,7 +1,7 @@
 import { AjaxService } from "@/services/ajax";
 import {IKeywordGroupData, IQuestionData} from "@/api/types";
 export namespace Question{
-	const URL = "questions/";
+	const URL = "question/";
 	export const getList = async ()=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url: `${URL}`,
@@ -20,7 +20,6 @@ export namespace Question{
 		return data;
 	};
 	export const getKeywordsByQuestionId = async(questionId:number):Promise<IKeywordGroupData[]>=>{
-		debugger;
 		const { data,is_error,type }: any = await AjaxService.ajax.http({
 			url:  `${URL}${questionId}/keyword/`,
 			method: "get",
