@@ -28,3 +28,6 @@ class KeywordQuestion extends CrossReferenceTable{
 }
 const keywordQuestionModel = new KeywordQuestion("keyword_id","question_id");
 
+export const getKeywordsByQuestionId = (id:number)=>{
+	return keywordQuestionModel.getKeywordyQuestionId(id,keywordQuestions);
+}

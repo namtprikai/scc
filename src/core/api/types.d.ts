@@ -100,6 +100,11 @@ export interface ICategory_Question extends ISAIAPIData {
 	question_id: number;
 	display_order: number;
 }
+export interface IKeyword_Question extends ISAIAPIData {
+	keyword_id: number;
+	question_id: number;
+	display_order: number;
+}
 export interface IAdminPolicyGroupData extends ISAIAPIData {
 	admin_id: number;
 	policy_group_id: number;

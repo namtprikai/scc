@@ -12,6 +12,7 @@ import { productions } from "./products";
 import { getAdminByToken } from "./admins";
 import { deleteQuestionKeywordsByQuestionId } from "./question_keywords";
 import { getId, SAITableModel } from "./utils";
+import {getKeywordsByQuestionId as _getKeywordsByQuestionId} from "./keyword_questions";
 export let questions: Array<IQuestionData> = [
 	{
 		id: 0,
@@ -100,6 +101,23 @@ export const addQuestion = (req: Request, res: IAPIResponce): Response => {
 		return res.json({
 			is_error: false,message:"",type:"Object",
 			data: question
+		});
+	}
+	return res.status(400).json({
+		is_error: true,message:"",type:"Object",
+		data: {
+			errors: [{ status: "forbidden_error" }],
+		},
+	});
+};
+export const getKeywordsByQuestionId = (req: Request, res: IAPIResponce): Response => {
+	const { question_id, text } = req.params;
+	const accessToken = req.header("Authorization") || "";
+	const admin = getAdminByToken(accessToken);
+	if (admin && question_id == null) {
+		return res.json({
+			is_error: false,message:"",type:"Array",
+			data: [..._getKeywordsByQuestionId(parseInt(question_id))],
 		});
 	}
 	return res.status(400).json({

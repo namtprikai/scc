@@ -621,7 +621,7 @@ paths:
                           $ref: "#/components/schemas/Category"
         401:
           $ref: "#/components/responses/Unauthorized"
-  /questions:
+  /question:
     get:
       tags:
         - question
@@ -647,6 +647,36 @@ paths:
                     properties:
         401:
           $ref: "#/components/responses/Unauthorized"
+  /question/{id}/keywords:
+    get:
+      tags:
+        - question
+      summary: Get eyword list
+      description: Return a list of keyword
+      operationId: getKeywordsByQuestionId
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id that needs to be fetched.
+          schema:
+            type: int32
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
   /condition_group:
     get:
       tags:
