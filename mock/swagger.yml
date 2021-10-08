@@ -647,7 +647,7 @@ paths:
                     properties:
         401:
           $ref: "#/components/responses/Unauthorized"
-  /question/{id}/keywords:
+  /question/{id}/keyword:
     get:
       tags:
         - question
