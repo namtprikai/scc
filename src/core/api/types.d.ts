@@ -55,6 +55,9 @@ export interface IUserData extends ISAIAPIData {
 	is_enabled?: boolean;
 	is_lock?: boolean;
 }
+export type IPartialUserData = {
+	[P in keyof IUserData]?:IUserData[P];
+}
 export interface IAdminData extends ISAIAPIData {
 	id: number;
 	name: string;
@@ -140,7 +143,10 @@ export interface IKeywordData extends ISAIAPIData {
 	label: string;
 	weight: number;
 }
-
+export interface IKeywordGroupData{
+	group_id:number;
+	keywords:Array<IKeywordData>;
+}
 export interface ILog extends ISAIAPIData {
 	value: Object;
 	type: string;
