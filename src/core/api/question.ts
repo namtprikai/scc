@@ -1,5 +1,5 @@
 import { AjaxService } from "@/services/ajax";
-import {IKeywordGroupData, IQuestionData} from "@/api/types";
+import {IKeywordGroupData, IProductData, IQuestionData} from "@/api/types";
 export namespace Question{
 	const URL = "question/";
 	export const getList = async ()=>{
@@ -16,6 +16,22 @@ export namespace Question{
 			url:  `${URL}${questionId}/category/`,
 			method: "get",
 			params: {},
+		});
+		return data;
+	};
+	export const getProductsByQuestionId  = async(questionId:number):Promise<Array<IProductData>>=>{
+		const { data,is_error,type }: any = await AjaxService.ajax.http({
+			url:  `${URL}${questionId}/product/`,
+			method: "get",
+			params: {},
+		});
+		return data;
+	};
+	export const editProductsByQuestionId  = async(questionId:number,addId:Array<number>,deleteId:Array<number>):Promise<Array<IProductData>>=>{
+		const { data,is_error,type }: any = await AjaxService.ajax.http({
+			url:  `${URL}${questionId}/product/`,
+			method: "post",
+			data:{product_id:addId,delete_id:deleteId},
 		});
 		return data;
 	};
