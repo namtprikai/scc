@@ -31,7 +31,7 @@ export namespace Product {
 	};
 	export const patch = async(id:number,input:any)=>{
 		const { data }: any = await AjaxService.ajax.http({
-			url:  `${URL}/{${id}}/`,
+			url:  `${URL}/${id}/`,
 			method: "patch",
 			data: input,
 		});
@@ -40,7 +40,7 @@ export namespace Product {
 	};
 	export const deleteObject = async (id:number)=>{
 		const { data }: any = await AjaxService.ajax.http({
-			url: `${URL}/{${id}}/`,
+			url: `${URL}/${id}/`,
 			method: "post",
 			data: {},
 		});

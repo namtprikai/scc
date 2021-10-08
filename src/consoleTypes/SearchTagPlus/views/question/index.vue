@@ -10,6 +10,7 @@ import QuestionParent from "@/views/question";
 import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 import WrapSppiner from "@/components/WrapSinner/index.vue";
 import Answer from "@/components/Answer/index.vue";
+import Keyword from "@/components/Keyword/index.vue";
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 // @ts-ignore
 @Component({
@@ -27,6 +28,7 @@ import Answer from "@/components/Answer/index.vue";
 		SlVueTree,
 		WrapSppiner,
 		Answer,
+		Keyword,
 	},
 })
 export default class QuestionComp extends QuestionParent {

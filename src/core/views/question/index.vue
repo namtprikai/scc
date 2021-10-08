@@ -47,7 +47,9 @@
 							{{ question.title }}
 						</template>
 						<template v-slot:body="body"
-							><Answer :questionId="question.id" :is_show="body.isShow" />
+							>
+							<Keyword :questionId="question.id" :is_show="body.isShow" />
+							<Answer :questionId="question.id" :is_show="body.isShow" />
 						</template>
 					</BCardAccordion>
 				</div>

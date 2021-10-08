@@ -1,5 +1,6 @@
 <template>
 	<div>
+		{{questionId}}
 		<b-list-group>
 			<b-list-group-item
 				v-for="keywordGroup in keywordGroups"
@@ -26,6 +27,9 @@ import {
 	IConditionGroupData,
 	IConditionData,
 } from "../../api/types";
+import {
+	Question
+} from "../../api/question";
 @Component
 export default class KeywordComp extends Vue {
 	fetchTime: number | null = null;
@@ -41,12 +45,15 @@ export default class KeywordComp extends Vue {
 		}
 	}
 	@Prop()
+	questionId!:number ;
 	keywordGroups: Array<IKeywordGroupData> = [];
 
 
 	async created() {}
 	async fetch() {
-
+		debugger;
+		const data = await Question.getKeywordsByQuestionId(this.questionId);
+		this.keywordGroups = data;
 	}
 }
 </script>

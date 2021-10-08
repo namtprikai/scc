@@ -24,7 +24,7 @@ export default class QuestionParent extends Vue {
 		this.fetchData();
 		eventHub.$on("scriptCsvUploadDone", this.fetchData);
 	}
-
+	public keywordGroups = [];
 	protected destroyed() {
 		eventHub.$off("scriptCsvUploadDone", this.fetchData);
 	}

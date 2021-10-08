@@ -1,5 +1,5 @@
 import { AjaxService } from "@/services/ajax";
-import {IQuestionData} from "@/api/types";
+import {IKeywordGroupData, IQuestionData} from "@/api/types";
 export namespace Question{
 	const URL = "questions/";
 	export const getList = async ()=>{
@@ -13,7 +13,16 @@ export namespace Question{
 	};
 	export const getCategoryByQuestionId = async(questionId:number)=>{
 		const { data,is_error,type }: any = await AjaxService.ajax.http({
-			url:  `${URL}/{${questionId}}/category/`,
+			url:  `${URL}${questionId}/category/`,
+			method: "get",
+			params: {},
+		});
+		return data;
+	};
+	export const getKeywordsByQuestionId = async(questionId:number):Promise<IKeywordGroupData[]>=>{
+		debugger;
+		const { data,is_error,type }: any = await AjaxService.ajax.http({
+			url:  `${URL}${questionId}/keyword/`,
 			method: "get",
 			params: {},
 		});
@@ -30,7 +39,7 @@ export namespace Question{
 	};
 	export const patch = async(id:number,input:any)=>{
 		const { data }: any = await AjaxService.ajax.http({
-			url:  `${URL}/{${id}}/`,
+			url:  `${URL}/${id}/`,
 			method: "patch",
 			data: input,
 		});
@@ -39,7 +48,7 @@ export namespace Question{
 	};
 	export const deleteObject = async (id:number)=>{
 		const { data }: any = await AjaxService.ajax.http({
-			url: `${URL}/{${id}}/`,
+			url: `${URL}/${id}/`,
 			method: "post",
 			data: {},
 		});
@@ -48,7 +57,7 @@ export namespace Question{
 	};
 	export const lock = async (id:number)=>{
 		const { data }: any = await AjaxService.ajax.http({
-			url: `${URL}/{${id}}/lock`,
+			url: `${URL}/${id}/lock`,
 			method: "GET",
 			params: {},
 		});
@@ -57,7 +66,7 @@ export namespace Question{
 	}
 	export const unlock = async (id:number)=>{
 		const { data }: any = await AjaxService.ajax.http({
-			url: `${URL}/{${id}}/unlock`,
+			url: `${URL}/${id}/unlock`,
 			method: "GET",
 			params: {},
 		});
