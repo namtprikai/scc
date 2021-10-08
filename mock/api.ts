@@ -13,7 +13,7 @@ export {
 	getPolicyList,
 	getPolicyGroupByAdminId,
 } from "./polycyGroup";
-export { getQuestionList,getKeywordsByQuestionId } from "./question";
+export { getQuestionList,getKeywordsByQuestionId ,editKeywordsByQuestionId} from "./question";
 export { getAnsers } from "./answer";
 export {getConditionGroupList,addConditionGroup} from "./conditionGroup";
 import { test } from "./answer";

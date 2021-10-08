@@ -10,3 +10,8 @@ export const deleteQuestionKeywordsByQuestionId = (question_id: number) => {
 		(p) => p.question_id !== question_id
 	);
 };
+// export const editQuestionKeywordsByQuestionId = (question_id: number,add_id,delete_id:Array<number>) => {
+// 	questionKeywords = questionKeywords.filter(
+// 		(p) => p.question_id !== question_id
+// 	);
+// };
