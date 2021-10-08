@@ -677,6 +677,37 @@ paths:
                   data:
                     type: object
                     properties:
+    post:
+      tags:
+        - keyword
+      summary: Edit keyword
+      description: This can only be done by the logged in user.
+      operationId: editKeywordsByQuestionId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id that needs to be fetched.
+          schema:
+            type: int32
+        - name: keyword_id
+          in: query
+          required: true
+          description: The data for created user.
+          schema:
+            type: array
+            items:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
   /condition_group:
     get:
       tags:
