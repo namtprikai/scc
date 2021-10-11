@@ -3,7 +3,7 @@ import { CrossReferenceTable } from "./utils";
 
 let admin_policyGroup:Array<ICrossReferenceTable> = [];
 
-class AdminPolicyGroup extends CrossReferenceTable{
+class AdminPolicyGroup extends CrossReferenceTable<ICrossReferenceTable>{
 	public getPolycyGroupByAdminId(admin_id: number,table:Array<ICrossReferenceTable>) {
 		return this.getBByA(admin_id,table);
 	}

@@ -18,7 +18,7 @@ export const ChildConf: any = {
 	development: {
 		subsystemUrl:
 			"https://ozi4wzcd38.execute-api.ap-northeast-1.amazonaws.com/prod",
-		ApiUrl: "https://ai-chat-supporter.herokuapp.com",
+		ApiUrl: "https://dev-rds.ca2a3rffnmyw.us-east-2.rds.amazonaws.com/api",
 		scriptUrl: "https://nlp.ai-x-supporter.com/api",
 		s3: "https://s3-ap-northeast-1.amazonaws.com/file.upload.aichatsupporter",
 		script_logUrl:

@@ -1,7 +1,7 @@
 import { IAdminData, ICrossReferenceTable } from "../src/core/api/types";
 import { CrossReferenceTable } from "./utils";
 let policyGroup_policy:Array<ICrossReferenceTable> = [];
-class PolicyGroupPolicy extends CrossReferenceTable{
+class PolicyGroupPolicy extends CrossReferenceTable<ICrossReferenceTable>{
 	public getPolycyByPolycyGroupId(polycyGroup_id: number,table:Array<ICrossReferenceTable>) {
 		return this.getBByA(polycyGroup_id,table);
 	}
