@@ -1,7 +1,7 @@
 import faker from "faker";
 import { answers } from "./answer";
 import { questions } from "./question";
-import { answerConditions } from "./answer_conditions";
+import { addConditionByAnswerId } from "./answer_conditions";
 import { conditions } from "./condition";
 import { conditionGroups } from "./conditionGroup";
 import { IConditionGroupData } from "../src/core/api/types";
@@ -60,6 +60,7 @@ export const init = () => {
 		}
 		const M = getRandomInt(2, 5);
 		const conditionIdSet = new Set();
+		const cidList=[];
 		for (let j = 0; j < M; j++) {
 			let cid = 0;
 
@@ -68,13 +69,14 @@ export const init = () => {
 				console.log(cid);
 			} while (conditionIdSet.has(cid));
 			conditionIdSet.add(cid);
-			answerConditions.push({
-				id: anserConditionsIdCount++,
-				answer_id: count,
-				condition_id: cid,
-			});
+			cidList.push(cid);
+			// answerConditions.push({
+			// 	id: anserConditionsIdCount++,
+			// 	answer_id: count,
+			// 	condition_id: cid,
+			// });
 		}
-
+		addConditionByAnswerId(count,cidList);
 		count++;
 	}
 };

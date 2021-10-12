@@ -7,7 +7,7 @@ interface IAnswerCondition extends ICrossReferenceTable{
 	// keyword_id:number;
 }
 
-export let answerConditions:Array<IAnswerCondition> = [
+let answerConditions:Array<IAnswerCondition> = [
 	{
 		id: 0,
 		answer_id: 0,
@@ -39,3 +39,10 @@ class AnswerCondition extends CrossReferenceTable<IAnswerCondition>{
 	}
 }
 const answerConditionModel = new AnswerCondition("answer_id","condition_id");
+
+export const addConditionByAnswerId =(answer_id: number,conditionIdList:Array<number>)=>{
+	return answerConditionModel.addConditionByAnswerId(answer_id,conditionIdList,answerConditions);
+}
+export const deletebyConditionId=(condition_id: number)=>{
+	return answerConditionModel.deletebyConditionId(condition_id,answerConditions);
+}
