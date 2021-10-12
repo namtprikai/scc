@@ -1,6 +1,7 @@
 import { AjaxService } from "@/services/ajax";
 
 export namespace Admin {
+	const URL = "admin/";
 	interface AdminData {
 		name?: string;
 		email?: string;
@@ -9,16 +10,26 @@ export namespace Admin {
 		is_master?:number;
 		config?:any;
 	}
+	export const login = (name: string, password: string): Promise<any> =>{
+		return AjaxService.ajax.http({
+			url: `${URL}admin/login`,
+			method: "POST",
+			data:{
+				name,
+				password,
+			},
+		});
+	};
 	export const add = ( data: AdminData) => {
 		return AjaxService.ajax.http({
-			url: `/admin/`,
+			url: `${URL}`,
 			method: "POST",
 			data,
 		});
 	};
 	export const getList = ()=>{
 		return AjaxService.ajax.http({
-			url: `/admin/`,
+			url: `${URL}`,
 			method: "get",
 			headers: {
 				"Content-type": "application/json",
@@ -28,7 +39,7 @@ export namespace Admin {
 	}
 	export const get = (id:number)=>{
 		return AjaxService.ajax.http({
-			url: `/admin/${id}/`,
+			url: `${URL}${id}/`,
 			method: "get",
 			headers: {
 				"Content-type": "application/json",
@@ -38,7 +49,7 @@ export namespace Admin {
 	}
 	export const disabledObject = async (id:number)=>{
 		const { data }: any = await AjaxService.ajax.http({
-			url: `${URL}/disabled/`,
+			url: `${URL}disabled/`,
 			method: "post",
 			data: {admin_id:id},
 		});
@@ -47,7 +58,7 @@ export namespace Admin {
 	};
 	export const patch = (id:number,data: AdminData)=>{
 		return AjaxService.ajax.http({
-			url: `/admin/${id}/`,
+			url: `${URL}${id}/`,
 			method: "PATCH",
 			data,
 		});
@@ -57,7 +68,7 @@ export namespace Admin {
 		new_password: string,
 	})=>{
 		return AjaxService.ajax.http({
-			url: `/admin/changepw/${id}/`,
+			url: `${URL}changepw/${id}/`,
 			method: "PATCH",
 			data,
 		});
