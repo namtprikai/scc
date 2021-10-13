@@ -4,7 +4,7 @@ import { IConditionData } from "../src/core/api/types";
 import { IAPIResponce } from "../src/core/api/types";
 import { getUserByToken } from "./users";
 import { userConditions } from "./user_conditions";
-import { answerConditions } from "./answer_conditions";
+import { getConditionByAnswerId} from "./answer_conditions";
 export const conditions: Array<IConditionData> = [
 	{
 		id: 0,
@@ -56,10 +56,7 @@ export const getConditionListByUserToken = (
 export const getConditionListByAnserId = (
 	anserId: number
 ): Array<IConditionData> => {
-	const conditionIds = answerConditions
-		.filter((a) => a.answer_id === anserId)
-		.map((a) => a.condition_id);
-	return conditions.filter((c) => new Set(conditionIds).has(c.id));
+	return getConditionByAnswerId(anserId);
 };
 export const getConditionListByConditionGroupId = (
 	conditionGroupId: number

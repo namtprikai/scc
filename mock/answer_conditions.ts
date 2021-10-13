@@ -1,6 +1,7 @@
-import { ICategory_Question, ISAIAPIData } from '../src/core/api/types';
+import { ICategory_Question, ISAIAPIData, IConditionData } from '../src/core/api/types';
 import { IAdminData, ICrossReferenceTable } from "../src/core/api/types";
 import { CrossReferenceTable } from "./utils";
+import { conditions, getConditionList } from './condition';
 interface IAnswerCondition extends ICrossReferenceTable{
 	// question_id:number;
 	// group_id:number;
@@ -39,7 +40,19 @@ class AnswerCondition extends CrossReferenceTable<IAnswerCondition>{
 	}
 }
 const answerConditionModel = new AnswerCondition("answer_id","condition_id");
-
+export const getConditionByAnswerId = (answer_id:number) => {
+	const conditionList: Array<IConditionData> = [];
+	const conditionIdList = answerConditionModel.getConditionByAnswerId(answer_id, answerConditions);
+	for (const conditionId of conditionIdList) {
+		for (const condition of conditions) {
+			if (conditionId === condition.id) {
+				conditionList.push(condition);
+				break;
+			}
+		}
+	}
+	return conditionList;
+	}
 export const addConditionByAnswerId =(answer_id: number,conditionIdList:Array<number>)=>{
 	return answerConditionModel.addConditionByAnswerId(answer_id,conditionIdList,answerConditions);
 }
