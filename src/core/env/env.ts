@@ -14,7 +14,7 @@ export const Conf: any = {
 	development: {
 		subsystemUrl:
 			"https://ozi4wzcd38.execute-api.ap-northeast-1.amazonaws.com/prod",
-		ApiUrl: "https://ai-chat-supporter.herokuapp.com",
+		ApiUrl: "https://dev-elb-493747306.us-east-2.elb.amazonaws.com",
 		scriptUrl: "https://nlp.ai-x-supporter.com/api",
 		s3: "https://s3-ap-northeast-1.amazonaws.com/file.upload.aichatsupporter",
 		script_logUrl:
