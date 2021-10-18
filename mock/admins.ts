@@ -5,8 +5,8 @@ const admin_polycyGropup = [];
 const adminList: IAdminData[] = [
 	{
 		id: 0,
-		name: "Xeiefh",
-		password: "Anyany",
+		name: "master",
+		password: "Hello123#",
 		email: "admin@test.com",
 		is_master: true,
 		config: { role: [5] },
@@ -16,18 +16,18 @@ const adminList: IAdminData[] = [
 ];
 const userCount = 100;
 
-for (let i = 2; i < userCount; i++) {
-	adminList.push({
-		id: i,
-		name: "admin_" + faker.random.alphaNumeric(9),
-		password: faker.random.alphaNumeric(20),
-		email: faker.internet.email(),
-		is_master: false,
-		config: { role: [5] },
-		is_enabled: true,
-		is_lock: false,
-	});
-}
+// for (let i = 2; i < userCount; i++) {
+// 	adminList.push({
+// 		id: i,
+// 		name: "admin_" + faker.random.alphaNumeric(9),
+// 		password: faker.random.alphaNumeric(20),
+// 		email: faker.internet.email(),
+// 		is_master: false,
+// 		config: { role: [5] },
+// 		is_enabled: true,
+// 		is_lock: false,
+// 	});
+// }
 export const signinAdmin = (req: Request, res: IAPIResponce) => {
 	const { name, password } = req.body;
 };

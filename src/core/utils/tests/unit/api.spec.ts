@@ -18,14 +18,14 @@ type target = {
 const targets: [target, target] = [
 	{
 		url: "http://127.0.0.1:9528/api",
-		admin_name: "Xeiefh",
-		password: "Anyany",
+		admin_name: "master",
+		password: "Hello123#",
 		token: "",
 	},
 	{
 		url: "http://127.0.0.1:9528/api",
-		admin_name: "Xeiefh",
-		password: "Anyany",
+		admin_name: "master",
+		password: "Hello123#",
 		token: "",
 	},
 ];
@@ -115,6 +115,64 @@ describe("APItest1", () => {
 		}
 		//　テーブルをすべて削除したあと、アドミン、プロダクト、ロールなど、各項目の登録、紐付けを行い、各項目のgetAPI、patchを行い、モックと同等の結果が得られるかをテストする。
 		// expect(scenario).toEqual(scenarioBot);
+		//ロールの追加
+		{
+			const testData = {
+				name: "テストプロダクト",
+				config: { data1: "data1value" },
+			};
+			const resdata = [];
+			for (const target of targets) {
+				const { data } = await axios({
+					baseURL: `${target.url}`,
+					url: `role`,
+					method: "post",
+					headers: {
+						Authorization: target.token,
+					},
+					data: testData,
+				});
+				console.log(data.data);
+				const addRole = data.data;
+				expect(addRole).toMatchObject(testData);
+				resdata.push(addRole);
+			}
+			expect(resdata[0]).toMatchObject(resdata[1]);
+		}
+	// add Question
+		{
+		const testData = {
+				name: "テストプロダクト",
+				config: { data1: "data1value" },
+		};
+			const resdata = [];
+			for (const target of targets) {
+				const res  = await axios({
+					baseURL: `${target.url}`,
+					url: `question`,
+					method: "post",
+					headers: {
+						Authorization: target.token,
+					},
+					data: testData,
+				});
+				console.log(res.data.data);
+				//先程追加したものを追加
+				const { data } = await axios({
+					baseURL: `${target.url}`,
+					url: `question/${res.data.data}/`,
+					method: "get",
+					headers: {
+						Authorization: target.token,
+					},
+					data: testData,
+				});
+				const addRole = data.data;
+				expect(addRole).toMatchObject(testData);
+				resdata.push(addRole);
+			}
+			expect(resdata[0]).toMatchObject(resdata[1]);
+		}
 	});
 	test("add Question", async () => {
 		const N = 10;
@@ -129,6 +187,45 @@ describe("APItest1", () => {
 				const { data } = await axios({
 					baseURL: `${target.url}`,
 					url: `question`,
+					method: "post",
+					headers: {
+						Authorization: target.token,
+					},
+					data: question,
+				});
+				console.log(data);
+
+				/**
+					* プロダクトとロールの紐付けをする。
+					*/
+				/**
+					* ポストしたものをゲットする。モックと比較する
+					*/
+					/**
+					* アンサーを登録し、プロダクトとロールの紐付けをする。
+					*/
+				/**
+					* ポストしたものをゲットする。モックと比較する
+					*/
+				/**
+					* ポストしたものをユーザー用APIでゲットする。モックと比較する
+					*/
+			}
+		}
+	});
+		test("ロールの追加と、ランダムに質問へのロールの紐付け", async () => {
+		const N = 10;
+		for (let i = 0; i < N;i++) {
+			const question = {
+				title: faker.hacker.noun() + "ってなんですか？",
+				label: faker.hacker.noun() + "ってなんですか？",
+				is_public: true,
+				config: {},
+			};
+			for (const target of targets) {
+				const { data } = await axios({
+					baseURL: `${target.url}`,
+					url: `role`,
 					method: "post",
 					headers: {
 						Authorization: target.token,
