@@ -177,3 +177,7 @@ export interface IProductCategory extends ICrossReferenceTable {
 	product_id: number;
 	category_id: number;
 }
+export interface IProductAnswer extends ICrossReferenceTable {
+	product_id: number;
+	answer_id: number;
+}
