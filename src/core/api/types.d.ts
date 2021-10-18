@@ -173,3 +173,7 @@ export interface IMailTemp extends ISAIAPIData {
 	hash: string;
 	expire_time: Date;
 }
+export interface IProductCategory extends ICrossReferenceTable {
+	product_id: number;
+	category_id: number;
+}

@@ -4,7 +4,7 @@ import { CrossReferenceTable } from "./utils";
 let category_questions: Array<ICrossReferenceTable> = [
 
 ];
-class CategoryQuestion extends CrossReferenceTable{
+class CategoryQuestion extends CrossReferenceTable<ICrossReferenceTable>{
 	public getCategoryByQuestionId(question_id: number,table:Array<ICrossReferenceTable>) {
 		return this.getBByA(question_id,table);
 	}
