@@ -1,5 +1,16 @@
 import axios from "axios";
 import faker from "faker";
+const makeModel = () => {
+  const data = [
+    {
+
+      method:"post"
+    }
+  ];
+  function make() {
+
+  }
+}
 const MOCK_URL = "http://127.0.0.1:9528/api/";
 const API_SERVER_URL = "";
 // import {Login} from "../../../api/login";

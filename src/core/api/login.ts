@@ -10,7 +10,7 @@ export namespace Login {
 		new Promise((r) => {
 			console.log("login");
 			request({
-				url: "admin/login",
+				url: "admin/login/",
 				method: "post",
 				data: {
 					name: username,
