@@ -1,13 +1,32 @@
 import axios from "axios";
 import faker from "faker";
+type Project = {
+	url: string;
+	type: string;
+	size: number;
+};
+type Data = {
+	method: "post" | "get";
+	url: string;
+	id: number;
+
+};
 const makeModel = () => {
+	const project:Array<Project> = [
+		{
+			url: "product/",
+			type: "makeandget",
+			size:8
+		},
+
+	];
   const data = [
     {
 
       method:"post"
     }
   ];
-  function make() {
+  function make(data:Array<Data>,project:Project) {
 
   }
 }
