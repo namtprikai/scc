@@ -5,7 +5,7 @@ import { Auth } from "@/utils/auth";
 import { eventHub } from "@/init/eventHub";
 import { AjaxService } from "@/services/ajax";
 import { IAdminData, IAdmin } from "./types";
-export namespace Login {
+namespace Login {
 	export const login = (username: string, password: string): Promise<any> =>
 		new Promise((r) => {
 			console.log("login");

@@ -10,6 +10,7 @@ type Project = {
 type Data = {
 	id:number;
 	dbid: [number,number];
+	productIds?:Array<number>;
 };
 type DataModel = {
 	maxProductSize:number;
@@ -34,7 +35,28 @@ const makeModel = () => {
 		// 	type: "makeandget",
 		// 	product_max_size:5
 		// },
-
+		for(let i=0;i<dataModel.maxProductSize;i++){
+			//プロダクト
+			dataModel.products.push({
+				id:idCount++,
+				dbid:[-1,-1],
+			});
+		}
+		for(let i=0;i<dataModel.maxAdminSize;i++){
+			const pids = dataModel.products.map(p=>p.id);
+			//プロダクト
+			dataModel.admins.push({
+				id:idCount++,
+				dbid:[-1,-1],
+			});
+		}
+		for(let i=0;i<dataModel.maxTargetSize;i++){
+			//プロダクト
+			dataModel.targets.push({
+				id:idCount++,
+				dbid:[-1,-1],
+			});
+		}
   const data = [
     {
 
@@ -42,15 +64,7 @@ const makeModel = () => {
     }
   ];
   function make(data:Array<Data>,project:Project) {
-			for(let i=0;i<project.size;i++){
-				data.push({
-					id:idCount++,
-					url:project.url,
-					type:project.type,
-					dbid:[-1,-1],
-					method:"post"
-				});
-			}
+
   }
 }
 const MOCK_URL = "http://127.0.0.1:9528/api/";

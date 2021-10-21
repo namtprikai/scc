@@ -6,7 +6,8 @@ import {
 	Action,
 	getModule,
 } from "vuex-module-decorators";
-import { Login } from "@/api/login";
+// import { Login } from "@/api/login";
+import {Admin} from "@/api/admin";
 import { Auth } from "@/utils/auth";
 import store from "@/store";
 
@@ -33,7 +34,7 @@ class User extends VuexModule implements IUserState {
 	@Action({ commit: "SET_TOKEN" })
 	public async Login(userInfo: { username: string; password: string }) {
 		const username = userInfo.username.trim();
-		const { data } = await Login.login(username, userInfo.password);
+		const { data } = await Admin.login(username, userInfo.password);
 		console.log(data);
 		Auth.setToken(data.token);
 		// this.password = userInfo.password;
@@ -59,7 +60,7 @@ class User extends VuexModule implements IUserState {
 		if (UserModule.Id === null) {
 			throw Error("GetInfo: id is undefined!");
 		}
-		const data = await Login.getInfo(token,UserModule.Id);
+		const {data} = await Admin.get(UserModule.Id);
 		if (data?.role) {
 			return {
 				id: data.id,
@@ -81,7 +82,7 @@ class User extends VuexModule implements IUserState {
 		if (token === undefined || token === false) {
 			throw Error("LogOut: token is undefined!");
 		}
-		await Login.logout();
+		await Auth.removeToken();
 		Auth.removeToken();
 		return {
 			token: "",

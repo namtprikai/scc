@@ -578,6 +578,8 @@ export class Ajax {
 		withCredentials: false,
 		headers: {
 			"Content-type": "application/json",
+			// "Access-Control-Allow-Origin":"http://localhost:5000/",
+			// "Referer":"http://test.example.com",
 			// 'X-Requested-With': 'XMLHttpRequest',
 		},
 	};

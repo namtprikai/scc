@@ -10,8 +10,8 @@ export namespace Admin {
 		is_master?:number;
 		config?:any;
 	}
-	export const login = (name: string, password: string): Promise<any> =>{
-		return AjaxService.ajax.http({
+	export const login = async (name: string, password: string): Promise<any> =>{
+		const res= await AjaxService.ajax.http({
 			url: `${URL}admin/login`,
 			method: "POST",
 			data:{
@@ -19,6 +19,12 @@ export namespace Admin {
 				password,
 			},
 		});
+		const {is_error,message,type,data}=res.data;
+		if(!is_error){
+			debugger;
+			data.token = data.access_token;
+		}
+		return res;
 	};
 	export const add = ( data: AdminData) => {
 		return AjaxService.ajax.http({
@@ -35,6 +41,16 @@ export namespace Admin {
 				"Content-type": "application/json",
 			},
 			params: {},
+		});
+	}
+	export const getDetail = (token:string)=>{
+		return AjaxService.ajax.http({
+			url: `${URL}$/`,
+			method: "get",
+			headers: {
+				"Content-type": "application/json",
+			},
+			params: {token},
 		});
 	}
 	export const get = (id:number)=>{
