@@ -2,7 +2,7 @@ import { AjaxService } from "@/services/ajax";
 import { IKeywordData } from "./types";
 
 namespace Keyword{
-	const URL = "api/keyword/";
+	const URL = "keyword/";
 	export const get = ()=>{};
 	export const getList = async()=>{
 		const { data }: any = await AjaxService.ajax.http({

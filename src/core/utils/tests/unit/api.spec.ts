@@ -3,23 +3,38 @@ import faker from "faker";
 type Project = {
 	url: string;
 	type: string;
-	size: number;
+	size:number;
+	product_max_size: number;
+	products:Array<[number,number]>;
 };
 type Data = {
-	method: "post" | "get";
-	url: string;
-	id: number;
-
+	id:number;
+	dbid: [number,number];
+};
+type DataModel = {
+	maxProductSize:number;
+	maxAdminSize:number;
+	maxTargetSize:number;
+	products:Array<any>;
+	admins:Array<any>;
+	targets:Array<any>;
 };
 const makeModel = () => {
-	const project:Array<Project> = [
-		{
-			url: "product/",
-			type: "makeandget",
-			size:8
-		},
+	let idCount=0;
+	const dataModel:DataModel = {
+		maxProductSize:6,
+		maxAdminSize:10,
+		maxTargetSize:100,
+		products:[],
+		admins:[],
+		targets:[],
+	};
+		// {
+		// 	url: "admin/",
+		// 	type: "makeandget",
+		// 	product_max_size:5
+		// },
 
-	];
   const data = [
     {
 
@@ -27,7 +42,15 @@ const makeModel = () => {
     }
   ];
   function make(data:Array<Data>,project:Project) {
-
+			for(let i=0;i<project.size;i++){
+				data.push({
+					id:idCount++,
+					url:project.url,
+					type:project.type,
+					dbid:[-1,-1],
+					method:"post"
+				});
+			}
   }
 }
 const MOCK_URL = "http://127.0.0.1:9528/api/";
