@@ -2,10 +2,19 @@ import { AjaxService } from "@/services/ajax";
 import { AxiosResponse } from "axios";
 import { IAnswerData } from "./types";
 namespace Answer{
-	const URL = "api/answer/";
+	const URL = "answer/";
 	export const getList = async ()=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url: `${URL}`,
+			method: "get",
+			params: {},
+		});
+		console.log(data);
+		return data;
+	};
+	export const getAnswer = async (id:number)=>{
+		const { data }: any = await AjaxService.ajax.http({
+			url: `${URL}/${id}/`,
 			method: "get",
 			params: {},
 		});
