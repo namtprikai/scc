@@ -34,7 +34,7 @@ class User extends VuexModule implements IUserState {
 	@Action({ commit: "SET_TOKEN" })
 	public async Login(userInfo: { username: string; password: string }) {
 		const username = userInfo.username.trim();
-		const { data } = await Admin.login(username, userInfo.password);
+		const data  = await Admin.login(username, userInfo.password);
 		console.log(data);
 		Auth.setToken(data.token);
 		// this.password = userInfo.password;
@@ -60,15 +60,15 @@ class User extends VuexModule implements IUserState {
 		if (UserModule.Id === null) {
 			throw Error("GetInfo: id is undefined!");
 		}
-		const {data} = await Admin.get(UserModule.Id);
-		if (data?.role) {
+		const {data,type} = await Admin.get(UserModule.Id);
+		if (type==="Object") {
 			return {
-				id: data.id,
-				role: data.role,
-				name: data.name,
-				is_master: true,
+				id: data.user?.id,
+				role: data.config?.role||1,
+				name: data.user?.name,
+				is_master: data.user?.is_master||false,
 				avatar: "",
-				email: data.email,
+				email: data.user?.email,
 				token: data.token,
 			};
 		} else {

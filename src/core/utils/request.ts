@@ -15,7 +15,7 @@ service.interceptors.request.use(
 		// Add X-Token header to every request, you can add other custom headers here
 		console.log(UserModule.Token);
 		if (UserModule.Token) {
-			// config.headers['X-Token'] = token;
+			config.headers['Token'] = token;
 			config.headers.Authorization = `${token}`;
 			config.headers["Content-type"] = "application/json";
 		}
@@ -78,7 +78,7 @@ service.interceptors.response.use(
 		if (status === 500 || status === 400 || status === 401) {
 			console.log("logout");
 			UserModule.FedLogOut().then(() => {
-				location.reload(); // To prevent bugs from vue-router
+				// location.reload(); // To prevent bugs from vue-router
 			});
 		}
 		return Promise.reject(error);

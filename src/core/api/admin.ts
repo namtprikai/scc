@@ -11,7 +11,7 @@ export namespace Admin {
 		config?:any;
 	}
 	export const login = async (name: string, password: string): Promise<any> =>{
-		const res= await AjaxService.ajax.http({
+		const {is_error,message,type,data}= await AjaxService.ajax.http({
 			url: `${URL}login/`,
 			method: "POST",
 			data:{
@@ -19,13 +19,13 @@ export namespace Admin {
 				password,
 			},
 		});
-		const {is_error,message,type,data}=res.data;
 		if(!is_error){
-			debugger;
-			data.user = JSON.parse(atob(data.token.split('.')[1]))
+
+			data.user = JSON.parse(atob(data.access_token.split('.')[1]))
 			data.token = data.access_token;
 		}
-		return res;
+		debugger;
+		return data;
 	};
 	export const add = ( data: AdminData) => {
 		return AjaxService.ajax.http({

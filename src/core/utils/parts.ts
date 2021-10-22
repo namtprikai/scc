@@ -1,11 +1,23 @@
 import { CLIENT_ID, apiUrl } from "@consoletype/utils/configration";
 import Cookies from "js-cookie";
 import request from "@/utils/request";
-import axios, { AxiosPromise, AxiosRequestConfig } from "axios";
+import axios, { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "axios";
 import { eventHub } from "@/init/eventHub";
 
 import { OldScenario } from "@/utils/allInOneCsv/scenario";
 import Password from "@/views/password/index.vue";
+interface SAIPromiseArray{
+	is_error:boolean;
+	message:string;
+	type:"Array";
+	data:any;
+}
+interface SAIPromiseObject{
+	is_error:boolean;
+	message:string;
+	type:"Object";
+	data:any;
+}
 export interface MessageObj {
 	assignee_id: string;
 	created_date: string;
@@ -615,12 +627,13 @@ export class Ajax {
 	public updateToken(token: string) {
 		this.token = token;
 		this.defObj.headers.Authorization = `Bearer ${this.token}`;
+		this.defObj.headers.Token = `Bearer ${this.token}`;
 		request.interceptors.request.use(
 			(config) => {
 				// Add X-Token header to every request, you can add other custom headers here
 				if (token) {
-					// config.headers['X-Token'] = token;
-					config.headers.Authorization = token;
+					config.headers['X-Token'] = token;
+					config.headers.Token = config.headers.Authorization = token;
 				}
 				return config;
 			},
@@ -631,11 +644,12 @@ export class Ajax {
 		Cookies.set(`token_${CLIENT_ID}`, token);
 	}
 
-	public http = (obj: AxiosRequestConfig) => {
+	public http = (obj: AxiosRequestConfig):Promise<SAIPromiseObject|SAIPromiseArray> => {
 		console.log(obj.headers);
 		console.log(this.defObj.headers);
 		obj.headers = Object.assign({}, this.defObj.headers || {}, obj.headers || {});
-		return request(obj);
+		const res:any = request(obj);
+		return res;
 	};
 }
 
