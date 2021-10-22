@@ -12,7 +12,7 @@ export namespace Admin {
 	}
 	export const login = async (name: string, password: string): Promise<any> =>{
 		const res= await AjaxService.ajax.http({
-			url: `${URL}admin/login`,
+			url: `${URL}login/`,
 			method: "POST",
 			data:{
 				name,
@@ -22,6 +22,7 @@ export namespace Admin {
 		const {is_error,message,type,data}=res.data;
 		if(!is_error){
 			debugger;
+			data.user = JSON.parse(atob(data.token.split('.')[1]))
 			data.token = data.access_token;
 		}
 		return res;
@@ -43,16 +44,16 @@ export namespace Admin {
 			params: {},
 		});
 	}
-	export const getDetail = (token:string)=>{
-		return AjaxService.ajax.http({
-			url: `${URL}$/`,
-			method: "get",
-			headers: {
-				"Content-type": "application/json",
-			},
-			params: {token},
-		});
-	}
+	// export const getDetail = (token:string)=>{
+	// 	return AjaxService.ajax.http({
+	// 		url: `${URL}$/`,
+	// 		method: "get",
+	// 		headers: {
+	// 			"Content-type": "application/json",
+	// 		},
+	// 		params: {token},
+	// 	});
+	// }
 	export const get = (id:number)=>{
 		return AjaxService.ajax.http({
 			url: `${URL}${id}/`,
