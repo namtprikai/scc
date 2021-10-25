@@ -24,7 +24,6 @@ export namespace Admin {
 			data.user = JSON.parse(atob(data.access_token.split('.')[1]))
 			data.token = data.access_token;
 		}
-		debugger;
 		return data;
 	};
 	export const add = ( data: AdminData) => {
