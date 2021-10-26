@@ -84,6 +84,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { UserModule } from "@/store/modules/user";
+import {ProductsModule} from "@/store/modules/products";
 import { mapGetters } from "vuex";
 import DashboardParent from "@/views/dashboard/index";
 import PanThumb from "@/components/PanThumb/index.vue";
@@ -120,7 +121,7 @@ export default class AdminUser extends Vue {
 					name: this.newAdminUser.name,
 					email: this.newAdminUser.email,
 					password: this.newAdminUser.password,
-					config:{role:[this.newAdminUser.role]},
+					config:{role:this.newAdminUser.role},
 					is_master:0
 				})
 			.then((data) => {
@@ -164,7 +165,9 @@ export default class AdminUser extends Vue {
 	public emptyGif(role: number) {
 		return require(`@/views/dashboard/img/${role}.png`);
 	}
-
+	get ProductList(){
+		return ProductsModule.GetProducts();
+	}
 	get AdminList() {
 		return AdminUserModule.AdminList.filter((admin: IAdminData) => {
 			if (UserModule.is_master) {
