@@ -63,6 +63,18 @@ export namespace Admin {
 			params: {},
 		});
 	}
+	export const editProducts = async (id:number,add:Array<number>,remove:Array<number>)=>{
+		const { data }: any = await AjaxService.ajax.http({
+			url: `${URL}${id}/product/`,
+			method: "post",
+			data: {
+				product_id:add,
+				delete_id:remove
+			},
+		});
+		console.log(data);
+		return data;
+	};
 	export const disabledObject = async (id:number)=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url: `${URL}disabled/`,

@@ -29,7 +29,12 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 		const { is_error,data } = await Admin.getList();
 		return data;
 	}
-
+	@Action
+	public async editProduct(adminUser: IAdminData,add:Array<number>,remove:Array<number>) {
+		console.log("SETADMINUSER");
+		const admin = await Admin.editProducts(adminUser.id, add,remove);
+		this.getAdminUserList();
+	}
 	@Action
 	public async editAdminUser(adminUser: IAdminData) {
 		console.log("SETADMINUSER");
