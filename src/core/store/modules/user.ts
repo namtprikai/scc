@@ -16,7 +16,7 @@ export interface IUserState {
 	id: number;
 	name: string;
 	product_id: string;
-	role: Set<number>;
+	role: number;
 	token: string;
 }
 
@@ -25,7 +25,7 @@ class User extends VuexModule implements IUserState {
 	public id = -1;
 	public token = "";
 	public name = "";
-	public role: Set<number> = new Set();
+	public role: number = 0;
 	public email = "";
 	public is_master = false;
 	public product_id = "";
@@ -64,7 +64,7 @@ class User extends VuexModule implements IUserState {
 		if (type==="Object") {
 			return {
 				id: data.user?.id,
-				role: data.config?.role||1,
+				role: data.config?.role||5,
 				name: data.user?.name,
 				is_master: data.user?.is_master||false,
 				avatar: "",

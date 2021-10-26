@@ -114,7 +114,7 @@ export default class Box extends Vue {
 				this.$route.meta?.[this.$attrs["data-name"]].tabs || [];
 			this.tabMapOptions = tabMapOptions.filter((tab: any) => {
 				if (tab.roles) {
-					if (!tab.roles.find((r: number) => UserModule.Role.has(r))) {
+					if (!tab.roles.find((r: number) => UserModule.Role===r)) {
 						return false;
 					}
 				}

@@ -1,5 +1,6 @@
 <template>
 	<div class="admin-user tab-body">
+		<div>{{AdminList}}</div>
 		<el-table
 			v-loading="listLoading"
 			:data="AdminList"
@@ -13,6 +14,9 @@
 			</el-table-column>
 			<el-table-column align="center" label="メールアドレス">
 				<template slot-scope="scope">{{ scope.row.email }}</template>
+			</el-table-column>
+			<el-table-column align="center" label="プロダクト">
+				<template slot-scope="scope"><ul><li :key="product_id" v-for="product_id in scope.row.product_id">{{product_id}}</li></ul></template>
 			</el-table-column>
 			<el-table-column align="center">
 				<span slot="header">
@@ -54,10 +58,10 @@
 				<template slot-scope="scope">
 					<div
 						:class="{
-							'role--1': scope.row.role == 1,
-							'role--2': scope.row.role == 2,
-							'role--3': scope.row.role == 3,
-							'role--4': scope.row.role == 4,
+							'role--1': scope.row.role===1,
+							'role--2': scope.row.role===2,
+							'role--3': scope.row.role===3,
+							'role--4': scope.row.role===4,
 							role: true,
 						}"
 						:style="roleStyle(scope.row.role)"
@@ -170,7 +174,7 @@ export default class AdminUser extends Vue {
 			return true;
 		}).map((admin: IAdminData) => {
 			const { id, name, email, config } = admin;
-			return { id, name, email, role: config.role || 0 };
+			return { id, name, email, role: config?.role || 5 };
 		});
 	}
 

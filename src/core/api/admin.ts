@@ -9,6 +9,7 @@ export namespace Admin {
 		role?: number;
 		is_master?:number;
 		config?:any;
+		product_id?:Array<number>;
 	}
 	export const login = async (name: string, password: string): Promise<any> =>{
 		const {is_error,message,type,data}= await AjaxService.ajax.http({
@@ -20,9 +21,8 @@ export namespace Admin {
 			},
 		});
 		if(!is_error){
-
 			data.user = JSON.parse(atob(data.access_token.split('.')[1]))
-			data.token = data.access_token;
+			data.token = "Bearer "+data.access_token;
 		}
 		return data;
 	};

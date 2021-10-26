@@ -110,7 +110,7 @@ export default class MessageListCompParent extends Vue {
 		if (this.hikituguFlg !== null && this.hikituguFlg === messageId) {
 			return false;
 		}
-		if (UserModule.Role.size > 0) {
+		if (UserModule.Role > 0) {
 			try {
 				const { admin_user_id } = user.assignee[0];
 				if (admin_user_id === UserModule.id) {

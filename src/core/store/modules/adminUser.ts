@@ -26,7 +26,7 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 		commit: "SET_ADMINLIST",
 	})
 	public async getAdminUserList() {
-		const { data } = await Admin.getList();
+		const { is_error,data } = await Admin.getList();
 		return data;
 	}
 
@@ -39,7 +39,7 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 	@Action({
 		commit: "SET_ADMINLIST",
 	})
-	public async addAdminUser(adminUser: {  name: string; email: string; password: string; config: any; is_master: number }) {
+	public async addAdminUser(adminUser: {  name: string; email: string; password: string; config: any; is_master: number}) {
 		const {  name, email, password, is_master, config } = adminUser;
 		const admin = await Admin.add({  name, email, password, is_master, config });
 		this.getAdminUserList();

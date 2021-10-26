@@ -626,14 +626,12 @@ export class Ajax {
 
 	public updateToken(token: string) {
 		this.token = token;
-		this.defObj.headers.Authorization = `Bearer ${this.token}`;
-		this.defObj.headers.Token = `Bearer ${this.token}`;
+		this.defObj.headers.Authorization = `${this.token}`;
 		request.interceptors.request.use(
 			(config) => {
 				// Add X-Token header to every request, you can add other custom headers here
 				if (token) {
-					config.headers['X-Token'] = token;
-					config.headers.Token = config.headers.Authorization = token;
+					config.headers.Authorization = token;
 				}
 				return config;
 			},

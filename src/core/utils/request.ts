@@ -15,7 +15,7 @@ service.interceptors.request.use(
 		// Add X-Token header to every request, you can add other custom headers here
 		console.log(UserModule.Token);
 		if (UserModule.Token) {
-			config.headers['Token'] = token;
+			// config.headers['Token'] = token;
 			config.headers.Authorization = `${token}`;
 			config.headers["Content-type"] = "application/json";
 		}
