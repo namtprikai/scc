@@ -165,8 +165,9 @@ export default class AdminUser extends Vue {
 	public emptyGif(role: number) {
 		return require(`@/views/dashboard/img/${role}.png`);
 	}
-	get ProductList(){
-		return ProductsModule.GetProducts();
+	 async getProductList (){
+
+		return ProductsModule.productList;
 	}
 	get AdminList() {
 		return AdminUserModule.AdminList.filter((admin: IAdminData) => {
@@ -229,7 +230,10 @@ export default class AdminUser extends Vue {
 	}
 
 	public async created() {
-		await AdminUserModule.getAdminUserList();
+		await Promise.all([
+			AdminUserModule.getAdminUserList(),
+			ProductsModule.GetProducts()
+			]);
 		this.listLoading = false;
 	}
 

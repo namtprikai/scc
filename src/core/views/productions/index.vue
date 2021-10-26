@@ -1,6 +1,9 @@
 <template>
 	<div>
 		<ProductList :values="Products"></ProductList>
+		<div>
+			<b-button>追加</b-button>
+		</div>
 	</div>
 </template>
 
@@ -14,6 +17,7 @@ import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 import WrapSppiner from "@/components/WrapSinner/index.vue";
 import ProductList from "@/components/ProductList/index.vue";
 import { IProductData } from "@/api/types";
+import {BCardAccordion} from "@/components/BCardAccodion";
 import { Wait } from "@/utils/parts";
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 // @ts-ignore
@@ -23,6 +27,7 @@ import { Wait } from "@/utils/parts";
 		SlVueTree,
 		WrapSppiner,
 		ProductList,
+		BCardAccordion,
 	},
 })
 export default class ProductionsParent {
