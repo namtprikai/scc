@@ -1,6 +1,6 @@
 import { AjaxService } from "@/services/ajax";
 import { AxiosResponse } from "axios";
-import { IProductData } from "./types";
+import type { IProductData,IPartialProductData } from "./types";
 export namespace Product {
 	const URL = "product/";
 	export const getList = async ()=>{
@@ -20,8 +20,8 @@ export namespace Product {
 		});
 		return data;
 	};
-	export const post = async(input:IProductData)=>{
-		const { data }: any = await AjaxService.ajax.http({
+	export const post = async(input:IPartialProductData)=>{
+		const { data,is_error,type }: any = await AjaxService.ajax.http({
 			url: `${URL}`,
 			method: "post",
 			data: input,

@@ -29,6 +29,9 @@ export interface IProductData extends ISAIAPIData {
 	max_failure_count_user: number;
 	max_failure_time_user: number;
 }
+export type IPartialProductData = {
+	[P in keyof IProductData]?:IProductData[P];
+}
 export interface ILook extends ISAIAPIData {
 	admin_id: number;
 	table_name: string;

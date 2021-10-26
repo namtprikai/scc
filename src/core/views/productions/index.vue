@@ -2,7 +2,28 @@
 	<div>
 		<ProductList :values="Products"></ProductList>
 		<div>
-			<b-button>追加</b-button>
+			<BCardAccordion :title="'追加'" class :visible="false">
+				<template slot="header"><div class="h3">ついか</div></template>
+				<template slot="body">
+
+
+							<b-form-group
+								label-cols="4"
+								label="プロダクト名"
+								label-for="product-name"
+							>
+								<b-form-input
+									id="product-name"
+									size
+									type="text"
+									v-model="productName"
+									placeholder="プロダクト名"
+								></b-form-input>
+								<b-button @click="addProduct(productName)">追加する</b-button>
+							</b-form-group>
+				</template>
+			</BCardAccordion>
+
 		</div>
 	</div>
 </template>
@@ -33,11 +54,15 @@ import { Wait } from "@/utils/parts";
 export default class ProductionsParent {
 	public isShow = true;
 	public products: Array<IProductData> = [];
+	public productName:string = '';
 	async created() {
 		await ProductsModule.GetProducts();
 	}
 	get Products() {
 		return ProductsModule.Products;
+	}
+	public addProduct(name:string){
+		ProductsModule.AddProduct({name,config:JSON.stringify({})});
 	}
 }
 </script>
