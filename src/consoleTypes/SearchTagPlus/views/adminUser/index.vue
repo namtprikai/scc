@@ -16,7 +16,19 @@
 				<template slot-scope="scope">{{ scope.row.email }}</template>
 			</el-table-column>
 			<el-table-column align="center" label="プロダクト">
-				<template slot-scope="scope"><ul><li :key="product_id" v-for="product_id in scope.row.product_id">{{product_id}}</li></ul></template>
+				<template slot-scope="scope">
+					<ul><li :key="product_id" v-for="product_id in scope.row.product_id">{{product_id}}</li></ul>
+				<b-form-group label="Using options array:">
+					<b-form-checkbox-group
+						:id="'checkbox-'+scope.row.id"
+						v-model="scope.row.editProducts"
+						:options="Products"
+						name="checkbox-1"
+					>
+					</b-form-checkbox-group>
+				</b-form-group>
+				<b-buttom @click="changeProduct(scope.row)">更新</b-buttom>
+				</template>
 			</el-table-column>
 			<el-table-column align="center">
 				<span slot="header">
@@ -94,7 +106,7 @@ import { AndyPasswordValidator } from "@/utils/parts";
 import { AdminUserModule } from "@/store/modules/adminUser";
 import Breadcrumb from "@/components/Breadcrumb/index.vue";
 const PasswordValidator = require("password-validator");
-import { IAdminData } from "@/api/types";
+import { IAdminData,IAdminDataLocal } from "@/api/types";
 import {Admin} from "@/api/admin";
 // @ts-ignore
 @Component({
@@ -115,7 +127,14 @@ export default class AdminUser extends Vue {
 		{ value: 4, text: "管理者" },
 		{ value: 5, text: "オーナー" },
 	];
-
+	get Products() {
+		return ProductsModule.Products.map(p=>{
+			return {
+				text:p.name,
+				value:p.id
+			}
+		});
+	}
 	public addAdminUser() {
 		AdminUserModule.addAdminUser({
 					name: this.newAdminUser.name,
@@ -169,16 +188,55 @@ export default class AdminUser extends Vue {
 
 		return ProductsModule.productList;
 	}
-	get AdminList() {
-		return AdminUserModule.AdminList.filter((admin: IAdminData) => {
+	public async changeProduct(admin: IAdminDataLocal){
+		const editProducts = [...admin.editProducts].sort();
+		const products = [...admin.product_id||[]].sort();
+		const add:Array<number> = [];
+		const remove:Array<number> = [];
+
+		while(0<editProducts.length||0<products.length){
+			if(editProducts.length<=0&&products.length>0){
+				const pid = products.shift();
+				if(pid!==undefined){
+					remove.push(pid);
+				}
+				continue;
+			}
+			if(products.length<=0&&editProducts.length>0){
+				const eid = editProducts.shift();
+				if(eid!==undefined){
+					add.push(eid);
+				}
+				continue;
+			}
+			if(editProducts[0]<products[0]){
+				const eid = editProducts.shift();
+				if(eid!==undefined){
+					add.push(eid);
+				}
+			}else if(editProducts[0]>products[0]){
+				const pid = products.shift();
+				if(pid!==undefined){
+					remove.push(pid);
+				}
+			}else{
+				editProducts.shift();
+				products.shift()
+			}
+		}
+		await Admin.editProducts(admin.id,add,remove);
+		AdminUserModule.getAdminUserList();
+	}
+	get AdminList():IAdminDataLocal {
+		return AdminUserModule.AdminList.filter((admin:IAdminData) => {
 			if (UserModule.is_master) {
 				return true;
 			}
 			// return admin.role > 1;
 			return true;
 		}).map((admin: IAdminData) => {
-			const { id, name, email, config } = admin;
-			return { id, name, email, role: config?.role || 5 };
+			const { id, name, email, config ,product_id} = admin;
+			return { id, name, email, role: config?.role || 5,editProducts:product_id,product_id };
 		});
 	}
 

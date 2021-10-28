@@ -61,8 +61,8 @@ export default class ProductionsParent {
 	get Products() {
 		return ProductsModule.Products;
 	}
-	public addProduct(name:string){
-		ProductsModule.AddProduct({name,config:JSON.stringify({})});
+	public addProduct(name:string,max_failure_count_user:number=5,max_failure_time_user:number=5){
+		ProductsModule.AddProduct({name,config:{},max_failure_count_user,max_failure_time_user});
 	}
 }
 </script>

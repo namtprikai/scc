@@ -71,8 +71,12 @@ export interface IAdminData extends ISAIAPIData {
 	is_master: boolean;
 	is_enabled: boolean;
 	is_lock: boolean;
+	product_id?:Array<number>;
 	created?: Date;
 	modified?: Date;
+}
+export interface IAdminDataLocal extends IAdminData{
+	editProducts:Array<number>;
 }
 export interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData; conditions: Array<IConditionData> }> { }
 export type IConditionObj = {
