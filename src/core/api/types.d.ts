@@ -120,6 +120,10 @@ export interface IPolicyGroupData extends ISAIAPIData {
 	label: string;
 	config?: any;
 }
+
+export type IPartialPolicyGroupData = {
+	[P in keyof IPolicyGroupData]?:IPolicyGroupData[P];
+}
 /**
 	* 管理システムの機能の権限を管理するテーブル。
 テーブルに存在しない機能は誰でも利用できる。
