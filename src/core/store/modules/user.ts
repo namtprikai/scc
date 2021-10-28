@@ -31,6 +31,7 @@ class User extends VuexModule implements IUserState {
 	public product_id = "";
 	public avatar = "";
 	public password = "";
+	public config={};
 	@Action({ commit: "SET_TOKEN" })
 	public async Login(userInfo: { username: string; password: string }) {
 		const username = userInfo.username.trim();
