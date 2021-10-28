@@ -87,7 +87,7 @@ export default class SidebarItem extends Vue {
 	private onlyOneChild: Route | null = null;
 	private flatChild: Route[] = [];
 	private roleCheck(roles: number[]) {
-		if (!roles) {
+		if (!roles||UserModule.is_master) {
 			return true;
 		}
 		for (const role of roles) {

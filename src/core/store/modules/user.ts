@@ -50,7 +50,7 @@ class User extends VuexModule implements IUserState {
 		return { token: "", id: "" };
 	}
 	@MutationAction({
-		mutate: ["id", "role", "name", "email", "avatar", "token", "is_master"],
+		mutate: ["id", "role", "name","avatar", "email", "token", "is_master"],
 	})
 	public async GetInfo() {
 		const token = await Auth.getToken();
@@ -66,10 +66,10 @@ class User extends VuexModule implements IUserState {
 				id: data.user?.id,
 				role: data.config?.role||5,
 				name: data.user?.name,
-				is_master: data.user?.is_master||false,
 				avatar: "",
 				email: data.user?.email,
 				token: data.token,
+				is_master: data.user?.is_master||false,
 			};
 		} else {
 			throw Error("GetInfo: roles must be a non-null array!");
