@@ -318,7 +318,7 @@ export default class AdminUser extends Vue {
 		});
 	}
 
-	public changeRole(admin: IAdminData) {
+	public changeRole(admin: any) {
 		this.$modal.show("dialog", {
 			title: "権限を変更しますか？",
 			text: "",
@@ -327,7 +327,8 @@ export default class AdminUser extends Vue {
 					title: "はい",
 					handler: () => {
 						console.log("SETADMINUSER はい");
-						AdminUserModule.editAdminUser(admin);
+						const extendedConfig = Object.assign(admin.config,{role:admin.role||0});
+						AdminUserModule.editAdminUser({config:extendedConfig});
 						this.$modal.hide("dialog");
 					},
 				},

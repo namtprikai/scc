@@ -78,6 +78,9 @@ export interface IAdminData extends ISAIAPIData {
 export interface IAdminDataLocal extends IAdminData{
 	editProducts:Array<number>;
 }
+export type IPartialAdminData = {
+	[P in keyof IAdminData]?:IAdminData[P];
+}
 export interface IConditionMap extends Map<number, { conditionGroup: IConditionGroupData; conditions: Array<IConditionData> }> { }
 export type IConditionObj = {
 	[key: number]: {

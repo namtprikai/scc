@@ -27,7 +27,7 @@ class User extends VuexModule implements IUserState {
 	public name = "";
 	public role: number = 0;
 	public email = "";
-	public is_master = false;
+	public is_master:0|1 = 0;
 	public product_id = "";
 	public avatar = "";
 	public password = "";
@@ -63,13 +63,13 @@ class User extends VuexModule implements IUserState {
 		const {data,type} = await Admin.get(UserModule.Id);
 		if (type==="Object") {
 			return {
-				id: data.user?.id,
-				role: data.config?.role||5,
-				name: data.user?.name,
+				id: data.id,
+				role: data.config?.role||0,
+				name: data.name,
 				avatar: "",
-				email: data.user?.email,
+				email: data.email,
 				token: data.token,
-				is_master: data.user?.is_master||false,
+				is_master: data.is_master||0,
 			};
 		} else {
 			throw Error("GetInfo: roles must be a non-null array!");

@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { VuexModule, Module, Mutation, Action, getModule } from "vuex-module-decorators";
 import store from "@/store";
 import { CLIENT_ID } from "@consoletype/utils/configration";
-import { IAdminData } from "@/api/types";
+import { IAdminData, IPartialAdminData } from "@/api/types";
 import { Admin } from "@/api/admin";
 import { v4 } from "uuid";
 export interface IAdminUserState {
@@ -36,10 +36,12 @@ class AdminUserStore extends VuexModule implements IAdminUserState {
 		this.getAdminUserList();
 	}
 	@Action
-	public async editAdminUser(adminUser: IAdminData) {
+	public async editAdminUser(adminUser: IPartialAdminData) {
 		console.log("SETADMINUSER");
-		const admin = await Admin.patch(adminUser.id, { name: adminUser.name,config:adminUser.config });
+		if(adminUser.id){
+		const admin = await Admin.patch(adminUser.id, { ...adminUser });
 		this.getAdminUserList();
+		}
 	}
 	@Action({
 		commit: "SET_ADMINLIST",

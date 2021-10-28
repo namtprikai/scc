@@ -1,4 +1,5 @@
 import { AjaxService } from "@/services/ajax";
+import { IPartialAdminData } from "./types";
 
 export namespace Admin {
 	const URL = "admin/";
@@ -84,7 +85,7 @@ export namespace Admin {
 		console.log(data);
 		return data;
 	};
-	export const patch = (id:number,data: AdminData)=>{
+	export const patch = (id:number,data: IPartialAdminData)=>{
 		return AjaxService.ajax.http({
 			url: `${URL}${id}/`,
 			method: "PATCH",
