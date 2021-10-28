@@ -8,7 +8,7 @@ import {
 } from "vuex-module-decorators";
 import store from "@/store";
 import { AjaxService } from "@/services/ajax";
-import type { IPolicyData, IQuestionData,IPartialPolicyGroupData } from "@/api/types";
+import type { IPolicyData, IQuestionData,IPartialPolicyGroupData, IPartialPolicyData } from "@/api/types";
 import { AxiosResponse } from "axios";
 import { PolycyGroup } from "@/api/policyGroup";
 @Module({ dynamic: true, store, name: "products" })
@@ -23,7 +23,7 @@ class PolicysStore extends VuexModule {
 		this.productList = data;
 	}
 	@Mutation
-	public async AddPolicy(data:IPartialPolicyData){
+	public async AddPolicy(data:IPartialPolicyGroupData){
 		const res = await PolycyGroup.post(data);
 		this.productList.push(res);
 	}

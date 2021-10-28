@@ -61,8 +61,8 @@ export default class PolicyParent {
 	get Policys() {
 		return PolicysModule.Policys;
 	}
-	public addPolicy(name:string,max_failure_count_user:number=5,max_failure_time_user:number=5){
-		PolicysModule.AddPolicy({name,config:{},max_failure_count_user,max_failure_time_user});
+	public addPolicyToPolicyGroup(policyId:number,policyGroupId:number){
+		// PolicysModule.AddPolicy({name,config:{},max_failure_count_user,max_failure_time_user});
 	}
 }
 </script>

@@ -137,7 +137,9 @@ export interface IPolicyData extends ISAIAPIData {
 	is_active: 0 | 1;
 	description: string;
 }
-
+export type IPartialPolicyData = {
+	[P in keyof IPolicyData]?:IPolicyData[P];
+}
 export interface IQuestionData extends ISAIAPIData {
 	title: string;
 	label: string;

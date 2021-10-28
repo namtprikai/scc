@@ -1,5 +1,5 @@
 import { AjaxService } from "@/services/ajax";
-import { IPolicyGroupData } from "./types";
+import { IPartialPolicyGroupData, IPolicyGroupData } from "./types";
 
 export namespace PolycyGroup{
 	const URL = "api/policy_group/";
@@ -13,7 +13,7 @@ export namespace PolycyGroup{
 		console.log(data);
 		return data;
 	};
-	export const post = async (input:IPolicyGroupData)=>{
+	export const post = async (input:IPartialPolicyGroupData)=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url: `${URL}`,
 			method: "post",
