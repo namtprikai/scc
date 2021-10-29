@@ -649,7 +649,7 @@ export class Ajax {
 	public http = (obj: AxiosRequestConfig):Promise<SAIPromiseObject|SAIPromiseArray> => {
 		console.log(obj.headers);
 		console.log(this.defObj.headers);
-		obj.headers = Object.assign({}, this.defObj.headers || {}, obj.headers || {}, {Authorization:`Bearer ${this.token}`});
+		obj.headers = Object.assign({}, this.defObj.headers || {}, obj.headers || {}, this.token ? { Authorization: `Bearer ${this.token}` } : {});
 		const res: any = request(obj);
 		// res.then(() => {
 		// 	this.refreshToken();

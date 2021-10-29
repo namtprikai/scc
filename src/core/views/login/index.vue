@@ -116,6 +116,7 @@ export default class Login extends Vue {
 						this.loading = false;
 						await Wait(500);
 						eventHub.$emit("loginAfterInit");
+debugger;
 						await Wait(500);
 						this.$router.push({ path: this.redirect || "/" });
 					})

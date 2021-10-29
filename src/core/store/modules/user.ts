@@ -11,6 +11,7 @@ import {Admin} from "@/api/admin";
 import { Auth } from "@/utils/auth";
 import store from "@/store";
 import { getIdByToken } from "@/utils/parts";
+import { AjaxService } from "@/services/ajax";
 
 export interface IUserState {
 	email: string;
@@ -39,6 +40,7 @@ class User extends VuexModule implements IUserState {
 		const data  = await Admin.login(username, userInfo.password);
 		console.log(data);
 		Auth.setToken(data.token);
+		AjaxService.ajax.updateToken(data.token);
 		// this.password = userInfo.password;
 		// this.name = username;
 		const userId = getIdByToken(data.token);

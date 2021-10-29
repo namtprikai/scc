@@ -1,7 +1,7 @@
 <template>
 	<div class="admin-user tab-body">
 		<div>{{AdminList}}</div>
-		<div v-for="admin,index in AdminList" :key="index">
+		<div v-for="admin in AdminList" :key="admin.id">
 						<BCardAccordion :title="admin.name" class :visible="false">
 				<template slot="header"><div class="h3">{{admin.name}}</div></template>
 				<template slot="body">
@@ -10,10 +10,23 @@
 							<b-form-group
 								label-cols="4"
 								label="プロダクト名"
-								label-for="product-name"
+								:label-for="'product-name'+admin.id"
 							>
 								<b-form-input
-									id="product-name"
+									:id="'product-name'+admin.id"
+									size
+									type="text"
+									v-model="admin.name"
+									placeholder="name"
+								></b-form-input>
+</b-form-group>
+<b-form-group
+								label-cols="4"
+								label="表示名"
+								:label-for="'label-name'+admin.id"
+							>
+								<b-form-input
+									:id="'label-name'+admin.id"
 									size
 									type="text"
 									v-model="admin.name"
