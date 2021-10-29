@@ -22,8 +22,8 @@ export namespace Admin {
 			},
 		});
 		if(!is_error){
-			data.user = JSON.parse(atob(data.access_token.split('.')[1]))
-			data.token = "Bearer "+data.access_token;
+			// data.user = JSON.parse(atob(data.access_token.split('.')[1]))
+			data.token = data.access_token;
 		}
 		return data;
 	};

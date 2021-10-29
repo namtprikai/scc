@@ -10,6 +10,7 @@ import {
 import {Admin} from "@/api/admin";
 import { Auth } from "@/utils/auth";
 import store from "@/store";
+import { getIdByToken } from "@/utils/parts";
 
 export interface IUserState {
 	email: string;
@@ -40,7 +41,8 @@ class User extends VuexModule implements IUserState {
 		Auth.setToken(data.token);
 		// this.password = userInfo.password;
 		// this.name = username;
-		return { token: data.token, id: data.user.id };
+		const userId = getIdByToken(data.token);
+		return { token: data.token, id: userId };
 	}
 	get Token() {
 		return this.token;
@@ -58,10 +60,8 @@ class User extends VuexModule implements IUserState {
 		if (token === undefined || token === "" || token === false) {
 			throw Error("GetInfo: token is undefined!");
 		}
-		if (UserModule.Id === null) {
-			throw Error("GetInfo: id is undefined!");
-		}
-		const {data,type} = await Admin.get(UserModule.Id);
+		const userId = getIdByToken(token);
+		const {data,type} = await Admin.get(userId);
 		if (type==="Object") {
 			return {
 				id: data.id,

@@ -631,7 +631,7 @@ export class Ajax {
 			(config) => {
 				// Add X-Token header to every request, you can add other custom headers here
 				if (token) {
-					config.headers.Authorization = token;
+					config.headers.Authorization = `Bearer ${token}`;
 				}
 				return config;
 			},
@@ -1342,4 +1342,12 @@ export function Wait(time = 1000) {
 			r();
 		}, time);
 	});
+}
+
+export function getIdByToken(token: string) {
+	try {
+		return JSON.parse(atob(token.split('.')[1])).id;
+	} catch (e) {
+		return null;
+	}
 }
