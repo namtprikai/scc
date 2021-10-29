@@ -1,39 +1,47 @@
 <template>
 	<div class="admin-user tab-body">
-		<div>{{AdminList}}</div>
-		<div v-for="admin in AdminList" :key="admin.id">
-						<BCardAccordion :title="admin.name" class :visible="false">
-				<template slot="header"><div class="h3">{{admin.name}}</div></template>
+		<div>{{ adminList }}</div>
+		<div v-for="admin in adminList" :key="admin.id">
+			<BCardAccordion
+				:title="admin.name"
+				class
+				:visible="false"
+				:openHandler="open"
+				:openHandlArg="admin"
+			>
+				<template slot="header"
+					><div class="h3">{{ admin.name }}</div></template
+				>
 				<template slot="body">
+					<b-form-group
+						label-cols="4"
+						label="プロダクト名"
+						:label-for="'product-name' + admin.id"
+					>
+						<b-form-input
+							:id="'product-name' + admin.id"
+							size
+							type="text"
+							v-model="admin.name"
+							placeholder="name"
+						></b-form-input>
+					</b-form-group>
+					<b-form-group
+						label-cols="4"
+						label="表示名"
+						:label-for="'label-name' + admin.id"
+						v-if="admin.config"
+					>
+						<b-form-input
+							:id="'label-name' + admin.id"
+							size
+							type="text"
+							placeholder="name"
+							v-model="admin.config.label"
+						></b-form-input>
 
-
-							<b-form-group
-								label-cols="4"
-								label="プロダクト名"
-								:label-for="'product-name'+admin.id"
-							>
-								<b-form-input
-									:id="'product-name'+admin.id"
-									size
-									type="text"
-									v-model="admin.name"
-									placeholder="name"
-								></b-form-input>
-</b-form-group>
-<b-form-group
-								label-cols="4"
-								label="表示名"
-								:label-for="'label-name'+admin.id"
-							>
-								<b-form-input
-									:id="'label-name'+admin.id"
-									size
-									type="text"
-									v-model="admin.name"
-									placeholder="name"
-								></b-form-input>
-								<b-button>更新</b-button>
-							</b-form-group>
+					</b-form-group>
+<b-button>更新</b-button>
 				</template>
 			</BCardAccordion>
 		</div>
@@ -53,30 +61,38 @@
 			</el-table-column>
 			<el-table-column align="center" label="プロダクト">
 				<template slot-scope="scope">
-					<ul><li :key="product_id" v-for="product_id in scope.row.product_id">{{product_id}}</li></ul>
-				<b-form-group label="Using options array:">
-					<b-form-checkbox-group
-						:id="'checkbox-'+scope.row.id"
-						v-model="scope.row.editProducts"
-						:options="Products"
-						name="checkbox-1"
-					>
-					</b-form-checkbox-group>
-				</b-form-group>
-				<b-buttom @click="changeProduct(scope.row)">更新</b-buttom>
+					<ul>
+						<li :key="product_id" v-for="product_id in scope.row.product_id">
+							{{ product_id }}
+						</li>
+					</ul>
+					<b-form-group label="Using options array:">
+						<b-form-checkbox-group
+							:id="'checkbox-' + scope.row.id"
+							v-model="scope.row.editProducts"
+							:options="Products"
+							name="checkbox-1"
+						>
+						</b-form-checkbox-group>
+					</b-form-group>
+					<b-buttom @click="changeProduct(scope.row)">更新</b-buttom>
 				</template>
 			</el-table-column>
 			<el-table-column align="center">
 				<span slot="header">
 					権限
 					<b-icon id="kengen" icon="info-circle" font-scale="1"></b-icon>
-					<b-popover :target="`kengen`" :placement="'left'" triggers="hover focus">
+					<b-popover
+						:target="`kengen`"
+						:placement="'left'"
+						triggers="hover focus"
+					>
 						<template slot:contents>
 							名称と権限は以下の通りです。
 							<br />オーナー <br />・アカウントの発行・削除ができます。
 							<br />・FAQ設定メニューが使用できます。
-							<br />・管理画面からFAQの検索ができます（※sAI Searchのみ） <br />●管理者
-							<br />・FAQ設定メニューが使用できます。
+							<br />・管理画面からFAQの検索ができます（※sAI Searchのみ）
+							<br />●管理者 <br />・FAQ設定メニューが使用できます。
 							<br />・管理画面からFAQの検索ができます（※sAI Searchのみ）
 						</template>
 					</b-popover>
@@ -96,7 +112,11 @@
 				<span slot="header">
 					バッジ
 					<b-icon id="badge" icon="info-circle" font-scale="1"></b-icon>
-					<b-popover :target="`badge`" :placement="'left'" triggers="hover focus">
+					<b-popover
+						:target="`badge`"
+						:placement="'left'"
+						triggers="hover focus"
+					>
 						<template slot:contents>
 							権限が上がると、バッジが豪華になります。
 							<br />
@@ -106,10 +126,10 @@
 				<template slot-scope="scope">
 					<div
 						:class="{
-							'role--1': scope.row.role===1,
-							'role--2': scope.row.role===2,
-							'role--3': scope.row.role===3,
-							'role--4': scope.row.role===4,
+							'role--1': scope.row.role === 1,
+							'role--2': scope.row.role === 2,
+							'role--3': scope.row.role === 3,
+							'role--4': scope.row.role === 4,
 							role: true,
 						}"
 						:style="roleStyle(scope.row.role)"
@@ -132,7 +152,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { UserModule } from "@/store/modules/user";
-import {ProductsModule} from "@/store/modules/products";
+import { ProductsModule } from "@/store/modules/products";
 import { mapGetters } from "vuex";
 import DashboardParent from "@/views/dashboard/index";
 import PanThumb from "@/components/PanThumb/index.vue";
@@ -142,8 +162,8 @@ import { AndyPasswordValidator } from "@/utils/parts";
 import { AdminUserModule } from "@/store/modules/adminUser";
 import Breadcrumb from "@/components/Breadcrumb/index.vue";
 const PasswordValidator = require("password-validator");
-import { IAdminData,IAdminDataLocal } from "@/api/types";
-import {Admin} from "@/api/admin";
+import { IAdminData, IAdminDataLocal, IPartialAdminData } from "@/api/types";
+import { Admin } from "@/api/admin";
 // @ts-ignore
 @Component({
 	components: {},
@@ -157,28 +177,35 @@ export default class AdminUser extends Vue {
 		role: 4,
 		password: "",
 	};
-
+	public async open(admin: IPartialAdminData) {
+		console.log(admin);
+		if (admin.id) {
+			const {data} = await Admin.get(admin.id);
+debugger;
+			Object.assign(admin, data);
+		}
+	}
 	protected roleOptions = [
 		// { value: 1, text: "ゲスト" },
 		{ value: 4, text: "管理者" },
 		{ value: 5, text: "オーナー" },
 	];
 	get Products() {
-		return ProductsModule.Products.map(p=>{
+		return ProductsModule.Products.map((p) => {
 			return {
-				text:p.name,
-				value:p.id
-			}
+				text: p.name,
+				value: p.id,
+			};
 		});
 	}
 	public addAdminUser() {
 		AdminUserModule.addAdminUser({
-					name: this.newAdminUser.name,
-					email: this.newAdminUser.email,
-					password: this.newAdminUser.password,
-					config:{role:this.newAdminUser.role},
-					is_master:0
-				})
+			name: this.newAdminUser.name,
+			email: this.newAdminUser.email,
+			password: this.newAdminUser.password,
+			config: { role: this.newAdminUser.role },
+			is_master: 0,
+		})
 			.then((data) => {
 				this.$modal.show("dialog", {
 					title: "成功",
@@ -220,59 +247,66 @@ export default class AdminUser extends Vue {
 	public emptyGif(role: number) {
 		return require(`@/views/dashboard/img/${role}.png`);
 	}
-	 async getProductList (){
-
+	async getProductList() {
 		return ProductsModule.productList;
 	}
-	public async changeProduct(admin: IAdminDataLocal){
+	public async changeProduct(admin: IAdminDataLocal) {
 		const editProducts = [...admin.editProducts].sort();
-		const products = [...admin.product_id||[]].sort();
-		const add:Array<number> = [];
-		const remove:Array<number> = [];
+		const products = [...(admin.product_id || [])].sort();
+		const add: Array<number> = [];
+		const remove: Array<number> = [];
 
-		while(0<editProducts.length||0<products.length){
-			if(editProducts.length<=0&&products.length>0){
+		while (0 < editProducts.length || 0 < products.length) {
+			if (editProducts.length <= 0 && products.length > 0) {
 				const pid = products.shift();
-				if(pid!==undefined){
+				if (pid !== undefined) {
 					remove.push(pid);
 				}
 				continue;
 			}
-			if(products.length<=0&&editProducts.length>0){
+			if (products.length <= 0 && editProducts.length > 0) {
 				const eid = editProducts.shift();
-				if(eid!==undefined){
+				if (eid !== undefined) {
 					add.push(eid);
 				}
 				continue;
 			}
-			if(editProducts[0]<products[0]){
+			if (editProducts[0] < products[0]) {
 				const eid = editProducts.shift();
-				if(eid!==undefined){
+				if (eid !== undefined) {
 					add.push(eid);
 				}
-			}else if(editProducts[0]>products[0]){
+			} else if (editProducts[0] > products[0]) {
 				const pid = products.shift();
-				if(pid!==undefined){
+				if (pid !== undefined) {
 					remove.push(pid);
 				}
-			}else{
+			} else {
 				editProducts.shift();
-				products.shift()
+				products.shift();
 			}
 		}
-		await Admin.editProducts(admin.id,add,remove);
+		await Admin.editProducts(admin.id, add, remove);
 		AdminUserModule.getAdminUserList();
 	}
-	get AdminList():IAdminDataLocal {
-		return AdminUserModule.AdminList.filter((admin:IAdminData) => {
+public adminList = [];
+	setAdminList(): void{
+		this.adminList = AdminUserModule.AdminList.filter((admin: IAdminData) => {
 			if (UserModule.is_master) {
 				return true;
 			}
 			// return admin.role > 1;
 			return true;
 		}).map((admin: IAdminData) => {
-			const { id, name, email, config ,product_id} = admin;
-			return { id, name, email, role: config?.role || 5,editProducts:product_id,product_id };
+			const { id, name, email, config, product_id } = admin;
+			return {
+				id,
+				name,
+				email,
+				role: config?.role || 5,
+				editProducts: product_id,
+				product_id,
+			};
 		});
 	}
 
@@ -326,8 +360,9 @@ export default class AdminUser extends Vue {
 	public async created() {
 		await Promise.all([
 			AdminUserModule.getAdminUserList(),
-			ProductsModule.GetProducts()
-			]);
+			ProductsModule.GetProducts(),
+		]);
+		await this.setAdminList();
 		this.listLoading = false;
 	}
 
@@ -363,8 +398,10 @@ export default class AdminUser extends Vue {
 					title: "はい",
 					handler: () => {
 						console.log("SETADMINUSER はい");
-						const extendedConfig = Object.assign(admin.config,{role:admin.role||0});
-						AdminUserModule.editAdminUser({config:extendedConfig});
+						const extendedConfig = Object.assign(admin.config, {
+							role: admin.role || 0,
+						});
+						AdminUserModule.editAdminUser({ config: extendedConfig });
 						this.$modal.hide("dialog");
 					},
 				},

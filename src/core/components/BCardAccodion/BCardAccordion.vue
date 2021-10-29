@@ -2,7 +2,7 @@
 	<div class="b-card-accordion">
 		<b-card no-body>
 			<b-card-header>
-				<div @click="isShow = !isShow" class="b-card-accordion-header">
+				<div @click="clickHundle()" class="b-card-accordion-header">
 					<slot name="header">{{ title }}</slot>
 					<b-icon
 						class="b-card-accordion-header__icon"
@@ -29,7 +29,17 @@ export default class BCardAccordion extends Vue {
 	private get rotate(): number {
 		return this.isShow ? 0 : 90;
 	}
+	async clickHundle(){
+		if(!this.isShow){
+			await this.openHandler(this.openHandlArg);
+		}
+		this.isShow = !this.isShow;
 
+	}
+	@Prop({ type: Function, default: ()=>{} })
+	openHandler!: Function;
+@Prop({ type: Object, default: {} })
+	openHandlArg!: Function;
 	@Prop({ type: String, default: "" })
 	title!: string;
 
