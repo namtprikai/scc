@@ -148,7 +148,7 @@ export default class KeywordShowComp extends Vue {
 				this.inverted_index[o.key] = o;
 			}
 		});
-		// this.ajax
+		// AjaxService.ajax
 		// 	.http({
 		// 		baseURL: `${scriptUrl}`,
 		// 		url: `update_inverted_index?${new Date().getTime()}`,
@@ -188,7 +188,7 @@ Promise.resolve()
 
 	private fetchInvertedIndex(time: number): Promise<any> {
 		return new Promise((r: any) => {
-			// this.ajax
+			// AjaxService.ajax
 			// 	.http({
 			// 		baseURL: `${packageUrl}`,
 			// 		url: `${CLIENT_ID}/tag_package_test.json?${time}`,

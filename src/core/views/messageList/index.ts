@@ -8,6 +8,7 @@ import { Ajax, MessageObj } from "@/utils/parts";
 import { CLIENT_ID } from "@consoletype/utils/configration";
 import { Message, MessageBox } from "element-ui";
 import { AdminUserModule } from "@/store/modules/adminUser";
+import { AjaxService } from "@/services/ajax";
 
 // @ts-ignore
 @Component({
@@ -24,7 +25,7 @@ import { AdminUserModule } from "@/store/modules/adminUser";
 })
 export default class MessageListCompParent extends Vue {
 	protected listLoading = true;
-	protected ajax: Ajax = new Ajax();
+
 	protected listQuery = {};
 	protected created() {
 		this.fetchData();
@@ -148,7 +149,7 @@ export default class MessageListCompParent extends Vue {
 	}
 
 	doDelete(messageId: any) {
-		this.ajax.http({
+		AjaxService.ajax.http({
 			url: `product/${CLIENT_ID}/message/${messageId}/suspend/`,
 			method: "PATCH",
 			data: {},
@@ -203,7 +204,7 @@ export default class MessageListCompParent extends Vue {
 	}
 
 	public async setResponse(message: MessageObj) {
-		await this.ajax
+		await AjaxService.ajax
 			.http({
 				url: `product/${CLIENT_ID}/message/${message.id}/read`,
 				method: "PATCH",

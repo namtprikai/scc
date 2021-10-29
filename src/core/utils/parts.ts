@@ -581,9 +581,10 @@ export class UserList {
 		// }
 	}
 }
+// import { Admin} from "@/api/admin";
 export class Ajax {
-	private _LINE_API_URL: string = apiUrl;
 	private token = "";
+	private refresh_token = "";
 	private logout: Function = () => {};
 	private defObj: any = {
 		url: "",
@@ -618,7 +619,10 @@ export class Ajax {
 		}
 		return this.token;
 	}
-
+	// private async refreshToken(){
+	// 	const { data, is_error } = await Admin.refresh(this.refresh_token);
+	// 	this.updateToken(data.access_token);
+	// }
 	public resetToken() {
 		this.token = "";
 		Cookies.remove(`token_${CLIENT_ID}`);
@@ -645,8 +649,11 @@ export class Ajax {
 	public http = (obj: AxiosRequestConfig):Promise<SAIPromiseObject|SAIPromiseArray> => {
 		console.log(obj.headers);
 		console.log(this.defObj.headers);
-		obj.headers = Object.assign({}, this.defObj.headers || {}, obj.headers || {});
-		const res:any = request(obj);
+		obj.headers = Object.assign({}, this.defObj.headers || {}, obj.headers || {}, {Authorization:`Bearer ${this.token}`});
+		const res: any = request(obj);
+		// res.then(() => {
+		// 	this.refreshToken();
+		// })
 		return res;
 	};
 }

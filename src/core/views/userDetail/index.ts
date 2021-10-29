@@ -19,7 +19,6 @@ import WrapMessage from "@/components/WrapMessage/index.vue";
 	},
 })
 export default class UserDetailParent extends Vue {
-	private ajax = new Ajax();
 	private isShow = false;
 	private items: Array<any> = [
 		{
@@ -212,7 +211,7 @@ export default class UserDetailParent extends Vue {
 		const displayname = this.user.displayname;
 		const attribute = JSON.stringify(this.attr) || "";
 		const status = this.user.status;
-		// this.ajax.http({
+		// AjaxService.ajax.http({
 		// 	url: `product/${CLIENT_ID}/user/${id}`,
 		// 	method: "PATCH",
 		// 	data: {

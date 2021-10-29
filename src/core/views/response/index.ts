@@ -2,7 +2,6 @@ import { BModal } from "bootstrap-vue";
 import { MessageList } from "@/api/messageList";
 import { eventHub } from "@/init/eventHub";
 import { UserModule } from "@/store/modules/user";
-import { Ajax } from "@/utils/parts";
 import WrapMessage from "@/components/WrapMessage/index.vue";
 import { Component, Vue } from "vue-property-decorator";
 import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
@@ -10,6 +9,7 @@ import { AdminUserModule } from "@/store/modules/adminUser";
 import { Teikeibun } from "@/utils/teikeibun";
 import { FileModule } from "@/store/modules/file";
 import axios from "axios";
+import { AjaxService } from "@/services/ajax";
 // @ts-ignore
 @Component({
 	components: { WrapMessage },
@@ -35,7 +35,7 @@ export default class ResponseParent extends Vue {
 		this.footer = this.footers[0];
 	}
 
-	protected ajax: Ajax = new Ajax();
+
 	protected message: any = {};
 	protected text = "";
 	protected userId = "";
@@ -91,7 +91,7 @@ export default class ResponseParent extends Vue {
 		currentScriptId: string | null;
 	}) {
 		const { currentMessageId, currentScriptId, related_message_id } = attr;
-		this.ajax
+		AjaxService.ajax
 			.http({
 				url: `product/${CLIENT_ID}/message/${currentMessageId}/reply/`,
 				method: "PATCH",
@@ -161,7 +161,7 @@ export default class ResponseParent extends Vue {
 		}
 		const userName = this.userName;
 		const userDisplayName = this.userDisplayName;
-		const data: any = await this.ajax.http({
+		const data: any = await AjaxService.ajax.http({
 			url: `product/${CLIENT_ID}/user/${this.userId}/message`,
 			method: "get",
 			data: {
@@ -199,7 +199,7 @@ export default class ResponseParent extends Vue {
 		}
 		if (currentMessageId && related_message_id) {
 			this.reply({ currentMessageId, currentScriptId, related_message_id });
-			const ticketData: any = await this.ajax.http({
+			const ticketData: any = await AjaxService.ajax.http({
 				baseURL: subsystemUrl,
 				url: `product/${CLIENT_ID}/data_get`,
 				method: "get",
@@ -210,7 +210,7 @@ export default class ResponseParent extends Vue {
 				},
 			});
 			console.log(ticketData);
-			this.ajax.http({
+			AjaxService.ajax.http({
 				baseURL: subsystemUrl,
 				url: `product/${CLIENT_ID}/data_post`,
 				method: "POST",
@@ -233,7 +233,7 @@ export default class ResponseParent extends Vue {
 	}
 
 	process(attr: { related_message_id: string; messageId: any; scriptId: any }) {
-		this.ajax
+		AjaxService.ajax
 			.http({
 				url: `product/${CLIENT_ID}/message/${attr.messageId}/process/`,
 				method: "PATCH",
@@ -255,7 +255,7 @@ export default class ResponseParent extends Vue {
 		scriptId: string;
 		text: string;
 	}) {
-		const data: any = await this.ajax.http({
+		const data: any = await AjaxService.ajax.http({
 			url: `product/${CLIENT_ID}/draft`,
 			method: "POST",
 			data: {

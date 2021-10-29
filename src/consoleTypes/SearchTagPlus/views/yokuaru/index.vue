@@ -154,7 +154,7 @@ export default class Yokuaru extends Vue {
 	// 	const blob = new Blob([json], { type: "application/json" });
 	// 	const reader: any = new FileReader();
 	// 	const base64Str = await this.loadFileAsBase64(blob);
-	// 	this.ajax
+	// 	AjaxService.ajax
 	// 		.http({
 	// 			baseURL: `${subsystemUrl}/product/${CLIENT_ID}`,
 	// 			url: "upload",

@@ -16,7 +16,7 @@ service.interceptors.request.use(
 		console.log(UserModule.Token);
 		if (UserModule.Token) {
 			// config.headers['Token'] = token;
-			config.headers.Authorization = `${token}`;
+			config.headers.Authorization = `Bearer ${token}`;
 			config.headers["Content-type"] = "application/json";
 		}
 		return config;

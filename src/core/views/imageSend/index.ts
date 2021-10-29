@@ -8,13 +8,14 @@ import { Component, Vue } from "vue-property-decorator";
 import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
 import { AdminUserModule } from "@/store/modules/adminUser";
 import axios from "axios";
+import { AjaxService } from "@/services/ajax";
 // @ts-ignore
 @Component({
 	components: { WrapMessage },
 })
 export default class ImageSendParent extends Vue {
 	protected file: File | null = null;
-	protected ajax: Ajax = new Ajax();
+
 	protected maxSize = 1048576;
 	protected message: any = {};
 	protected user: any;
@@ -79,7 +80,7 @@ export default class ImageSendParent extends Vue {
 			return;
 		}
 		this.isSend = true;
-		const data: any = await this.ajax.http({
+		const data: any = await AjaxService.ajax.http({
 			url: `product/${CLIENT_ID}/message_data/upload`,
 			method: "GET",
 		});
@@ -96,7 +97,7 @@ export default class ImageSendParent extends Vue {
 			data: file,
 		});
 		console.log(res);
-		await this.ajax.http({
+		await AjaxService.ajax.http({
 			url: `product/${CLIENT_ID}/line/send_message`,
 			method: "POST",
 			data: {

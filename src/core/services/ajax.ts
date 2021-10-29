@@ -1,3 +1,4 @@
+
 import { Ajax } from "@/utils/parts";
 
 export namespace AjaxService {

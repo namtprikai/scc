@@ -38,7 +38,6 @@ namespace Login {
 			method: "get",
 			headers: {
 				"X-Requested-With": "XMLHttpRequest",
-				Authorization: token,
 			},
 			params: {},
 		});

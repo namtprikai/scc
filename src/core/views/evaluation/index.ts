@@ -47,7 +47,7 @@ class NoScriptMessageList extends MessageList {
 	components: { Tinymce, InputTag, Synonym },
 })
 export default class EvaluationCompParent extends Vue {
-	protected ajax: Ajax = new Ajax();
+
 	protected message: Array<any> = [];
 	protected listLoading = false;
 	protected currentLeafs: Array<any> = [];
@@ -79,7 +79,7 @@ export default class EvaluationCompParent extends Vue {
 			(o: any) => /none/gi.test(o.script_id) && o.is_processed == "0"
 		);
 		this.listLoading = false;
-		// this.ajax
+		// AjaxService.ajax
 		// 	.http({
 		// 		baseURL: `${subsystemUrl}`,
 		// 		url: `product/${CLIENT_ID}/data_get`,

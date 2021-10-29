@@ -11,7 +11,6 @@ import { mapGetters } from "vuex";
 import DashboardParent from "@/views/dashboard/index";
 import PanThumb from "@/components/PanThumb/index.vue";
 import { CLIENT_ID } from "./../../utils/configration";
-import { Ajax } from "@/utils/parts";
 import { eventHub } from "@/init/eventHub";
 import { AdminUserModule } from "@/store/modules/adminUser";
 import Breadcrumb from "@/components/Breadcrumb/index.vue";

@@ -186,7 +186,6 @@ export default class TicketCompParent extends Vue {
 	];
 
 	protected activeName = "table";
-	protected ajax: Ajax = new Ajax();
 	protected conditionList: Array<Condition> = [
 		{
 			label: "ステータス",
@@ -357,7 +356,7 @@ export default class TicketCompParent extends Vue {
 			return true;
 		};
 		const data: any = await Promise.resolve(); // Ticket.get();
-		// 	this.ajax.http({
+		// 	AjaxService.ajax.http({
 		// 	baseURL: subsystemUrl,
 		// 	url: `product/${CLIENT_ID}/data_get`,
 		// 	method: "get",

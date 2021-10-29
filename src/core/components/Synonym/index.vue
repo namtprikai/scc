@@ -98,7 +98,7 @@ export default class Synonym extends Vue {
 		this.is_synonymload = true;
 		this.is_cans = false;
 		this.cans = [];
-		// this.ajax
+		// AjaxService.ajax
 		// 	.http({
 		// 		baseURL: `${scriptUrl}`,
 		// 		url: "get_synonym/",
@@ -170,7 +170,7 @@ export default class Synonym extends Vue {
 		console.info(cans);
 		this.is_canload = true;
 		if (!error) {
-			// this.ajax
+			// AjaxService.ajax
 			// 	.http({
 			// 		baseURL: `${scriptUrl}`,
 			// 		url: "update_synonym/",

@@ -7,10 +7,9 @@ import {
 	getModule,
 } from "vuex-module-decorators";
 import store from "@/store";
-import { Ajax } from "@/utils/parts";
 import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
 import { v4 } from "uuid";
-const ajax: Ajax = new Ajax();
+import { AjaxService } from "@/services/ajax";
 export interface IScenarioState {
 	FileList: any;
 	// TalkScriptTree:any;
@@ -47,7 +46,7 @@ class FileStore extends VuexModule implements IScenarioState {
 	})
 	public async getFile(ob: { parent: string; type: string }) {
 		const { parent, type } = ob;
-		const data: any = await ajax.http({
+		const data: any = await AjaxService.ajax.http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/download`,
 			method: "get",
@@ -62,7 +61,7 @@ class FileStore extends VuexModule implements IScenarioState {
 	public async deleateFile(ob: { parent: string; fileName: string }) {
 		const { parent, fileName } = ob;
 		const file = `${parent}/${fileName}`;
-		const setData: any = await ajax.http({
+		const setData: any = await AjaxService.ajax.http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/upload`,
 			method: "post",
@@ -72,7 +71,7 @@ class FileStore extends VuexModule implements IScenarioState {
 			},
 		});
 
-		const data: any = await ajax.http({
+		const data: any = await AjaxService.ajax.http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/download`,
 			method: "get",
@@ -92,7 +91,7 @@ class FileStore extends VuexModule implements IScenarioState {
 	}) {
 		const { parent, fileName, base64Str, type } = ob;
 		const file = `${parent}/${fileName}`;
-		const setData: any = await ajax.http({
+		const setData: any = await AjaxService.ajax.http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/upload`,
 			method: "post",
@@ -102,7 +101,7 @@ class FileStore extends VuexModule implements IScenarioState {
 			},
 		});
 
-		const data: any = await ajax.http({
+		const data: any = await AjaxService.ajax.http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/download`,
 			method: "get",

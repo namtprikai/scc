@@ -33,7 +33,6 @@ export default class SendParent extends Vue {
 		this.footer = this.footers[0];
 	}
 
-	protected ajax: Ajax = new Ajax();
 	protected text = "";
 	protected userId = "";
 	protected userName = "";

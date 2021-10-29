@@ -12,6 +12,15 @@ export namespace Admin {
 		config?:any;
 		product_id?:Array<number>;
 	}
+	export const refresh = async (refreshToken:string): Promise<any> => {
+				const {is_error,message,type,data}= await AjaxService.ajax.http({
+			url: `fnt/${URL}check/`,
+			method: "POST",
+			data:{
+				refresh_token:refreshToken
+			},
+		});
+	}
 	export const login = async (name: string, password: string): Promise<any> =>{
 		const {is_error,message,type,data}= await AjaxService.ajax.http({
 			url: `${URL}login/`,

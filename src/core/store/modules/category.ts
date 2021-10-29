@@ -7,11 +7,10 @@ import {
 	getModule,
 } from "vuex-module-decorators";
 import store from "@/store";
-import { Ajax } from "@/utils/parts";
 import { CLIENT_ID } from "@consoletype/utils/configration";
 import { ICategoryData } from "@/api/types";
 import { v4 } from "uuid";
-const ajax: Ajax = new Ajax();
+import { AjaxService } from "@/services/ajax";
 export interface ICategoryState {
 	categoryList: any;
 	// TalkScriptTree:any;
@@ -35,7 +34,7 @@ class CategoryStore extends VuexModule implements ICategoryState {
 		commit: "SET_ADMINLIST",
 	})
 	public async getCategoryList() {
-		const categoryList = await ajax.http({
+		const categoryList = await AjaxService.ajax.http({
 			url: `/category/`,
 			method: "get",
 			headers: {
@@ -49,7 +48,7 @@ class CategoryStore extends VuexModule implements ICategoryState {
 	@Action
 	public async setCategory(categoryData: ICategoryData) {
 		console.log("SETADMINUSER");
-		const category = await ajax.http({
+		const category = await AjaxService.ajax.http({
 			url: `/category/${categoryData.id}/`,
 			method: "patch",
 			headers: {
@@ -70,7 +69,7 @@ class CategoryStore extends VuexModule implements ICategoryState {
 		is_master: boolean;
 	}) {
 		const { role, name, email, password, is_master, config } = categoryUser;
-		const category = await ajax.http({
+		const category = await AjaxService.ajax.http({
 			url: `/category/`,
 			method: "post",
 			headers: {

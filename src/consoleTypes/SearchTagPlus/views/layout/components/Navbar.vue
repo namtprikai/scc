@@ -71,7 +71,6 @@ import { AppModule } from "@/store/modules/app";
 import { UserModule } from "@/store/modules/user";
 
 import { CLIENT_ID } from "../../../utils/configration";
-import { Ajax } from "@/utils/parts";
 import { url } from "inspector";
 import axios from "axios";
 import { eventHub } from "@/init/eventHub";
@@ -84,7 +83,6 @@ import { WindowTestPageUrl, WindowPageUrl } from "../../../config";
 	},
 })
 export default class Navbar extends Vue {
-	ajax: Ajax = new Ajax();
 	get sidebar() {
 		return AppModule.sidebar;
 	}

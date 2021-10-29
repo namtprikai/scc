@@ -66,7 +66,6 @@ import { eventHub } from "@/init/eventHub";
 import { MessageListModule } from "@/store/modules/messageList";
 import { UserModule } from "@/store/modules/user";
 import { CLIENT_ID } from "./../../utils/configration";
-import { Ajax } from "@/utils/parts";
 import WrapMessage from "@/components/WrapMessage/index.vue";
 import ResponseParent from "@/views/response";
 // @ts-ignore

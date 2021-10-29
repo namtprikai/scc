@@ -5,7 +5,6 @@ import { UserModule } from "@/store/modules/user";
 import io from "socket.io-client";
 import { Auth } from "@/utils/auth";
 import { apiUrl, CLIENT_ID } from "../utils/configration";
-import { Ajax } from "@/utils/parts";
 export namespace TagService {
 	export class Tag {
 		public id: string | null = null;
@@ -280,7 +279,6 @@ export namespace TagService {
 		}
 	}
 	export const tagList = new TagList();
-	const ajax = new Ajax();
 	let isInit = false;
 	export async function init() {
 		console.log("init");

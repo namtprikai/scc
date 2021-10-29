@@ -122,7 +122,6 @@ interface InvertedObj {
 	},
 })
 export default class TagsComp extends Vue {
-	private ajax = new Ajax();
 	private step = 0.05;
 	private inv: any = [];
 	private is_load = false;

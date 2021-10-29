@@ -7,7 +7,6 @@ import {
 	getModule,
 } from "vuex-module-decorators";
 import store from "@/store";
-import { Ajax } from "@/utils/parts";
 import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
 import { moment } from '@/init/moment';
 import { v4 } from "uuid";
@@ -15,7 +14,7 @@ import { start } from "repl";
 import { UserModule } from "@/store/modules/user";
 import AdminUser from "@/views/adminUser/index.vue";
 import { AdminUserModule } from "@/store/modules/adminUser";
-const ajax: Ajax = new Ajax();
+import { AjaxService } from "@/services/ajax";
 export interface IScenarioState {
 	Ticket: any;
 	// TalkScriptTree:any;
@@ -462,7 +461,7 @@ class TicketStore extends VuexModule implements IScenarioState {
 		enddate: Date;
 	}) {
 		const { st, en, startdate, enddate } = ob;
-		const data: any = await ajax.http({
+		const data: any = await AjaxService.ajax.http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/data_get`,
 			method: "get",
