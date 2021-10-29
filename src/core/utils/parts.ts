@@ -626,7 +626,7 @@ export class Ajax {
 
 	public updateToken(token: string) {
 		this.token = token;
-		this.defObj.headers.Authorization = `${this.token}`;
+		this.defObj.headers.Authorization = `Bearer ${this.token}`;
 		request.interceptors.request.use(
 			(config) => {
 				// Add X-Token header to every request, you can add other custom headers here
