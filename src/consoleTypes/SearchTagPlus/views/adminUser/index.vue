@@ -37,98 +37,19 @@
 							v-model="admin.config.label"
 						></b-form-input>
 					</b-form-group>
-					<b-button @click="editAdmin(admin)">更新</b-button>
-				</template>
-			</BCardAccordion>
-		</div>
-		<el-table
-			v-loading="listLoading"
-			:data="adminList"
-			element-loading-text="Loading"
-			border
-			fit
-			highlight-current-row
-		>
-			<el-table-column align="center" label="ユーザー名">
-				<template slot-scope="scope">{{ scope.row.name }}</template>
-			</el-table-column>
-			<el-table-column align="center" label="メールアドレス">
-				<template slot-scope="scope">{{ scope.row.email }}</template>
-			</el-table-column>
-			<el-table-column align="center" label="プロダクト">
-				<template slot-scope="scope">
-					<ul>
-						<li :key="product_id" v-for="product_id in scope.row.product_id">{{ product_id }}</li>
-					</ul>
+
 					<b-form-group label="Using options array:">
 						<b-form-checkbox-group
-							:id="'checkbox-' + scope.row.id"
-							v-model="scope.row.editProducts"
+							:id="'checkbox-' + admin.id"
+							v-model="admin.editProducts"
 							:options="Products"
 							name="checkbox-1"
 						></b-form-checkbox-group>
 					</b-form-group>
-					<b-buttom @click="changeProduct(scope.row)">更新</b-buttom>
+					<b-button @click="editAdmin(admin)">更新</b-button>
 				</template>
-			</el-table-column>
-			<el-table-column align="center">
-				<span slot="header">
-					権限
-					<b-icon id="kengen" icon="info-circle" font-scale="1"></b-icon>
-					<b-popover :target="`kengen`" :placement="'left'" triggers="hover focus">
-						<template slot:contents>
-							名称と権限は以下の通りです。
-							<br />オーナー
-							<br />・アカウントの発行・削除ができます。
-							<br />・FAQ設定メニューが使用できます。
-							<br />・管理画面からFAQの検索ができます（※sAI Searchのみ）
-							<br />●管理者
-							<br />・FAQ設定メニューが使用できます。
-							<br />・管理画面からFAQの検索ができます（※sAI Searchのみ）
-						</template>
-					</b-popover>
-				</span>
-				<template slot slot-scope="scope">
-					<b-form-select
-						v-on:change="changeRole(scope.row)"
-						v-model="scope.row.role"
-						:options="roleOptions"
-						size="sm"
-						class="mt-3"
-						:disabled="!isValid(scope.row.id)"
-					></b-form-select>
-				</template>
-			</el-table-column>
-			<el-table-column align="center" label="バッジ">
-				<span slot="header">
-					バッジ
-					<b-icon id="badge" icon="info-circle" font-scale="1"></b-icon>
-					<b-popover :target="`badge`" :placement="'left'" triggers="hover focus">
-						<template slot:contents>
-							権限が上がると、バッジが豪華になります。
-							<br />
-						</template>
-					</b-popover>
-				</span>
-				<template slot-scope="scope">
-					<div
-						:class="{
-							'role--1': scope.row.role === 1,
-							'role--2': scope.row.role === 2,
-							'role--3': scope.row.role === 3,
-							'role--4': scope.row.role === 4,
-							role: true,
-						}"
-						:style="roleStyle(scope.row.role)"
-					></div>
-				</template>
-			</el-table-column>
-			<el-table-column align="center" label="操作">
-				<template slot-scope="scope">
-					<b-button v-on:click="deleateAdmin(scope.row)" :disabled="!isValid(scope.row.id)">削除</b-button>
-				</template>
-			</el-table-column>
-		</el-table>
+			</BCardAccordion>
+		</div>
 	</div>
 </template>
 
@@ -146,6 +67,7 @@ import { AdminUserModule } from "@/store/modules/adminUser";
 import Breadcrumb from "@/components/Breadcrumb/index.vue";
 const PasswordValidator = require("password-validator");
 import { IAdminData, IAdminDataLocal, IPartialAdminData } from "@/api/types";
+type IPartialAdminDataLocal = IPartialAdminData&IAdminDataLocal;
 import { Admin } from "@/api/admin";
 // @ts-ignore
 @Component({
@@ -237,7 +159,7 @@ export default class AdminUser extends Vue {
 	async getProductList() {
 		return ProductsModule.productList;
 	}
-	public async changeProduct(admin: IAdminDataLocal) {
+	private async changeProduct(admin: IPartialAdminDataLocal) {
 		const editProducts = [...admin.editProducts].sort();
 		const products = [...(admin.product_id || [])].sort();
 		const add: Array<number> = [];
@@ -273,8 +195,11 @@ export default class AdminUser extends Vue {
 				products.shift();
 			}
 		}
-		await Admin.editProducts(admin.id, add, remove);
-		AdminUserModule.getAdminUserList();
+		if(add.length>0 || remove.length>0){
+			await Admin.editProducts(admin.id, add, remove);
+		}
+		// AdminUserModule.getAdminUserList();
+
 	}
 	public adminList: Array<IAdminDataLocal> = [];
 	setAdminList(): void {
@@ -375,7 +300,7 @@ export default class AdminUser extends Vue {
 			],
 		});
 	}
-	public editAdmin(admin:IPartialAdminData){
+	public editAdmin(admin:IPartialAdminDataLocal){
 		this.$modal.show("dialog", {
 			title: "情報を変更しますか？",
 			text: "",
@@ -386,6 +311,7 @@ export default class AdminUser extends Vue {
 						console.log("SETADMINUSER はい");
 						const extendedConfig = admin.config
 						AdminUserModule.editAdminUser({id:admin.id, config: extendedConfig });
+						this.changeProduct(admin);
 						this.$modal.hide("dialog");
 					},
 				},
