@@ -9,15 +9,11 @@
 				:openHandler="open"
 				:openHandlArg="admin"
 			>
-				<template slot="header"
-					><div class="h3">{{ admin.name }}</div></template
-				>
+				<template slot="header">
+					<div class="h3">{{ admin.name }}</div>
+				</template>
 				<template slot="body">
-					<b-form-group
-						label-cols="4"
-						label="プロダクト名"
-						:label-for="'product-name' + admin.id"
-					>
+					<b-form-group label-cols="4" label="プロダクト名" :label-for="'product-name' + admin.id">
 						<b-form-input
 							:id="'product-name' + admin.id"
 							size
@@ -26,6 +22,7 @@
 							placeholder="name"
 						></b-form-input>
 					</b-form-group>
+					{{ admin.config }}
 					<b-form-group
 						label-cols="4"
 						label="表示名"
@@ -39,15 +36,14 @@
 							placeholder="name"
 							v-model="admin.config.label"
 						></b-form-input>
-
 					</b-form-group>
-<b-button>更新</b-button>
+					<b-button @click="editAdmin(admin)">更新</b-button>
 				</template>
 			</BCardAccordion>
 		</div>
 		<el-table
 			v-loading="listLoading"
-			:data="AdminList"
+			:data="adminList"
 			element-loading-text="Loading"
 			border
 			fit
@@ -62,9 +58,7 @@
 			<el-table-column align="center" label="プロダクト">
 				<template slot-scope="scope">
 					<ul>
-						<li :key="product_id" v-for="product_id in scope.row.product_id">
-							{{ product_id }}
-						</li>
+						<li :key="product_id" v-for="product_id in scope.row.product_id">{{ product_id }}</li>
 					</ul>
 					<b-form-group label="Using options array:">
 						<b-form-checkbox-group
@@ -72,8 +66,7 @@
 							v-model="scope.row.editProducts"
 							:options="Products"
 							name="checkbox-1"
-						>
-						</b-form-checkbox-group>
+						></b-form-checkbox-group>
 					</b-form-group>
 					<b-buttom @click="changeProduct(scope.row)">更新</b-buttom>
 				</template>
@@ -82,17 +75,15 @@
 				<span slot="header">
 					権限
 					<b-icon id="kengen" icon="info-circle" font-scale="1"></b-icon>
-					<b-popover
-						:target="`kengen`"
-						:placement="'left'"
-						triggers="hover focus"
-					>
+					<b-popover :target="`kengen`" :placement="'left'" triggers="hover focus">
 						<template slot:contents>
 							名称と権限は以下の通りです。
-							<br />オーナー <br />・アカウントの発行・削除ができます。
+							<br />オーナー
+							<br />・アカウントの発行・削除ができます。
 							<br />・FAQ設定メニューが使用できます。
 							<br />・管理画面からFAQの検索ができます（※sAI Searchのみ）
-							<br />●管理者 <br />・FAQ設定メニューが使用できます。
+							<br />●管理者
+							<br />・FAQ設定メニューが使用できます。
 							<br />・管理画面からFAQの検索ができます（※sAI Searchのみ）
 						</template>
 					</b-popover>
@@ -112,11 +103,7 @@
 				<span slot="header">
 					バッジ
 					<b-icon id="badge" icon="info-circle" font-scale="1"></b-icon>
-					<b-popover
-						:target="`badge`"
-						:placement="'left'"
-						triggers="hover focus"
-					>
+					<b-popover :target="`badge`" :placement="'left'" triggers="hover focus">
 						<template slot:contents>
 							権限が上がると、バッジが豪華になります。
 							<br />
@@ -138,11 +125,7 @@
 			</el-table-column>
 			<el-table-column align="center" label="操作">
 				<template slot-scope="scope">
-					<b-button
-						v-on:click="deleateAdmin(scope.row)"
-						:disabled="!isValid(scope.row.id)"
-						>削除</b-button
-					>
+					<b-button v-on:click="deleateAdmin(scope.row)" :disabled="!isValid(scope.row.id)">削除</b-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -157,7 +140,7 @@ import { mapGetters } from "vuex";
 import DashboardParent from "@/views/dashboard/index";
 import PanThumb from "@/components/PanThumb/index.vue";
 import { CLIENT_ID } from "../../utils/configration";
-import { AndyPasswordValidator } from "@/utils/parts";
+import { AndyPasswordValidator, Wait } from "@/utils/parts";
 
 import { AdminUserModule } from "@/store/modules/adminUser";
 import Breadcrumb from "@/components/Breadcrumb/index.vue";
@@ -180,10 +163,14 @@ export default class AdminUser extends Vue {
 	public async open(admin: IPartialAdminData) {
 		console.log(admin);
 		if (admin.id) {
-			const {data} = await Admin.get(admin.id);
-debugger;
+			const { data } = await Admin.get(admin.id);
 			Object.assign(admin, data);
+			admin.config = Object.assign(admin.config || {}, data.config || {});
+			// await this.$nextTick();
+			// await Wait(200);
+			this.$forceUpdate();
 		}
+		console.log(this.adminList);
 	}
 	protected roleOptions = [
 		// { value: 1, text: "ゲスト" },
@@ -236,7 +223,7 @@ debugger;
 							],
 						});
 					}
-				} catch (e) {}
+				} catch (e) { }
 			});
 	}
 
@@ -289,8 +276,8 @@ debugger;
 		await Admin.editProducts(admin.id, add, remove);
 		AdminUserModule.getAdminUserList();
 	}
-public adminList = [];
-	setAdminList(): void{
+	public adminList: Array<IAdminDataLocal> = [];
+	setAdminList(): void {
 		this.adminList = AdminUserModule.AdminList.filter((admin: IAdminData) => {
 			if (UserModule.is_master) {
 				return true;
@@ -388,7 +375,30 @@ public adminList = [];
 			],
 		});
 	}
-
+	public editAdmin(admin:IPartialAdminData){
+		this.$modal.show("dialog", {
+			title: "情報を変更しますか？",
+			text: "",
+			buttons: [
+				{
+					title: "はい",
+					handler: () => {
+						console.log("SETADMINUSER はい");
+						const extendedConfig = admin.config
+						AdminUserModule.editAdminUser({id:admin.id, config: extendedConfig });
+						this.$modal.hide("dialog");
+					},
+				},
+				{
+					title: "いいえ",
+					handler: () => {
+						AdminUserModule.getAdminUserList();
+						this.$modal.hide("dialog");
+					},
+				},
+			],
+		});
+}
 	public changeRole(admin: any) {
 		this.$modal.show("dialog", {
 			title: "権限を変更しますか？",
@@ -444,6 +454,25 @@ public adminList = [];
 		font-size: 30px;
 		line-height: 46px;
 	}
+
+.role {
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 150px;
+	height: 150px;
+	border-radius: 5%;
+	margin: 10px auto;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+.dashboard {
+	&-container {
+		margin: 30px;
+	}
+	&-text {
+		font-size: 30px;
+		line-height: 46px;
+	}
 }
 .emptyGif {
 	display: block;
@@ -474,4 +503,3 @@ public adminList = [];
 		}
 	}
 }
-</style>
