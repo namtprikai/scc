@@ -69,6 +69,7 @@ const PasswordValidator = require("password-validator");
 import { IAdminData, IAdminDataLocal, IPartialAdminData } from "@/api/types";
 type IPartialAdminDataLocal = IPartialAdminData&IAdminDataLocal;
 import { Admin } from "@/api/admin";
+import {diffArray} from "@sciseed/andytools/functions";
 // @ts-ignore
 @Component({
 	components: {},
@@ -162,39 +163,7 @@ export default class AdminUser extends Vue {
 	private async changeProduct(admin: IPartialAdminDataLocal) {
 		const editProducts = [...admin.editProducts].sort();
 		const products = [...(admin.product_id || [])].sort();
-		const add: Array<number> = [];
-		const remove: Array<number> = [];
-
-		while (0 < editProducts.length || 0 < products.length) {
-			if (editProducts.length <= 0 && products.length > 0) {
-				const pid = products.shift();
-				if (pid !== undefined) {
-					remove.push(pid);
-				}
-				continue;
-			}
-			if (products.length <= 0 && editProducts.length > 0) {
-				const eid = editProducts.shift();
-				if (eid !== undefined) {
-					add.push(eid);
-				}
-				continue;
-			}
-			if (editProducts[0] < products[0]) {
-				const eid = editProducts.shift();
-				if (eid !== undefined) {
-					add.push(eid);
-				}
-			} else if (editProducts[0] > products[0]) {
-				const pid = products.shift();
-				if (pid !== undefined) {
-					remove.push(pid);
-				}
-			} else {
-				editProducts.shift();
-				products.shift();
-			}
-		}
+		const [add,remove]=diffArray(editProducts,products)
 		if(add.length>0 || remove.length>0){
 			await Admin.editProducts(admin.id, add, remove);
 		}
