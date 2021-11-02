@@ -380,7 +380,7 @@ export default class AdminUser extends Vue {
 		font-size: 30px;
 		line-height: 46px;
 	}
-
+}
 .role {
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -429,3 +429,5 @@ export default class AdminUser extends Vue {
 		}
 	}
 }
+
+</style>
