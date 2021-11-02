@@ -69,7 +69,7 @@ const PasswordValidator = require("password-validator");
 import { IAdminData, IAdminDataLocal, IPartialAdminData } from "@/api/types";
 type IPartialAdminDataLocal = IPartialAdminData&IAdminDataLocal;
 import { Admin } from "@/api/admin";
-import {diffArray} from "@sciseed/andytools/functions";
+import {diffArray} from "@sciseed/andytools";
 // @ts-ignore
 @Component({
 	components: {},
