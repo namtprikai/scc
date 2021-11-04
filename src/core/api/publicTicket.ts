@@ -1,8 +1,10 @@
 import request from "@/utils/request";
 import { CLIENT_ID, subsystemUrl } from "@consoletype/utils/configration";
 import axios from "axios";
-
+import { AjaxService } from "@/services/ajax";
+import type { IPartialLogData} from "./types";
 export namespace PublicTicket {
+	const URL = "log/";
 	interface Log {
 		start_time: string;
 		end_time: string;
@@ -41,55 +43,48 @@ export namespace PublicTicket {
 		ticketData = null;
 		resetStartTime();
 	};
-	export const ticketPost = (
-		log: TicketData,
-		isPost = true
-	): Promise<[boolean, TicketData | null]> => {
-		if (start_time === null) {
-			setStartTime();
-		}
-		return new Promise(async (r) => {
-			const data: any = { origin: "console", start_time };
-			for (const logKey in log) {
-				if (logKey === "items") {
-					console.log(logKey);
-					for (const itemKey in log[logKey]) {
-						data[itemKey] = log[logKey][itemKey];
-					}
-				} else {
-					data[logKey] = log[logKey];
-				}
-			}
-			try {
-				if (ticketID) {
-					// const { partitionKey, rangeKey } = ticketID;
-					Object.assign(data, ticketID);
-				}
-			} catch (e) {
-				console.log(e);
-			}
-			ticketData = data;
-			if (isPost) {
-				axios({
-					url: `${subsystemUrl}/product/${CLIENT_ID}/public-ticket`,
-					headers: {},
-					method: "post",
-					data: {
-						values: data,
-					},
-				})
-					.then((res) => {
-						console.log(res);
-						const { data } = res;
-						ticketID = data.putItem;
-						r([false, data]);
-					})
-					.catch(() => {
-						r([true, null]);
-					});
-			} else {
-				r([false, data]);
-			}
+	export const getList = async ()=>{
+		const { data }: any = await AjaxService.ajax.http({
+			url: `${URL}`,
+			method: "get",
+			params: {},
 		});
+		console.log(data);
+		return data;
+	};
+	export const getCategoryByQuestionId = async(questionId:number)=>{
+		const { data,is_error,type }: any = await AjaxService.ajax.http({
+			url:  `${URL}/{${questionId}}/category/`,
+			method: "get",
+			params: {},
+		});
+		return data;
+	};
+	export const post = async(input:IPartialLogData)=>{
+		const { data,is_error,type }: any = await AjaxService.ajax.http({
+			url: `${URL}`,
+			method: "post",
+			data: input,
+		});
+		console.log(data);
+		return data;
+	};
+	export const patch = async(id:number,input:any)=>{
+		const { data }: any = await AjaxService.ajax.http({
+			url:  `${URL}/${id}/`,
+			method: "patch",
+			data: input,
+		});
+		console.log(data);
+		return data;
+	};
+	export const deleteObject = async (id:number)=>{
+		const { data }: any = await AjaxService.ajax.http({
+			url: `${URL}/${id}/`,
+			method: "post",
+			data: {},
+		});
+		console.log(data);
+		return data;
 	};
 }

@@ -168,9 +168,12 @@ export interface IKeywordGroupData{
 	group_id:number;
 	keywords:Array<IKeywordData>;
 }
-export interface ILog extends ISAIAPIData {
+export interface ILogData extends ISAIAPIData {
 	value: Object;
 	type: string;
+}
+export type IPartialLogData = {
+	[P in keyof ILogData]?:ILogData[P];
 }
 export interface IScenarioTree {
 	conditionGroup?: IConditionGroupData;
