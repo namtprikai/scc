@@ -38,8 +38,8 @@ export default class BCardAccordion extends Vue {
 	}
 	@Prop({ type: Function, default: ()=>{} })
 	openHandler!: Function;
-@Prop({ type: Object, default: {} })
-	openHandlArg!: Function;
+@Prop({ type: Object, default: ()=>({}) })
+	openHandlArg: any;
 	@Prop({ type: String, default: "" })
 	title!: string;
 

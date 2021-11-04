@@ -46,8 +46,7 @@
 							></b-breadcrumb>
 							{{ question.title }}
 						</template>
-						<template v-slot:body="body"
-							>
+						<template v-slot:body="body">
 							<Keyword :questionId="question.id" :is_show="body.isShow" />
 							<Answer :questionId="question.id" :is_show="body.isShow" />
 						</template>
@@ -58,6 +57,28 @@
 					<b-button block class @click="addQuestion()" variant="secondary">
 						<svg-icon name="arrows_plus" />
 					</b-button>
+					<BCardAccordion :title="'追加'" class :visible="false">
+						<template slot="header"><div class="h3">ついか</div></template>
+						<template slot="body">
+							<b-form-group label-cols="4" label="質問文" label-for="question-value">
+								<b-form-input
+									id="question-value"
+									size
+									type="text"
+									v-model="question_value"
+									placeholder="質問文"
+								></b-form-input>
+							</b-form-group>
+							<b-form-group label-cols="4" label="質問文" label-for="question-public">
+								<b-form-checkbox
+									id="question-public"
+									v-model="question_isPublic"
+									placeholder="質問文"
+								></b-form-checkbox>
+							</b-form-group>
+							<b-button @click="addQuestion({is_public:question_isPublic,title:question_value})">追加する</b-button>
+						</template>
+					</BCardAccordion>
 				</div>
 				<div class="contextmenu" ref="contextmenu" v-show="contextMenuIsVisible">
 					<div @click="removeNode">Remove</div>

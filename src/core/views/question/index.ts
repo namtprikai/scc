@@ -98,7 +98,11 @@ export default class QuestionParent extends Vue {
 		console.log(paths);
 		$slVueTree.remove(paths);
 	}
+	question_value:string = '';
+	question_isPublic:boolean = false;
 	addQuestion(question:IQuestionData){
+		question.config={};
+		question.label=question.title;
 		QuestionModule.AddQuestion(question);
 		this.$scrollTo("#End", 500, {
 			container: "#Talkscript",
