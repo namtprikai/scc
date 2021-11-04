@@ -55,7 +55,7 @@
 				</div>
 				<div id="End"></div>
 				<div class="mt-3">
-					<b-button block class @click="addRoot()" variant="secondary">
+					<b-button block class @click="addQuestion()" variant="secondary">
 						<svg-icon name="arrows_plus" />
 					</b-button>
 				</div>

@@ -98,7 +98,27 @@ export default class QuestionParent extends Vue {
 		console.log(paths);
 		$slVueTree.remove(paths);
 	}
-
+	addQuestion(question:IQuestionData){
+		QuestionModule.AddQuestion(question);
+		this.$scrollTo("#End", 500, {
+			container: "#Talkscript",
+			easing: "ease-in",
+			offset: 60,
+			force: true,
+			cancelable: true,
+			onStart: (element) => {
+				// scrolling started
+			},
+			onDone: (element) => {
+				// scrolling is done
+			},
+			onCancel: () => {
+				// scrolling has been interrupted
+			},
+			x: false,
+			y: true,
+		});
+	}
 	addRoot() {
 		// const Talkscript = document.getElementById('Talkscript');
 		// (Talkscript || window).scrollTo(0, 999999);

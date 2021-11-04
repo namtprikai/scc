@@ -35,5 +35,19 @@ class QuestionStore extends VuexModule {
 			}
 		}
 	}
+	@Mutation
+	public async AddQuestion(input:IQuestionData){
+		const {is_error,message,type,data} = await Question.post(input);
+		if(is_error){
+
+		}else{
+			for(let question of this.questions){
+				if(question.id === data.id){
+					question = data;
+					break;
+				}
+			}
+		}
+	}
 }
 export const QuestionModule = getModule(QuestionStore);
