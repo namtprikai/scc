@@ -13,7 +13,7 @@
 
 		<div class="tab-body">
 			<div>
-				<b-form-group label="Using options array:">
+				<b-form-group label="プロダクトフィルター">
 					<b-form-checkbox-group
 						id="checkbox-1"
 						v-model="currentProducts"
@@ -27,11 +27,6 @@
 					placeholder="検索文"
 					v-model="searchText"
 				></b-form-input>
-			</div>
-			<div class="text-right mt-3">
-				<b-button class @click="addRoot()" variant="secondary">
-					<svg-icon name="arrows_plus" />
-				</b-button>
 			</div>
 			<div>
 				<wrap-sppiner v-if="isLoad" />
@@ -54,9 +49,6 @@
 				</div>
 				<div id="End"></div>
 				<div class="mt-3">
-					<b-button block class @click="addQuestion()" variant="secondary">
-						<svg-icon name="arrows_plus" />
-					</b-button>
 					<BCardAccordion :title="'追加'" class :visible="false">
 						<template slot="header"><div class="h3">ついか</div></template>
 						<template slot="body">
