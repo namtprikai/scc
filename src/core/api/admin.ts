@@ -22,6 +22,7 @@ export namespace Admin {
 		});
 	}
 	export const login = async (name: string, password: string): Promise<any> =>{
+		AjaxService.ajax.resetToken();
 		const {is_error,message,type,data}= await AjaxService.ajax.http({
 			url: `${URL}login/`,
 			method: "POST",
