@@ -62,7 +62,7 @@ export default class ProductionsParent {
 		return ProductsModule.Products;
 	}
 	public addProduct(name:string,max_failure_count_user:number=5,max_failure_time_user:number=5){
-		ProductsModule.AddProduct({name,config:{},max_failure_count_user,max_failure_time_user});
+		ProductsModule.AddProduct({name,config:{hoge:"asdf"},max_failure_count_user,max_failure_time_user});
 	}
 }
 </script>

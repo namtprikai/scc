@@ -10,7 +10,7 @@ import store from "@/store";
 import { CLIENT_ID } from "@consoletype/utils/configration";
 import { ICategoryData } from "@/api/types";
 import { v4 } from "uuid";
-import { AjaxService } from "@/services/ajax";
+import { Category} from "@/api/category";
 export interface ICategoryState {
 	categoryList: any;
 	// TalkScriptTree:any;
@@ -34,49 +34,20 @@ class CategoryStore extends VuexModule implements ICategoryState {
 		commit: "SET_ADMINLIST",
 	})
 	public async getCategoryList() {
-		const categoryList = await AjaxService.ajax.http({
-			url: `/category/`,
-			method: "get",
-			headers: {
-				"Content-type": "application/json",
-			},
-			params: {},
-		});
+		const categoryList = await Category.getList();
 		return categoryList;
 	}
 
 	@Action
 	public async setCategory(categoryData: ICategoryData) {
 		console.log("SETADMINUSER");
-		const category = await AjaxService.ajax.http({
-			url: `/category/${categoryData.id}/`,
-			method: "patch",
-			headers: {
-				"Content-type": "application/json",
-			},
-			data: {},
-		});
+		const category = await Category.post(categoryData);
 		this.getCategoryList();
 	}
 
 	@Action
-	public async addCategory(categoryUser: {
-		role: number;
-		name: string;
-		email: string;
-		password: string;
-		config: any;
-		is_master: boolean;
-	}) {
-		const { role, name, email, password, is_master, config } = categoryUser;
-		const category = await AjaxService.ajax.http({
-			url: `/category/`,
-			method: "post",
-			headers: {
-				"Content-type": "application/json",
-			},
-			data: { role, name, email, password, is_master, config },
-		});
+	public async addCategory(categoryData: ICategoryData) {
+		const category = await Category.post(categoryData);
 		this.getCategoryList();
 	}
 }

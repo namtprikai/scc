@@ -2,7 +2,7 @@ import { AjaxService } from "@/services/ajax";
 import { AxiosResponse } from "axios";
 import { ICategoryData } from "./types";
 
-namespace Category{
+export namespace Category{
 	const URL = "category/";
 	export const getList = async ()=>{
 		const { data }: any = await AjaxService.ajax.http({
