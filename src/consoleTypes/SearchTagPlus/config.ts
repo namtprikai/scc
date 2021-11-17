@@ -464,7 +464,10 @@ export function RouterConfig(
 									},
 									v1: {
 										default: "Question",
-										tabs: [{ label: "FAQ一覧", key: "Question" }],
+										tabs: [
+											{ label: "FAQ一覧", key: "Question" },
+											{ label: "FAQ一覧", key: "Category" }
+										],
 									},
 									v2: {
 										default: "AllInOneEditor",

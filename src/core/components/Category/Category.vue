@@ -1,5 +1,6 @@
 <template>
 	<div>
+asdf
 		<vue-tree
 			style="width: 800px; height: 600px; border: 1px solid gray;"
 			:dataset="sampleData"
@@ -16,7 +17,7 @@ import VueTree from '@ssthouse/vue-tree-chart';
 @Component({
 	components: { VueTree },
 })
-export default class CategoryTemp extends Vue {
+export default class CategoryComp extends Vue {
 	sampleData = {
 		value: '1',
 		children: [
@@ -25,7 +26,7 @@ export default class CategoryTemp extends Vue {
 		]
 	}
 	treeConfig = { nodeWidth: 120, nodeHeight: 80, levelHeight: 200 }
-	@Prop()
-	title!: string;
+	// @Prop()
+	// title!: string;
 }
 </script>
