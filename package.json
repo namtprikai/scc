@@ -21,7 +21,7 @@
     "@johmun/vue-tags-input": "^2.1.0",
     "@sciseed/andytools": "^1.0.1",
     "@sciseed/kctools": "^1.0.7",
-    "@ssthouse/vue-tree-chart": "^0.5.4",
+    "@ssthouse/vue-tree-chart": "git+https://github.com/kotaroyamame/vue-tree-chart.git#feature/addSyncMode",
     "@tensorflow/tfjs": "^2.7.0",
     "@tensorflow/tfjs-node": "^2.7.0",
     "@tinymce/tinymce-vue": "^3.2.6",

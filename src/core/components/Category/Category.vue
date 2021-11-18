@@ -5,6 +5,8 @@ asdf
 			style="width: 800px; height: 600px; border: 1px solid gray;"
 			:dataset="sampleData"
 			:config="treeConfig"
+			:isSync="true"
+			:leafClick="selectLeaf"
 		></vue-tree>
 	</div>
 </template>
@@ -12,7 +14,7 @@ asdf
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 // @ts-ignore
-import VueTree from '@ssthouse/vue-tree-chart';
+import VueTree from '@ssthouse/vue-tree-chart/src/vue-tree/VueTree.vue';
 // Vue.component('vue-tree', VueTree)
 @Component({
 	components: { VueTree },
@@ -28,5 +30,9 @@ export default class CategoryComp extends Vue {
 	treeConfig = { nodeWidth: 120, nodeHeight: 80, levelHeight: 200 }
 	// @Prop()
 	// title!: string;
+	public selectLeaf(data:any){
+		console.log(data);
+		return [{value:"asdf"},{value:"asdfa"}];
+	}
 }
 </script>
