@@ -33,8 +33,8 @@ class CategoryStore extends VuexModule implements ICategoryState {
 	@Action({
 		commit: "SET_ADMINLIST",
 	})
-	public async getCategoryList() {
-		const categoryList = await Category.getList();
+	public async getCategoryList(parent_id: number|null) {
+		const categoryList = await Category.getList(parent_id);
 		return categoryList;
 	}
 
@@ -42,13 +42,13 @@ class CategoryStore extends VuexModule implements ICategoryState {
 	public async setCategory(categoryData: ICategoryData) {
 		console.log("SETADMINUSER");
 		const category = await Category.post(categoryData);
-		this.getCategoryList();
+		// this.getCategoryList();
 	}
 
 	@Action
 	public async addCategory(categoryData: ICategoryData) {
 		const category = await Category.post(categoryData);
-		this.getCategoryList();
+		// this.getCategoryList();
 	}
 }
 

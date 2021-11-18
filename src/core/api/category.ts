@@ -4,11 +4,11 @@ import { ICategoryData } from "./types";
 
 export namespace Category{
 	const URL = "category/";
-	export const getList = async ()=>{
+	export const getList = async (parent_id:number|null)=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url: `${URL}`,
 			method: "get",
-			params: {},
+			params: {parent_id},
 		});
 		console.log(data);
 		return data;
