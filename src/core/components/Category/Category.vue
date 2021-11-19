@@ -14,6 +14,15 @@
 		</div>
 		<div>
 			<h3>新規追加</h3>
+			<b-form-group label="プロダクト">
+				<b-form-checkbox-group
+					id="checkbox-1"
+					v-model="currentProducts"
+					:options="ProductOptions"
+					name="checkbox-1"
+				>
+				</b-form-checkbox-group>
+			</b-form-group>
 			<b-input type="text" v-model="text"></b-input>
 			<b-button @click="addCategory(text)">追加</b-button>
 		</div>
@@ -26,6 +35,7 @@ import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import VueTree from '@ssthouse/vue-tree-chart';
 import { CategoryModule } from '@/store/modules/category';
 import { Category } from '@/api/category';
+import {ProductsModule} from "@/store/modules/products";
 // Vue.component('vue-tree', VueTree)
 @Component({
 	components: { VueTree },
@@ -52,12 +62,20 @@ export default class CategoryComp extends Vue {
 			}
 		});
 	}
+	public currentProducts: Array<any> = [];
+	get ProductOptions() {
+		return ProductsModule.Products.map((p) => {
+			return { text: p.name, value: p.id };
+		});
+	}
 	async mounted(){
 		const categoryList = await Category.getList(null);
 		debugger;
 		this.categoryData = this.setCategoryList(categoryList);
 	}
 	public addCategory(text:string, parent:number|null=null){
+		console.log(this.currentProducts);
+		debugger;
 		Category.post({
 			product_id:[1],
 			text,
