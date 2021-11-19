@@ -61,7 +61,7 @@ export default class CategoryComp extends Vue {
 			return {
 				value:category.label,
 				data:category,
-				children:[],
+				// children:[],
 			}
 		});
 	}
@@ -73,7 +73,6 @@ export default class CategoryComp extends Vue {
 	}
 	async mounted(){
 		const categoryList = await Category.getList(null);
-		debugger;
 		this.categoryData = this.setCategoryList(categoryList);
 	}
 	public addCategory(text:string, parent:number|null=null){

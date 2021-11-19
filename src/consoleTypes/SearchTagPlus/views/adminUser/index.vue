@@ -37,7 +37,20 @@
 							v-model="admin.config.label"
 						></b-form-input>
 					</b-form-group>
-
+					<b-form-group
+						label-cols="4"
+						label="管理画面role"
+						:label-for="'role-name' + admin.id"
+						v-if="admin.config"
+					>
+						<b-form-input
+							:id="'role-name' + admin.id"
+							size
+							type="number"
+							placeholder="role"
+							v-model="admin.config.role"
+						></b-form-input>
+					</b-form-group>
 					<b-form-group label="Using options array:">
 						<b-form-checkbox-group
 							:id="'checkbox-' + admin.id"
@@ -278,7 +291,10 @@ export default class AdminUser extends Vue {
 					title: "はい",
 					handler: () => {
 						console.log("SETADMINUSER はい");
-						const extendedConfig = admin.config
+						const extendedConfig = admin.config;
+						if(typeof extendedConfig.role ==='string'){
+							extendedConfig.role = Number(extendedConfig.role||'0');
+						}
 						AdminUserModule.editAdminUser({id:admin.id, config: extendedConfig });
 						this.changeProduct(admin);
 						this.$modal.hide("dialog");
