@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<vue-tree
-			style="width: 800px; height: 600px; border: 1px solid gray;"
+			style="width: 800px; height: 600px; border: 1px solid gray"
 			:dataset="categoryData"
 			:config="treeConfig"
 			:isSync="true"
@@ -10,7 +10,12 @@
 		></vue-tree>
 		<div>
 			<h3>選択カテゴリ</h3>
-			<p>{{currentCategory}}</p>
+			<p>{{ currentCategory }}</p>
+		</div>
+		<div>
+			<h3>新規追加</h3>
+			<b-input type="text" v-model="text"></b-input>
+			<b-button @click="addCategory(text)">追加</b-button>
 		</div>
 	</div>
 </template>
@@ -26,19 +31,38 @@ import { Category } from '@/api/category';
 	components: { VueTree },
 })
 export default class CategoryComp extends Vue {
-	categoryData = {
-		hoge:123,
-		value: '1',
-		children: [
-			{ value: '2', children: [{ value: '4' }, { value: '5' }] },
-			{ value: '3' }
-		]
-	}
+	categoryData:Array<any> = [];
+	// {
+	// 	hoge:123,
+	// 	value: '1',
+	// 	children: [
+	// 		{ value: '2', children: [{ value: '4' }, { value: '5' }] },
+	// 		{ value: '3' }
+	// 	]
+	// }
 	treeConfig = { nodeWidth: 120, nodeHeight: 80, levelHeight: 200 }
 	currentCategory:any = null;
+	text: string = '';
+	private setCategoryList(categoryList:Array<any>){
+		return categoryList.map(category=>{
+			return {
+				value:category.label,
+				data:category,
+				children:[],
+			}
+		});
+	}
 	async mounted(){
 		const categoryList = await Category.getList(null);
-
+		debugger;
+		this.categoryData = this.setCategoryList(categoryList);
+	}
+	public addCategory(text:string, parent:number|null=null){
+		Category.post({
+			product_id:[1],
+			text,
+			label:text
+		});
 	}
 	public selectNode(data:any){
 		console.log(data);

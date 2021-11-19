@@ -98,7 +98,7 @@ export interface IAdmin {
 }
 export interface ICategoryData extends ISAIAPIData {
 	id: number;
-	parent_id: number | null;
+	product_id:Array<number>;
 	label: string;
 	text: string;
 	config?: any;
@@ -195,6 +195,10 @@ export interface IMailTemp extends ISAIAPIData {
 export interface IProductCategory extends ICrossReferenceTable {
 	product_id: number;
 	category_id: number;
+}
+export type IPartialCategoryData = {
+	[P in keyof ICategoryData]?:ICategoryData[P];
+
 }
 export interface IProductAnswer extends ICrossReferenceTable {
 	product_id: number;

@@ -1,6 +1,6 @@
 import { AjaxService } from "@/services/ajax";
 import { AxiosResponse } from "axios";
-import { ICategoryData } from "./types";
+import { ICategoryData, IPartialCategoryData } from "./types";
 
 export namespace Category{
 	const URL = "category/";
@@ -23,7 +23,7 @@ export namespace Category{
 		return data;
 	};
 
-	export const post = async(input:ICategoryData)=>{
+	export const post = async(input:IPartialCategoryData)=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url: `${URL}`,
 			method: "post",
@@ -32,7 +32,7 @@ export namespace Category{
 		console.log(data);
 		return data;
 	};
-	export const patch = async(id:number,input:any)=>{
+	export const patch = async(id:number,input:IPartialCategoryData)=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url:  `${URL}/${id}/`,
 			method: "patch",
