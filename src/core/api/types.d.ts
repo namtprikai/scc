@@ -123,6 +123,7 @@ export interface IAdminPolicyGroupData extends ISAIAPIData {
 export interface IPolicyGroupData extends ISAIAPIData {
 	label: string;
 	config?: any;
+	description: string;
 }
 
 export type IPartialPolicyGroupData = {

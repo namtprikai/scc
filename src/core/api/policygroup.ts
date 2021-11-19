@@ -13,6 +13,18 @@ export namespace PolycyGroup{
 		console.log(data);
 		return data;
 	};
+	export const addPolicy = async (add:Array<number>,remove:Array<number>,policyGroupId:number)=>{
+		const { data }: any = await AjaxService.ajax.http({
+			url: `${URL}${policyGroupId}/policy`,
+			method: "post",
+			data: {
+				policy_id:add,
+				delete_id:remove,
+			},
+		});
+		console.log(data);
+		return data;
+	};
 	export const post = async (input:IPartialPolicyGroupData)=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url: `${URL}`,

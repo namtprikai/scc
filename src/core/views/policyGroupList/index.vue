@@ -5,25 +5,18 @@
 			<BCardAccordion :title="'追加'" class :visible="false">
 				<template slot="header"><div class="h3">ついか</div></template>
 				<template slot="body">
-
-
-							<b-form-group
-								label-cols="4"
-								label="プロダクト名"
-								label-for="product-name"
-							>
-								<b-form-input
-									id="product-name"
-									size
-									type="text"
-									v-model="productName"
-									placeholder="プロダクト名"
-								></b-form-input>
-								<b-button @click="addProduct(productName)">追加する</b-button>
-							</b-form-group>
+					<b-form-group label-cols="4" label="プロダクト名" label-for="product-name">
+						<b-form-input
+							id="product-name"
+							size
+							type="text"
+							v-model="productName"
+							placeholder="プロダクト名"
+						></b-form-input>
+						<b-button @click="addProduct(productName)">追加する</b-button>
+					</b-form-group>
 				</template>
 			</BCardAccordion>
-
 		</div>
 	</div>
 </template>
@@ -62,8 +55,14 @@ export default class PolicyGroupListParent {
 	get PolicyGroupList() {
 		return PolycyGroup.getList();
 	}
-	public addProduct(name:string,max_failure_count_user:number=5,max_failure_time_user:number=5){
-		ProductsModule.AddProduct({name,config:{hoge:"asdf"},max_failure_count_user,max_failure_time_user});
+	public makePolicyGroup(label:string,description:string){
+		PolycyGroup.post({
+			label,
+			description,
+		});
+	}
+	public addPolicyInPolicyGroup(policyGroupId:number,policyId:number){
+		PolycyGroup.addPolicy([policyId],[],policyGroupId);
 	}
 }
 </script>
