@@ -18,7 +18,7 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 // @ts-ignore
-import VueTree from '@ssthouse/vue-tree-chart/src/vue-tree/VueTree.vue';
+import VueTree from '@ssthouse/vue-tree-chart';
 import { CategoryModule } from '@/store/modules/category';
 import { Category } from '@/api/category';
 // Vue.component('vue-tree', VueTree)
