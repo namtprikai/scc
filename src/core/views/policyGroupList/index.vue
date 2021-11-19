@@ -38,6 +38,7 @@ import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 import WrapSppiner from "@/components/WrapSinner/index.vue";
 import ProductList from "@/components/ProductList/index.vue";
 import { IProductData } from "@/api/types";
+import {PolycyGroup} from "@/api/policygroup";
 import {BCardAccordion} from "@/components/BCardAccodion";
 import { Wait } from "@/utils/parts";
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
@@ -58,8 +59,8 @@ export default class PolicyGroupListParent {
 	async created() {
 		await ProductsModule.GetProducts();
 	}
-	get Products() {
-		return ProductsModule.Products;
+	get PolicyGroupList() {
+		return PolycyGroup.getList();
 	}
 	public addProduct(name:string,max_failure_count_user:number=5,max_failure_time_user:number=5){
 		ProductsModule.AddProduct({name,config:{hoge:"asdf"},max_failure_count_user,max_failure_time_user});
