@@ -13,7 +13,10 @@
 			<p>{{ currentCategory }}</p>
 		</div>
 		<div>
+
 			<h3>新規追加</h3>
+			<span v-if="currentCategory">{{currentCategory.label}}の子要素</span>
+			<span v-else>ルート</span>として追加します。
 			<b-form-group label="プロダクト">
 				<b-form-checkbox-group
 					id="checkbox-1"
@@ -32,7 +35,7 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 // @ts-ignore
-import VueTree from '@ssthouse/vue-tree-chart';
+import VueTree from '@ssthouse/vue-tree-chart/src/vue-tree/VueTree.vue';
 import { CategoryModule } from '@/store/modules/category';
 import { Category } from '@/api/category';
 import {ProductsModule} from "@/store/modules/products";
@@ -77,20 +80,22 @@ export default class CategoryComp extends Vue {
 		console.log(this.currentProducts);
 		debugger;
 		Category.post({
-			product_id:[1],
+			product_id:this.currentProducts,
 			text,
-			label:text
+			label:text,
+			parent_id:this.currentCategory?.id||null
 		});
 	}
 	public selectNode(data:any){
 		console.log(data);
-		this.currentCategory = data.value;
+		this.currentCategory = data.data;
 	}
 	// @Prop()
 	// title!: string;
-	public selectLeaf(data:any){
+	public async selectLeaf(data:any){
 		console.log(data);
-		return [{value:"asdf"},{value:"asdfa"}];
+		const categoryList = await Category.getList(data.data.id);
+		return this.setCategoryList(categoryList);
 	}
 }
 </script>

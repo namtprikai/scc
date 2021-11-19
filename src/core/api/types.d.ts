@@ -102,6 +102,7 @@ export interface ICategoryData extends ISAIAPIData {
 	label: string;
 	text: string;
 	config?: any;
+	parent_id?:number;
 	created: Date;
 	modified: Date;
 }
