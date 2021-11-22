@@ -1,11 +1,27 @@
 <template>
 	<div>
-		<PolicyComp></PolicyComp>
+		<div v-for="(policyGroup, index) in policyGroupList" :key="index">
+
+			<BCardAccordion :title="policyGroup.label" class :visible="false">
+				<template slot="header"><div class="h3">{{policyGroup.label}}</div></template>
+				<template slot="body">
+					<b-form-group label-cols="4" label="ポリシー一覧" label-for="policy-name">
+						<div v-for=" in getPolicyByPolicyGroupId(policyGroup.id)">
+
+						</div>
+					</b-form-group>
+				</template>
+			</BCardAccordion>
+		</div>
 		<div>
 			<BCardAccordion :title="'追加'" class :visible="false">
 				<template slot="header"><div class="h3">ついか</div></template>
 				<template slot="body">
-					<b-form-group label-cols="4" label="ポリシーグループ名" label-for="policy-name">
+					<b-form-group
+						label-cols="4"
+						label="ポリシーグループ名"
+						label-for="policy-name"
+					>
 						<b-form-input
 							id="policy-name"
 							size
@@ -17,9 +33,6 @@
 					</b-form-group>
 				</template>
 			</BCardAccordion>
-		</div>
-		<div v-for="(policyGroup,index) in PolicyGroupList" :key="index">
-{{policyGroup}}
 		</div>
 	</div>
 </template>
@@ -33,10 +46,11 @@ import { eventHub } from "@/init/eventHub";
 import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 import WrapSppiner from "@/components/WrapSinner/index.vue";
 import ProductList from "@/components/ProductList/index.vue";
-import { IPolicyGroupData, IProductData } from "@/api/types";
+import { IPolicyData, IPolicyGroupData, IProductData } from "@/api/types";
 import {PolicyGroup} from "@/api/policygroup";
 import {BCardAccordion} from "@/components/BCardAccodion";
 import {PolicyComp} from "@/components/policy";
+import {PolicysModule} from "@/store/modules/policy";
 import { Wait } from "@/utils/parts";
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 // @ts-ignore
@@ -54,8 +68,13 @@ export default class PolicyGroupListParent {
 	public isShow = true;
 	public policyGroupList: Array<IPolicyGroupData> = [];
 	public policyGroupName:string = '';
+	public policyGroupIdTopolicyList:{[key:number]:Array<IPolicyData>}={};
 	async created() {
-		await PolicyGroup.getList();
+		if(PolicysModule.Policys.length===0){
+				await PolicysModule.GetPolicys();
+		}
+		this.policyGroupList = await PolicyGroup.getList();
+
 	}
 	get PolicyGroupList() {
 		return this.policyGroupList;
@@ -65,6 +84,27 @@ export default class PolicyGroupListParent {
 			label,
 			description,
 		});
+	}
+	public async patchPolicyByPolicyGroupId(policyGroupId:number){
+		this.policyGroupIdTopolicyList[policyGroupId] = await PolicyGroup.getPolicyByPolicyGroupId(policyGroupId);
+	}
+	public async getPolicyByPolicyGroupId(policyGroupId:number):Promise<Array<IPolicyData>>{
+		if(!(policyGroupId in this.policyGroupIdTopolicyList)){
+			await this.patchPolicyByPolicyGroupId(policyGroupId);
+		}
+		return this.policyGroupIdTopolicyList[policyGroupId];
+	}
+	public async getCheckMmodelByPolicyGroupId(policyGroupId:number){
+		const policyGroupPolicyList = await this.getPolicyByPolicyGroupId(policyGroupId);
+		const policyList = PolicysModule.Policys;
+		const policyListCheckModel:Array<{flg:boolean,text:string,value:string}> = [];
+		let i=0,j=0;
+		while(i<policyList.length){
+			if(policyList[i].id === policyGroupPolicyList[j].id){
+				policyListCheckModel.push({value:policyList[i].id,text:policyList[i].label});
+			}
+			i++;
+		}
 	}
 		public removePolicyInPolicyGroup(policyGroupId:number,policyId:number){
 		PolicyGroup.addPolicy([],[policyId],policyGroupId);
