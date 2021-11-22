@@ -2,13 +2,17 @@
 	<div>
 		<div v-for="(policyGroup, index) in policyGroupList" :key="index">
 
-			<BCardAccordion :title="policyGroup.label" class :visible="false">
+			<BCardAccordion :title="policyGroup.label" class :visible="false" :openHandler="patchPolicyByPolicyGroupId" :openHandlArg="policyGroup.id">
 				<template slot="header"><div class="h3">{{policyGroup.label}}</div></template>
 				<template slot="body">
-					<b-form-group label-cols="4" label="ポリシー一覧" label-for="policy-name">
-						<div v-for=" in getPolicyByPolicyGroupId(policyGroup.id)">
-
-						</div>
+					<b-form-group label-cols="4" label="ポリシー一覧" label-for="policy-name" v-if="policyGroupIdTopolicyIdList[policyGroup.id]">
+						<b-form-checkbox-group
+        :id="'checkbox-group-'+policyGroup.id"
+        v-model="policyGroupIdTopolicyIdList[policyGroup.id]"
+        :options="PoliCys"
+        :aria-describedby="ariaDescribedby"
+        name="flavour-1"
+      ></b-form-checkbox-group>
 					</b-form-group>
 				</template>
 			</BCardAccordion>
@@ -68,13 +72,17 @@ export default class PolicyGroupListParent {
 	public isShow = true;
 	public policyGroupList: Array<IPolicyGroupData> = [];
 	public policyGroupName:string = '';
-	public policyGroupIdTopolicyList:{[key:number]:Array<IPolicyData>}={};
+	public policyGroupIdTopolicyIdList:{[key:number]:Array<number>}={};
 	async created() {
+
 		if(PolicysModule.Policys.length===0){
 				await PolicysModule.GetPolicys();
 		}
 		this.policyGroupList = await PolicyGroup.getList();
 
+	}
+	get PoliCys(){
+		return PolicysModule.Policys.map(p=>({text:p.label,value:p.id}));
 	}
 	get PolicyGroupList() {
 		return this.policyGroupList;
@@ -86,26 +94,34 @@ export default class PolicyGroupListParent {
 		});
 	}
 	public async patchPolicyByPolicyGroupId(policyGroupId:number){
-		this.policyGroupIdTopolicyList[policyGroupId] = await PolicyGroup.getPolicyByPolicyGroupId(policyGroupId);
+		this.policyGroupIdTopolicyIdList[policyGroupId] = await PolicyGroup.getPolicyByPolicyGroupId(policyGroupId);
 	}
-	public async getPolicyByPolicyGroupId(policyGroupId:number):Promise<Array<IPolicyData>>{
-		if(!(policyGroupId in this.policyGroupIdTopolicyList)){
+	public async getPolicyIdByPolicyGroupId(policyGroupId:number):Promise<Array<number>>{
+		if(!(policyGroupId in this.policyGroupIdTopolicyIdList)){
 			await this.patchPolicyByPolicyGroupId(policyGroupId);
 		}
-		return this.policyGroupIdTopolicyList[policyGroupId];
+		return this.policyGroupIdTopolicyIdList[policyGroupId];
 	}
-	public async getCheckMmodelByPolicyGroupId(policyGroupId:number){
-		const policyGroupPolicyList = await this.getPolicyByPolicyGroupId(policyGroupId);
-		const policyList = PolicysModule.Policys;
-		const policyListCheckModel:Array<{flg:boolean,text:string,value:string}> = [];
-		let i=0,j=0;
-		while(i<policyList.length){
-			if(policyList[i].id === policyGroupPolicyList[j].id){
-				policyListCheckModel.push({value:policyList[i].id,text:policyList[i].label});
-			}
-			i++;
-		}
-	}
+	// public async getCheckMmodelByPolicyGroupId(policyGroupId:number){
+	// 	const policyGroupPolicyList = await this.getPolicyByPolicyGroupId(policyGroupId);
+	// 	const policyList = PolicysModule.Policys;
+	// 	const policyListCheckModel:Array<{flg:boolean,text:string,value:string}> = [];
+	// 	let i=0,j=0;
+	// 	while(i<policyList.length){
+	// 		if(policyList[i].id === policyGroupPolicyList[j].id){
+	// 			policyListCheckModel.push({value:policyList[i].id,text:policyList[i].label});
+	// 			i++;
+	// 			j++;
+	// 			continue;
+	// 		}else if(policyList[i].id < policyGroupPolicyList[j].id){
+
+	// 		}else if(policyList[i].id > policyGroupPolicyList[j].id){
+	// 			j++;
+	// 			continue;
+	// 		}
+	// 		i++;
+	// 	}
+	// }
 		public removePolicyInPolicyGroup(policyGroupId:number,policyId:number){
 		PolicyGroup.addPolicy([],[policyId],policyGroupId);
 	}
