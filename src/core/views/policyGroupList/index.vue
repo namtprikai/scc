@@ -18,6 +18,9 @@
 				</template>
 			</BCardAccordion>
 		</div>
+		<div>
+			<PolicyComp />
+		</div>
 	</div>
 </template>
 
@@ -31,8 +34,9 @@ import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 import WrapSppiner from "@/components/WrapSinner/index.vue";
 import ProductList from "@/components/ProductList/index.vue";
 import { IPolicyGroupData, IProductData } from "@/api/types";
-import {PolycyGroup} from "@/api/policygroup";
+import {PolicyGroup} from "@/api/policygroup";
 import {BCardAccordion} from "@/components/BCardAccodion";
+import {PolicyComp} from "@/components/policy";
 import { Wait } from "@/utils/parts";
 // import "sl-vue-tree/dist/sl-vue-tree-minimal.css";
 // @ts-ignore
@@ -43,6 +47,7 @@ import { Wait } from "@/utils/parts";
 		WrapSppiner,
 		ProductList,
 		BCardAccordion,
+		PolicyComp,
 	},
 })
 export default class PolicyGroupListParent {
@@ -53,19 +58,19 @@ export default class PolicyGroupListParent {
 		await ProductsModule.GetProducts();
 	}
 	get PolicyGroupList() {
-		return PolycyGroup.getList();
+		return PolicyGroup.getList();
 	}
 	public makePolicyGroup(label:string,description:string){
-		PolycyGroup.post({
+		PolicyGroup.post({
 			label,
 			description,
 		});
 	}
 		public removePolicyInPolicyGroup(policyGroupId:number,policyId:number){
-		PolycyGroup.addPolicy([],[policyId],policyGroupId);
+		PolicyGroup.addPolicy([],[policyId],policyGroupId);
 	}
 	public addPolicyInPolicyGroup(policyGroupId:number,policyId:number){
-		PolycyGroup.addPolicy([policyId],[],policyGroupId);
+		PolicyGroup.addPolicy([policyId],[],policyGroupId);
 	}
 }
 </script>

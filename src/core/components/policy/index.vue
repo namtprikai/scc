@@ -1,42 +1,20 @@
 <template>
 	<div>
-		<PolicyList :values="Policys"></PolicyList>
 		<div>
-			<BCardAccordion :title="'追加'" class :visible="false">
-				<template slot="header"><div class="h3">ついか</div></template>
-				<template slot="body">
-
-
-							<b-form-group
-								label-cols="4"
-								label="ポリシーグループ"
-								label-for="policy-name"
-							>
-								<b-form-input
-									id="policy-name"
-									size
-									type="text"
-									v-model="policyName"
-									placeholder="ポリシーグループ名"
-								></b-form-input>
-								<b-button @click="addPolicy(productName)">追加する</b-button>
-							</b-form-group>
-				</template>
-			</BCardAccordion>
-
+			<div v-for="(policy,index) in Policys" :key="index">
+{{policy}}
+			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { getList } from "@/api/table";
-import { MessageList } from "@/api/messageList";
+
 import { Component, Vue } from "vue-property-decorator";
 import { PolicysModule } from "@/store/modules/policy";
 import { eventHub } from "@/init/eventHub";
 import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 import WrapSppiner from "@/components/WrapSinner/index.vue";
-import PolicyList from "@/components/PolicyList/index.vue";
 import { IPolicyData } from "@/api/types";
 import {BCardAccordion} from "@/components/BCardAccodion";
 import { Wait } from "@/utils/parts";
@@ -47,11 +25,10 @@ import { Wait } from "@/utils/parts";
 	components: {
 		SlVueTree,
 		WrapSppiner,
-		PolicyList,
 		BCardAccordion,
 	},
 })
-export default class PolicyParent {
+export default class PolicyComp {
 	public isShow = true;
 	public products: Array<IPolicyData> = [];
 	public productName:string = '';

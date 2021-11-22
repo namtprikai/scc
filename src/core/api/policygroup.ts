@@ -1,7 +1,7 @@
 import { AjaxService } from "@/services/ajax";
 import { IPartialPolicyGroupData, IPolicyGroupData } from "./types";
 
-export namespace PolycyGroup{
+export namespace PolicyGroup{
 	const URL = "api/policy_group/";
 	export const get = ()=>{};
 	export const getList = async()=>{
