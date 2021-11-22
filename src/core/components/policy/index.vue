@@ -11,7 +11,8 @@
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator";
-import { PolicysModule } from "@/store/modules/policy";
+// import { PolicysModule } from "@/store/modules/policy";
+import {Policy} from "@/api/policy";
 import { eventHub } from "@/init/eventHub";
 import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 import WrapSppiner from "@/components/WrapSinner/index.vue";
@@ -30,16 +31,13 @@ import { Wait } from "@/utils/parts";
 })
 export default class PolicyComp {
 	public isShow = true;
-	public products: Array<IPolicyData> = [];
+	public policys: Array<IPolicyData> = [];
 	public productName:string = '';
 	async created() {
-		await PolicysModule.GetPolicys();
+		this.policys = await Policy.getList();
 	}
 	get Policys() {
-		return PolicysModule.Policys;
-	}
-	public addPolicyToPolicyGroup(policyId:number,policyGroupId:number){
-		// PolicysModule.AddPolicy({name,config:{},max_failure_count_user,max_failure_time_user});
+		return this.policys;
 	}
 }
 </script>

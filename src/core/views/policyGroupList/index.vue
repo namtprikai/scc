@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<ProductList :values="policyGroupList"></ProductList>
+		<PolicyComp></PolicyComp>
 		<div>
 			<BCardAccordion :title="'追加'" class :visible="false">
 				<template slot="header"><div class="h3">ついか</div></template>
