@@ -2,6 +2,9 @@
 	<div>
 		<PolicyList :values="Policys"></PolicyList>
 		<div>
+
+		</div>
+		<div>
 			<BCardAccordion :title="'追加'" class :visible="false">
 				<template slot="header"><div class="h3">ついか</div></template>
 				<template slot="body">
@@ -60,9 +63,6 @@ export default class PolicyParent {
 	}
 	get Policys() {
 		return PolicysModule.Policys;
-	}
-	public addPolicyToPolicyGroup(policyId:number,policyGroupId:number){
-		// PolicysModule.AddPolicy({name,config:{},max_failure_count_user,max_failure_time_user});
 	}
 }
 </script>

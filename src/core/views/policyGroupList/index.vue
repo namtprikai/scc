@@ -18,8 +18,8 @@
 				</template>
 			</BCardAccordion>
 		</div>
-		<div>
-			<PolicyComp />
+		<div v-for="(policyGroup,index) in PolicyGroupList" :key="index">
+{{policyGroup}}
 		</div>
 	</div>
 </template>
@@ -55,10 +55,10 @@ export default class PolicyGroupListParent {
 	public policyGroupList: Array<IPolicyGroupData> = [];
 	public policyGroupName:string = '';
 	async created() {
-		await ProductsModule.GetProducts();
+		await PolicyGroup.getList();
 	}
 	get PolicyGroupList() {
-		return PolicyGroup.getList();
+		return this.policyGroupList;
 	}
 	public makePolicyGroup(label:string,description:string){
 		PolicyGroup.post({
