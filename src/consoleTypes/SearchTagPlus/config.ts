@@ -775,6 +775,12 @@ export function RouterConfig(
 												roles: [4, 5, 999],
 											},
 											{
+												label: "ポリシー編集",
+												key: "PolicyGroupList",
+												roles: [4, 5, 999],
+											},
+											//PolicyGroupList
+											{
 												label: "パスワード変更",
 												key: "Password",
 												roles: [4, 5, 999],

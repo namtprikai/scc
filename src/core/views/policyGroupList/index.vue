@@ -1,19 +1,19 @@
 <template>
 	<div>
-		<ProductList :values="Products"></ProductList>
+		<ProductList :values="policyGroupList"></ProductList>
 		<div>
 			<BCardAccordion :title="'追加'" class :visible="false">
 				<template slot="header"><div class="h3">ついか</div></template>
 				<template slot="body">
-					<b-form-group label-cols="4" label="プロダクト名" label-for="product-name">
+					<b-form-group label-cols="4" label="ポリシーグループ名" label-for="policy-name">
 						<b-form-input
-							id="product-name"
+							id="policy-name"
 							size
 							type="text"
-							v-model="productName"
-							placeholder="プロダクト名"
+							v-model="policyGroupName"
+							placeholder="ポリシーグループ名"
 						></b-form-input>
-						<b-button @click="addProduct(productName)">追加する</b-button>
+						<b-button @click="addProduct(policyGroupName)">追加する</b-button>
 					</b-form-group>
 				</template>
 			</BCardAccordion>
@@ -30,7 +30,7 @@ import { eventHub } from "@/init/eventHub";
 import SlVueTree, { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 import WrapSppiner from "@/components/WrapSinner/index.vue";
 import ProductList from "@/components/ProductList/index.vue";
-import { IProductData } from "@/api/types";
+import { IPolicyGroupData, IProductData } from "@/api/types";
 import {PolycyGroup} from "@/api/policygroup";
 import {BCardAccordion} from "@/components/BCardAccodion";
 import { Wait } from "@/utils/parts";
@@ -47,8 +47,8 @@ import { Wait } from "@/utils/parts";
 })
 export default class PolicyGroupListParent {
 	public isShow = true;
-	public products: Array<IProductData> = [];
-	public productName:string = '';
+	public policyGroupList: Array<IPolicyGroupData> = [];
+	public policyGroupName:string = '';
 	async created() {
 		await ProductsModule.GetProducts();
 	}
@@ -60,6 +60,9 @@ export default class PolicyGroupListParent {
 			label,
 			description,
 		});
+	}
+		public removePolicyInPolicyGroup(policyGroupId:number,policyId:number){
+		PolycyGroup.addPolicy([],[policyId],policyGroupId);
 	}
 	public addPolicyInPolicyGroup(policyGroupId:number,policyId:number){
 		PolycyGroup.addPolicy([policyId],[],policyGroupId);
