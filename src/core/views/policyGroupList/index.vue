@@ -160,9 +160,8 @@ export default class PolicyGroupListParent extends Vue {
 	}
 	public async changePolicyInPolicyGroup(policyGroupId: number, before: Array<number>, after: Array<number>) {
 		const [add, remove] = diffArray(after, before);
-		debugger;
-		// await PolicyGroup.addPolicy(add, remove, policyGroupId);
-		// await this.patchPolicyByPolicyGroupId({id:policyGroupId});
+		await PolicyGroup.addPolicy(add, remove, policyGroupId);
+		await this.patchPolicyByPolicyGroupId({id:policyGroupId});
 	}
 }
 </script>
