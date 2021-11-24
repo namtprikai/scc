@@ -94,8 +94,9 @@ export default class PolicyGroupListParent extends Vue {
 	async created() {
 		if (PolicysModule.Policys.length === 0) {
 			await PolicysModule.GetPolicys();
-			this.setPolicys();
+
 		}
+		this.setPolicys();
 		this.policyGroupList = await PolicyGroup.getList();
 		this.isShow = true;
 	}
@@ -122,7 +123,7 @@ export default class PolicyGroupListParent extends Vue {
 		this.$forceUpdate();
 	}
 	public addPolicyGroup(label: string) {
-		PolicyGroup.post({label});
+		PolicyGroup.post({ label });
 
 	}
 	public async getPolicyIdByPolicyGroupId(policyGroupId: number): Promise<{ before: Array<number>, after: Array<number> }> {
