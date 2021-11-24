@@ -15,7 +15,7 @@ export namespace Policy{
 	};
 	export const addPolicy = async (add:Array<number>,remove:Array<number>,policyId:number)=>{
 		const { data }: any = await AjaxService.ajax.http({
-			url: `${URL}${policyId}/policy`,
+			url: `${URL}${policyId}/policy/`,
 			method: "post",
 			data: {
 				policy_id:add,

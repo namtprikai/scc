@@ -1,5 +1,5 @@
 import { AjaxService } from "@/services/ajax";
-import { IPartialPolicyGroupData, IPolicyGroupData } from "./types";
+import { IPartialPolicyGroupData, IPolicyData, IPolicyGroupData } from "./types";
 
 export namespace PolicyGroup{
 	const URL = "policy_group/";
@@ -13,9 +13,9 @@ export namespace PolicyGroup{
 		console.log(data);
 		return data;
 	};
-	export const getPolicyByPolicyGroupId = async(policyGroupId:number)=>{
+	export const getPolicyByPolicyGroupId = async(policyGroupId:number):Promise<Array<IPolicyData>>=>{
 		const { data }: any = await AjaxService.ajax.http({
-			url: `${URL}${policyGroupId}/policy`,
+			url: `${URL}${policyGroupId}/policy/`,
 			method: "get",
 			params: {},
 		});
@@ -24,7 +24,7 @@ export namespace PolicyGroup{
 	};
 	export const addPolicy = async (add:Array<number>,remove:Array<number>,policyGroupId:number)=>{
 		const { data }: any = await AjaxService.ajax.http({
-			url: `${URL}${policyGroupId}/policy`,
+			url: `${URL}${policyGroupId}/policy/`,
 			method: "post",
 			data: {
 				policy_id:add,

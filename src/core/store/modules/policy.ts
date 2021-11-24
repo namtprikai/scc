@@ -9,23 +9,20 @@ import {
 import store from "@/store";
 import { AjaxService } from "@/services/ajax";
 import type { IPolicyData, IQuestionData,IPartialPolicyGroupData, IPartialPolicyData } from "@/api/types";
-import { AxiosResponse } from "axios";
-import { PolicyGroup } from "@/api/policygroup";
+import { Policy } from "@/api/policy";
 @Module({ dynamic: true, store, name: "policys" })
 class PolicysStore extends VuexModule {
 	policyList: Array<IPolicyData> = [];
 	get Policys() {
 		return this.policyList;
 	}
-	@Mutation
+	@MutationAction({
+		mutate: [
+			'policyList']
+	})
 	public async GetPolicys() {
-		const data = await PolicyGroup.getList();
-		this.policyList = data;
-	}
-	@Mutation
-	public async AddPolicy(data:IPartialPolicyGroupData){
-		const res = await PolicyGroup.post(data);
-		this.policyList.push(res);
+		const data = await Policy.getList();
+		return { policyList:data };
 	}
 }
 export const PolicysModule = getModule(PolicysStore);
