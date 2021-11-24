@@ -10,7 +10,6 @@
         :id="'checkbox-group-'+policyGroup.id"
         v-model="policyGroupIdTopolicyIdList[policyGroup.id]"
         :options="PoliCys"
-        :aria-describedby="ariaDescribedby"
         name="flavour-1"
       ></b-form-checkbox-group>
 					</b-form-group>
