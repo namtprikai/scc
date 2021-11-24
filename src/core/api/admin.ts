@@ -1,5 +1,5 @@
 import { AjaxService } from "@/services/ajax";
-import { IPartialAdminData } from "./types";
+import { IPartialAdminData, IPolicyGroupData } from './types';
 
 export namespace Admin {
 	const URL = "admin/";
@@ -111,7 +111,26 @@ export namespace Admin {
 			method: "PATCH",
 			data,
 		});
+
+	}
+	export const changePolicyGroup = async (adminId: number, add: Array<number>, remove: Array<number>) => {
+		const { data }: any = await AjaxService.ajax.http({
+			url: `${URL}${adminId}/policy_group/`,
+			method: "post",
+			data: { policy_group_id: add, delete_id: remove },
+		});
+		console.log(data);
+		return data;
+	}
+	export const getPolicyGroup = async (adminId: number): Promise<Array<IPolicyGroupData>> => {
+		const { data }: any = await AjaxService.ajax.http({
+			url: `${URL}${adminId}/policy_group/`,
+			method: "get",
+			params: {},
+		});
+		console.log(data);
+		return data;
+
 	}
 }
-export const changePolicyGroup = () => { }
-export const getPolicyGroup = (adminId: number) => { }
+

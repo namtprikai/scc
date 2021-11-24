@@ -4,7 +4,7 @@ import { IPartialPolicyGroupData, IPolicyData, IPolicyGroupData } from "./types"
 export namespace PolicyGroup{
 	const URL = "policy_group/";
 	export const get = ()=>{};
-	export const getList = async()=>{
+	export const getList = async():Promise<Array<IPolicyGroupData>>=>{
 		const { data }: any = await AjaxService.ajax.http({
 			url: `${URL}`,
 			method: "get",

@@ -51,14 +51,38 @@
 							v-model="admin.config.role"
 						></b-form-input>
 					</b-form-group>
-					<b-form-group label="Using options array:">
+					<b-form-group label="プロダクト">
 						<b-form-checkbox-group
 							:id="'checkbox-' + admin.id"
 							v-model="admin.editProducts"
 							:options="Products"
-							name="checkbox-1"
+							:name="'checkbox-' + admin.id"
 						></b-form-checkbox-group>
 					</b-form-group>
+
+					<BCardAccordion
+						class
+						:visible="false"
+						:openHandler="patchPolicyGroupByAdminId"
+						:openHandlArg="{ id: admin.id, adminIdToPolicyGroupIdList }"
+					>
+						<template slot="header">
+							<div class="h3">ポリシーグループ</div>
+						</template>
+						<template slot="body">
+							<b-form-group label="ポリシーグループ">
+								<b-form-checkbox-group
+									:id="'checkbox_pg-' + admin.id"
+									v-model="admin.editProducts"
+									:options="policyGroups"
+									:name="'checkbox_pg-' + admin.id"
+								></b-form-checkbox-group>
+							</b-form-group>
+							<b-button
+								@click="changePolicyGroupInAdmin(admin.id, adminIdToPolicyGroupIdList[admin.id].before, adminIdToPolicyGroupIdList[admin.id].after)"
+							>更新する</b-button>
+						</template>
+					</BCardAccordion>
 					<b-button @click="editAdmin(admin)">更新</b-button>
 				</template>
 			</BCardAccordion>
@@ -75,20 +99,22 @@ import DashboardParent from "@/views/dashboard/index";
 import PanThumb from "@/components/PanThumb/index.vue";
 import { CLIENT_ID } from "../../utils/configration";
 import { AndyPasswordValidator, Wait } from "@/utils/parts";
-
+import { PolicyGroup } from "@/api/policygroup";
 import { AdminUserModule } from "@/store/modules/adminUser";
 import Breadcrumb from "@/components/Breadcrumb/index.vue";
 const PasswordValidator = require("password-validator");
 import { IAdminData, IAdminDataLocal, IPartialAdminData } from "@/api/types";
-type IPartialAdminDataLocal = IPartialAdminData&IAdminDataLocal;
+type IPartialAdminDataLocal = IPartialAdminData & IAdminDataLocal;
 import { Admin } from "@/api/admin";
-import {diffArray} from "@sciseed/andytools";
+import { diffArray } from "@sciseed/andytools";
 // @ts-ignore
 @Component({
 	components: {},
 })
 export default class AdminUser extends Vue {
 	private listLoading = true;
+public policyGroups: Array<{ text: string, value: number }> = [];
+public adminIdToPolicyGroupIdList: { [key: number]: { before: Array<number>, after: Array<number> } }={};
 	passwordValidator = new AndyPasswordValidator(PasswordValidator);
 	private newAdminUser = {
 		name: "",
@@ -96,6 +122,10 @@ export default class AdminUser extends Vue {
 		role: 4,
 		password: "",
 	};
+	async setPolicyGroups() {
+  const policyGroupList = await PolicyGroup.getList();
+		this.policyGroups = policyGroupList.map(p => ({ text: p.label, value: p.id }));
+	}
 	public async open(admin: IPartialAdminData) {
 		console.log(admin);
 		if (admin.id) {
@@ -176,12 +206,27 @@ export default class AdminUser extends Vue {
 	private async changeProduct(admin: IPartialAdminDataLocal) {
 		const editProducts = [...admin.editProducts].sort();
 		const products = [...(admin.product_id || [])].sort();
-		const [add,remove]=diffArray(editProducts,products)
-		if(add.length>0 || remove.length>0){
+		const [add, remove] = diffArray(editProducts, products)
+		if (add.length > 0 || remove.length > 0) {
 			await Admin.editProducts(admin.id, add, remove);
 		}
 		// AdminUserModule.getAdminUserList();
 
+	}
+	public async changePolicyGroupInAdmin(adminId: number, before: Array<number>, after: Array<number>) {
+		const [add, remove] = diffArray(after, before);
+		await Admin.changePolicyGroup(adminId,add, remove);
+		await this.patchPolicyGroupByAdminId({id:adminId});
+	}
+	public async patchPolicyGroupByAdminId(arg: { id: number, adminIdToPolicyGroupIdList?: { [key: number]: { before: Array<number>, after: Array<number> } } }) {
+
+		const policyGroupList = await Admin.getPolicyGroup(arg.id);
+		const policyGroupIdList = policyGroupList.map(p => p.id);
+		this.adminIdToPolicyGroupIdList[arg.id] = { before: [...policyGroupIdList], after: [...policyGroupIdList] };
+		// if (arg.policyGroupIdTopolicyIdList) {
+		// 	arg.policyGroupIdTopolicyIdList[arg.id] = { before: [...policyGroupIdList], after: [...policyGroupIdList] };
+		// }
+		this.$forceUpdate();
 	}
 	public adminList: Array<IAdminDataLocal> = [];
 	setAdminList(): void {
@@ -255,6 +300,7 @@ export default class AdminUser extends Vue {
 		await Promise.all([
 			AdminUserModule.getAdminUserList(),
 			ProductsModule.GetProducts(),
+			this.setPolicyGroups()
 		]);
 		await this.setAdminList();
 		this.listLoading = false;
@@ -282,7 +328,7 @@ export default class AdminUser extends Vue {
 			],
 		});
 	}
-	public editAdmin(admin:IPartialAdminDataLocal){
+	public editAdmin(admin: IPartialAdminDataLocal) {
 		this.$modal.show("dialog", {
 			title: "情報を変更しますか？",
 			text: "",
@@ -292,10 +338,10 @@ export default class AdminUser extends Vue {
 					handler: () => {
 						console.log("SETADMINUSER はい");
 						const extendedConfig = admin.config;
-						if(typeof extendedConfig.role ==='string'){
-							extendedConfig.role = Number(extendedConfig.role||'0');
+						if (typeof extendedConfig.role === 'string') {
+							extendedConfig.role = Number(extendedConfig.role || '0');
 						}
-						AdminUserModule.editAdminUser({id:admin.id, config: extendedConfig });
+						AdminUserModule.editAdminUser({ id: admin.id, config: extendedConfig });
 						this.changeProduct(admin);
 						this.$modal.hide("dialog");
 					},
@@ -309,7 +355,7 @@ export default class AdminUser extends Vue {
 				},
 			],
 		});
-}
+	}
 	public changeRole(admin: any) {
 		this.$modal.show("dialog", {
 			title: "権限を変更しますか？",
@@ -414,5 +460,4 @@ export default class AdminUser extends Vue {
 		}
 	}
 }
-
 </style>
