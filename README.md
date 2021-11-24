@@ -81,7 +81,7 @@ Modern browsers and Internet Explorer 10+.
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Chrome                                                                                                                                                                                                     | last 2                                                                                                                                                                                             |
+| Chrome                                                                                                                                                                                                          | last 2                                                                                                                                                                                                            |
 
 ## Contributing
 
@@ -90,3 +90,115 @@ See [CONTRIBUTING.md](https://github.com/Armour/vue-typescript-admin-template/bl
 ## License
 
 [MIT License](https://github.com/Armour/vue-typescript-admin-template/blob/master/LICENSE)
+
+
+# api
+
+## エンドユーザーサインアップトークンを発行する
+
+### HTTPリクエスト
+
+```
+curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signin/token/
+```
+
+### リクエストヘッダー
+
+- Authorization : `Bearer {access_token}`
+- Content-Type : application/json
+  
+### リクエストボディ
+
+- roles: Array<number> | サインインすると付与されるロール
+- product_id: number | 対象プロダクトID
+- time: nat1 | 有効時間(min) 上限60分。下限1分。自然数で指定できる。
+- user_id?: String | (任意) 指定した場合、特定のnameのエンドユーザーのみサインアップ可能なURLが発行される。顧客のサービスのユーザーIDと整合性を保つ場合などに使用される。
+
+### レスポンス
+
+- signup_token: Sign upのときにリクエストボディに付与するrole_token
+- key_id: urlを識別するための一意のキー
+- url: Sign upのAPIのURL
+
+例(json)
+
+```json
+{
+  "data":{
+    "url":"https://{APIのURL}",
+    "singup_token":"eyOiennDiWOuz...",
+    "key_id":"sDienSKWxxOeiuAw"
+  },
+  "type":"Object",
+  "is_error":false,
+  "message":"Sucess"
+}
+```
+## エンドユーザーサインアップトークンを無効にする
+
+### HTTPリクエスト
+
+```shell
+curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signin/apiurl/delete
+```
+
+### リクエストヘッダー
+
+- Authorization : `Bearer {access_token}`
+- Content-Type : application/json
+  
+### リクエストボディ
+
+- key_id: String | urlを識別するための一意のキー
+
+### レスポンス
+
+空のオブジェクト
+
+例(json)
+
+```json
+{
+  "data":{},
+  "type":"Object",
+  "is_error":false,
+  "message":"Sucess"
+}
+```
+
+
+## すべての有効なエンドユーザーサインアップトークンを取得する
+
+### HTTPリクエスト
+
+```shell
+curl -X GET https://xxxxxx.jp/xxxxx/api/product/{product_id}/signin/apiurl/tokens
+```
+
+### リクエストヘッダー
+
+- Authorization : `Bearer {access_token}`
+- Content-Type : application/json
+  
+### リクエストボディ
+
+- key_id: String | urlを識別するための一意のキー
+
+### レスポンス
+
+- signup_token_list: 有効なエンドユーザーサインアップトークンの一覧
+- url: Sign upのAPIのURL
+  
+例(json)
+
+```json
+{
+  "data":{
+    "signup_token_list":["KeifnSDIw..."],
+    "url":"https://xxxxxxxxxx"
+  },
+  "type":"Object",
+  "is_error":false,
+  "message":"Sucess"
+}
+```
