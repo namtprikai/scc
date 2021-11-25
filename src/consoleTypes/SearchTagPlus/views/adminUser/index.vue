@@ -1,6 +1,5 @@
 <template>
 	<div class="admin-user tab-body">
-		<div>{{ adminList }}</div>
 		<div v-for="admin in adminList" :key="admin.id">
 			<BCardAccordion
 				:title="admin.name"
@@ -22,7 +21,6 @@
 							placeholder="name"
 						></b-form-input>
 					</b-form-group>
-					{{ admin.config }}
 					<b-form-group
 						label-cols="4"
 						label="表示名"

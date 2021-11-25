@@ -13,25 +13,45 @@
 						<div class="h3">{{ policyGroup.label }}</div>
 					</template>
 					<template slot="body">
-						{{ policyGroupIdTopolicyIdList }}
 						<b-form-group
 							label-cols="4"
 							label="ポリシー一覧"
 							label-for="policy-name"
 							v-if="policyGroupIdTopolicyIdList[policyGroup.id]"
 						>
-							<b-form-checkbox-group
+							<b-form-checkbox
+								v-for="(check, j) in policyGroupIdTopolicyIdList[policyGroup.id].after"
+								v-model="check.flg"
+								:key="j"
+								>{{ check.label }}</b-form-checkbox
+							>
+							<!-- <b-form-checkbox-group
 								:id="'checkbox-group-' + policyGroup.id"
-								v-model="policyGroupIdTopolicyIdList[policyGroup.id].after"
+								v-model.lazy="policyGroupIdTopolicyIdList[policyGroup.id].after"
 								:options="policys"
 								value-field="value"
+								:indeterminate="true"
 								text-field="text"
 								name="flavour-1"
-							></b-form-checkbox-group>
+								stacked
+							></b-form-checkbox-group> -->
+							<b-button @click="allCheck(policyGroupIdTopolicyIdList[policyGroup.id])"
+								>全てにチェック</b-button
+							><b-button
+								@click="allUnCheck(policyGroupIdTopolicyIdList[policyGroup.id])"
+								>全てチェック解除</b-button
+							>
 						</b-form-group>
 						<b-button
-							@click="changePolicyInPolicyGroup(policyGroup.id, policyGroupIdTopolicyIdList[policyGroup.id].before, policyGroupIdTopolicyIdList[policyGroup.id].after)"
-						>更新する</b-button>
+							@click="
+								changePolicyInPolicyGroup(
+									policyGroup.id,
+									policyGroupIdTopolicyIdList[policyGroup.id].before,
+									policyGroupIdTopolicyIdList[policyGroup.id].after
+								)
+							"
+							>更新する</b-button
+						>
 					</template>
 				</BCardAccordion>
 			</div>
@@ -41,7 +61,11 @@
 						<div class="h3">ポリシーグループの追加</div>
 					</template>
 					<template slot="body">
-						<b-form-group label-cols="4" label="ポリシーグループ名" label-for="policy-name">
+						<b-form-group
+							label-cols="4"
+							label="ポリシーグループ名"
+							label-for="policy-name"
+						>
 							<b-form-input
 								id="policy-name"
 								size
@@ -74,6 +98,7 @@ import { PolicyComp } from "@/components/policy";
 import { PolicysModule } from "@/store/modules/policy";
 import { Wait } from "@/utils/parts";
 import { diffArray } from "@sciseed/andytools";
+type PolicyCheckModel={label:string,value:number,flg:boolean};
 // @ts-ignore
 @Component({
 	filters: {},
@@ -90,7 +115,7 @@ export default class PolicyGroupListParent extends Vue {
 	public policys: Array<{ text: string, value: number }> = [];
 	public policyGroupList: Array<IPolicyGroupData> = [];
 	public policyGroupName: string = '';
-	public policyGroupIdTopolicyIdList: { [key: number]: { before: Array<number>, after: Array<number> } } = {};
+	public policyGroupIdTopolicyIdList: { [key: number]: { before: Array<number>, after: Array<PolicyCheckModel> } } = {};
 	async created() {
 		if (PolicysModule.Policys.length === 0) {
 			await PolicysModule.GetPolicys();
@@ -112,11 +137,41 @@ export default class PolicyGroupListParent extends Vue {
 			description,
 		});
 	}
+	public allUnCheck(policyCheckModelList: Array<PolicyCheckModel>){
+		for(const check of policyCheckModelList){
+			check.flg = false;
+		}
+		// this.$forceUpdate();
+	}
+	public allCheck(policyCheckModelList: Array<PolicyCheckModel>){
+		for(const check of policyCheckModelList){
+			check.flg = true;
+		}
+		// this.$forceUpdate();
+	}
 	public async patchPolicyByPolicyGroupId(arg: { id: number, policyGroupIdTopolicyIdList?: { [key: number]: { before: Array<number>, after: Array<number> } } }) {
 
 		const policyGroupList = await PolicyGroup.getPolicyByPolicyGroupId(arg.id);
 		const policyGroupIdList = policyGroupList.map(p => p.id);
-		this.policyGroupIdTopolicyIdList[arg.id] = { before: [...policyGroupIdList], after: [...policyGroupIdList] };
+		const policyCheckModel:Array<PolicyCheckModel>=[];
+		let i=0,j=0;
+		while(this.policys.length>i){
+			const checkModel:PolicyCheckModel={value:this.policys[i].value,label:this.policys[i].text,flg:false};
+
+			if(policyGroupList.length<=j||this.policys[i].value < policyGroupList[j].id){
+				policyCheckModel.push(checkModel);
+				i++;
+				continue;
+			}else if(this.policys[i].value === policyGroupList[j].id){
+				checkModel.flg=true;
+				policyCheckModel.push(checkModel);
+				i++;j++;
+				continue;
+			}else{
+				j++;
+			}
+		}
+		this.policyGroupIdTopolicyIdList[arg.id] = { before: [...policyGroupIdList], after: policyCheckModel };
 		// if (arg.policyGroupIdTopolicyIdList) {
 		// 	arg.policyGroupIdTopolicyIdList[arg.id] = { before: [...policyGroupIdList], after: [...policyGroupIdList] };
 		// }
@@ -126,7 +181,7 @@ export default class PolicyGroupListParent extends Vue {
 		PolicyGroup.post({ label });
 
 	}
-	public async getPolicyIdByPolicyGroupId(policyGroupId: number): Promise<{ before: Array<number>, after: Array<number> }> {
+	public async getPolicyIdByPolicyGroupId(policyGroupId: number): Promise<{ before: Array<number>, after: Array<PolicyCheckModel> }> {
 		if (!(policyGroupId in this.policyGroupIdTopolicyIdList)) {
 			await this.patchPolicyByPolicyGroupId({ id: policyGroupId });
 		}
@@ -158,8 +213,8 @@ export default class PolicyGroupListParent extends Vue {
 	public addPolicyInPolicyGroup(policyGroupId: number, policyId: number) {
 		PolicyGroup.addPolicy([policyId], [], policyGroupId);
 	}
-	public async changePolicyInPolicyGroup(policyGroupId: number, before: Array<number>, after: Array<number>) {
-		const [add, remove] = diffArray(after, before);
+	public async changePolicyInPolicyGroup(policyGroupId: number, before: Array<number>, after: Array<PolicyCheckModel>) {
+		const [add, remove] = diffArray(after.filter(a=>a.flg).map(a=>a.value), before);
 		await PolicyGroup.addPolicy(add, remove, policyGroupId);
 		await this.patchPolicyByPolicyGroupId({id:policyGroupId});
 	}
