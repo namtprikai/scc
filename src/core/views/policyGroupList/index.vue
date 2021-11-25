@@ -141,13 +141,13 @@ export default class PolicyGroupListParent extends Vue {
 		for(const check of policyCheckModelList){
 			check.flg = false;
 		}
-		// this.$forceUpdate();
+		this.$forceUpdate();
 	}
 	public allCheck(policyCheckModelList: Array<PolicyCheckModel>){
 		for(const check of policyCheckModelList){
 			check.flg = true;
 		}
-		// this.$forceUpdate();
+		this.$forceUpdate();
 	}
 	public async patchPolicyByPolicyGroupId(arg: { id: number, policyGroupIdTopolicyIdList?: { [key: number]: { before: Array<number>, after: Array<number> } } }) {
 
