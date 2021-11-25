@@ -35,10 +35,10 @@
 								name="flavour-1"
 								stacked
 							></b-form-checkbox-group> -->
-							<b-button @click="allCheck(policyGroupIdTopolicyIdList[policyGroup.id])"
+							<b-button @click="allCheck(policyGroupIdTopolicyIdList[policyGroup.id].after)"
 								>全てにチェック</b-button
 							><b-button
-								@click="allUnCheck(policyGroupIdTopolicyIdList[policyGroup.id])"
+								@click="allUnCheck(policyGroupIdTopolicyIdList[policyGroup.id].after)"
 								>全てチェック解除</b-button
 							>
 						</b-form-group>
