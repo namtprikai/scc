@@ -709,6 +709,7 @@ export function RouterConfig(
 												label: "ユーザー一覧",
 												key: "AdminUser",
 												roles: [5, 999],
+												policyes:[],
 											},
 											{ label: "新規追加", key: "AddUser", roles: [5, 999] },
 										],

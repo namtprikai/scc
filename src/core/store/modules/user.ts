@@ -34,6 +34,7 @@ class User extends VuexModule implements IUserState {
 	public avatar = "";
 	public password = "";
 	public config={};
+	public policyes:Set<number>=new Set();
 	@Action({ commit: "SET_TOKEN" })
 	public async Login(userInfo: { username: string; password: string }) {
 		const username = userInfo.username.trim();
@@ -48,6 +49,9 @@ class User extends VuexModule implements IUserState {
 	}
 	get Token() {
 		return this.token;
+	}
+	get Policyes(){
+		return this.policyes;
 	}
 	@Action({ commit: "SET_TOKEN" })
 	public async FedLogOut() {
@@ -64,6 +68,7 @@ class User extends VuexModule implements IUserState {
 		}
 		const userId = getIdByToken(token);
 		const {data,type} = await Admin.get(userId);
+		const policyGroupList = await Admin.getPolicyGroup(userId);
 		if (type==="Object") {
 			return {
 				id: data.id,

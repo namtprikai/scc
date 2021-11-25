@@ -12,7 +12,11 @@
 					<div class="h3">{{ admin.name }}</div>
 				</template>
 				<template slot="body">
-					<b-form-group label-cols="4" label="プロダクト名" :label-for="'product-name' + admin.id">
+					<b-form-group
+						label-cols="4"
+						label="プロダクト名"
+						:label-for="'product-name' + admin.id"
+					>
 						<b-form-input
 							:id="'product-name' + admin.id"
 							size
@@ -68,17 +72,26 @@
 							<div class="h3">ポリシーグループ</div>
 						</template>
 						<template slot="body">
-							<b-form-group label="ポリシーグループ">
-								<b-form-checkbox-group
-									:id="'checkbox_pg-' + admin.id"
-									v-model="adminIdToPolicyGroupIdList[admin.id].after"
-									:options="policyGroups"
-									:name="'checkbox_pg-' + admin.id"
-								></b-form-checkbox-group>
-							</b-form-group>
-							<b-button
-								@click="changePolicyGroupInAdmin(admin.id, adminIdToPolicyGroupIdList[admin.id].before, adminIdToPolicyGroupIdList[admin.id].after)"
-							>更新する</b-button>
+							<div v-if="adminIdToPolicyGroupIdList[admin.id]">
+								<b-form-group label="ポリシーグループ">
+									<b-form-checkbox-group
+										:id="'checkbox_pg-' + admin.id"
+										v-model="adminIdToPolicyGroupIdList[admin.id].after"
+										:options="policyGroups"
+										:name="'checkbox_pg-' + admin.id"
+									></b-form-checkbox-group>
+								</b-form-group>
+								<b-button
+									@click="
+										changePolicyGroupInAdmin(
+											admin.id,
+											adminIdToPolicyGroupIdList[admin.id].before,
+											adminIdToPolicyGroupIdList[admin.id].after
+										)
+									"
+									>更新する</b-button
+								>
+							</div>
 						</template>
 					</BCardAccordion>
 					<b-button @click="editAdmin(admin)">更新</b-button>

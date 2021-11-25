@@ -118,6 +118,11 @@ export default class Box extends Vue {
 						return false;
 					}
 				}
+				if (tab.policyes) {
+					if (!tab.policyes.find((r: number) => UserModule.Policyes.has(r))&&!UserModule.is_master) {
+						return false;
+					}
+				}
 				return true;
 			});
 			console.log("created");
