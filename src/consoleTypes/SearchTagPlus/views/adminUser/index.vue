@@ -71,7 +71,7 @@
 							<b-form-group label="ポリシーグループ">
 								<b-form-checkbox-group
 									:id="'checkbox_pg-' + admin.id"
-									v-model="admin.editProducts"
+									v-model="adminIdToPolicyGroupIdList[admin.id].after"
 									:options="policyGroups"
 									:name="'checkbox_pg-' + admin.id"
 								></b-form-checkbox-group>

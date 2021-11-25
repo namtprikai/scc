@@ -91,20 +91,101 @@ See [CONTRIBUTING.md](https://github.com/Armour/vue-typescript-admin-template/bl
 
 [MIT License](https://github.com/Armour/vue-typescript-admin-template/blob/master/LICENSE)
 
+# サインアップトークン生成権限トークン発行
 
-# api
+- 有効期限のないトークンである。
+- このトークンはプロダクトID一つにつき同時に有効なものは一つのみである。
+- すでに有効なトークンがある場合、そのトークンは無効になり、新しく生成されたトークンのみ有効になる。
+## サインアップトークン生成権限トークンを発行する
+
+### HTTPリクエスト
+
+```
+curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup_maker/token/
+```
+
+### リクエストヘッダー
+
+- Authorization : `Bearer {access_token}`
+- Content-Type : application/json
+  
+### リクエストボディ
+
+- user_id?: String | (任意) 指定した場合、特定のnameのエンドユーザーのみサインアップ可能なURLが発行される。顧客のサービスのユーザーIDと整合性を保つ場合などに使用される。
+
+### レスポンス
+
+- signup_token: Sign upのときにリクエストボディに付与するrole_token
+- key_id: urlを識別するための一意のキー
+
+例(json)
+
+```json
+{
+  "data":{
+    "singup_maker_token":"eyOiennDiWOuz...",
+    "key_id":"sDienSKWxxOeiuAw"
+  },
+  "type":"Object",
+  "is_error":false,
+  "message":"Sucess"
+}
+```
+
+### 成功条件
+
+- adminユーザーがサインアップトークン生成権限トークン発行ポリシーを持っている。またはマスター権限であること
+
+## サインアップトークン生成権限トークンを無効にする
+
+### HTTPリクエスト
+
+```shell
+curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup_maker/token/delete
+```
+
+### リクエストヘッダー
+
+- Authorization : `Bearer {access_token}`
+- Content-Type : application/json
+  
+### リクエストボディ
+
+- key_id: String | urlを識別するための一意のキー
+
+### レスポンス
+
+空のオブジェクト
+
+例(json)
+
+```json
+{
+  "data":{},
+  "type":"Object",
+  "is_error":false,
+  "message":"Sucess"
+}
+```
+
+
+
+
+
+
+# エンドユーザーサインアップトークンapi
 
 ## エンドユーザーサインアップトークンを発行する
 
 ### HTTPリクエスト
 
 ```
-curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signin/token/
+curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup/token/
 ```
 
 ### リクエストヘッダー
 
-- Authorization : `Bearer {access_token}`
+- Authorization : `Bearer {singup_maker_token}`
 - Content-Type : application/json
   
 ### リクエストボディ
@@ -139,12 +220,12 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signin/token/
 ### HTTPリクエスト
 
 ```shell
-curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signin/apiurl/delete
+curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup/token/delete
 ```
 
 ### リクエストヘッダー
 
-- Authorization : `Bearer {access_token}`
+- Authorization : `Bearer {singup_maker_token}`
 - Content-Type : application/json
   
 ### リクエストボディ
@@ -172,12 +253,12 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signin/apiurl/dele
 ### HTTPリクエスト
 
 ```shell
-curl -X GET https://xxxxxx.jp/xxxxx/api/product/{product_id}/signin/apiurl/tokens
+curl -X GET https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup/token/tokens
 ```
 
 ### リクエストヘッダー
 
-- Authorization : `Bearer {access_token}`
+- Authorization : `Bearer {singup_maker_token}`
 - Content-Type : application/json
   
 ### リクエストボディ
