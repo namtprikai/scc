@@ -91,16 +91,16 @@ See [CONTRIBUTING.md](https://github.com/Armour/vue-typescript-admin-template/bl
 
 [MIT License](https://github.com/Armour/vue-typescript-admin-template/blob/master/LICENSE)
 
-# サインアップトークン生成権限トークン発行
+# エンクリプタートークン発行
 
 - 有効期限のないトークンである。
-- 
-## サインアップトークン生成権限トークンを発行する
+- ユーザーデータをエンクリプトし、ユーザーデータトークンを生成するための権限
+## エンクリプタートークンを発行する
 
 ### HTTPリクエスト
 
 ```
-curl -X POST https://xxxxxx.jp/xxxxx/api/signup_maker/token/
+curl -X POST https://xxxxxx.jp/xxxxx/api/encryptor_token/
 ```
 
 ### リクエストヘッダー
@@ -110,20 +110,18 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/signup_maker/token/
   
 ### リクエストボディ
 
-- product_id: Array<number> | 発行されたサインアップトークン生成権限トークンで生成できるサインアップできるプロダクトの範囲である。
+- product_id: Array<number> | 発行されたエンクリプタートークンで生成できるユーザーデータトークンが扱うプロダクトの範囲である。
 
 ### レスポンス
 
-- signup_token: Sign upのときにリクエストボディに付与するrole_token
-- key_id: signup_tokenを識別するための一意のキー
+- encryptor_token: 
 
 例(json)
 
 ```json
 {
   "data":{
-    "singup_maker_token":"eyOiennDiWOuz...",
-    "key_id":"sDienSKWxxOeiuAw"
+    "encryptor_token":"eyOiennDiWOuz...",
   },
   "type":"Object",
   "is_error":false,
@@ -140,7 +138,7 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/signup_maker/token/
 ### HTTPリクエスト
 
 ```shell
-curl -X POST https://xxxxxx.jp/xxxxx/api/signup_maker/token/delete
+curl -X DELETE https://xxxxxx.jp/xxxxx/api/encryptor_token/<token_id>/
 ```
 
 ### リクエストヘッダー
@@ -149,8 +147,6 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/signup_maker/token/delete
 - Content-Type : application/json
   
 ### リクエストボディ
-
-- key_id: String | signup_tokenを識別するための一意のキー
 
 ### レスポンス
 
@@ -172,7 +168,7 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/signup_maker/token/delete
 ### HTTPリクエスト
 
 ```shell
-curl -X GET https://xxxxxx.jp/xxxxx/api/signup_maker/token/tokens
+curl -X GET https://xxxxxx.jp/xxxxx/api/encryptor_token/
 ```
 
 ### リクエストヘッダー
@@ -184,16 +180,14 @@ curl -X GET https://xxxxxx.jp/xxxxx/api/signup_maker/token/tokens
 
 ### レスポンス
 
-- signup_token_list: 有効なサインアップトークン生成権限トークンとIDのオブジェクトのリスト
-- url: Sign upのAPIのURL
+- encryptor_token_list: 有効なエンクリプタートークンとIDのオブジェクトのリスト
   
 例(json)
 
 ```json
 {
   "data":{
-    "signup_token_list":[{"id":"aeiefnei...","value":"KeifnSDIw..."}],
-    "url":"https://xxxxxxxxxx"
+    "encryptor_token_list":["KeifnSDIw...","eyFEF..."],
   },
   "type":"Object",
   "is_error":false,
@@ -204,31 +198,36 @@ curl -X GET https://xxxxxx.jp/xxxxx/api/signup_maker/token/tokens
 
 
 
-# エンドユーザーサインアップトークンapi
+# データトークンapi
 
-## エンドユーザーサインアップトークンを発行する
+- 任意のデータをエンクリプトして保持するためのトークン
+- 例えば、サインアップの場合はrolesが含まれる
+  
+## データトークンを発行する
 
 ### HTTPリクエスト
 
 ```
-curl -X POST https://xxxxxx.jp/xxxxx/api/signup/token/
+curl -X POST https://xxxxxx.jp/xxxxx/api/data_token/
 ```
 
 ### リクエストヘッダー
 
-- Authorization : `Bearer {singup_maker_token}`
 - Content-Type : application/json
   
 ### リクエストボディ
-
-- roles: Array<number> | サインインすると付与されるロール
+- encriptor_token
+- data: {
+     url: "https://{APIのURL}",
+    //例 roles: roles: Array<number> | サインインすると付与されるロール
+  } | エンクリプションされるデータ
 - product_id: Array<number> | 対象プロダクトID
-- time: nat1 | 有効時間(min) 上限60分。下限1分。自然数で指定できる。
+- expires_in: nat1 | 有効時間(min) 上限60分。下限1分。自然数で指定できる。
 - user_id?: String | (任意) 指定した場合、特定のnameのエンドユーザーのみサインアップ可能なURLが発行される。顧客のサービスのユーザーIDと整合性を保つ場合などに使用される。
 
 ### レスポンス
 
-- signup_token: Sign upのときにリクエストボディに付与するrole_token
+- data_token: Sign upのときにリクエストボディに付与するrole_token
 - key_id: signup_tokenを識別するための一意のキー
 - url: Sign upのAPIのURL
 
@@ -238,7 +237,7 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/signup/token/
 {
   "data":{
     "url":"https://{APIのURL}",
-    "singup_token":"eyOiennDiWOuz...",
+    "data_token":"eyOiennDiWOuz...",
     "key_id":"sDienSKWxxOeiuAw"
   },
   "type":"Object",
@@ -246,21 +245,19 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/signup/token/
   "message":"Sucess"
 }
 ```
-## エンドユーザーサインアップトークンを無効にする
+## データトークンを無効にする
 
 ### HTTPリクエスト
 
 ```shell
-curl -X POST https://xxxxxx.jp/xxxxx/api/signup/token/delete
+curl -X DELETE https://xxxxxx.jp/xxxxx/api/data_token/
 ```
 
 ### リクエストヘッダー
-
-- Authorization : `Bearer {singup_maker_token}`
 - Content-Type : application/json
   
 ### リクエストボディ
-
+- encriptor_token
 - key_id: String | signup_tokenを識別するための一意のキー
 
 ### レスポンス
@@ -279,24 +276,24 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/signup/token/delete
 ```
 
 
-## すべての有効なエンドユーザーサインアップトークンを取得する
+## すべての有効なデータトークンを取得する
 
 ### HTTPリクエスト
 
 ```shell
-curl -X GET https://xxxxxx.jp/xxxxx/api/signup/token/tokens
+curl -X GET https://xxxxxx.jp/xxxxx/api/data_token/
 ```
 
 ### リクエストヘッダー
 
-- Authorization : `Bearer {singup_maker_token}`
 - Content-Type : application/json
   
 ### リクエストボディ
-
+- encriptor_token
+  
 ### レスポンス
 
-- signup_token_list: 有効なエンドユーザーサインアップトークンとIDのオブジェクトのリスト
+- data_token_list: 有効なエンドユーザーサインアップトークンとIDのオブジェクトのリスト
 - url: Sign upのAPIのURL
   
 例(json)
@@ -304,7 +301,7 @@ curl -X GET https://xxxxxx.jp/xxxxx/api/signup/token/tokens
 ```json
 {
   "data":{
-    "signup_token_list":[{"id":"aeiefnei...","value":"KeifnSDIw..."}],
+    "data_token_list":[{"key_id":"aeiefnei...","data_token":"KeifnSDIw..."}],
     "url":"https://xxxxxxxxxx"
   },
   "type":"Object",
