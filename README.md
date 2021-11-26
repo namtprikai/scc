@@ -94,14 +94,13 @@ See [CONTRIBUTING.md](https://github.com/Armour/vue-typescript-admin-template/bl
 # サインアップトークン生成権限トークン発行
 
 - 有効期限のないトークンである。
-- このトークンはプロダクトID一つにつき同時に有効なものは一つのみである。
-- すでに有効なトークンがある場合、そのトークンは無効になり、新しく生成されたトークンのみ有効になる。
+- 
 ## サインアップトークン生成権限トークンを発行する
 
 ### HTTPリクエスト
 
 ```
-curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup_maker/token/
+curl -X POST https://xxxxxx.jp/xxxxx/api/signup_maker/token/
 ```
 
 ### リクエストヘッダー
@@ -111,12 +110,12 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup_maker/token
   
 ### リクエストボディ
 
-- user_id?: String | (任意) 指定した場合、特定のnameのエンドユーザーのみサインアップ可能なURLが発行される。顧客のサービスのユーザーIDと整合性を保つ場合などに使用される。
+- product_id: Array<number> | 発行されたサインアップトークン生成権限トークンで生成できるサインアップできるプロダクトの範囲である。
 
 ### レスポンス
 
 - signup_token: Sign upのときにリクエストボディに付与するrole_token
-- key_id: urlを識別するための一意のキー
+- key_id: signup_tokenを識別するための一意のキー
 
 例(json)
 
@@ -141,7 +140,7 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup_maker/token
 ### HTTPリクエスト
 
 ```shell
-curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup_maker/token/delete
+curl -X POST https://xxxxxx.jp/xxxxx/api/signup_maker/token/delete
 ```
 
 ### リクエストヘッダー
@@ -151,7 +150,7 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup_maker/token
   
 ### リクエストボディ
 
-- key_id: String | urlを識別するための一意のキー
+- key_id: String | signup_tokenを識別するための一意のキー
 
 ### レスポンス
 
@@ -168,7 +167,39 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup_maker/token
 }
 ```
 
+## すべての有効なサインアップトークン生成権限トークンを取得する
 
+### HTTPリクエスト
+
+```shell
+curl -X GET https://xxxxxx.jp/xxxxx/api/signup_maker/token/tokens
+```
+
+### リクエストヘッダー
+
+- Authorization : `Bearer {access_token}`
+- Content-Type : application/json
+  
+### リクエストボディ
+
+### レスポンス
+
+- signup_token_list: 有効なサインアップトークン生成権限トークンとIDのオブジェクトのリスト
+- url: Sign upのAPIのURL
+  
+例(json)
+
+```json
+{
+  "data":{
+    "signup_token_list":[{"id":"aeiefnei...","value":"KeifnSDIw..."}],
+    "url":"https://xxxxxxxxxx"
+  },
+  "type":"Object",
+  "is_error":false,
+  "message":"Sucess"
+}
+```
 
 
 
@@ -180,7 +211,7 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup_maker/token
 ### HTTPリクエスト
 
 ```
-curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup/token/
+curl -X POST https://xxxxxx.jp/xxxxx/api/signup/token/
 ```
 
 ### リクエストヘッダー
@@ -191,14 +222,14 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup/token/
 ### リクエストボディ
 
 - roles: Array<number> | サインインすると付与されるロール
-- product_id: number | 対象プロダクトID
+- product_id: Array<number> | 対象プロダクトID
 - time: nat1 | 有効時間(min) 上限60分。下限1分。自然数で指定できる。
 - user_id?: String | (任意) 指定した場合、特定のnameのエンドユーザーのみサインアップ可能なURLが発行される。顧客のサービスのユーザーIDと整合性を保つ場合などに使用される。
 
 ### レスポンス
 
 - signup_token: Sign upのときにリクエストボディに付与するrole_token
-- key_id: urlを識別するための一意のキー
+- key_id: signup_tokenを識別するための一意のキー
 - url: Sign upのAPIのURL
 
 例(json)
@@ -220,7 +251,7 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup/token/
 ### HTTPリクエスト
 
 ```shell
-curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup/token/delete
+curl -X POST https://xxxxxx.jp/xxxxx/api/signup/token/delete
 ```
 
 ### リクエストヘッダー
@@ -230,7 +261,7 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup/token/delet
   
 ### リクエストボディ
 
-- key_id: String | urlを識別するための一意のキー
+- key_id: String | signup_tokenを識別するための一意のキー
 
 ### レスポンス
 
@@ -253,7 +284,7 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup/token/delet
 ### HTTPリクエスト
 
 ```shell
-curl -X GET https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup/token/tokens
+curl -X GET https://xxxxxx.jp/xxxxx/api/signup/token/tokens
 ```
 
 ### リクエストヘッダー
@@ -263,11 +294,9 @@ curl -X GET https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup/token/tokens
   
 ### リクエストボディ
 
-- key_id: String | urlを識別するための一意のキー
-
 ### レスポンス
 
-- signup_token_list: 有効なエンドユーザーサインアップトークンの一覧
+- signup_token_list: 有効なエンドユーザーサインアップトークンとIDのオブジェクトのリスト
 - url: Sign upのAPIのURL
   
 例(json)
@@ -275,7 +304,7 @@ curl -X GET https://xxxxxx.jp/xxxxx/api/product/{product_id}/signup/token/tokens
 ```json
 {
   "data":{
-    "signup_token_list":["KeifnSDIw..."],
+    "signup_token_list":[{"id":"aeiefnei...","value":"KeifnSDIw..."}],
     "url":"https://xxxxxxxxxx"
   },
   "type":"Object",
