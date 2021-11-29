@@ -62,7 +62,7 @@ export default class Navbar extends Vue {
 	}
 
 	get avatar() {
-		return `https://file.ai-x-supporter.com/${CLIENT_ID}/${UserModule.id}.gif`;
+		return '';//`https://file.ai-x-supporter.com/${CLIENT_ID}/${UserModule.id}.gif`;
 	}
 
 	oshirase = "";
