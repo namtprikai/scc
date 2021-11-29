@@ -12,9 +12,6 @@ const service = axios.create({
 service.interceptors.request.use(
 	async (config) => {
 		const token = await AjaxService.getInstance().getToken();
-		if(token==undefined){
-			debugger;
-		}
 		if (token) {
 			// config.headers['Token'] = token;
 			config.headers.Authorization = `Bearer ${token}`;
