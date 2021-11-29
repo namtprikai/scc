@@ -626,6 +626,17 @@ export class Ajax {
 	public resetToken() {
 		this.token = "";
 		Cookies.remove(`token_${CLIENT_ID}`);
+		this.defObj.headers.Authorization = ``;
+		request.interceptors.request.use(
+			(config) => {
+				// Add X-Token header to every request, you can add other custom headers here
+				config.headers.Authorization = ``;
+				return config;
+			},
+			(error) => {
+				Promise.reject(error);
+			}
+		);
 	}
 
 	public updateToken(token: string) {
