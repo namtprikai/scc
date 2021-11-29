@@ -6,6 +6,7 @@ import { eventHub } from "@/init/eventHub";
 
 import { OldScenario } from "@/utils/allInOneCsv/scenario";
 import Password from "@/views/password/index.vue";
+import { Admin } from "@/api/admin";
 interface SAIPromiseArray{
 	is_error:boolean;
 	message:string;
@@ -603,8 +604,9 @@ export class Ajax {
 			this.defObj.headers = headers;
 		}
 		const token = Cookies.get(`token_${CLIENT_ID}`);
-		if (token != null) {
-			this.updateToken(token);
+		const refresh_token = Cookies.get(`refresh_token_${CLIENT_ID}`);
+		if (token != null&&refresh_token!=null) {
+			this.updateToken(token,refresh_token);
 		}
 	}
 
@@ -619,10 +621,10 @@ export class Ajax {
 		}
 		return this.token;
 	}
-	// private async refreshToken(){
-	// 	const { data, is_error } = await Admin.refresh(this.refresh_token);
-	// 	this.updateToken(data.access_token);
-	// }
+	private async refreshToken(){
+		const { data, is_error } = await Admin.refresh(this.refresh_token);
+		this.updateToken(data.access_token,data.refresh_token);
+	}
 	public resetToken() {
 		this.token = "";
 		Cookies.remove(`token_${CLIENT_ID}`);
@@ -639,8 +641,9 @@ export class Ajax {
 		);
 	}
 
-	public updateToken(token: string) {
+	public updateToken(token: string,refresh_token:string) {
 		this.token = token;
+		this.refresh_token = refresh_token;
 		this.defObj.headers.Authorization = `Bearer ${this.token}`;
 		request.interceptors.request.use(
 			(config) => {
@@ -662,9 +665,10 @@ export class Ajax {
 		console.log(this.defObj.headers);
 		obj.headers = Object.assign({}, this.defObj.headers || {}, obj.headers || {}, this.token ? { Authorization: `Bearer ${this.token}` } : {});
 		const res: any = request(obj);
-		// res.then(() => {
-		// 	this.refreshToken();
-		// })
+		res.then(() => {
+			// this.refreshToken();
+			console.log("then");
+		})
 		return res;
 	};
 }

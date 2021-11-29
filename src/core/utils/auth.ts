@@ -84,8 +84,8 @@ export namespace Auth {
 		return AjaxService.getInstance().getToken() || false;
 	};
 	export const isLogin = async () => (await getToken()) !== "";
-	export const setToken = (token: string) => {
-		AjaxService.getInstance().updateToken(token);
+	export const setToken = (token: string,refresh_token:string) => {
+		AjaxService.getInstance().updateToken(token,refresh_token);
 	};
 
 	export const removeToken = () => {
