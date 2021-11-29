@@ -1,6 +1,8 @@
 import Cookies from "js-cookie";
 import { UserModule } from "@/store/modules/user";
 import { CLIENT_ID } from "@consoletype/utils/configration";
+import { Ajax } from "./parts";
+import { AjaxService } from "@/services/ajax";
 class AdminUser {
 	constructor(
 		private id: string = "",
@@ -78,14 +80,18 @@ export namespace Auth {
 		// if (info) {
 		// 	return Cookies.get(TokenKey);
 		// }
-		return Cookies.get(TokenKey) || false;
+
+		return AjaxService.ajax.getToken() || false;
 	};
 	export const isLogin = async () => (await getToken()) !== "";
-	export const setToken = (token: string) => Cookies.set(TokenKey, token);
+	export const setToken = (token: string) => {
+		AjaxService.ajax.updateToken(token);
+	};
 
 	export const removeToken = () => {
 		console.log("removeToken");
-		Cookies.remove(TokenKey);
+		// Cookies.remove(TokenKey);
+		AjaxService.ajax.resetToken();
 	};
 	// export const setAdminUser = (data: LoginResponceData, password: string, email: string) => {
 	//   adminUser = new AdminUser(data.id, data.name, password, data.product_id, email, data.role);

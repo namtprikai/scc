@@ -124,7 +124,7 @@ export default class SidebarItem extends Vue {
 	}
 
 	private get UserThumbFileName(): string {
-		return `${this.UserId}_thumb.gif`;
+		return '';//;`${this.UserId}_thumb.gif`;
 	}
 
 	private hasOneShowingChild(children: Route[], parent: Route) {

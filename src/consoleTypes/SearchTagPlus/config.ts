@@ -414,7 +414,7 @@ export function RouterConfig(
 									title: "CSV編集",
 									icon: "edit",
 									confirmation: {
-										is: true,
+										is: false,
 										message:
 											"「反映ステップに進む」から内容を保存しないまま編集終了すると変更内容が失われます。本当に編集終了しますか？",
 										after: () => {
@@ -455,7 +455,7 @@ export function RouterConfig(
 									title: "QA編集",
 									icon: "edit",
 									confirmation: {
-										is: true,
+										is: false,
 										message:
 											"「反映ステップに進む」から内容を保存しないまま編集終了すると変更内容が失われます。本当に編集終了しますか？",
 										after: () => {
