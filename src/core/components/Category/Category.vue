@@ -7,7 +7,18 @@
 			:isSync="true"
 			:leafClick="selectLeaf"
 			:nodeClick="selectNode"
-		></vue-tree>
+		>
+		<template v-slot:node="{ node, collapsed }">
+        <div
+          class="rich-media-node"
+          :style="{ border: collapsed ? '2px solid grey' : '' }"
+        >
+          <span style="padding: 4px 0; font-weight: bold;"
+          >{{ node.value }}</span
+          >
+        </div>
+      </template>
+		</vue-tree>
 		<div>
 			<h3>選択カテゴリ</h3>
 			<p>{{ currentCategory }}</p>
@@ -31,7 +42,20 @@
 		</div>
 	</div>
 </template>
-
+<style lang="scss">
+@import "@/styles/_variables.scss";
+.rich-media-node {
+  width: 80px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  color: white;
+  background-color: $Primary;
+  border-radius: 4px;
+}
+</style>
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 // @ts-ignore
