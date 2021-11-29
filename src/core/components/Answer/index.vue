@@ -59,7 +59,7 @@ export default class AnswerComp extends Vue {
 	}
 	async created() {}
 	async fetch() {
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `ansers/${this.questionId}`,
 			method: "get",
 			params: {},

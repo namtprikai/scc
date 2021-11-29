@@ -81,17 +81,17 @@ export namespace Auth {
 		// 	return Cookies.get(TokenKey);
 		// }
 
-		return AjaxService.ajax.getToken() || false;
+		return AjaxService.getInstance().getToken() || false;
 	};
 	export const isLogin = async () => (await getToken()) !== "";
 	export const setToken = (token: string) => {
-		AjaxService.ajax.updateToken(token);
+		AjaxService.getInstance().updateToken(token);
 	};
 
 	export const removeToken = () => {
 		console.log("removeToken");
 		// Cookies.remove(TokenKey);
-		AjaxService.ajax.resetToken();
+		AjaxService.getInstance().resetToken();
 	};
 	// export const setAdminUser = (data: LoginResponceData, password: string, email: string) => {
 	//   adminUser = new AdminUser(data.id, data.name, password, data.product_id, email, data.role);

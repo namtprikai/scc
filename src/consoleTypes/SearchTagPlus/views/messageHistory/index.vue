@@ -171,7 +171,7 @@ export default class MessageHistory extends Vue {
 			keyMepper.set("mode", "モード");
 			keyMepper.set("step_id", "ステップID");
 			keyMepper.set("query", "クエリ");
-			// AjaxService.ajax
+			// AjaxService.getInstance()
 			// 	.http({
 			// 		baseURL: subsystemUrl,
 			// 		url: `product/${CLIENT_ID}/data_get`,
@@ -237,7 +237,7 @@ Promise.resolve()
 
 	public async setMessages(userId: string) {
 		const data: any = await Promise.resolve();
-// AjaxService.ajax.http({
+// AjaxService.getInstance().http({
 // 			url: `product/${CLIENT_ID}/user/${userId}/message`,
 // 			method: "get",
 // 			data: {
@@ -309,7 +309,7 @@ Promise.resolve()
 	}
 
 	doDelete(message: MessageObj) {
-		// AjaxService.ajax
+		// AjaxService.getInstance()
 		// 	.http({
 		// 		url: `product/${CLIENT_ID}/draft/${message.id}`,
 		// 		method: "DELETE",

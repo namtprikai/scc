@@ -149,7 +149,7 @@ export default class MessageListCompParent extends Vue {
 	}
 
 	doDelete(messageId: any) {
-		AjaxService.ajax.http({
+		AjaxService.getInstance().http({
 			url: `product/${CLIENT_ID}/message/${messageId}/suspend/`,
 			method: "PATCH",
 			data: {},
@@ -204,7 +204,7 @@ export default class MessageListCompParent extends Vue {
 	}
 
 	public async setResponse(message: MessageObj) {
-		await AjaxService.ajax
+		await AjaxService.getInstance()
 			.http({
 				url: `product/${CLIENT_ID}/message/${message.id}/read`,
 				method: "PATCH",

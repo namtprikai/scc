@@ -91,7 +91,7 @@ export default class ResponseParent extends Vue {
 		currentScriptId: string | null;
 	}) {
 		const { currentMessageId, currentScriptId, related_message_id } = attr;
-		AjaxService.ajax
+		AjaxService.getInstance()
 			.http({
 				url: `product/${CLIENT_ID}/message/${currentMessageId}/reply/`,
 				method: "PATCH",
@@ -161,7 +161,7 @@ export default class ResponseParent extends Vue {
 		}
 		const userName = this.userName;
 		const userDisplayName = this.userDisplayName;
-		const data: any = await AjaxService.ajax.http({
+		const data: any = await AjaxService.getInstance().http({
 			url: `product/${CLIENT_ID}/user/${this.userId}/message`,
 			method: "get",
 			data: {
@@ -199,7 +199,7 @@ export default class ResponseParent extends Vue {
 		}
 		if (currentMessageId && related_message_id) {
 			this.reply({ currentMessageId, currentScriptId, related_message_id });
-			const ticketData: any = await AjaxService.ajax.http({
+			const ticketData: any = await AjaxService.getInstance().http({
 				baseURL: subsystemUrl,
 				url: `product/${CLIENT_ID}/data_get`,
 				method: "get",
@@ -210,7 +210,7 @@ export default class ResponseParent extends Vue {
 				},
 			});
 			console.log(ticketData);
-			AjaxService.ajax.http({
+			AjaxService.getInstance().http({
 				baseURL: subsystemUrl,
 				url: `product/${CLIENT_ID}/data_post`,
 				method: "POST",
@@ -233,7 +233,7 @@ export default class ResponseParent extends Vue {
 	}
 
 	process(attr: { related_message_id: string; messageId: any; scriptId: any }) {
-		AjaxService.ajax
+		AjaxService.getInstance()
 			.http({
 				url: `product/${CLIENT_ID}/message/${attr.messageId}/process/`,
 				method: "PATCH",
@@ -255,7 +255,7 @@ export default class ResponseParent extends Vue {
 		scriptId: string;
 		text: string;
 	}) {
-		const data: any = await AjaxService.ajax.http({
+		const data: any = await AjaxService.getInstance().http({
 			url: `product/${CLIENT_ID}/draft`,
 			method: "POST",
 			data: {

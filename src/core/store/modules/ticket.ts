@@ -461,7 +461,7 @@ class TicketStore extends VuexModule implements IScenarioState {
 		enddate: Date;
 	}) {
 		const { st, en, startdate, enddate } = ob;
-		const data: any = await AjaxService.ajax.http({
+		const data: any = await AjaxService.getInstance().http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/data_get`,
 			method: "get",

@@ -35,7 +35,7 @@ export default class ProductListComp extends Vue {
 
 	protected async created() {
 		// eventHub.$on("tabclick", this.tabClick);
-		// const {data}: AxiosResponse<any> = await AjaxService.ajax.http({
+		// const {data}: AxiosResponse<any> = await AjaxService.getInstance().http({
 		// 	url: `/products`,
 		// 	method: 'get',
 		// 	params: {},

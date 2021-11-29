@@ -152,7 +152,7 @@ export default class Synonym extends Vue {
 
 	private getSynonim() {
 		return new Promise<any>((resolve: any, reject: any) => {
-			// AjaxService.ajax
+			// AjaxService.getInstance()
 			// 	.http({
 			// 		baseURL: `${scriptUrl}`,
 			// 		url: `get_script/?path=${CLIENT_ID}/synonym_dict.json`,

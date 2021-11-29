@@ -223,7 +223,7 @@ export default class UserDetail extends Vue {
 		const displayname = this.user.displayname;
 		const attribute = JSON.stringify(this.attr) || "";
 		const status = this.user.status;
-		// AjaxService.ajax.http({
+		// AjaxService.getInstance().http({
 		// 	url: `product/${CLIENT_ID}/user/${id}`,
 		// 	method: "PATCH",
 		// 	data: {

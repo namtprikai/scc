@@ -13,7 +13,7 @@ export namespace Admin {
 		product_id?: Array<number>;
 	}
 	export const refresh = async (refreshToken: string): Promise<any> => {
-		const { is_error, message, type, data } = await AjaxService.ajax.http({
+		const { is_error, message, type, data } = await AjaxService.getInstance().http({
 			url: `fnt/${URL}check/`,
 			method: "POST",
 			data: {
@@ -22,8 +22,8 @@ export namespace Admin {
 		});
 	}
 	export const login = async (name: string, password: string): Promise<any> => {
-		AjaxService.ajax.resetToken();
-		const { is_error, message, type, data } = await AjaxService.ajax.http({
+		AjaxService.getInstance().resetToken();
+		const { is_error, message, type, data } = await AjaxService.getInstance().http({
 			url: `${URL}login/`,
 			method: "POST",
 			data: {
@@ -38,14 +38,14 @@ export namespace Admin {
 		return data;
 	};
 	export const add = (data: AdminData) => {
-		return AjaxService.ajax.http({
+		return AjaxService.getInstance().http({
 			url: `${URL}`,
 			method: "POST",
 			data,
 		});
 	};
 	export const getList = () => {
-		return AjaxService.ajax.http({
+		return AjaxService.getInstance().http({
 			url: `${URL}`,
 			method: "get",
 			headers: {
@@ -55,7 +55,7 @@ export namespace Admin {
 		});
 	}
 	// export const getDetail = (token:string)=>{
-	// 	return AjaxService.ajax.http({
+	// 	return AjaxService.getInstance().http({
 	// 		url: `${URL}$/`,
 	// 		method: "get",
 	// 		headers: {
@@ -65,7 +65,7 @@ export namespace Admin {
 	// 	});
 	// }
 	export const get = (id: number) => {
-		return AjaxService.ajax.http({
+		return AjaxService.getInstance().http({
 			url: `${URL}${id}/`,
 			method: "get",
 			headers: {
@@ -75,7 +75,7 @@ export namespace Admin {
 		});
 	}
 	export const editProducts = async (id: number, add: Array<number>, remove: Array<number>) => {
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}${id}/product/`,
 			method: "post",
 			data: {
@@ -87,7 +87,7 @@ export namespace Admin {
 		return data;
 	};
 	export const disabledObject = async (id: number) => {
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}disabled/`,
 			method: "post",
 			data: { admin_id: id },
@@ -96,7 +96,7 @@ export namespace Admin {
 		return data;
 	};
 	export const patch = (id: number, data: IPartialAdminData) => {
-		return AjaxService.ajax.http({
+		return AjaxService.getInstance().http({
 			url: `${URL}${id}/`,
 			method: "PATCH",
 			data,
@@ -106,7 +106,7 @@ export namespace Admin {
 		old_password: string,
 		new_password: string,
 	}) => {
-		return AjaxService.ajax.http({
+		return AjaxService.getInstance().http({
 			url: `${URL}changepw/${id}/`,
 			method: "PATCH",
 			data,
@@ -114,7 +114,7 @@ export namespace Admin {
 
 	}
 	export const changePolicyGroup = async (adminId: number, add: Array<number>, remove: Array<number>) => {
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}${adminId}/policy_group/`,
 			method: "post",
 			data: { policy_group_id: add, delete_id: remove },
@@ -123,7 +123,7 @@ export namespace Admin {
 		return data;
 	}
 	export const getPolicyGroup = async (adminId: number): Promise<Array<IPolicyGroupData>> => {
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}${adminId}/policy_group/`,
 			method: "get",
 			params: {},

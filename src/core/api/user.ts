@@ -3,7 +3,7 @@ import { IUserData } from "./types";
 namespace User{
 	const URL = "api/user/";
 	export const getList = async ()=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}`,
 			method: "get",
 			params: {},
@@ -12,7 +12,7 @@ namespace User{
 		return data;
 	};
 	export const getCategoryByQuestionId = async(questionId:number)=>{
-		const { data,is_error,type }: any = await AjaxService.ajax.http({
+		const { data,is_error,type }: any = await AjaxService.getInstance().http({
 			url:  `${URL}/{${questionId}}/category/`,
 			method: "get",
 			params: {},
@@ -20,7 +20,7 @@ namespace User{
 		return data;
 	};
 	export const post = async(input:IUserData)=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}`,
 			method: "post",
 			data: input,
@@ -29,7 +29,7 @@ namespace User{
 		return data;
 	};
 	export const patch = async(id:number,input:any)=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url:  `${URL}/${id}/`,
 			method: "patch",
 			data: input,
@@ -38,7 +38,7 @@ namespace User{
 		return data;
 	};
 	export const deleteObject = async (id:number)=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}/${id}/`,
 			method: "post",
 			data: {},

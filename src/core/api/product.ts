@@ -4,7 +4,7 @@ import type { IProductData,IPartialProductData } from "./types";
 export namespace Product {
 	const URL = "product/";
 	export const getList = async ()=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}`,
 			method: "get",
 			params: {},
@@ -13,7 +13,7 @@ export namespace Product {
 		return data;
 	};
 	export const getCategoryByQuestionId = async(questionId:number)=>{
-		const { data,is_error,type }: any = await AjaxService.ajax.http({
+		const { data,is_error,type }: any = await AjaxService.getInstance().http({
 			url:  `${URL}/{${questionId}}/category/`,
 			method: "get",
 			params: {},
@@ -21,7 +21,7 @@ export namespace Product {
 		return data;
 	};
 	export const post = async(input:IPartialProductData)=>{
-		const { data,is_error,type }: any = await AjaxService.ajax.http({
+		const { data,is_error,type }: any = await AjaxService.getInstance().http({
 			url: `${URL}`,
 			method: "post",
 			data: input,
@@ -30,7 +30,7 @@ export namespace Product {
 		return data;
 	};
 	export const patch = async(id:number,input:any)=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url:  `${URL}/${id}/`,
 			method: "patch",
 			data: input,
@@ -39,7 +39,7 @@ export namespace Product {
 		return data;
 	};
 	export const deleteObject = async (id:number)=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}/${id}/`,
 			method: "post",
 			data: {},

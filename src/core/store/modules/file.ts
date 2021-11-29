@@ -46,7 +46,7 @@ class FileStore extends VuexModule implements IScenarioState {
 	})
 	public async getFile(ob: { parent: string; type: string }) {
 		const { parent, type } = ob;
-		const data: any = await AjaxService.ajax.http({
+		const data: any = await AjaxService.getInstance().http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/download`,
 			method: "get",
@@ -61,7 +61,7 @@ class FileStore extends VuexModule implements IScenarioState {
 	public async deleateFile(ob: { parent: string; fileName: string }) {
 		const { parent, fileName } = ob;
 		const file = `${parent}/${fileName}`;
-		const setData: any = await AjaxService.ajax.http({
+		const setData: any = await AjaxService.getInstance().http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/upload`,
 			method: "post",
@@ -71,7 +71,7 @@ class FileStore extends VuexModule implements IScenarioState {
 			},
 		});
 
-		const data: any = await AjaxService.ajax.http({
+		const data: any = await AjaxService.getInstance().http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/download`,
 			method: "get",
@@ -91,7 +91,7 @@ class FileStore extends VuexModule implements IScenarioState {
 	}) {
 		const { parent, fileName, base64Str, type } = ob;
 		const file = `${parent}/${fileName}`;
-		const setData: any = await AjaxService.ajax.http({
+		const setData: any = await AjaxService.getInstance().http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/upload`,
 			method: "post",
@@ -101,7 +101,7 @@ class FileStore extends VuexModule implements IScenarioState {
 			},
 		});
 
-		const data: any = await AjaxService.ajax.http({
+		const data: any = await AjaxService.getInstance().http({
 			baseURL: subsystemUrl,
 			url: `product/${CLIENT_ID}/download`,
 			method: "get",

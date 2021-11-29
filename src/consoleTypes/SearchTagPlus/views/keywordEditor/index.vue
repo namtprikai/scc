@@ -224,7 +224,7 @@ export default class KeywordEditorComp extends Vue {
 				this.inverted_index[o.key] = o;
 			}
 		});
-		// await AjaxService.ajax.http({
+		// await AjaxService.getInstance().http({
 		// 	baseURL: `${scriptUrl}`,
 		// 	url: `update_inverted_index?time=${new Date().getTime()}`,
 		// 	method: "PUT",
@@ -267,7 +267,7 @@ export default class KeywordEditorComp extends Vue {
 			}
 		});
 Promise.resolve()
-		// AjaxService.ajax
+		// AjaxService.getInstance()
 		// 	.http({
 		// 		baseURL: `${scriptUrl}`,
 		// 		url: `update_inverted_index?time=${new Date().getTime()}`,
@@ -311,7 +311,7 @@ Promise.resolve()
 
 	private fetchInvertedIndex(): Promise<any> {
 		return new Promise((r: any) => {
-			// AjaxService.ajax
+			// AjaxService.getInstance()
 			// 	.http({
 			// 		baseURL: `${scriptUrl}`,
 			// 		url: `inverted_index_data/?product_id=${CLIENT_ID}&time=${new Date().getTime()}`,

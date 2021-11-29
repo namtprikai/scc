@@ -71,7 +71,7 @@ export default class UserWinComp extends Vue {
 		return this.isShow;
 	}
 	async init() {
-		const res = await AjaxService.ajax.http({
+		const res = await AjaxService.getInstance().http({
 			url: `questions`,
 		});
 		console.log(res);

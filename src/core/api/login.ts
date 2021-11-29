@@ -33,7 +33,7 @@ namespace Login {
 
 	export const getInfo = async (token: string,admin_id: number): Promise<IAdmin | null> => {
 
-		const data = await AjaxService.ajax.http({
+		const data = await AjaxService.getInstance().http({
 			url: `/admin/${admin_id}`,
 			method: "get",
 			headers: {
@@ -49,7 +49,7 @@ namespace Login {
 			is_master: data.data.is_master,
 			role: new Set(data.data.config.role),
 		};
-		// const roledata: AxiosResponse<any> = await AjaxService.ajax.http({
+		// const roledata: AxiosResponse<any> = await AjaxService.getInstance().http({
 		// 	url: `/policygroup/${admin.id}`,
 		// 	method: "get",
 		// 	headers: {

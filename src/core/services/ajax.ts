@@ -2,5 +2,11 @@
 import { Ajax } from "@/utils/parts";
 
 export namespace AjaxService {
-	export const ajax = new Ajax();
+	let ajax:Ajax|null = null;
+	export const getInstance=()=>{
+		if(ajax===null){
+			ajax = new Ajax();
+		}
+		return ajax;
+	}
 }

@@ -42,7 +42,7 @@ export default class FeedBackUser extends Vue {
 	currentMessage: Message | null = null;
 	getMessages() {
 		this.show = false;
-		// AjaxService.ajax
+		// AjaxService.getInstance()
 		// 	.http({
 		// 		url: `product/${CLIENT_ID}/message_feedback`,
 		// 		method: "GET",

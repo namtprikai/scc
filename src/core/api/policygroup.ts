@@ -5,7 +5,7 @@ export namespace PolicyGroup{
 	const URL = "policy_group/";
 	export const get = ()=>{};
 	export const getList = async():Promise<Array<IPolicyGroupData>>=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}`,
 			method: "get",
 			params: {},
@@ -14,7 +14,7 @@ export namespace PolicyGroup{
 		return data;
 	};
 	export const getPolicyByPolicyGroupId = async(policyGroupId:number):Promise<Array<IPolicyData>>=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}${policyGroupId}/policy/`,
 			method: "get",
 			params: {},
@@ -23,7 +23,7 @@ export namespace PolicyGroup{
 		return data;
 	};
 	export const addPolicy = async (add:Array<number>,remove:Array<number>,policyGroupId:number)=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}${policyGroupId}/policy/`,
 			method: "post",
 			data: {
@@ -35,7 +35,7 @@ export namespace PolicyGroup{
 		return data;
 	};
 	export const post = async (input:IPartialPolicyGroupData)=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}`,
 			method: "post",
 			data: input,
@@ -44,7 +44,7 @@ export namespace PolicyGroup{
 		return data;
 	};
 	export const patch = async(id:number,input:any)=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url:  `${URL}/${id}/`,
 			method: "patch",
 			data: input,
@@ -53,7 +53,7 @@ export namespace PolicyGroup{
 		return data;
 	};
 	export const deleteObject = async (id:number)=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}/${id}/`,
 			method: "post",
 			data: {},

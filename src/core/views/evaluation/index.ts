@@ -79,7 +79,7 @@ export default class EvaluationCompParent extends Vue {
 			(o: any) => /none/gi.test(o.script_id) && o.is_processed == "0"
 		);
 		this.listLoading = false;
-		// AjaxService.ajax
+		// AjaxService.getInstance()
 		// 	.http({
 		// 		baseURL: `${subsystemUrl}`,
 		// 		url: `product/${CLIENT_ID}/data_get`,

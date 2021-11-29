@@ -21,7 +21,7 @@ import { CLIENT_ID } from "@consoletype/utils/configration";
 export default class ForgotpwComp extends Vue {
 	private mail = "";
 	private send() {
-		// AjaxService.ajax
+		// AjaxService.getInstance()
 		// 	.http({
 		// 		url: "remind",
 		// 		method: "POST",

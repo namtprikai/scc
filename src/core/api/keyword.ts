@@ -5,7 +5,7 @@ namespace Keyword{
 	const URL = "keyword/";
 	export const get = ()=>{};
 	export const getList = async()=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}`,
 			method: "get",
 			params: {},
@@ -14,7 +14,7 @@ namespace Keyword{
 		return data;
 	};
 	export const post = async (input:IKeywordData)=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}`,
 			method: "post",
 			data: input,
@@ -23,7 +23,7 @@ namespace Keyword{
 		return data;
 	};
 	export const patch = async(id:number,input:any)=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url:  `${URL}/${id}/`,
 			method: "patch",
 			data: input,
@@ -32,7 +32,7 @@ namespace Keyword{
 		return data;
 	};
 	export const deleteObject = async (id:number)=>{
-		const { data }: any = await AjaxService.ajax.http({
+		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}/${id}/`,
 			method: "post",
 			data: {},

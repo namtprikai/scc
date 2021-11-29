@@ -80,7 +80,7 @@ export default class ImageSendParent extends Vue {
 			return;
 		}
 		this.isSend = true;
-		const data: any = await AjaxService.ajax.http({
+		const data: any = await AjaxService.getInstance().http({
 			url: `product/${CLIENT_ID}/message_data/upload`,
 			method: "GET",
 		});
@@ -97,7 +97,7 @@ export default class ImageSendParent extends Vue {
 			data: file,
 		});
 		console.log(res);
-		await AjaxService.ajax.http({
+		await AjaxService.getInstance().http({
 			url: `product/${CLIENT_ID}/line/send_message`,
 			method: "POST",
 			data: {

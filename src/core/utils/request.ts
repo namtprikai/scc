@@ -3,6 +3,7 @@ import { Message, MessageBox } from "element-ui";
 import { Auth } from "@/utils/auth";
 import { UserModule } from "@/store/modules/user";
 import { apiUrl } from "@consoletype/utils/configration";
+import { AjaxService } from "@/services/ajax";
 const service = axios.create({
 	baseURL: apiUrl,
 	timeout: 15000,
@@ -10,11 +11,11 @@ const service = axios.create({
 // Request interceptors
 service.interceptors.request.use(
 	async (config) => {
-		const token = await Auth.getToken();
-		console.log(token);
-		// Add X-Token header to every request, you can add other custom headers here
-		console.log(UserModule.Token);
-		if (UserModule.Token) {
+		const token = await AjaxService.getInstance().getToken();
+		if(token==undefined){
+			debugger;
+		}
+		if (token) {
 			// config.headers['Token'] = token;
 			config.headers.Authorization = `Bearer ${token}`;
 			config.headers["Content-type"] = "application/json";

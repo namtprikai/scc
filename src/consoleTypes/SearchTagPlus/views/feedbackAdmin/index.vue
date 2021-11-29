@@ -75,7 +75,7 @@ export default class FeedbackAdmin extends Vue {
 		};
 		// let utcDate=new Date(Date.UTC(nowDate.getFullYear(),nowDate.getMonth()+1,nowDate.getDay()));
 Promise.resolve()
-		// AjaxService.ajax
+		// AjaxService.getInstance()
 		// 	.http({
 		// 		url: `product/${CLIENT_ID}/search_message`,
 		// 		method: "GET",
@@ -121,7 +121,7 @@ Promise.resolve()
 	}
 
 	getMessages() {
-		// AjaxService.ajax
+		// AjaxService.getInstance()
 		// 	.http({
 		// 		url: `product/${CLIENT_ID}/message_feedback`,
 		// 		method: "GET",

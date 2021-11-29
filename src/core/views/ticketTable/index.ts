@@ -356,7 +356,7 @@ export default class TicketCompParent extends Vue {
 			return true;
 		};
 		const data: any = await Promise.resolve(); // Ticket.get();
-		// 	AjaxService.ajax.http({
+		// 	AjaxService.getInstance().http({
 		// 	baseURL: subsystemUrl,
 		// 	url: `product/${CLIENT_ID}/data_get`,
 		// 	method: "get",
