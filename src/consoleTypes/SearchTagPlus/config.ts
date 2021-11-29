@@ -610,8 +610,8 @@ export function RouterConfig(
 						},
 						children: [
 							{
-								path: "ticketanalyzer",
-								name: "ticketanalyzer",
+								path: "TicketTable",
+								name: "TicketTable",
 								components: {
 									v1: Box,
 								},
@@ -619,11 +619,11 @@ export function RouterConfig(
 									title: "利用履歴",
 									icon: "table",
 									v1: {
-										default: "TicketAnalyzer",
+										default: "TicketTable",
 										tabs: [
 											{
 												label: "利用履歴",
-												key: "TicketAnalyzer",
+												key: "TicketTable",
 												discription:
 													"検索ボタンを押すと利用履歴の集計結果をグラフなどで表示できます。",
 											},
