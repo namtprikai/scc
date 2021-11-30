@@ -126,7 +126,7 @@ export default class PolicyGroupListParent extends Vue {
 		this.isShow = true;
 	}
 	setPolicys() {
-		this.policys = PolicysModule.Policys.sort(o=>o.id).map(p => ({ text: p.label, value: p.id }));
+		this.policys = PolicysModule.Policys.sort((a,b)=>a.id-b.id).map(p => ({ text: p.label, value: p.id }));
 	}
 	get PolicyGroupList() {
 		return this.policyGroupList;
@@ -151,7 +151,7 @@ export default class PolicyGroupListParent extends Vue {
 	}
 	public async patchPolicyByPolicyGroupId(arg: { id: number, policyGroupIdTopolicyIdList?: { [key: number]: { before: Array<number>, after: Array<number> } } }) {
 
-		const policyGroupList = await (await PolicyGroup.getPolicyByPolicyGroupId(arg.id)).sort(o=>o.id);
+		const policyGroupList = await (await PolicyGroup.getPolicyByPolicyGroupId(arg.id)).sort((a,b)=>a.id-b.id);
 		const policyGroupIdList = policyGroupList.map(p => p.id);
 		const policyCheckModel:Array<PolicyCheckModel>=[];
 		let i=0,j=0;
