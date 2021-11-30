@@ -14,8 +14,9 @@
           :style="{ border: collapsed ? '2px solid grey' : '' }"
         >
           <span style="padding: 4px 0; font-weight: bold;"
-          >{{ node.value }}</span
-          >
+          >{{ node.value }}</span>
+<span v-for="product_id in node.data.product_id" :key="product_id" style="margin: auto;border:1px;"
+          >{{ product_id }}</span>
         </div>
       </template>
 		</vue-tree>
@@ -55,6 +56,9 @@
   background-color: $Primary;
   border-radius: 4px;
 }
+// @for $i from 0 through 10 {
+//   .product-#{$i} { border-c: 10px * $i; }
+// }
 </style>
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
