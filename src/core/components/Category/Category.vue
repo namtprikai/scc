@@ -20,6 +20,14 @@
 						:key="product_id"
 						style="margin: auto;border:1px;"
 					>{{ product_id }}</span>
+					<div>
+roles:
+						<span
+							v-for="roles in node.data.roles"
+							:key="roles"
+							style="margin: auto;border:1px;"
+						>{{ roles }}</span>
+					</div>
 				</div>
 			</template>
 		</vue-tree>
@@ -76,11 +84,11 @@ import { ProductsModule } from "@/store/modules/products";
 export default class CategoryComp extends Vue {
 	categoryData: Array<VueTreeChart.IPartialDataSet> = [];
 	linkStyleIdMap = {
-1:{"stroke":"#000000"},
-2:{"stroke":"#0000ff"},
-3:{"stroke":"#00ff00"},
-4:{"stroke":"#ff0000"},
-};
+		1: { "stroke": "#000000" },
+		2: { "stroke": "#0000ff" },
+		3: { "stroke": "#00ff00" },
+		4: { "stroke": "#ff0000" },
+	};
 	// {
 	// 	hoge:123,
 	// 	value: '1',
@@ -97,7 +105,7 @@ export default class CategoryComp extends Vue {
 			return {
 				value: category.label,
 				data: category,
-				dataIdList:category.product_id
+				dataIdList: category.product_id
 				// children:[],
 			}
 		});
@@ -131,9 +139,9 @@ export default class CategoryComp extends Vue {
 	public async selectLeaf(data: any) {
 		console.log(data);
 		const categoryList = await Category.getList(data.data.id);
-		const roleList = await Promise.all(categoryList.map(c=>Category.getRoleListByCategoryId(c.id)));
-		return this.setCategoryList(categoryList.map((c,i)=>{
-			c.roles=roleList[i].map(r=>r.id);
+		const roleList = await Promise.all(categoryList.map(c => Category.getRoleListByCategoryId(c.id)));
+		return this.setCategoryList(categoryList.map((c, i) => {
+			c.roles = roleList[i].map(r => r.id);
 			return c;
 		}));
 	}
