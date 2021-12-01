@@ -1,16 +1,25 @@
 import { AjaxService } from "@/services/ajax";
 import { AxiosResponse } from "axios";
-import { ICategoryData, IPartialCategoryData } from "./types";
+import { ICategoryData, IPartialCategoryData, IRoleData } from './types';
 
 export namespace Category{
 	const URL = "category/";
-	export const getList = async (parent_id:number|null)=>{
+	export const getList = async (parent_id:number|null):Promise<Array<ICategoryData>>=>{
 		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}`,
 			method: "get",
 			params: {parent_id},
 		});
 		console.log(data);
+		return data;
+	};
+		export const getRoleListByCategoryId = async (id:number|null):Promise<Array<IRoleData>>=>{
+		const { data }: any = await AjaxService.getInstance().http({
+			url: `${URL}${id}/role`,
+			method: "get",
+			params: {},
+		});
+			console.log(data);
 		return data;
 	};
 	export const getCategory = async (id:number)=>{

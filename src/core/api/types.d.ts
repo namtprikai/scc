@@ -100,6 +100,7 @@ export interface ICategoryData extends ISAIAPIData {
 	id: number;
 	product_id:Array<number>;
 	label: string;
+	roles?:Array<number>;
 	text: string;
 	config?: any;
 	parent_id?:number;
