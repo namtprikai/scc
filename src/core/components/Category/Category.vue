@@ -21,12 +21,12 @@
 						style="margin: auto;border:1px;"
 					>{{ product_id }}</span>
 					<div>
-roles:
+<!-- roles:
 						<span
 							v-for="roles in node.data.roles"
 							:key="roles"
 							style="margin: auto;border:1px;"
-						>{{ roles }}</span>
+						>{{ roles }}</span> -->
 					</div>
 				</div>
 			</template>
@@ -139,11 +139,12 @@ export default class CategoryComp extends Vue {
 	public async selectLeaf(data: any) {
 		console.log(data);
 		const categoryList = await Category.getList(data.data.id);
-		const roleList = await Promise.all(categoryList.map(c => Category.getRoleListByCategoryId(c.id)));
-		return this.setCategoryList(categoryList.map((c, i) => {
-			c.roles = roleList[i].map(r => r.id);
-			return c;
-		}));
+		return this.setCategoryList(categoryList);
+		// const roleList = await Promise.all(categoryList.map(c => Category.getRoleListByCategoryId(c.id)));
+		// return this.setCategoryList(categoryList.map((c, i) => {
+		// 	c.roles = roleList[i].map(r => r.id);
+		// 	return c;
+		// }));
 	}
 }
 </script>
