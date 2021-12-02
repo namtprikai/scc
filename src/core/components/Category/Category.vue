@@ -7,7 +7,7 @@
 			:isSync="true"
 			:leafClick="selectLeaf"
 			:nodeClick="selectNode"
-			:linkStyleIdMap="linkStyleIdMap"
+			:linkStyleIdMap="LinkStyleIdMap"
 		>
 			<template v-slot:node="{ node, collapsed }">
 				<div
@@ -31,7 +31,12 @@
 				</div>
 			</template>
 		</vue-tree>
-		<div>
+		<div class="flex section text-center">
+			<div v-for="(value,key) in LinkStyleIdMap" :key="key" class="inline-block flex">
+				<span class="inline-block"> product{{key}}:</span> <div class="inline-block mx-1 my-2" :style="{'background-color':value.stroke,'width':'10px','height':'10px'}"></div>
+			</div>
+		</div>
+		<div class="section">
 			<h3>選択カテゴリ</h3>
 			<p>{{ currentCategory }}</p>
 		</div>
@@ -65,6 +70,9 @@
 	background-color: $Primary;
 	border-radius: 4px;
 }
+.flex{
+	display: flex;
+}
 // @for $i from 0 through 10 {
 //   .product-#{$i} { border-c: 10px * $i; }
 // }
@@ -89,6 +97,15 @@ export default class CategoryComp extends Vue {
 		3: { "stroke": "#00ff00" },
 		4: { "stroke": "#ff0000" },
 	};
+	get LinkStyleIdMap(){
+		const retObj:VueTreeChart.ILinkStyleIdMap = {};
+		let count = 0;
+		for(const product of ProductsModule.Products){
+			retObj[product.id] = {"stroke":`hsl(${count}deg, 100%, 50%)`};
+			count += 37;
+		}
+		return retObj;
+	}
 	// {
 	// 	hoge:123,
 	// 	value: '1',
