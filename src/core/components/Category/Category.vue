@@ -1,6 +1,7 @@
 <template>
-	<div>
+	<div @mousewheel="controlScale">
 		<vue-tree
+			ref="scaleTree"
 			style="width: 800px; height: 600px; border: 1px solid gray"
 			:dataset="categoryData"
 			:config="treeConfig"
@@ -8,20 +9,27 @@
 			:leafClick="selectLeaf"
 			:nodeClick="selectNode"
 			:linkStyleIdMap="LinkStyleIdMap"
+
 		>
 			<template v-slot:node="{ node, collapsed }">
 				<div
 					class="rich-media-node"
-					:style="{ border: (currentCategory && currentCategory.id === node.data.id) ? '2px solid red' : '' }"
+					:style="{
+						border:
+							currentCategory && currentCategory.id === node.data.id
+								? '2px solid red'
+								: '',
+					}"
 				>
-					<span style="padding: 4px 0; font-weight: bold;">{{ node.value }}</span>
+					<span style="padding: 4px 0; font-weight: bold">{{ node.value }}</span>
 					<span
 						v-for="product_id in node.data.product_id"
 						:key="product_id"
-						style="margin: auto;border:1px;"
-					>{{ product_id }}</span>
+						style="margin: auto; border: 1px"
+						>{{ product_id }}</span
+					>
 					<div>
-<!-- roles:
+						<!-- roles:
 						<span
 							v-for="roles in node.data.roles"
 							:key="roles"
@@ -32,8 +40,21 @@
 			</template>
 		</vue-tree>
 		<div class="flex section text-center">
-			<div v-for="(value,key) in LinkStyleIdMap" :key="key" class="inline-block flex">
-				<span class="inline-block"> product{{key}}:</span> <div class="inline-block mx-1 my-2" :style="{'background-color':value.stroke,'width':'10px','height':'10px'}"></div>
+			<div
+				v-for="(value, key) in LinkStyleIdMap"
+				:key="key"
+				class="inline-block flex"
+			>
+				<span v-if="key > 0" class="inline-block"> product{{ key }}:</span>
+				<span v-else>プロダクトによらないデータ上の親子関係</span>
+				<div
+					class="inline-block mx-1 my-2"
+					:style="{
+						'background-color': value.stroke,
+						width: '10px',
+						height: '10px',
+					}"
+				></div>
 			</div>
 		</div>
 		<div class="section">
@@ -69,6 +90,7 @@
 	color: white;
 	background-color: $Primary;
 	border-radius: 4px;
+	font-size:0.8rem;
 }
 .flex{
 	display: flex;
@@ -90,6 +112,9 @@ import { ProductsModule } from "@/store/modules/products";
 	components: { VueTree },
 })
 export default class CategoryComp extends Vue {
+		$refs!: {
+		scaleTree: any;
+	};
 	categoryData: Array<VueTreeChart.IPartialDataSet> = [];
 	linkStyleIdMap = {
 		1: { "stroke": "#000000" },
@@ -98,7 +123,7 @@ export default class CategoryComp extends Vue {
 		4: { "stroke": "#ff0000" },
 	};
 	get LinkStyleIdMap(){
-		const retObj:VueTreeChart.ILinkStyleIdMap = {};
+		const retObj:VueTreeChart.ILinkStyleIdMap = {0:{"stroke":`#aaaaaa`,"stroke-dasharray":"5,5"}};
 		let count = 0;
 		for(const product of ProductsModule.Products){
 			retObj[product.id] = {"stroke":`hsl(${count}deg, 100%, 50%)`};
@@ -106,6 +131,18 @@ export default class CategoryComp extends Vue {
 		}
 		return retObj;
 	}
+		controlScale(event:any) {
+			if(event.shiftKey){
+				if (event.wheelDelta > 0) {
+					this.$refs.scaleTree.zoomIn(1.05);
+				}else{
+					this.$refs.scaleTree.zoomOut(1.05);
+				}
+				// case 'restore':
+				// 	this.$refs.scaleTree.restoreScale();
+				// 	break;
+			}
+		}
 	// {
 	// 	hoge:123,
 	// 	value: '1',
@@ -122,7 +159,7 @@ export default class CategoryComp extends Vue {
 			return {
 				value: category.label,
 				data: category,
-				dataIdList: category.product_id
+				dataIdList: [...category.product_id,0]
 				// children:[],
 			}
 		});
