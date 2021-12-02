@@ -9,7 +9,6 @@
 			:leafClick="selectLeaf"
 			:nodeClick="selectNode"
 			:linkStyleIdMap="LinkStyleIdMap"
-
 		>
 			<template v-slot:node="{ node, collapsed }">
 				<div
@@ -22,12 +21,17 @@
 					}"
 				>
 					<span style="padding: 4px 0; font-weight: bold">{{ node.value }}</span>
-					<span
-						v-for="product_id in node.data.product_id"
-						:key="product_id"
-						style="margin: auto; border: 1px"
-						>{{ product_id }}</span
-					>
+					<div>
+						<b-badge
+							pill
+							inline
+							v-for="product_id in node.data.product_id"
+							:key="product_id"
+							style="margin: auto; border: 1px"
+							>{{ product_id }}</b-badge
+						>
+					</div>
+
 					<div>
 						<!-- roles:
 						<span
@@ -83,7 +87,7 @@
 .rich-media-node {
 	width: 80px;
 	padding: 8px;
-	display: flex;
+	// display: flex;
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: center;
