@@ -2,7 +2,7 @@
 	<div @mousewheel="controlScale">
 		<vue-tree
 			ref="scaleTree"
-			style="width: 800px; height: 600px; border: 1px solid gray"
+			style="width: 100%; height: 1000px; border: 1px solid gray"
 			:dataset="categoryData"
 			:config="treeConfig"
 			:isSync="true"
@@ -85,7 +85,7 @@
 <style lang="scss">
 @import "@/styles/_variables.scss";
 .rich-media-node {
-	width: 80px;
+	width: 130px;
 	padding: 8px;
 	// display: flex;
 	flex-direction: column;
@@ -155,7 +155,7 @@ export default class CategoryComp extends Vue {
 	// 		{ value: '3' }
 	// 	]
 	// }
-	treeConfig = { nodeWidth: 120, nodeHeight: 80, levelHeight: 200 }
+	treeConfig = { nodeWidth: 160, nodeHeight: 80, levelHeight: 100 }
 	currentCategory: any = null;
 	text: string = '';
 	private setCategoryList(categoryList: Array<any>) {
