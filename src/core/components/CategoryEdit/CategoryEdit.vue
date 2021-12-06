@@ -11,7 +11,7 @@
 			<b-form-group label="プロダクト">
 				<b-form-checkbox-group
 					id="checkbox-1"
-					v-model="currentProducts"
+					v-model="data.product_id"
 					:options="ProductOptions"
 					name="checkbox-1"
 				></b-form-checkbox-group>
@@ -64,6 +64,11 @@ export default class CategoryEditComp extends Vue {
 	data!:ICategoryData;
 	editCategory(data:ICategoryData){
 
+	}
+		get ProductOptions() {
+		return ProductsModule.Products.map((p) => {
+			return { text: p.name, value: p.id };
+		});
 	}
 }
 </script>

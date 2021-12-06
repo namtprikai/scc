@@ -25,6 +25,7 @@ export default class CategoryEditorParent extends Vue {
 		category: ICategoryData;
 	}) {
 		this.isLoading = true;
+		this.category = {};
 		await Wait();
 		this.category = data.category;
 		debugger;
