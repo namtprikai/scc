@@ -1,84 +1,86 @@
 <template>
 	<div @mousewheel="controlScale">
-		<vue-tree
-			ref="scaleTree"
-			style="width: 100%; height: 1000px; border: 1px solid gray"
-			:dataset="categoryData"
-			:config="treeConfig"
-			:isSync="true"
-			:leafClick="selectLeaf"
-			:nodeClick="selectNode"
-			:linkStyleIdMap="LinkStyleIdMap"
-		>
-			<template v-slot:node="{ node, collapsed }">
-				<div
-					class="rich-media-node"
-					:style="{
-						border:
-							currentCategory && currentCategory.id === node.data.id
-								? '2px solid red'
-								: '',
-					}"
-				>
-					<span style="padding: 4px 0; font-weight: bold">{{ node.value }}</span>
-					<div>
-						<b-badge
-							pill
-							inline
-							v-for="product_id in node.data.product_id"
-							:key="product_id"
-							style="margin: auto; border: 1px"
-							>{{ product_id }}</b-badge
-						>
-					</div>
+		<div v-if="isShow">
+			<vue-tree
+				ref="scaleTree"
+				style="width: 100%; height: 1000px; border: 1px solid gray"
+				:dataset="categoryData"
+				:config="treeConfig"
+				:isSync="true"
+				:leafClick="selectLeaf"
+				:nodeClick="selectNode"
+				:linkStyleIdMap="LinkStyleIdMap"
+			>
+				<template v-slot:node="{ node, collapsed }">
+					<div
+						class="rich-media-node"
+						:style="{
+							border:
+								currentCategory && currentCategory.id === node.data.id
+									? '2px solid red'
+									: '',
+						}"
+					>
+						<span style="padding: 4px 0; font-weight: bold">{{ node.value }}</span>
+						<div>
+							<b-badge
+								pill
+								inline
+								v-for="product_id in node.data.product_id"
+								:key="product_id"
+								style="margin: auto; border: 1px"
+								>{{ product_id }}</b-badge
+							>
+						</div>
 
-					<div>
-						<!-- roles:
+						<div>
+							<!-- roles:
 						<span
 							v-for="roles in node.data.roles"
 							:key="roles"
 							style="margin: auto;border:1px;"
 						>{{ roles }}</span> -->
+						</div>
 					</div>
-				</div>
-			</template>
-		</vue-tree>
-		<div class="flex section text-center">
-			<div
-				v-for="(value, key) in LinkStyleIdMap"
-				:key="key"
-				class="inline-block flex"
-			>
-				<span v-if="key > 0" class="inline-block"> product{{ key }}:</span>
-				<span v-else>プロダクトによらないデータ上の親子関係</span>
+				</template>
+			</vue-tree>
+			<div class="flex section text-center">
 				<div
-					class="inline-block mx-1 my-2"
-					:style="{
-						'background-color': value.stroke,
-						width: '10px',
-						height: '10px',
-					}"
-				></div>
+					v-for="(value, key) in LinkStyleIdMap"
+					:key="key"
+					class="inline-block flex"
+				>
+					<span v-if="key > 0" class="inline-block"> product{{ key }}:</span>
+					<span v-else>プロダクトによらないデータ上の親子関係</span>
+					<div
+						class="inline-block mx-1 my-2"
+						:style="{
+							'background-color': value.stroke,
+							width: '10px',
+							height: '10px',
+						}"
+					></div>
+				</div>
 			</div>
-		</div>
-		<div class="section">
-			<h3>選択カテゴリ</h3>
-			<p>{{ currentCategory }}</p>
-		</div>
-		<div>
-			<h3>新規追加</h3>
-			<span v-if="currentCategory">{{ currentCategory.label }}の子要素</span>
-			<span v-else>ルート</span>として追加します。
-			<b-form-group label="プロダクト">
-				<b-form-checkbox-group
-					id="checkbox-1"
-					v-model="currentProducts"
-					:options="ProductOptions"
-					name="checkbox-1"
-				></b-form-checkbox-group>
-			</b-form-group>
-			<b-input type="text" v-model="text"></b-input>
-			<b-button @click="addCategory(text)">追加</b-button>
+			<div class="section">
+				<h3>選択カテゴリ</h3>
+				<p>{{ currentCategory }}</p>
+			</div>
+			<div>
+				<h3>新規追加</h3>
+				<span v-if="currentCategory">{{ currentCategory.label }}の子要素</span>
+				<span v-else>ルート</span>として追加します。
+				<b-form-group label="プロダクト">
+					<b-form-checkbox-group
+						id="checkbox-1"
+						v-model="currentProducts"
+						:options="ProductOptions"
+						name="checkbox-1"
+					></b-form-checkbox-group>
+				</b-form-group>
+				<b-input type="text" v-model="text"></b-input>
+				<b-button @click="addCategory(text)">追加</b-button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -120,6 +122,7 @@ export default class CategoryComp extends Vue {
 		$refs!: {
 		scaleTree: any;
 	};
+	isShow:boolean = false;
 	categoryData: Array<VueTreeChart.IPartialDataSet> = [];
 	linkStyleIdMap = {
 		1: { "stroke": "#000000" },
@@ -177,12 +180,16 @@ export default class CategoryComp extends Vue {
 		});
 	}
 	async mounted() {
-		const categoryList = await Category.getList(null);
+		this.isShow = false;
+		const [categoryList] =await Promise.all([
+			Category.getList(null),
+			ProductsModule.GetProducts(),
+		]);
 		this.categoryData = this.setCategoryList(categoryList);
+		this.isShow = true;
 	}
 	public addCategory(text: string, parent: number | null = null) {
-		console.log(this.currentProducts);
-		debugger;
+
 		Category.post({
 			product_id: this.currentProducts,
 			text,

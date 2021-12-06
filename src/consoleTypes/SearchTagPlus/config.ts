@@ -479,88 +479,54 @@ export function RouterConfig(
 									},
 								},
 							},
-							// {
-							// 	path: "keyword",
-							// 	name: "keyword",
-							// 	components: {
-							// 		v1: Box,
-							// 		v2: Box,
-							// 	},
-							// 	meta: {
-							// 		title: "キーワードの重み",
-							// 		icon: "edit",
-							// 		v1: {
-							// 			default: "KeywordEditor",
-							// 			tabs: [
-							// 				{
-							// 					label: "重み編集",
-							// 					key: "KeywordEditor",
-							// 					discription: `キーワードの重みを変更できます。<br>
-       //                  編集の際は、まず「テスト環境に反映」をしてから「本番環境に反映」で本番環境に適用してください。<br>
-       //                  以下にはテスト環境の内容が表示されています。<br>
-       //                  `,
-							// 				},
-							// 			],
-							// 		},
-							// 		v2: {
-							// 			default: "KeywordShow",
-							// 			tabs: [
-							// 				{
-							// 					label: "テスト環境",
-							// 					key: "KeywordShowDev",
-							// 					discription: "テスト環境に適用されているキーワードの重みです。",
-							// 				},
-
-							// 				{
-							// 					label: "本番環境",
-							// 					key: "KeywordShow",
-							// 					discription: "本番環境に適用されているキーワードの重みです。",
-							// 				},
-							// 			],
-							// 		},
-							// 	},
-							// },
-							// {
-							// 	path: 'tags',
-							// 	name: 'tags',
-							// 	components: {
-							// 		v1: Box,
-							// 		v2: Box,
-							// 	},
-							// 	meta: {
-							// 		title: 'タグ編集',
-							// 		icon: 'edit',
-							// 		v1: {
-							// 			default: 'Tags',
-							// 			tabs: [
-							// 				{
-							// 					label: 'タグ編集',
-							// 					key: 'Tags',
-							// 					discription: 'タグを修正できます',
-							// 				},
-							// 			],
-							// 		},
-							// 		v2: {
-							// 			default: 'Tags',
-							// 			tabs: [
-							// 				// {
-							// 				// 	label: "テスト環境",
-							// 				// 	key: "KeywordShowDev",
-							// 				// 	discription: "テスト環境に適用されているキーワードの重みです。",
-							// 				// },
-
-							// 				{
-							// 					label: 'タグ編集',
-							// 					key: 'Tags',
-							// 					discription: 'タグを修正できます',
-							// 				},
-							// 			],
-							// 		},
-							// 	},
-							// },
 						],
 					},
-
+					{
+						path: "index5",
+						components: { default: Frame6 },
+						redirect: "/category/index5",
+						name: "category",
+						meta: {
+							title: "カテゴリ",
+							icon: "example",
+							roles: [4, 5, 999],
+						},
+						children: [
+							{
+								path: "categoryedit",
+								name: "categoryedit",
+								components: {
+									v1: Box,
+									v2: Box,
+								},
+								meta: {
+									title: "カテゴリ編集",
+									icon: "edit",
+									confirmation: {
+										is: false,
+										message:
+											"「反映ステップに進む」から内容を保存しないまま編集終了すると変更内容が失われます。本当に編集終了しますか？",
+										after: () => {
+											// EditModule.editUnlock();
+										},
+									},
+									v1: {
+										default: "Category",
+										tabs: [
+											{ label: "FAQ一覧", key: "Category" }
+										],
+									},
+									v2: {
+										default: "CategoryEditor",
+										tabs: [
+											{ label: "カテゴリ編集", key: "CategoryEditor" },
+											{ label: "ユーザー画面でも", key: "UserWin", discription: `` },
+										],
+									},
+								},
+							},
+						],
+					},
 					{
 						path: "index3",
 						components: { default: Frame3 },
