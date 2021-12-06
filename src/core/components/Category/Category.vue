@@ -157,7 +157,8 @@ export default class CategoryComp extends Vue {
 	// 	]
 	// }
 	treeConfig = { nodeWidth: 160, nodeHeight: 80, levelHeight: 100 }
-	currentCategory: any = null;
+	@Prop()
+	currentCategory!: any;
 	text: string = '';
 	private setCategoryList(categoryList: Array<any>) {
 		return categoryList.map(category => {
