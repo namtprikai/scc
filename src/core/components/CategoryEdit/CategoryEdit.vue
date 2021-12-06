@@ -2,11 +2,11 @@
 	<div @mousewheel="controlScale">
 		<div class="section">
 			<h3>選択カテゴリ</h3>
-			<p>{{ currentCategory }}</p>
+			<p>{{ data }}</p>
 		</div>
 		<div>
 			<h3>新規追加</h3>
-			<span v-if="currentCategory">{{ currentCategory.label }}の子要素</span>
+			<span v-if="data">{{ data.label }}の子要素</span>
 			<span v-else>ルート</span>として追加します。
 			<b-form-group label="プロダクト">
 				<b-form-checkbox-group
@@ -17,7 +17,7 @@
 				></b-form-checkbox-group>
 			</b-form-group>
 			<b-input type="text" v-model="text"></b-input>
-			<b-button @click="addCategory(text)">追加</b-button>
+			<b-button @click="editCategory(data)">編集</b-button>
 		</div>
 	</div>
 </template>
@@ -62,5 +62,8 @@ export default class CategoryEditComp extends Vue {
 	};
 	@Prop()
 	data!:ICategoryData;
+	editCategory(data:ICategoryData){
+
+	}
 }
 </script>

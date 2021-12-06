@@ -473,6 +473,7 @@ export function RouterConfig(
 										default: "AllInOneEditor",
 										tabs: [
 											{ label: "FAQ編集", key: "AllInOneEditor" },
+											{ label: "カテゴリ編集", key: "CategoryEditor" },
 											{ label: "ユーザー画面でも", key: "UserWin", discription: `` },
 										],
 									},

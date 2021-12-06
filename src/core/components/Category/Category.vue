@@ -193,7 +193,7 @@ export default class CategoryComp extends Vue {
 	public selectNode(data: any) {
 		console.log(data);
 		this.currentCategory = data.data;
-		eventHub.$emit("setCategory",{data:this.currentCategory});
+		eventHub.$emit("setCategory",{category:this.currentCategory});
 	}
 	// @Prop()
 	// title!: string;

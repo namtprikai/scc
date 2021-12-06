@@ -27,11 +27,12 @@ export default class CategoryEditorParent extends Vue {
 		this.isLoading = true;
 		await Wait();
 		this.category = data.category;
+		debugger;
 		this.isLoading = false;
 	}
 
 	get Is_CategoryShow() {
-		return this.category !== {};
+		return Object.keys(this.category).length>0;
 	}
 	protected created() {
 		eventHub.$on("setCategory", this.setCategory);
