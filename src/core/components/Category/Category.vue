@@ -111,6 +111,7 @@ import type { VueTreeChart } from '@ssthouse/vue-tree-chart/src/vue-tree/types';
 import { CategoryModule } from '@/store/modules/category';
 import { Category } from '@/api/category';
 import { ProductsModule } from "@/store/modules/products";
+import { eventHub } from '@/init/eventHub';
 // Vue.component('vue-tree', VueTree)
 @Component({
 	components: { VueTree },
@@ -191,6 +192,7 @@ export default class CategoryComp extends Vue {
 	public selectNode(data: any) {
 		console.log(data);
 		this.currentCategory = data.data;
+		eventHub.$emit("setCategory",this.currentCategory);
 	}
 	// @Prop()
 	// title!: string;
