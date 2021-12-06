@@ -157,8 +157,8 @@ export default class CategoryComp extends Vue {
 	// 	]
 	// }
 	treeConfig = { nodeWidth: 160, nodeHeight: 80, levelHeight: 100 }
-	@Prop()
-	currentCategory!: any;
+
+	currentCategory: any=null;
 	text: string = '';
 	private setCategoryList(categoryList: Array<any>) {
 		return categoryList.map(category => {
@@ -193,7 +193,7 @@ export default class CategoryComp extends Vue {
 	public selectNode(data: any) {
 		console.log(data);
 		this.currentCategory = data.data;
-		eventHub.$emit("setCategory",this.currentCategory);
+		eventHub.$emit("setCategory",{data:this.currentCategory});
 	}
 	// @Prop()
 	// title!: string;

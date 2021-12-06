@@ -1,0 +1,8 @@
+<div>
+	<!-- <wrap-message v-if="isMessage" :message="message" /> -->
+	<WrapSppiner v-if="isLoading" />
+	<wrap-message v-else-if="!Is_CategoryShow" message="選択してください" />
+	<div v-if="Is_CategoryShow">
+		<CategoryEditor :data="cuttentCategory" />
+	</div>
+</div>

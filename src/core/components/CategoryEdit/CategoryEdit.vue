@@ -51,6 +51,7 @@ import { CategoryModule } from '@/store/modules/category';
 import { Category } from '@/api/category';
 import { ProductsModule } from "@/store/modules/products";
 import { eventHub } from '@/init/eventHub';
+import { ICategoryData } from '@/api/types';
 // Vue.component('vue-tree', VueTree)
 @Component({
 	components: { VueTree },
@@ -59,7 +60,7 @@ export default class CategoryEditComp extends Vue {
 		$refs!: {
 		scaleTree: any;
 	};
-
-	currentCategory: any = null;
+	@Prop()
+	data!:ICategoryData;
 }
 </script>
