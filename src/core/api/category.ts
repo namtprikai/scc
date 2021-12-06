@@ -24,7 +24,7 @@ export namespace Category{
 	};
 	export const getCategory = async (id:number)=>{
 		const { data }: any = await AjaxService.getInstance().http({
-			url: `${URL}/${id}/`,
+			url: `${URL}${id}/`,
 			method: "get",
 			params: {},
 		});
@@ -43,7 +43,7 @@ export namespace Category{
 	};
 	export const patch = async(id:number,input:IPartialCategoryData)=>{
 		const { data }: any = await AjaxService.getInstance().http({
-			url:  `${URL}/${id}/`,
+			url:  `${URL}${id}/`,
 			method: "patch",
 			data: input,
 		});
@@ -52,7 +52,7 @@ export namespace Category{
 	};
 	export const deleteObject = async (id:number)=>{
 		const { data }: any = await AjaxService.getInstance().http({
-			url: `${URL}/${id}/`,
+			url: `${URL}${id}/`,
 			method: "post",
 			data: {},
 		});

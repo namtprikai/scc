@@ -1,23 +1,39 @@
 <template>
-	<div @mousewheel="controlScale">
+	<div class="tab-body">
 		<div class="section">
 			<h3>選択カテゴリ</h3>
 			<p>{{ data }}</p>
 		</div>
-		<div>
-			<h3>新規追加</h3>
-			<span v-if="data">{{ data.label }}の子要素</span>
-			<span v-else>ルート</span>として追加します。
-			<b-form-group label="プロダクト">
+		<div class="section">
+				<b-card no-body>
+					<b-card-header>
+						<template slot:label>タイトル</template>
+					</b-card-header>
+					<b-card-body>
+						<b-form-input
+							id="textinput"
+							name="title"
+							type="text"
+							v-model="data.label"
+						/>
+					</b-card-body>
+				</b-card>
+			</div>
+		<div class="section">
+							<b-card no-body>
+					<b-card-header>
+						<template slot:label>プロダクト</template>
+					</b-card-header>
+					<b-card-body>
 				<b-form-checkbox-group
 					id="checkbox-1"
 					v-model="data.product_id"
 					:options="ProductOptions"
 					name="checkbox-1"
 				></b-form-checkbox-group>
-			</b-form-group>
-			<b-input type="text" v-model="text"></b-input>
-			<b-button @click="editCategory(data)">編集</b-button>
+					</b-card-body>
+				</b-card>
+			<b-button @click="editCategory(data)">更新</b-button>
 		</div>
 	</div>
 </template>
@@ -51,6 +67,7 @@ import { CategoryModule } from '@/store/modules/category';
 import { Category } from '@/api/category';
 import { ProductsModule } from "@/store/modules/products";
 import { eventHub } from '@/init/eventHub';
+
 import { ICategoryData } from '@/api/types';
 // Vue.component('vue-tree', VueTree)
 @Component({
@@ -63,7 +80,7 @@ export default class CategoryEditComp extends Vue {
 	@Prop()
 	data!:ICategoryData;
 	editCategory(data:ICategoryData){
-
+		Category.patch(data.id,data);
 	}
 		get ProductOptions() {
 		return ProductsModule.Products.map((p) => {
