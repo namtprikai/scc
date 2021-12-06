@@ -1,39 +1,24 @@
 <template>
 	<div @mousewheel="controlScale">
-		<vue-tree
-			ref="scaleTree"
-			style="width: 100%; height: 1000px; border: 1px solid gray"
-			:dataset="categoryData"
-			:config="treeConfig"
-			:isSync="true"
-			:leafClick="selectLeaf"
-			:nodeClick="selectNode"
-			:linkStyleIdMap="LinkStyleIdMap"
-		>
-			<template v-slot:node="{ node, collapsed }">
-				<div class="rich-media-node">
-					<div class="section">
-						<h3>選択カテゴリ</h3>
-						<p>{{ currentCategory }}</p>
-					</div>
-					<div>
-						<h3>新規追加</h3>
-						<span v-if="currentCategory">{{ currentCategory.label }}の子要素</span>
-						<span v-else>ルート</span>として追加します。
-						<b-form-group label="プロダクト">
-							<b-form-checkbox-group
-								id="checkbox-1"
-								v-model="currentProducts"
-								:options="ProductOptions"
-								name="checkbox-1"
-							></b-form-checkbox-group>
-						</b-form-group>
-						<b-input type="text" v-model="text"></b-input>
-						<b-button @click="addCategory(text)">追加</b-button>
-					</div>
-				</div>
-			</template></vue-tree
-		>
+		<div class="section">
+			<h3>選択カテゴリ</h3>
+			<p>{{ currentCategory }}</p>
+		</div>
+		<div>
+			<h3>新規追加</h3>
+			<span v-if="currentCategory">{{ currentCategory.label }}の子要素</span>
+			<span v-else>ルート</span>として追加します。
+			<b-form-group label="プロダクト">
+				<b-form-checkbox-group
+					id="checkbox-1"
+					v-model="currentProducts"
+					:options="ProductOptions"
+					name="checkbox-1"
+				></b-form-checkbox-group>
+			</b-form-group>
+			<b-input type="text" v-model="text"></b-input>
+			<b-button @click="addCategory(text)">追加</b-button>
+		</div>
 	</div>
 </template>
 <style lang="scss">
