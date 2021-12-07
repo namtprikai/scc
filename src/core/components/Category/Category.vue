@@ -174,9 +174,9 @@ export default class CategoryComp extends Vue {
 		});
 	}
 	public currentProducts: Array<any> = [];
-	get ProductOptions() {
+		get ProductOptions() {
 		return ProductsModule.Products.map((p) => {
-			return { text: p.name, value: p.id };
+			return { text: `${p.id}: ${p.name}`, value: p.id };
 		});
 	}
 	async mounted() {

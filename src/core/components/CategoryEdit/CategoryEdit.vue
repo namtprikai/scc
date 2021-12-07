@@ -84,7 +84,7 @@ export default class CategoryEditComp extends Vue {
 	}
 		get ProductOptions() {
 		return ProductsModule.Products.map((p) => {
-			return { text: p.name, value: p.id };
+			return { text: `${p.id}: ${p.name}`, value: p.id };
 		});
 	}
 }
