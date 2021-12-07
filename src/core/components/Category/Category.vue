@@ -29,6 +29,7 @@
 								v-for="product_id in node.data.product_id"
 								:key="product_id"
 								style="margin: auto; border: 1px"
+								:style="{'background-color':LinkStyleIdMap[product_id].stroke}"
 								>{{ product_id }}</b-badge
 							>
 						</div>
@@ -134,7 +135,7 @@ export default class CategoryComp extends Vue {
 		const retObj:VueTreeChart.ILinkStyleIdMap = {0:{"stroke":`#aaaaaa`,"stroke-dasharray":"5,5"}};
 		let count = 0;
 		for(const product of ProductsModule.Products){
-			retObj[product.id] = {"stroke":`hsl(${count}deg, 100%, 50%)`};
+			retObj[product.id] = {"stroke":`hsl(${count}deg, 60%, 40%)`};
 			count += 37;
 		}
 		return retObj;
