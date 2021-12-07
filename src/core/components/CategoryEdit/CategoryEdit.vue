@@ -26,10 +26,10 @@
 					</b-card-header>
 					<b-card-body>
 				<b-form-checkbox-group
-					id="checkbox-1"
+					id="checkbox-32"
 					v-model="data.product_id"
 					:options="ProductOptions"
-					name="checkbox-1"
+					name="checkbox-32"
 				></b-form-checkbox-group>
 					</b-card-body>
 				</b-card>
