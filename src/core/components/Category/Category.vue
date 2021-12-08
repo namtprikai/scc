@@ -7,7 +7,7 @@
 				:dataset="categoryData"
 				:config="treeConfig"
 				:isSync="true"
-				:leafClick="selectLeaf"
+				:nodeSelect="selectLeaf"
 				:nodeClick="selectNode"
 				:linkStyleIdMap="LinkStyleIdMap"
 			>
