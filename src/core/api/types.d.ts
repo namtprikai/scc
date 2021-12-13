@@ -107,6 +107,9 @@ export interface ICategoryData extends ISAIAPIData {
 	created: Date;
 	modified: Date;
 }
+export type IPartialCategoryData = {
+	[P in keyof ICategoryData]?:ICategoryData[P];
+}
 export interface ICategory_Question extends ISAIAPIData {
 	category_id: number;
 	question_id: number;

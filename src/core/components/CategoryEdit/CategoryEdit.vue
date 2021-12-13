@@ -68,7 +68,7 @@ import { Category } from '@/api/category';
 import { ProductsModule } from "@/store/modules/products";
 import { eventHub } from '@/init/eventHub';
 
-import { ICategoryData } from '@/api/types';
+import { ICategoryData, IPartialCategoryData } from '@/api/types';
 // Vue.component('vue-tree', VueTree)
 @Component({
 	components: { VueTree },
@@ -80,6 +80,7 @@ export default class CategoryEditComp extends Vue {
 	@Prop()
 	data!:ICategoryData;
 	editCategory(data:ICategoryData){
+		const categoryData:IPartialCategoryData={label:data.label,product_id:data.product_id};
 		Category.patch(data.id,data);
 	}
 		get ProductOptions() {
