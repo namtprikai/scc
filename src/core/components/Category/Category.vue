@@ -212,7 +212,6 @@ export default class CategoryComp extends Vue {
 		} else {
 			eventHub.$emit("setCategory", { category: this.currentCategory });
 		}
-		debugger;
 	}
 	// @Prop()
 	// title!: string;
