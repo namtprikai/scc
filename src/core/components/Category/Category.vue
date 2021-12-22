@@ -127,6 +127,7 @@ export default class CategoryComp extends Vue {
 		3: { "stroke": "#00ff00" },
 		4: { "stroke": "#ff0000" },
 	};
+	lockCategoryIdSet:Set<number> = new Set();
 	get LinkStyleIdMap() {
 		const retObj: VueTreeChart.ILinkStyleIdMap = { 0: { "stroke": `#aaaaaa`, "stroke-dasharray": "5,5" } };
 		let count = 0;
@@ -185,6 +186,11 @@ export default class CategoryComp extends Vue {
 		this.categoryData = this.setCategoryList(categoryList);
 		this.isShow = true;
 	}
+	protected destroyed() {
+		for(const id of this.lockCategoryIdSet.values()){
+			Category.unlock(id);
+		}
+	}
 	public addCategory(text: string, parent: number | null = null) {
 
 		Category.post({
@@ -210,6 +216,7 @@ export default class CategoryComp extends Vue {
 				eventHub.$emit("setCategory", { category: null });
 			}
 		} else {
+			this.lockCategoryIdSet.add(nodeData.data.id);
 			eventHub.$emit("setCategory", { category: this.currentCategory });
 		}
 	}
