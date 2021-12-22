@@ -7,6 +7,7 @@ import { CLIENT_ID } from "@consoletype/utils/configration";
 import { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 import clipboard from "clipboard";
 import { UserModule } from "@/store/modules/user";
+import { Media } from "@/api/media";
 function wait(time: number) {
 	return new Promise((r: Function) => {
 		setTimeout(() => {
@@ -31,6 +32,7 @@ function wait(time: number) {
 export default class FileuploadCompParent extends Vue {
 	protected clipBoard = new clipboard(".clipcopy");
 	protected uploadFileList: any = null;
+	protected fileList = [];
 	protected confirmOpened = false;
 	protected isUpload = false;
 	public filterText = "";
@@ -56,7 +58,8 @@ export default class FileuploadCompParent extends Vue {
 	public async search() {
 		const parent = "";
 		const type = "list";
-		await FileModule.getFile({ parent, type });
+		const mediaList = await Media.getList();
+		this.fileList = mediaList;
 		this.$forceUpdate();
 	}
 
@@ -191,21 +194,7 @@ export default class FileuploadCompParent extends Vue {
 	}
 
 	get FileList() {
-		return FileModule.FileList.filter((file: { Key: string }) => {
-			const otherThumbReg = new RegExp("^[0-9]+_thumb.gif$|^[0-9]+_theme.gif$");
-			const thumbReg = new RegExp(
-				`^${UserModule.id}_thumb.gif$|^${UserModule.id}_theme.gif$`
-			);
-			if (otherThumbReg.test(file.Key) && !thumbReg.test(file.Key)) {
-				return false;
-			}
-			return true;
-		}).filter((file: { Key: string }) => {
-			if (this.filterText == "") {
-				return true;
-			}
-			return new RegExp(this.filterText, "g").test(file.Key);
-		});
+		return this.fileList;
 	}
 	public ok() {
 		this.confirmOpened = false;
