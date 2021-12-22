@@ -31,19 +31,19 @@
 			<div class="fileUpload__upload-list">
 				<div
 					v-for="file in FileList"
-					v-bind:key="file.Key"
+					v-bind:key="file.id"
 					class="fileUpload__file card shadow-sm"
 				>
 					<div
 						class="fileUpload__upload-image"
-						:style="{ backgroundImage: 'url(' + file.url + ')' }"
-						v-on:click="imagemodal(file.url, file.Key)"
+						:style="{ backgroundImage: 'url(' + file.file_path + ')' }"
+						v-on:click="imagemodal(file.file_path, file.id)"
 					>
 						<!-- <img class="upload-image" :src="file.url"> -->
 					</div>
 					<div class="fileUpload__body">
 						<!-- <h2 class="fileUpload__upload-text-title">ファイル名:</h2> -->
-						<div class="fileUpload__upload-text">{{ file.Key }}</div>
+						<div class="fileUpload__upload-text">{{ file.id }}</div>
 						<!-- <h2 class="fileUpload__upload-text-title">最終更新日:</h2> -->
 						<div
 							class="
@@ -52,7 +52,7 @@
 								text-right
 							"
 						>
-							{{ $moment(file.LastModified).format("YYYY-MM-DD") }}
+							{{ $moment(file.created).format("YYYY-MM-DD") }}
 						</div>
 					</div>
 					<div class="fileUpload__footer card-footer">
@@ -60,7 +60,7 @@
 							inline
 							size="sm"
 							class="clipcopy"
-							:data-clipboard-text="getUrl(file.Key)"
+							:data-clipboard-text="getUrl(file.id)"
 							title="クリップボードにコピーされます"
 							@click="
 								$bvToast.toast('クリップボードにコピーされました', {
@@ -69,7 +69,7 @@
 							"
 							>URLコピー</b-button
 						>
-						<b-button inline size="sm" v-on:click="deleate(file.Key)">削除</b-button>
+						<b-button inline size="sm" v-on:click="deleate(file.id)">削除</b-button>
 					</div>
 				</div>
 			</div>

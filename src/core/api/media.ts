@@ -13,11 +13,11 @@ export namespace Media{
 		console.log(data);
 		return data;
 	};
-	export const post = async (input:IKeywordData)=>{
+	export const post = async (file:File)=>{
 		const { data }: any = await AjaxService.getInstance().http({
 			url: `${URL}`,
 			method: "post",
-			data: input,
+			data: { upload_file:file },
 		});
 		console.log(data);
 		return data;

@@ -131,12 +131,7 @@ export default class FileuploadCompParent extends Vue {
 				this.$modal.hide("dialog");
 				this.message = `アップロード中です
 				 ${i}/${this.uploadFileList.length}`;
-				await FileModule.postFile({
-					parent: "",
-					fileName,
-					base64Str,
-					type: "list",
-				});
+				await Media.post(uploadFile);
 			} catch (error) {
 				this.modal("失敗", "アップロードが失敗しました。");
 			}
