@@ -19,6 +19,7 @@
 								currentCategory && currentCategory.id === node.data.id
 									? '2px solid red'
 									: '',
+							opacity: node.disabled ? '0.5' : '1'
 						}"
 					>
 						<span style="padding: 4px 0; font-weight: bold">{{ node.value }}</span>
@@ -193,13 +194,25 @@ export default class CategoryComp extends Vue {
 			parent_id: this.currentCategory?.id || null
 		});
 	}
-	public async selectNode(data: any) {
+	public async selectNode(nodeData: any) {
+		console.log(nodeData);
+		this.currentCategory = nodeData.data;
+		const { is_error, type, data } = await Category.lock(this.currentCategory.id);
 		console.log(data);
-		this.currentCategory = data.data;
-		const lock = await Category.lock(this.currentCategory.id);
-		console.log(lock);
+
+		if (is_error && type === "Object") {
+			const lockError = data.errors.find((e: any) => e.code === "locked_error");
+			if (lockError) {
+				const lockedAdminId = lockError.admin_id;
+				console.log(` ${lockedAdminId}によってロックが掛けられています`);
+				nodeData.disabled = true;
+				this.currentCategory = null;
+				eventHub.$emit("setCategory", { category: null });
+			}
+		} else {
+			eventHub.$emit("setCategory", { category: this.currentCategory });
+		}
 		debugger;
-		eventHub.$emit("setCategory", { category: this.currentCategory });
 	}
 	// @Prop()
 	// title!: string;

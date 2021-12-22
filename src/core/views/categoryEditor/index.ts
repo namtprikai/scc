@@ -36,9 +36,11 @@ export default class CategoryEditorParent extends Vue {
 	}
 	protected created() {
 		eventHub.$on("setCategory", this.setCategory);
+		eventHub.$on("resetCategory", this.reset);
 	}
 
 	protected destroyed() {
 		eventHub.$off("setCategory", this.setCategory);
+		eventHub.$off("resetCategory", this.reset);
 	}
 }

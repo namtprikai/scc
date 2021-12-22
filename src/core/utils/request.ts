@@ -4,6 +4,7 @@ import { Auth } from "@/utils/auth";
 import { UserModule } from "@/store/modules/user";
 import { apiUrl } from "@consoletype/utils/configration";
 import { AjaxService } from "@/services/ajax";
+import e from "express";
 const service = axios.create({
 	baseURL: apiUrl,
 	timeout: 15000,
@@ -37,7 +38,7 @@ service.interceptors.response.use(
 		// You can change this part for your own usage.
 		const status = response.status;
 		const res = response.data;
-		if (status !== 200 && status !== 304) {
+		if (status !== 200 && status !== 304 && status !== 423) {
 			console.log("error");
 			Message({
 				message: res.message,
@@ -62,7 +63,6 @@ service.interceptors.response.use(
 		}
 	},
 	(error) => {
-		console.log("error");
 		const response = error.response;
 		const status = response.status;
 		if (status !== 304) {
@@ -71,6 +71,7 @@ service.interceptors.response.use(
 				type: "error",
 				duration: 5 * 1000,
 			});
+
 		}
 
 		if (status === 500 || status === 400 || status === 401) {
@@ -78,6 +79,8 @@ service.interceptors.response.use(
 			UserModule.FedLogOut().then(() => {
 				// location.reload(); // To prevent bugs from vue-router
 			});
+		} else {
+			return response.data;
 		}
 		return Promise.reject(error);
 	}
