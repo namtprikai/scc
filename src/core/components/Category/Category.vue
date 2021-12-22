@@ -29,9 +29,8 @@
 								v-for="product_id in node.data.product_id"
 								:key="product_id"
 								style="margin: auto; border: 1px"
-								:style="{'background-color':LinkStyleIdMap[product_id].stroke}"
-								>{{ product_id }}</b-badge
-							>
+								:style="{ 'background-color': LinkStyleIdMap[product_id].stroke }"
+							>{{ product_id }}</b-badge>
 						</div>
 
 						<div>
@@ -40,18 +39,14 @@
 							v-for="roles in node.data.roles"
 							:key="roles"
 							style="margin: auto;border:1px;"
-						>{{ roles }}</span> -->
+							>{{ roles }}</span>-->
 						</div>
 					</div>
 				</template>
 			</vue-tree>
 			<div class="flex section text-center">
-				<div
-					v-for="(value, key) in LinkStyleIdMap"
-					:key="key"
-					class="inline-block flex"
-				>
-					<span v-if="key > 0" class="inline-block"> product{{ key }}:</span>
+				<div v-for="(value, key) in LinkStyleIdMap" :key="key" class="inline-block flex">
+					<span v-if="key > 0" class="inline-block">product{{ key }}:</span>
 					<span v-else>プロダクトによらないデータ上の親子関係</span>
 					<div
 						class="inline-block mx-1 my-2"
@@ -97,9 +92,9 @@
 	color: white;
 	background-color: $Primary;
 	border-radius: 4px;
-	font-size:0.8rem;
+	font-size: 0.8rem;
 }
-.flex{
+.flex {
 	display: flex;
 }
 // @for $i from 0 through 10 {
@@ -120,10 +115,10 @@ import { eventHub } from '@/init/eventHub';
 	components: { VueTree },
 })
 export default class CategoryComp extends Vue {
-		$refs!: {
+	$refs!: {
 		scaleTree: any;
 	};
-	isShow:boolean = false;
+	isShow: boolean = false;
 	categoryData: Array<VueTreeChart.IPartialDataSet> = [];
 	linkStyleIdMap = {
 		1: { "stroke": "#000000" },
@@ -131,27 +126,27 @@ export default class CategoryComp extends Vue {
 		3: { "stroke": "#00ff00" },
 		4: { "stroke": "#ff0000" },
 	};
-	get LinkStyleIdMap(){
-		const retObj:VueTreeChart.ILinkStyleIdMap = {0:{"stroke":`#aaaaaa`,"stroke-dasharray":"5,5"}};
+	get LinkStyleIdMap() {
+		const retObj: VueTreeChart.ILinkStyleIdMap = { 0: { "stroke": `#aaaaaa`, "stroke-dasharray": "5,5" } };
 		let count = 0;
-		for(const product of ProductsModule.Products){
-			retObj[product.id] = {"stroke":`hsl(${count}deg, 60%, 40%)`};
+		for (const product of ProductsModule.Products) {
+			retObj[product.id] = { "stroke": `hsl(${count}deg, 60%, 40%)` };
 			count += 37;
 		}
 		return retObj;
 	}
-		controlScale(event:any) {
-			if(event.shiftKey){
-				if (event.wheelDelta > 0) {
-					this.$refs.scaleTree.zoomIn(1.05);
-				}else{
-					this.$refs.scaleTree.zoomOut(1.05);
-				}
-				// case 'restore':
-				// 	this.$refs.scaleTree.restoreScale();
-				// 	break;
+	controlScale(event: any) {
+		if (event.shiftKey) {
+			if (event.wheelDelta > 0) {
+				this.$refs.scaleTree.zoomIn(1.05);
+			} else {
+				this.$refs.scaleTree.zoomOut(1.05);
 			}
+			// case 'restore':
+			// 	this.$refs.scaleTree.restoreScale();
+			// 	break;
 		}
+	}
 	// {
 	// 	hoge:123,
 	// 	value: '1',
@@ -162,27 +157,27 @@ export default class CategoryComp extends Vue {
 	// }
 	treeConfig = { nodeWidth: 160, nodeHeight: 80, levelHeight: 100 }
 
-	currentCategory: any=null;
+	currentCategory: any = null;
 	text: string = '';
 	private setCategoryList(categoryList: Array<any>) {
 		return categoryList.map(category => {
 			return {
 				value: category.label,
 				data: category,
-				dataIdList: [...category.product_id,0]
+				dataIdList: [...category.product_id, 0]
 				// children:[],
 			}
 		});
 	}
 	public currentProducts: Array<any> = [];
-		get ProductOptions() {
+	get ProductOptions() {
 		return ProductsModule.Products.map((p) => {
 			return { text: `${p.id}: ${p.name}`, value: p.id };
 		});
 	}
 	async mounted() {
 		this.isShow = false;
-		const [categoryList] =await Promise.all([
+		const [categoryList] = await Promise.all([
 			Category.getList(null),
 			ProductsModule.GetProducts(),
 		]);
@@ -198,10 +193,13 @@ export default class CategoryComp extends Vue {
 			parent_id: this.currentCategory?.id || null
 		});
 	}
-	public selectNode(data: any) {
+	public async selectNode(data: any) {
 		console.log(data);
 		this.currentCategory = data.data;
-		eventHub.$emit("setCategory",{category:this.currentCategory});
+		const lock = await Category.lock(this.currentCategory.id);
+		console.log(lock);
+		debugger;
+		eventHub.$emit("setCategory", { category: this.currentCategory });
 	}
 	// @Prop()
 	// title!: string;

@@ -59,4 +59,22 @@ export namespace Category{
 		console.log(data);
 		return data;
 	};
+	export const lock = async (id: number) => {
+		const data = await AjaxService.getInstance().http({
+			url: `${URL}${id}/lock/`,
+			method: "get",
+			params: {},
+		});
+		console.log(data);
+		return data;
+	}
+	export const unlock = async (id: number) => {
+		const data = await AjaxService.getInstance().http({
+			url: `${URL}${id}/unlock/`,
+			method: "get",
+			params: {},
+		});
+		console.log(data);
+		return data;
+	}
 }

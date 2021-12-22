@@ -8,6 +8,7 @@ import { ISlTreeNode, ISlTreeNodeModel } from "sl-vue-tree";
 import clipboard from "clipboard";
 import { UserModule } from "@/store/modules/user";
 import { Media } from "@/api/media";
+import { IMediaData } from "@/api/types";
 function wait(time: number) {
 	return new Promise((r: Function) => {
 		setTimeout(() => {
@@ -32,7 +33,7 @@ function wait(time: number) {
 export default class FileuploadCompParent extends Vue {
 	protected clipBoard = new clipboard(".clipcopy");
 	protected uploadFileList: any = null;
-	protected fileList = [];
+	protected fileList: Array<IMediaData> = [];
 	protected confirmOpened = false;
 	protected isUpload = false;
 	public filterText = "";
@@ -193,7 +194,7 @@ export default class FileuploadCompParent extends Vue {
 		}
 	}
 
-	get FileList() {
+	get FileList():Array<IMediaData> {
 		return this.fileList;
 	}
 	public ok() {

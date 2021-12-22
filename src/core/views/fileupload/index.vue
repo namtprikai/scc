@@ -18,12 +18,12 @@
 			<b-button v-on:click="reload()">リロード</b-button>
 		</p>
 		<div class="upload-list">
-			<li v-for="file in FileList" v-bind:key="file.Key">
+			<li v-for="file in FileList" v-bind:key="file.id">
 				<span class="file">
 					<div
 						class="upload-image"
-						:style="{ backgroundImage: 'url(' + file.url + ')' }"
-						v-on:click="imagemodal(file.url)"
+						:style="{ backgroundImage: 'url(' + file.file_path + ')' }"
+						v-on:click="imagemodal(file.file_path)"
 					>
 						<!-- <img class="upload-image" :src="file.url"> -->
 					</div>

@@ -206,6 +206,15 @@ export type IPartialCategoryData = {
 	[P in keyof ICategoryData]?:ICategoryData[P];
 
 }
+export interface IMediaData extends ISAIAPIData {
+	file_name: string;
+	file_path: string;
+
+}
+export type IPartialMediaData = {
+	[P in keyof IMediaData]?:IMediaData[P];
+
+}
 export interface IProductAnswer extends ICrossReferenceTable {
 	product_id: number;
 	answer_id: number;
