@@ -10,6 +10,7 @@ import { TalkScript, RootTalkScript } from "./script";
 import _ from "lodash";
 import { valueAndGrad } from "@tensorflow/tfjs";
 import { v4 } from "uuid";
+import { FlowObj } from "../parts";
 export function GetRootMenu(talkScript: Array<TalkScript>) {
 	return talkScript
 		.filter(
@@ -501,7 +502,7 @@ export function makeScriptAndScenarioByData(
 							(f) => f.id == (script.scenario || script.items.scenario_id)
 						)
 					);
-					const nextQue = [];
+					const nextQue:Array<Array<BotConfigFlow>> = [];
 					const cSList = getScenarioFlow(parent.scenarioId, categoryScenario);
 					let text = "";
 					if (parent.parent.length <= 0) {
@@ -868,7 +869,7 @@ export function makeScriptAndScenario(
 		// menu = [OTHER_TEXT, OTHER_TEXT, leafTitle];
 		menu.push(leafTitle);
 		// console.log(menu);
-		const scenario = [];
+		const scenario:Array<any> = [];
 		for (let j = 0; j <= rowSize; j++) {
 			//
 			scenario.push(scenarioIdList.map((sId: any) => String(bot_csv[i + j][sId])));
@@ -1196,14 +1197,14 @@ export function makeScriptAndScenario(
 						console.log(flow);
 						scenarioStepString = data.text;
 						scenarioStepString = `${parentStepName}_${scenarioStepString}`;
-						const nextFlow = _.cloneDeep(
+						const nextFlow:BotConfigFlow|undefined = _.cloneDeep(
 							scenarioObj.flow.next.find(
 								(f) => f.id == (data.scenario || data.items.scenario_id)
 							)
 						);
 
 						// const nextFlow = _.cloneDeep(scenarioObj.flow.next.find(f => f.id == flow.items.scenario_id));
-						const nextQue = [];
+						const nextQue:Array<Array<BotConfigFlow>> = [];
 						if (nextFlow?.next && nextFlow.next.length > 0) {
 							nextQue.push(nextFlow.next);
 						}

@@ -134,7 +134,7 @@ export default class Synonym extends Vue {
 		const valueList = cans;
 		valueList.push(key);
 
-		let keyValue = null;
+		let keyValue:null|string = null;
 		Object.keys(this.pureSynonym).forEach((_key: string, i: number) => {
 			const value = this.pureSynonym[_key];
 			if (valueList.indexOf(value) !== -1) {

@@ -59,7 +59,7 @@ class ScriptGroup implements ScriptGroupInterface<TalkScript> {
 	constructor(private scriptList: Array<TalkScript>) {}
 	public getMenuListByScenarioId(scenarioId: string): Array<string> {
 		let parentId = "#";
-		const retMenuList = [];
+		const retMenuList: Array<string> = [];
 		for (const script of this.scriptList) {
 			if (
 				script.scenario === scenarioId ||
@@ -88,7 +88,7 @@ class ScriptGroup implements ScriptGroupInterface<TalkScript> {
 	}
 	public getObjectMenuListByScenarioId(scenarioId: string): Array<TalkScript> {
 		let parentId = "#";
-		const retMenuList = [];
+		const retMenuList: Array<TalkScript> = [];
 		for (const script of this.scriptList) {
 			if (
 				script.scenario === scenarioId ||
@@ -275,7 +275,7 @@ export async function Main(
 	}
 	// csvArray.push([]);
 	let labelcount = 0;
-	let oldCellId = null;
+	let oldCellId:any = null;
 	let count = 0;
 	for (const cellid of csvArray[0]) {
 		const label = IdLabelMapper.get(cellid);

@@ -181,7 +181,7 @@ export default class MessageHistory extends Vue {
 Promise.resolve()
 				.then((data: any) => {
 					console.log(data);
-					const text = [];
+					const text:Array<string> = [];
 					for (const key in data.message) {
 						if (keyMepper.has(key)) {
 							text.push(`${keyMepper.get(key)}: ${data.message[key]}`);

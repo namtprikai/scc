@@ -54,7 +54,7 @@ export const EnquateMapperCheck = (tickets: Array<KeyData>, key: string) => {
 	if (!tickets || tickets.length <= 0) {
 		return [];
 	}
-	const checkList = [];
+	const checkList: Array<string> = [];
 	for (const ticket of tickets) {
 		if (ticket[key] && Array.isArray(ticket[key].value)) {
 			for (const v of ticket[key].value) {

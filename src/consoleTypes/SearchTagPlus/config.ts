@@ -897,6 +897,7 @@ const EnquateMap =
 		}
 		return TicketGroup.noneSt;
 	};
+	const memo: { [key: string]: string } = {};
 export const tableKeyList = [
 	// {
 	//   key: "mode",
@@ -1095,11 +1096,31 @@ export const tableKeyList = [
 		key: "status",
 		label: "ステータス",
 		valueMapper: (value: string) => {
-			const condition = conditionList.find((c) => c.key == "status");
-			if (condition) {
+			if (value in memo) {
+				return memo[value];
+			}
+			// 三重ループはやばいが、conditionListのvalue数 < 10^2 なので大きな問題ではない
+			for (const condition of conditionList) {
 				for (const check of condition.checkList) {
-					if (check.value.indexOf(value) !== -1) {
-						return check.label;
+					if (check.value.size > 1) {
+						continue;
+					}
+					for (const cvalue of check.value) {
+						let cSet: Set<{
+							key: string;
+							value?: string;
+							is?: boolean;
+						}> | null = null;
+						if ("key" in cvalue) {
+							cSet = new Set([cvalue]);
+						} else {
+							cSet = cvalue;
+						}
+						for (const c of cSet) {
+							if (c.key === "status" && c.value === value) {
+								return check.label;
+							}
+						}
 					}
 				}
 			}

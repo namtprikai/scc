@@ -39,11 +39,6 @@ export default class TicketComp extends TicketCompParent {
 		this.$moment.lang("ja", {
 			weekdays: ["日", "月", "火", "水", "木", "金", "土"],
 		});
-		const tantoCondition: Condition = {
-			label: "担当者",
-			key: "assignee",
-			checkList: [],
-		};
 		await Saiko.init();
 		// await AdminUserModule.getAdminUserList();
 		// const adminList = AdminUserModule.AdminList;

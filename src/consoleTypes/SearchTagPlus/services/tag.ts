@@ -262,7 +262,7 @@ export namespace TagService {
 		}
 
 		getTagsByCategory(category: string | Array<string>): Array<Tag> | any {
-			const tags = [];
+			const tags:Array<Tag> = [];
 			for (let i = 0; i < this._tags.length; i++) {
 				if (typeof category === "string") {
 					if (this._tags[i].category === category) {

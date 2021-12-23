@@ -91,7 +91,7 @@ export function scrollIntoViewY(
 	const scrollElementHeight =
 		scrollElement.clientHeight || scrollElement.innerHeight;
 
-	let newOffsetHeight = null;
+	let newOffsetHeight:number|null = null;
 	if (mode === "exact" || scrollElementHeight < mainHeight) {
 		newOffsetHeight = offsetTop;
 	} else if (scrollElementHeight < mainHeight + upperHeight) {

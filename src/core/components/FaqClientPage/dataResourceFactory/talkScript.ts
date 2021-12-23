@@ -16,7 +16,7 @@ export class TalkScriptResource {
 	}
 
 	getRoutesById(id: string) {
-		const routes = [];
+		const routes:Array<any> = [];
 		let currentScript = this.talkScript.get(id);
 		console.log(currentScript);
 		let parentID = currentScript.parent;

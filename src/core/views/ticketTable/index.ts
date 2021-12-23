@@ -10,7 +10,7 @@ import csvPtringify from 'csv-stringify';
 import { TicketComparison } from "@/components/TicketComparison";
 import TicketComparisonComp from "@/components/TicketComparison/index.vue";
 import jszip from "jszip";
-import {TableKeyList,Condition,ITableTicketColumn} from '@/types';
+import type {TableKeyList,Condition,ITableTicketColumn} from '@/types';
 export { Condition, TicketData, KeyData, EnquateTicket };
 function typeOf(obj:any) {
 	return toString.call(obj).slice(8, -1).toLowerCase();

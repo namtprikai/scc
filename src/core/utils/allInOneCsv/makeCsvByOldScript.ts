@@ -51,7 +51,7 @@ class ScriptGroup implements ScriptGroupInterface<TalkScript> {
 	constructor(private scriptList: Array<TalkScript>) {}
 	public getMenuListByScenarioId(scenarioId: string): Array<string> {
 		let parentId = "#";
-		const retMenuList = [];
+		const retMenuList:Array<string> = [];
 		for (const script of this.scriptList) {
 			if (script.scenario === scenarioId) {
 				parentId = script.parent;

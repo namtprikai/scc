@@ -145,13 +145,13 @@ export default class Synonym extends Vue {
 		cans: Array<string> | null;
 		error: boolean | null;
 	}> {
-		const valueList = cans;
+		const valueList:Array<string> = cans||[];
 		valueList.push(key);
 		const { synonym, error } = await this.getSynonim();
 		if (error) {
 			return { error: true, key: null, cans: null };
 		}
-		let keyValue = null;
+		let keyValue:any = null;
 		Object.keys(synonym).forEach((_key: string, i: number) => {
 			const value = synonym[_key];
 			if (valueList.indexOf(value) !== -1) {
