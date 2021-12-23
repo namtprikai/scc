@@ -12,6 +12,7 @@
     "sourceMap": true,
     "strictFunctionTypes": false,
     "skipLibCheck": true,
+    "noImplicitAny": false,
     "baseUrl": ".",
     "types": ["node", "jest", "webpack-env", "vuetify"],
     "paths": {

@@ -538,7 +538,7 @@ export class UserList {
 		if (callback == null) {
 			return this.users;
 		} else {
-			const res = [];
+			const res:Array<User> = [];
 			for (let i = 0; i < this.users.length; i++) {
 				try {
 					if (callback(this.users[i])) {
@@ -1008,7 +1008,7 @@ export class MessageList {
 		if (callback == null) {
 			return this.messages || [{ id: 23123 }];
 		} else {
-			const res = [];
+			const res: Array<Message> | Array<any> = [];
 			for (let i = 0; i < this.messages.length; i++) {
 				try {
 					if (callback(this.messages[i])) {

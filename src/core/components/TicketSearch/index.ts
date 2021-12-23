@@ -29,7 +29,7 @@ export const EnquateMapperRadio = (tickets: Array<KeyData>, key: string) => {
 	if (!tickets || tickets.length <= 0) {
 		return [];
 	}
-	const checkList = [];
+	const checkList:Array<string|Array<string>> = [];
 	for (const ticket of tickets) {
 		if (
 			ticket[key] &&

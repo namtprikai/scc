@@ -12,9 +12,9 @@ import TicketCompParent, {
 	Ticket,
 	TicketData,
 	TicketGroup,
-	Condition,
 	EnquateTicket,
 } from "@/views/ticketTable";
+import { Condition } from "@/types";
 export const NoneString = "なし";
 export const MaxFaqFile = 500;
 export const WindowTestPageUrl: string =
@@ -776,45 +776,71 @@ export function RouterConfig(
 	};
 }
 export const conditionList: Array<Condition> = [
-	{
-		label: "ステータス",
-		key: "status",
-		checkList: [
-			{ value: ["open"], label: "離脱", flg: false },
-			// { value: "escalated", text: "直通" },
-			{ value: ["answered"], label: "回答済み", flg: false },
-			{ value: ["scriptNotFound"], label: "未収録", flg: false },
-			{ value: ["searchFailed"], label: "検索失敗", flg: false },
-			{ value: ["re-search"], label: "再検索", flg: false },
-			// { value: "unsupported", text: "未対応" },
-			{ value: ["quit"], label: "未完了", flg: false },
-			// { value: ["open"], label: "離脱", flg: false },
-			// { value: ["searchNoScript"], label: "未収録", flg: false },
-			// { value: ["quit"], label: "未完了", flg: false },
-			// { value: ["answering"], label: "回答閲覧中", flg: false },
-			// {
-			//   value: ["answered", "feedbackDone", "enqueteDone"],
-			//   label: "回答閲覧済み",
-			//   flg: false
-			// }
-			// { value: ["feedbackDone", "enqueteDone"], label: "完了", flg: false }
-		],
-	},
-	// {
-	//   label: "発行元",
-	//   key: "origin",
-	//   mapper(data: TicketData) {
-	//     if ("origin" in data) {
-	//       return String(data["origin"]);
-	//     }
-	//     return "window";
-	//   },
-	//   checkList: [
-	//     { value: ["console"], label: "管理画面", flg: false },
-	//     { value: ["window"], label: "ウィンドウ", flg: false }
-	//   ]
-	// }
-];
+		{
+			label: 'ステータス',
+			checkList: [
+				{ value: new Set([{ key: 'status', value: 'open' }]), label: '離脱', flg: false },
+				{ value: new Set([{ key: 'status', value: 'answered' }]), label: '回答済み', flg: false },
+				{ value: new Set([{ key: 'status', value: "answering" }]), label: "回答閲覧中", flg: false },
+				{ value: new Set([{ key: 'status', value: 'searchNoScript' }]), label: '未収録', flg: false },
+				{ value: new Set([{ key: 'status', value: 'searchFailed' }]), label: '検索失敗', flg: false },
+				{ value: new Set([{ key: 'status', value: 're-search' }]), label: '再検索', flg: false },
+				{ value: new Set([{ key: 'status', value: 'quit' }]), label: '未完了', flg: false },
+			],
+		},
+		{
+			label: 'フィードバック',
+			name: 'feedback',
+			checkList: [
+				{ value: new Set([{ key: 'feedback', is: false }]), label: 'なし', flg: false },
+				{ value: new Set([{ key: 'feedback', value: 'resolved' }]), label: '解決', flg: false },
+				{ value: new Set([{ key: 'feedback', value: 'unresolved' }]), label: '未解決', flg: false },
+			],
+		},
+		{
+			label: '目安箱',
+			checkList: [
+				{
+					value: new Set([
+						{ key: 'status_enquete', value: 'open' },
+						{ key: 'feedback', value: 'unresolved' },
+					]),
+					label: '記入なし',
+					flg: false,
+				},
+				{
+					value: new Set([
+						{ key: 'status_enquete', value: 'done' },
+						{ key: 'feedback', value: 'unresolved' },
+					]),
+					label: '記入あり',
+					flg: false,
+				},
+			],
+		},
+		//タスクステータス
+		{
+			label: 'タスクステータス',
+			name: 'task',
+			checkList: [
+				{ value: new Set([{ key: 'task', value: 'startRequest' }]), label: '着手依頼', flg: false, role: new Set([5]) },
+				{ value: new Set([{ key: 'task', value: 'request' }]), label: '着手', flg: false },
+				{ value: new Set([{ key: 'task', value: 'progress' }]), label: '保留', flg: false },
+				{ value: new Set([{ key: 'task', value: 'waitingForCheck' }]), label: 'チェック待ち', flg: false },
+				{ value: new Set([{ key: 'task', value: 'remand' }]), label: '差し戻し', flg: false, role: new Set([5]) },
+				{ value: new Set([{ key: 'task', value: 'done' }]), label: '完了', flg: false, role: new Set([5]) },
+			],
+		},
+		{
+			label: '対応種別',
+			name: 'correspondence',
+			checkList: [
+				{ value: new Set([{ key: 'correspondence', value: 'fix' }]), label: '修正', flg: false },
+				{ value: new Set([{ key: 'correspondence', value: 'add' }]), label: '追加', flg: false },
+				{ value: new Set([{ key: 'correspondence', value: 'keyword' }]), label: 'キーワード', flg: false },
+			],
+		},
+	];
 const EnquateGet =
 	(key: string, enquateKey: string) =>
 	(_enquate: EnquateTicket, ticket: any) => {

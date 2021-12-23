@@ -1376,7 +1376,7 @@ export function makeScriptAndScenario(
 	}
 
 	function getNextsForValue(x: number, y: number, table: Array<Array<string>>) {
-		const value = [];
+		const value: Array<{x:number,y:number,value:string}>= [];
 		let count = 0;
 		// if(String(table[y][x]).match(/any/i)){
 		// 	return [{x:x+1,y:y}];
@@ -1408,7 +1408,7 @@ export function makeScriptAndScenario(
 	}
 
 	function getSelects(x: number, y: number, table: Csv) {
-		const value = [];
+		const value:Array<string> = [];
 		let count = 0;
 		while (true) {
 			// tslint:disable-next-line:no-unused-expression
