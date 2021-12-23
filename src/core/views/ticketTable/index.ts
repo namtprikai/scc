@@ -493,7 +493,7 @@ export default class TicketCompParent extends Vue {
 			for (const check of condition.checkList) {
 				if (
 					check.flg === false &&
-					[...check.value].every(_v => {
+					[...check.value].find(_v => {
 						const vSet:Set<{key:string,value?:string,is?:boolean}> = new Set()
 						if('key' in _v){
 							vSet.add(_v)
@@ -502,29 +502,35 @@ export default class TicketCompParent extends Vue {
 								vSet.add(__v)
 							}
 						}
-						//or部分の判定
+						//and部分の判定
 						for(const v of vSet){
 							const ticketItem = condition.mapper ? condition.mapper(data) : data[v.key];
 							const isNone = v.is === false;
 							if (!v.hasOwnProperty('value')) {
 								if(isNone !== data.hasOwnProperty(v.key)){
-									return true;
+									continue;
+								}else{
+									return false;
 								}
 							} else {
 
 								if (Array.isArray(ticketItem)) {
 									if(isNone !== (ticketItem.indexOf(v.value) !== -1)){
-										return true;
+										continue;
+									}else{
+										return false;
 									}
 								}
 								if(isNone !== (ticketItem === v.value)){
-									return true;
+									continue;
+								}else{
+									return false;
 								}
 							}
 						}
 					})
 				) {
-					return false;
+					return true;
 				}
 			}
 
@@ -540,25 +546,32 @@ export default class TicketCompParent extends Vue {
 									vSet.add(__v)
 								}
 							}
-							//or部分の判定
+							//and部分の判定
 							for(const v of vSet){
 								const ticketItem = condition.mapper ? condition.mapper(data) : data[v.key];
 								const isNone = v.is === false;
 								if (!v.hasOwnProperty('value')) {
 									if(isNone !== data.hasOwnProperty(v.key)){
-										return true;
+										continue;
+									}else{
+										return false;
 									}
 								} else {
 									if (Array.isArray(ticketItem)) {
 										if(ticketItem.indexOf(v.value) !== -1){
-											return true;
+											continue;
+										}else{
+											return false;
 										}
 									}
 									if(ticketItem === v.value){
-										return true;
+										continue;
+									}else{
+										return false;
 									}
 								}
 							}
+							return true;
 						}),
 				)
 			) {

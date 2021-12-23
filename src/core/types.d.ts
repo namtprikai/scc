@@ -2,7 +2,7 @@ export interface Condition {
 	label: string;
 	name?:string;
 	mapper?: (data: any) => string;
-	//入れ子セットの内側はand 外はor 入れ子でない場合and
+	//入れ子セットの内側はand 外はor 入れ子でない場合or
 	checkList: Array<{ value: Set<{key:string,value?:string,is?:boolean}>|Set<Set<{key:string,value?:string,is?:boolean}>>; label: string; flg: boolean,role?:Set<number> }>;
 }
 export interface TableKey {
