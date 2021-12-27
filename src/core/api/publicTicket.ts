@@ -52,9 +52,9 @@ export namespace PublicTicket {
 		console.log(data);
 		return data;
 	};
-	export const getCategoryByQuestionId = async(questionId:number)=>{
+	export const getTicketById = async(id:number)=>{
 		const { data,is_error,type }: any = await AjaxService.getInstance().http({
-			url:  `${URL}/{${questionId}}/category/`,
+			url:  `${URL}{${id}}/`,
 			method: "get",
 			params: {},
 		});
