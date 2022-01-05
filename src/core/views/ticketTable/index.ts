@@ -1,3 +1,4 @@
+
 import { v4 } from 'uuid';
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import { eventHub } from '@/init/eventHub';
@@ -11,6 +12,9 @@ import { TicketComparison } from "@/components/TicketComparison";
 import TicketComparisonComp from "@/components/TicketComparison/index.vue";
 import jszip from "jszip";
 import type {TableKeyList,Condition,ITableTicketColumn} from '@/types';
+
+import { moment } from '@/init/moment';
+
 export { Condition, TicketData, KeyData, EnquateTicket };
 function typeOf(obj:any) {
 	return toString.call(obj).slice(8, -1).toLowerCase();
@@ -447,18 +451,19 @@ export default class TicketCompParent extends Vue {
 	public ticketGroup = new TicketGroup(this.tableKeyList);
 	public ticketGroupC = new TicketGroup(this.tableKeyList);
 	protected listLoading = false;
-	protected startdateC: Date = this.$moment()
+	protected startdateC: Date = moment()
 		.subtract(2, 'month')
 		.toDate();
 
-	protected enddateC: Date = this.$moment()
+	protected enddateC: Date = moment()
 		.subtract(1, 'month')
 		.toDate();
-	protected startdate: Date = this.$moment()
+	protected startdate: Date = moment()
 		.subtract(1, 'month')
 		.toDate();
 
-	protected enddate: Date = this.$moment().toDate();
+	protected enddate: Date = moment().toDate();
+
 	public created() {
 		AdminUserModule.getAdminUserList();
 	}
@@ -478,7 +483,7 @@ export default class TicketCompParent extends Vue {
 		if (typeof start === 'string' && parseInt(start, 10) < startdate.getTime()) {
 			return false;
 		}
-		const EndDate = this.$moment(enddate)
+		const EndDate = moment(enddate)
 			.add(1, 'day')
 			.toDate();
 		if (typeof start === 'string' && parseInt(start, 10) > EndDate.getTime()) {
@@ -635,9 +640,9 @@ export default class TicketCompParent extends Vue {
 	public async getTicket() {
 		const startDate = this.comparison?this.startdate < this.startdateC ? this.startdate : this.startdateC:this.startdate;
 		const endDate = this.comparison?this.enddate > this.enddateC ? this.enddate : this.enddateC:this.enddate;
-		const startDateMoment = this.$moment(startDate); // .subtract(1, 'months');
+		const startDateMoment = moment(startDate); // .subtract(1, 'months');
 		const st = startDateMoment.format('YYYY-MM');
-		const endDateMoment = this.$moment(endDate).add(1, 'month');
+		const endDateMoment = moment(endDate).add(1, 'month');
 		const en = endDateMoment.format('YYYY-MM');
 		const filter = (ticket: Ticket): boolean => {
 			const defaultFlg = this.defaultSearchFilter(ticket);
