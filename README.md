@@ -216,7 +216,7 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/data_token/
 - Content-Type : application/json
   
 ### リクエストボディ
-- encriptor_token
+- encriptor_token　(ヘッダーのほうが良い？)
 - data: {
      url: "https://{APIのURL}",
     //例 roles: roles: Array<number> | サインインすると付与されるロール
@@ -227,16 +227,15 @@ curl -X POST https://xxxxxx.jp/xxxxx/api/data_token/
 
 ### レスポンス
 
-- data_token: Sign upのときにリクエストボディに付与するrole_token
-- key_id: signup_tokenを識別するための一意のキー
-- url: Sign upのAPIのURL
+- data_token: Sign upなどのときにリクエストボディに付与するtoken
+- key_id: encryptor_tokenを識別するための一意のキー
+- <strike>url: Sign upのAPIのURL</strike> Web　API のurlなどの情報はdata_tokenに含まれるので削除
 
 例(json)
 
 ```json
 {
   "data":{
-    "url":"https://{APIのURL}",
     "data_token":"eyOiennDiWOuz...",
     "key_id":"sDienSKWxxOeiuAw"
   },
