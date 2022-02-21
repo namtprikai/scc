@@ -1,210 +1,115 @@
-const webpack = require('webpack');
-const path = require('path');
-// const { VueLoaderPlugin } = require('vue-loader');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const CLIENT_ID = (process.env.CLIENT_ID || '392').trim();
-const API_CLIENT_ID = (process.env.API_CLIENT_ID || CLIENT_ID || '392').trim();
-console.log('API_CLIENT_ID', API_CLIENT_ID);
-const CONFIG_CLIENT_ID = (process.env.CONFIG_CLIENT_ID || '').trim();
-const FOLDER = process.env.FOLDER || 'test';
-const CONSOLE_TYPE = (process.env.CONSOLE_TYPE || '').trim();
-const PRODUCT_WINDOW_URL = (process.env.PRODUCT_WINDOW_URL || '').trim();
-const DEV_WINDOW_URL = (process.env.DEV_WINDOW_URL || '').trim();
-const SILENT = process.env.SILENT !== undefined;
-const fs = require('fs');
-const TerserPlugin = require('terser-webpack-plugin');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require('path')
+
+// If your port is set to 80,
+// use administrator privileges to execute the command line.
+// For example, on Mac: sudo npm run / sudo yarn
+const devServerPort = 9527 // TODO: get this variable from setting.ts
 const mockServerPort = 9528 // TODO: get this variable from setting.ts
-const tsconfig = JSON.parse(fs.readFileSync('./tsconfigrc.json', 'utf-8'));
-let pconfigPath = `src/productConfigById/${CONFIG_CLIENT_ID || CLIENT_ID}/*`;
-tsconfig['compilerOptions']['paths']['@consoletype/*'] = [`src/consoleTypes/${CONSOLE_TYPE}/*`];
-tsconfig['compilerOptions']['paths']['@pconfig/*'] = [pconfigPath];
-// exclude
-console.log(tsconfig['exclude']);
-console.log(CONSOLE_TYPE);
-if (CONSOLE_TYPE && Array.isArray(tsconfig['exclude'])) {
-	const exclude = tsconfig['exclude'];
-	const dirs = fs.readdirSync('src/consoleTypes');
-	for (const dir of dirs) {
-		if (dir !== CONSOLE_TYPE && dirs.indexOf(dir) !== -1) {
-			exclude.push(`src/consoleTypes/${dir}/**`);
-		}
-	}
-	tsconfig['exclude'] = exclude;
-}
-
-fs.writeFileSync('./tsconfig.json', JSON.stringify(tsconfig));
-console.log(process.env.BASE_URL);
-
-/* tslint で対象プロダクトとコア以外を除外する */
-// const tslintconfig = require('.eslintrc.js');
-// let tslintexc = ["node_modules/**"];
-// if (!SILENT) {
-// 	const dirs = fs.readdirSync("src/consoleTypes");
-// 	for (const dir of dirs) {
-// 		if (dir !== PRODUCT) tslintexc.push(`src/consoleTypes/${dir}/**`);
-// 	}
-// } else {
-// 	tslintexc.push("src/**");
-// }
-// tslintconfig["linterOptions"]["exclude"] = tslintexc;
-// fs.writeFileSync("./tslint.json", JSON.stringify(tslintconfig))
+const name = 'Vue Typescript Admin' // TODO: get this variable from setting.ts
 
 module.exports = {
-	lintOnSave: false, //process.env.NODE_ENV !== "production",
-	parallel: false,
-	productionSourceMap: false,
-	publicPath: process.env.NODE_ENV === 'production' ? `/${FOLDER}/` : '/',
-	pwa: {
-		name: 'vue-typescript-admin-template',
-	},
-	filenameHashing: false,
-	devServer: {
-		inline: false,
-		port: 5000,
-		contentBase: path.resolve(__dirname, 'public'),
-		host: 'localhost',
-		disableHostCheck: true,
-		open: true,
-		openPage: '',
-		hot: true,
-		proxy: {
-			// change xxx-api/login => /mock-api/v1/login
-			// detail: https://cli.vuejs.org/config/#devserver-proxy
-			[process.env.VUE_APP_BASE_API]: {
-				target: `http://127.0.0.1:${mockServerPort}/${process.env.VUE_APP_BASE_API}`,
-				changeOrigin: true, // needed for virtual hosted sites
-				ws: true, // proxy websockets
-				pathRewrite: {
-					['^' + process.env.VUE_APP_BASE_API]: ''
-				}
-			}
-		}
-	},
-	configureWebpack: {
-		entry: {
-			app: `./src/consoleTypes/${CONSOLE_TYPE}/main.ts`,
-		},
-		module: {
-			rules: [
-				// {
-				// 	enforce: 'pre',
-				// 	test: /\.(jsx?|tsx?|vue)$/,
-				// 	exclude: /node_modules/,
-				// 	loader: 'eslint-loader',
-				// 	options: {
-				// 		fix: true
-				// 	}
-				// }
-				// {
-				// 	test: /\.vue$/,
-				// 	loader: 'vue-loader',
-				// 	options: {
-				// `loaders` はデフォルトの loaderを上書きします。
-				// 次の設定では、`lang` 属性のない全ての `<script>` タグに
-				// `coffee-loader` が適用されます。
-				// loaders: {
-				// ts: 'ts-loader'
-				// },
-				// `preLoaders` はデフォルトの loader の前に付加されます。
-				// これを使用して言語ブロックを前処理することができます。
-				// 一般的な使用例はビルドタイム i18n です。
-				// preLoaders: {
-				//   js: '/path/to/custom/loader'
-				// },
-				// `postLoaders` はデフォルトの loader の後につけられます。
-				//
-				// - `html` の場合、デフォルトの loader によって返される結果は、
-				//   コンパイルされた JavaScript レンダリング関数コードになります。
-				//
-				// - `css` の場合、結果は `vue-style-loader` によって返されます。
-				//   しかしこれはほとんどの場合特に有用ではありません。
-				//   PostCSS プラグインを使用する方が良い選択になります。
-				// postLoaders: {
-				//   html: 'babel-loader'
-				// },
-				// `excludedPreLoaders` は正規表現で設定する必要があります。
-				// excludedPreLoaders: /(eslint-loader)/
-				// 	}
-				// }
-				// {
-				// 	test: /\.js$/,
-				// 	exclude: /node_modules/,
-				// 	loader: 'babel-loader',
-				// },
-				// {
-				// 	test: /\.json$/,
-				// 	loader: 'json-loader'
-				// }
-			],
-		},
-		optimization: {
-			minimizer: [
-				new TerserPlugin({
-					terserOptions: {
-						compress: { drop_console: true },
-					},
-				}),
-			],
-		},
-		plugins: [
-			new webpack.DefinePlugin({
-				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || ''),
-				'process.env.CLIENT_ID': JSON.stringify(CLIENT_ID || ''),
-				'process.env.API_CLIENT_ID': JSON.stringify(API_CLIENT_ID || ''),
-				'process.env.CONSOLE_TYPE': JSON.stringify(process.env.CONSOLE_TYPE || ''),
-				'process.env.PRODUCT_WINDOW_URL': JSON.stringify(process.env.PRODUCT_WINDOW_URL || ''),
-				'process.env.DEV_WINDOW_URL': JSON.stringify(process.env.DEV_WINDOW_URL || ''),
-			}),
-			new webpack.HotModuleReplacementPlugin(),
-			new ForkTsCheckerWebpackPlugin(),
-			// new VueLoaderPlugin()
-		],
+  publicPath: process.env.NODE_ENV === 'production' ? '/vue-typescript-admin-template/' : '/',
+  lintOnSave: process.env.NODE_ENV === 'development',
+  productionSourceMap: false,
+  devServer: {
+    port: devServerPort,
+    open: true,
+    overlay: {
+      warnings: false,
+      errors: true
+    },
+    progress: false,
+    proxy: {
+      // change xxx-api/login => /mock-api/v1/login
+      // detail: https://cli.vuejs.org/config/#devserver-proxy
+      [process.env.VUE_APP_BASE_API]: {
+        target: `http://127.0.0.1:${mockServerPort}/mock-api/v1`,
+        changeOrigin: true, // needed for virtual hosted sites
+        ws: true, // proxy websockets
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      }
+    }
+  },
+  pwa: {
+    name: name,
+    workboxPluginMode: 'InjectManifest',
+    workboxOptions: {
+      swSrc: path.resolve(__dirname, 'src/pwa/service-worker.js')
+    }
+  },
+  pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'scss',
+      patterns: [
+        path.resolve(__dirname, 'src/styles/_variables.scss'),
+        path.resolve(__dirname, 'src/styles/_mixins.scss')
+      ]
+    }
+  },
+  chainWebpack(config) {
+    // provide the app's title in html-webpack-plugin's options list so that
+    // it can be accessed in index.html to inject the correct title.
+    // https://cli.vuejs.org/guide/webpack.html#modifying-options-of-a-plugin
+    config.plugin('html').tap(args => {
+      args[0].title = name
+      return args
+    })
 
-		resolve: {
-			extensions: ['.tsx', '.ts', '.js', '.html', '.ejs', '.ico', '.vue', '.mp3', '.wav'],
-			alias: {
-				vue$: 'vue/dist/vue.esm.js',
-				'@': path.resolve(__dirname, `src/core`),
-				'~': path.resolve(__dirname, 'src/'),
-				'@pconfig': path.resolve(__dirname, `src/productConfigById/${CONFIG_CLIENT_ID || CLIENT_ID}`),
-				'@consoletype': path.resolve(__dirname, `src/consoleTypes/${CONSOLE_TYPE}`),
-				'bootstrap-components': path.resolve(__dirname, 'node_modules/bootstrap-vue/es/components'),
-			},
-			modules: [
-				path.resolve(__dirname, `src/productConfigById/${CONFIG_CLIENT_ID || CLIENT_ID}`),
-				path.resolve(__dirname, `src/consoleTypes/${CONSOLE_TYPE}`),
-				path.resolve(__dirname, `./src`),
-				path.resolve(__dirname, `./`),
-				path.resolve(__dirname, `./src/core`),
-				'node_modules',
-			],
-		},
-	},
-	chainWebpack(config) {
-		// config.resolve.alias.delete("@")
-		// 		console.log("alias", config.resolve.alias);
-		console.log(config);
-		// config.module.rule('vue')
-		// 	.use('vue-loader')
-		// 	.loader('vue-loader')
-		// 	.tap(options => {
-		// 		// modify the options...
-		// 		return options
-		// 	});
-		// config.module.rule("vue").uses.delete("cache-loader");
-		// config.module.rule("js").uses.delete("cache-loader");
-		// config.module.rule("ts").uses.delete("cache-loader");
-		// config.module.rule("tsx").uses.delete("cache-loader");
-		// config.plugins.delete("fork-ts-checker");
-		config.plugin('fork-ts-checker').tap(args => {
-			args[0].memoryLimit = 16000;
-			return args;
-		});
-		// config.plugin('cli-plugin-unit-jest').tap(args => {
-		// 	args[0].SILENT = false;
-		// });
-		// config.resolve
-		// 	.plugin("tsconfig-paths")
-		// 	.use(require("tsconfig-paths-webpack-plugin"))
-	},
-};
+    // it can improve the speed of the first screen, it is recommended to turn on preload
+    config.plugin('preload').tap(() => [
+      {
+        rel: 'preload',
+        // to ignore runtime.js
+        // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
+        fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
+        include: 'initial'
+      }
+    ])
+
+    // when there are many pages, it will cause too many meaningless requests
+    config.plugins.delete('prefetch')
+
+    // https://webpack.js.org/configuration/devtool/#development
+    // Change development env source map if you want.
+    // The default in vue-cli is 'eval-cheap-module-source-map'.
+    // config
+    //   .when(process.env.NODE_ENV === 'development',
+    //     config => config.devtool('eval-cheap-source-map')
+    //   )
+
+    config
+      .when(process.env.NODE_ENV !== 'development',
+        config => {
+          config
+            .optimization.splitChunks({
+              chunks: 'all',
+              cacheGroups: {
+                libs: {
+                  name: 'chunk-libs',
+                  test: /[\\/]node_modules[\\/]/,
+                  priority: 10,
+                  chunks: 'initial' // only package third parties that are initially dependent
+                },
+                elementUI: {
+                  name: 'chunk-elementUI', // split elementUI into a single package
+                  priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
+                },
+                commons: {
+                  name: 'chunk-commons',
+                  test: path.resolve(__dirname, 'src/components'),
+                  minChunks: 3, //  minimum common number
+                  priority: 5,
+                  reuseExistingChunk: true
+                }
+              }
+            })
+          // https://webpack.js.org/configuration/optimization/#optimizationruntimechunk
+          config.optimization.runtimeChunk('single')
+        }
+      )
+  }
+}
