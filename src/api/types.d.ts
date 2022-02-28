@@ -42,3 +42,15 @@ export interface IUserData {
   introduction: string
   roles: string[]
 }
+
+export interface IAdminData {
+  id: number
+  username: string
+  password: string
+  name: string
+  email: string
+  phone: string
+  avatar: string
+  introduction: string
+  roles: string[]
+}
