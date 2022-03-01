@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <el-breadcrumb
     class="app-breadcrumb"
     separator="/"
@@ -104,3 +104,4 @@ export default class extends Vue {
   }
 }
 </style>
+ -->

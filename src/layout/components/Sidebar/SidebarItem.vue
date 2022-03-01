@@ -19,7 +19,7 @@
           <span
             v-if="theOnlyOneChild.meta.title"
             slot="title"
-          >{{ $t('route.' + theOnlyOneChild.meta.title) }}</span>
+          >{{ $t('text.' + theOnlyOneChild.meta.title) }}</span>
         </el-menu-item>
       </sidebar-item-link>
     </template>
@@ -36,7 +36,7 @@
         <span
           v-if="item.meta && item.meta.title"
           slot="title"
-        >{{ $t('route.' + item.meta.title) }}</span>
+        >{{ $t('text.' + item.meta.title) }}</span>
       </template>
       <template v-if="item.children">
         <sidebar-item
@@ -96,7 +96,8 @@ export default class extends Vue {
   }
 
   get theOnlyOneChild() {
-    if (this.showingChildNumber > 1) {
+    // console.log(this.showingChildNumber)
+    if (this.showingChildNumber > 0) {
       return null
     }
     if (this.item.children) {

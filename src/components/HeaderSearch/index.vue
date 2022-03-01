@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div
     id="header-search"
     :class="{'show': show}"
@@ -217,3 +217,4 @@ export default class extends Vue {
   }
 }
 </style>
+ -->

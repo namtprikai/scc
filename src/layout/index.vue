@@ -30,7 +30,7 @@ import { Component } from 'vue-property-decorator'
 import { mixins } from 'vue-class-component'
 import { DeviceType, AppModule } from '@/store/modules/app'
 import { SettingsModule } from '@/store/modules/settings'
-import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
+import { AppMain, Navbar, Sidebar } from './components'
 import RightPanel from '@/components/RightPanel/index.vue'
 import ResizeMixin from './mixin/resize'
 
@@ -40,9 +40,7 @@ import ResizeMixin from './mixin/resize'
     AppMain,
     Navbar,
     RightPanel,
-    Settings,
-    Sidebar,
-    TagsView
+    Sidebar
   }
 })
 export default class extends mixins(ResizeMixin) {
@@ -55,13 +53,13 @@ export default class extends mixins(ResizeMixin) {
     }
   }
 
-  get showSettings() {
-    return SettingsModule.showSettings
-  }
+  // get showSettings() {
+  //   return SettingsModule.showSettings
+  // }
 
-  get showTagsView() {
-    return SettingsModule.showTagsView
-  }
+  // get showTagsView() {
+  //   return SettingsModule.showTagsView
+  // }
 
   get fixedHeader() {
     return SettingsModule.fixedHeader
