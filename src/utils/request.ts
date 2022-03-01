@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import { AdminModule } from '@/store/modules/admin'
-import { getRfToken } from '@/utils/cookies'
+import { getRfToken, removeAcToken, removeRfToken } from '@/utils/cookies'
 import i18n from '@/lang'
 import { camelCase } from 'lodash'
 import router from '@/router'
@@ -117,6 +117,8 @@ service.interceptors.response.use(
     }
 
     if (status === 401) {
+      removeAcToken()
+      removeRfToken()
       router.push('/admin/login')
     }
 

@@ -26,3 +26,15 @@ export const checkToken = (data: any) =>
     method: 'post',
     data
   })
+
+export const getDetailAdmin = (id: number) =>
+  request({
+    url: `/admin/${id}/`,
+    method: 'get'
+  })
+
+export const getPoliciesAdmin = (id: number) =>
+  request({
+    url: `/policy_group/${id}/policy/`,
+    method: 'get'
+  })

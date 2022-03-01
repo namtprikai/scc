@@ -1,5 +1,5 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
-import { login, logout, getAdminInfo, checkToken } from '@/api/admins'
+import { login, logout, checkToken, getPoliciesAdmin, getDetailAdmin } from '@/api/admins'
 import { getAcToken, setAcToken, removeAcToken, getRfToken, setRfToken, removeRfToken, decodeToken } from '@/utils/cookies'
 import router, { resetRouter } from '@/router'
 import { PermissionModule } from './permission'
@@ -9,24 +9,53 @@ import store from '@/store'
 import jwt_decode from 'jwt-decode'
 /* eslint-enable */
 
+export interface Policy {
+  id: number
+  isActive: boolean
+  description: string
+  label: string
+  uriName: string
+  method: string
+  modified: string
+  created: string
+}
+
 export interface IAdminState {
+  id: number
   acToken: string
   rfToken: string
   name: string
+  config: object | null
+  isMailauthCompleted: boolean
   isMaster: boolean
   policyGroups: number[]
   roles: string[]
   email: string
+  isEnabled: boolean
+  isLock: boolean
+  created: string
+  modified: string
+  policyList: Policy[]
+  products: number[]
 }
 
 @Module({ dynamic: true, store, name: 'admin' })
 class Admin extends VuexModule implements IAdminState {
+  public id = 0
   public acToken = getAcToken() || ''
   public rfToken = getRfToken() || ''
   public name = ''
+  public config: object | null = null
+  public isMailauthCompleted = false
+  public isEnabled = true
+  public isLock = false
+  public created = ''
+  public modified = ''
+  public policyList: Policy[] = []
   public isMaster = false
   public policyGroups: number[] = []
   public roles: string[] = []
+  public products: number[] = []
   public email = ''
 
   @Mutation
@@ -37,6 +66,34 @@ class Admin extends VuexModule implements IAdminState {
   @Mutation
   private SET_RF_TOKEN(token: string) {
     this.rfToken = token
+  }
+
+  @Mutation
+  private SET_POLICY_LIST(policyList: Policy[]) {
+    this.policyList = policyList
+  }
+
+  @Mutation
+  private SET_PRODUCTS(products: number[]) {
+    this.products = products
+  }
+
+  @Mutation
+  private SET_ADMIN_INFO(adminInfo: IAdminState) {
+    this.id = adminInfo.id
+    this.name = adminInfo.name
+    this.email = adminInfo.email
+    this.config = adminInfo.config
+    this.isMailauthCompleted = adminInfo.isMailauthCompleted
+    this.isMaster = adminInfo.isMaster
+    this.isEnabled = adminInfo.isEnabled
+    this.isLock = adminInfo.isLock
+    this.created = adminInfo.created
+    this.modified = adminInfo.modified
+    this.policyList = adminInfo.policyList
+    this.products = adminInfo.products
+    this.policyGroups = adminInfo.policyGroups
+    this.roles = adminInfo.roles
   }
 
   @Mutation
@@ -114,21 +171,62 @@ class Admin extends VuexModule implements IAdminState {
     setAcToken(data.access_token)
   }
 
-  @Action
   public async GetAdminInfo() {
     if (this.acToken === '') {
       throw Error('GetAdminInfo: token is undefined!')
     }
-    const { data } = await getAdminInfo({ /* Your params here */ })
+    const tokenInfo = decodeToken(this.acToken)
+    const adminId = tokenInfo.id
+    const products = tokenInfo.products
+    const policyGroups = tokenInfo.policy_groups
+    const policyList: Policy[] = []
+
+    // Get policyList
+    if (policyGroups.length > 0) {
+      for (const policyGroup of policyGroups) {
+        const { data } = await getPoliciesAdmin(policyGroup)
+        data.forEach((element: any) => {
+          const policy: Policy = {
+            id: element.id,
+            label: element.label,
+            isActive: element.is_active,
+            description: element.description,
+            uriName: '',
+            method: '',
+            modified: element.modified,
+            created: element.created
+          }
+          policyList.push(policy)
+        })
+      }
+    }
+    const { data } = await getDetailAdmin(adminId)
     if (!data) {
       throw Error('Verification failed, please Login again.')
     }
-    const { roles } = data.admin
-    // roles must be a non-empty array
-    if (!roles || roles.length <= 0) {
-      throw Error('GetAdminInfo: roles must be a non-null array!')
+
+    const adminInfo: IAdminState = {
+      id: data.id,
+      acToken: this.acToken,
+      rfToken: this.rfToken,
+      name: data.name,
+      email: data.email,
+      config: data.config,
+      isMailauthCompleted: data.is_mailauth_completed,
+      isMaster: data.is_master,
+      isEnabled: data.is_enabled,
+      isLock: data.is_lock,
+      created: data.created,
+      modified: data.modified,
+      policyList: policyList,
+      products: products,
+      policyGroups: policyGroups,
+      roles: ['admin']
     }
-    // TODO
+
+    // this.SET_POLICY_LIST(policyList)
+    this.SET_ADMIN_INFO(adminInfo)
+    // this.SET_PRODUCTS(products)
   }
 
   @Action
