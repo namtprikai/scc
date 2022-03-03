@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { UserModule } from '@/store/modules/user'
+import { AdminModule } from '@/store/modules/admin'
 import Account from './components/Account.vue'
 import Activity from './components/Activity.vue'
 import Timeline from './components/Timeline.vue'
@@ -76,19 +76,19 @@ export default class extends Vue {
   private activeTab = 'activity'
 
   get name() {
-    return UserModule.name
+    return AdminModule.name
   }
 
   get email() {
-    return UserModule.email
+    return AdminModule.email
   }
 
-  get avatar() {
-    return UserModule.avatar
-  }
+  // get avatar() {
+  //   return AdminModule.avatar
+  // }
 
   get roles() {
-    return UserModule.roles
+    return AdminModule.roles
   }
 
   created() {
@@ -99,7 +99,7 @@ export default class extends Vue {
     this.user = {
       name: this.name,
       email: this.email,
-      avatar: this.avatar,
+      avatar: '',
       roles: this.roles.join(' | ')
     }
   }

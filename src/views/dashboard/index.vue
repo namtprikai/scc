@@ -14,18 +14,18 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { UserModule } from '@/store/modules/user'
+import { AdminModule } from '@/store/modules/admin'
 
 @Component({
   name: 'Dashboard'
 })
 export default class extends Vue {
   get name() {
-    return UserModule.name
+    return AdminModule.name
   }
 
   get roles() {
-    return UserModule.roles
+    return AdminModule.roles
   }
 }
 </script>

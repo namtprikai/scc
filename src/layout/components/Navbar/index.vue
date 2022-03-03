@@ -77,7 +77,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { AppModule } from '@/store/modules/app'
-import { UserModule } from '@/store/modules/user'
+import { AdminModule } from '@/store/modules/admin'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import ErrorLog from '@/components/ErrorLog/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
@@ -107,16 +107,12 @@ export default class extends Vue {
     return AppModule.device.toString()
   }
 
-  get avatar() {
-    return UserModule.avatar
-  }
-
   private toggleSideBar() {
     AppModule.ToggleSideBar(false)
   }
 
   private async logout() {
-    await UserModule.LogOut()
+    await AdminModule.LogOut()
     this.$router.push(`/login?redirect=${this.$route.fullPath}`).catch(err => {
       console.warn(err)
     })
