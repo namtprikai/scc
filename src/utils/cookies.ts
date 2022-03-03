@@ -1,4 +1,7 @@
 import Cookies from 'js-cookie'
+/* eslint-disable */
+import jwt_decode from 'jwt-decode'
+/* eslint-enable */
 
 // App
 const sidebarStatusKey = 'sidebar_status'
@@ -13,8 +16,18 @@ const sizeKey = 'size'
 export const getSize = () => Cookies.get(sizeKey)
 export const setSize = (size: string) => Cookies.set(sizeKey, size)
 
-// User
-const tokenKey = 'vue_typescript_admin_access_token'
-export const getToken = () => Cookies.get(tokenKey)
-export const setToken = (token: string) => Cookies.set(tokenKey, token)
-export const removeToken = () => Cookies.remove(tokenKey)
+// Admin
+const acTokenKey = 'ac_token'
+const rfTokenKey = 'rf_token'
+export const getAcToken = () => Cookies.get(acTokenKey)
+export const setAcToken = (token: string) => Cookies.set(acTokenKey, token)
+export const removeAcToken = () => Cookies.remove(acTokenKey)
+
+export const getRfToken = () => Cookies.get(rfTokenKey)
+export const setRfToken = (token: string) => Cookies.set(rfTokenKey, token)
+export const removeRfToken = () => Cookies.remove(rfTokenKey)
+
+export const decodeToken = (token: string): any => {
+  const acToken: any = token || getAcToken()
+  return jwt_decode(acToken)
+}
