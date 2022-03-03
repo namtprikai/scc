@@ -172,5 +172,16 @@ export default {
     showSidebarLogo: 'Show Sidebar Logo',
     fixedHeader: 'Fixed Header',
     sidebarTextTheme: 'Sidebar Text Theme'
+  },
+  message: {
+    adminActivating: '認証処理中・・・',
+    adminActiveError: '認証処理が失敗しました',
+    adminActiveSuccess: '認証処理が成功しました'
+  },
+  screenTitle: {
+    activeAdmin: 'アカウントのメール認証'
+  },
+  text: {
+    gotoLoginScreen: 'ログイン画面へ'
   }
 }

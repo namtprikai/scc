@@ -7,12 +7,15 @@
             >
             </div>
             <div v-if="status===1" class="message">
-                <el-row>{{$t('Message.admin_active_success')}}
+                <el-row>
+                    {{$t('message.adminActiveSuccess')}}
                 </el-row>
-                <el-button class="goto-login" @click="gotoLogin">{{$t('Text.goto_login_screen')}}</el-button>
+                <el-button class="goto-login" @click="gotoLogin">
+                    {{$t('text.gotoLoginScreen')}}
+                </el-button>
             </div>
             <div v-else-if="status===2" class="message">
-                {{$t('Message.admin_active_error')}}
+                {{$t('message.adminActiveError')}}
             </div>
         </el-card>
     </div>
@@ -28,7 +31,7 @@ import { enabledVerifyEmail } from '@/api/verifyEmail'
     $route: {
       immediate: true,
       handler() {
-        document.title = this.$t('ScreenTitle.active_admin').toString()
+        document.title = this.$t('screenTitle.activeAdmin').toString()
       }
     }
   }
@@ -36,7 +39,7 @@ import { enabledVerifyEmail } from '@/api/verifyEmail'
 export default class extends Vue {
   private status = 0 // 0: notThing, 1: isSuccess, 2: isError
   private loading = true
-  private loadingText=this.$t('Message.admin_activating')
+  private loadingText=this.$t('message.adminActivating')
 
   created() {
     this.handleVerifyEmail()
@@ -63,7 +66,7 @@ export default class extends Vue {
     }
   }
 
-  private gotoLogin() {
+  private gotoLogin(): void {
     this.$router.push('/login')
   }
 }
@@ -88,7 +91,8 @@ export default class extends Vue {
     }
     .el-loading-spinner{
         display: flex;
-        margin-left: 160px;
+        align-items: center;
+        justify-content: center;
     }
     .el-loading-text{
         padding-left: 16px;

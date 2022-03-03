@@ -10,7 +10,7 @@ import settings from './settings'
 
 NProgress.configure({ showSpinner: false })
 
-const whiteList = ['/login', '/auth-redirect']
+const whiteList = ['/login', '/auth-redirect', '/active-admin', '/404']
 
 const getPageTitle = (key: string) => {
   const hasKey = i18n.te(`route.${key}`)
@@ -60,7 +60,7 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
     }
   } else {
     // Has no token
-    if (whiteList.indexOf(to.path) !== -1) {
+    if (whiteList.indexOf(to.path) !== -1 || whiteList.find(() => to.path.includes('active-admin'))) {
       // In the free login whitelist, go directly
       next()
     } else {
