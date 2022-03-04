@@ -4,15 +4,14 @@
       ref="loginForm"
       :model="loginForm"
       :rules="loginRules"
-      class="login-form"
+      class="form login-form"
       autocomplete="on"
       label-position="left"
     >
       <div class="title-container">
         <h3 class="title">
-          {{ $t('login.title') }}
+          {{ $t("text.appName") }}
         </h3>
-        <lang-select class="set-language" />
       </div>
 
       <el-form-item prop="username">
@@ -22,53 +21,77 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          :placeholder="$t('login.username')"
-          name="username"
+          :placeholder="$t('labelText.username')"
+          :name="$t('labelText.username')"
           type="text"
           tabindex="1"
           autocomplete="on"
         />
       </el-form-item>
-
-      <el-tooltip
-        v-model="capsTooltip"
-        content="Caps lock is On"
-        placement="right"
-        manual
-      >
-        <el-form-item prop="password">
-          <span class="svg-container">
-            <svg-icon name="password" />
-          </span>
-          <el-input
-            :key="passwordType"
-            ref="password"
-            v-model="loginForm.password"
-            :type="passwordType"
-            :placeholder="$t('login.password')"
-            name="password"
-            tabindex="2"
-            autocomplete="on"
-            @keyup.native="checkCapslock"
-            @blur="capsTooltip = false"
-            @keyup.enter.native="handleLogin"
+      <el-form-item prop="password">
+        <span class="svg-container">
+          <svg-icon name="password" />
+        </span>
+        <el-input
+          :key="passwordType"
+          ref="password"
+          v-model="loginForm.password"
+          :type="passwordType"
+          :placeholder="$t('labelText.password')"
+          name="password"
+          tabindex="2"
+          @keyup.enter.native="login"
+        />
+        <span class="show-pwd" @click="showPassword">
+          <svg-icon
+            :name="passwordType === 'password' ? 'eye-off' : 'eye-on'"
           />
-          <span
-            class="show-pwd"
-            @click="showPwd"
-          >
-            <svg-icon :name="passwordType === 'password' ? 'eye-off' : 'eye-on'" />
-          </span>
-        </el-form-item>
-      </el-tooltip>
-
+        </span>
+      </el-form-item>
       <el-button
-        :loading="loading"
+        :loading="isLoginFormSubmitting"
         type="primary"
-        style="width:100%; margin-bottom:30px;"
-        @click.native.prevent="handleLogin"
+        style="width: 100%; margin-bottom: 30px"
+        @click.native.prevent="login"
       >
-        {{ $t('login.logIn') }}
+        {{ $t("text.login") }}
+      </el-button>
+      <div>
+        <el-link
+          @click.native.prevent="toggleForgotPasswordForm"
+          :underline="false"
+          class="forgot-password-link"
+          type="primary"
+          >{{ $t("helpText.forgotPassword") }}</el-link
+        >
+      </div>
+    </el-form>
+    <el-form
+      v-if="isShowForgotPasswordForm"
+      ref="resetPasswordForm"
+      :model="resetPasswordForm"
+      :rules="resetPasswordRules"
+      class="form reset-password-form"
+      label-position="left"
+    >
+      <el-form-item
+        :error="resetPasswordError.email"
+        prop="email"
+      >
+        <el-input
+          ref="email"
+          v-model="resetPasswordForm.email"
+          :placeholder="$t('helpText.inputAccountEmail')"
+          name="email"
+          type="text"
+          tabindex="3"
+        />
+      </el-form-item>
+      <el-button
+        :loading="isForgetFormSubmitting"
+        @click.native.prevent="resetPassword"
+      >
+        {{ $t("text.resetPasswordRequest") }}
       </el-button>
     </el-form>
   </div>
@@ -80,53 +103,62 @@ import { Route } from 'vue-router'
 import { Dictionary } from 'vue-router/types/router'
 import { Form as ElForm, Input } from 'element-ui'
 import { AdminModule } from '@/store/modules/admin'
-import { isValidUsername } from '@/utils/validate'
-import LangSelect from '@/components/LangSelect/index.vue'
-
+import { ValidationType, ValidationError, APIErrorCode, APIError } from '@/utils/request'
+import { getValidationMessage } from '@/utils/validate'
 @Component({
-  name: 'Login',
-  components: {
-    LangSelect
-  }
+  name: 'Login'
 })
 export default class extends Vue {
-  private validateUsername = (rule: any, value: string, callback: Function) => {
-    if (!isValidUsername(value)) {
-      callback(new Error('Please enter the correct user name'))
-    } else {
-      callback()
-    }
-  }
-
-  private validatePassword = (rule: any, value: string, callback: Function) => {
-    if (value.length < 6) {
-      callback(new Error('The password can not be less than 6 digits'))
-    } else {
-      callback()
-    }
-  }
+  private passwordType = 'password';
+  private isShowForgotPasswordForm = false;
+  private isLoginFormSubmitting = false;
+  private isForgetFormSubmitting = false;
+  private redirect?: string;
+  private otherQuery: Dictionary<string> = {};
 
   private loginForm = {
-    username: 'adminhasacl',
-    password: 'Hello123#'
-  }
+    username: '',
+    password: ''
+  };
 
+  private resetPasswordForm = {
+    email: ''
+  };
+
+  resetPasswordError: any = {
+    email: ''
+  };
+
+  // Login rules
   private loginRules = {
-    username: [{ validator: this.validateUsername, trigger: 'blur' }],
-    password: [{ validator: this.validatePassword, trigger: 'blur' }]
-  }
+    username: [
+      {
+        required: true,
+        message: getValidationMessage(ValidationType.Empty, this.$t('labelText.username')),
+        trigger: 'blur'
+      }
+    ],
+    password: [
+      {
+        required: true,
+        message: getValidationMessage(ValidationType.Empty, this.$t('labelText.password')),
+        trigger: 'blur'
+      }
+    ]
+  };
 
-  private passwordType = 'password'
-  private loading = false
-  private showDialog = false
-  private capsTooltip = false
-  private redirect?: string
-  private otherQuery: Dictionary<string> = {}
+  private resetPasswordRules = {
+    email: [
+      {
+        required: true,
+        message: getValidationMessage(ValidationType.Empty, this.$t('labelText.email')),
+        trigger: 'blur'
+      }
+    ]
+  };
 
   @Watch('$route', { immediate: true })
   private onRouteChange(route: Route) {
-    // TODO: remove the "as Dictionary<string>" hack after v4 release for vue-router
-    // See https://github.com/vuejs/vue-router/pull/2050 for details
     const query = route.query as Dictionary<string>
     if (query) {
       this.redirect = query.redirect
@@ -134,20 +166,7 @@ export default class extends Vue {
     }
   }
 
-  mounted() {
-    if (this.loginForm.username === '') {
-      (this.$refs.username as Input).focus()
-    } else if (this.loginForm.password === '') {
-      (this.$refs.password as Input).focus()
-    }
-  }
-
-  private checkCapslock(e: KeyboardEvent) {
-    const { key } = e
-    this.capsTooltip = key !== null && key.length === 1 && (key >= 'A' && key <= 'Z')
-  }
-
-  private showPwd() {
+  private showPassword() {
     if (this.passwordType === 'password') {
       this.passwordType = ''
     } else {
@@ -155,29 +174,6 @@ export default class extends Vue {
     }
     this.$nextTick(() => {
       (this.$refs.password as Input).focus()
-    })
-  }
-
-  private handleLogin() {
-    (this.$refs.loginForm as ElForm).validate(async(valid: boolean) => {
-      if (valid) {
-        this.loading = true
-        await AdminModule.Login(this.loginForm)
-
-        this.$router.push({
-          path: this.redirect || '/',
-          query: this.otherQuery
-        }).catch(err => {
-          this.loading = false
-          console.warn(err)
-        })
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.loading = false
-        }, 0.5 * 1000)
-      } else {
-        return false
-      }
     })
   }
 
@@ -189,18 +185,86 @@ export default class extends Vue {
       return acc
     }, {} as Dictionary<string>)
   }
+
+  private toggleForgotPasswordForm() {
+    this.resetPasswordForm.email = ''
+    this.resetPasswordError.email = ''
+    this.isShowForgotPasswordForm = !this.isShowForgotPasswordForm
+    if (this.isShowForgotPasswordForm) {
+      this.$nextTick(() => {
+        (this.$refs.email as Input).focus()
+      })
+    }
+  }
+
+  private login() {
+    (this.$refs.loginForm as ElForm).validate(async(valid: boolean) => {
+      if (valid) {
+        this.isLoginFormSubmitting = true
+        try {
+          await AdminModule.Login(this.loginForm)
+          this.$router
+            .push({
+              path: this.redirect || '/',
+              query: this.otherQuery
+            })
+        } catch (error) {
+          this.isLoginFormSubmitting = false
+          if (error instanceof APIError && error.errorCode === APIErrorCode.Unauthorized) {
+            this.$message({
+              message: this.$tc('message.loginError'),
+              type: 'error',
+              duration: 5000
+            })
+          }
+        }
+      } else {
+        return false
+      }
+    })
+  }
+
+  private resetPassword() {
+    (this.$refs.resetPasswordForm as ElForm).validate(async(valid: boolean) => {
+      this.resetPasswordError.email = ''
+      if (valid) {
+        this.isForgetFormSubmitting = true
+        try {
+          await AdminModule.ResetPassword(this.resetPasswordForm)
+          this.$message({
+            message: this.$tc('message.pleaseCheckEmail'),
+            type: 'success',
+            duration: 5000
+          })
+          // reset reset password form
+          this.isForgetFormSubmitting = false
+          this.isShowForgotPasswordForm = false
+          this.resetPasswordForm.email = ''
+        } catch (err) {
+          this.isForgetFormSubmitting = false
+          // check if error 422
+          if (err instanceof ValidationError) {
+            const validationError = err as ValidationError
+            if (validationError.data?.length) {
+              const emailError = validationError.data.find(
+                x => x.value === 'email'
+              )
+              // get message error
+              if (emailError && emailError?.type?.length) {
+                this.resetPasswordError.email = getValidationMessage(emailError.type[0], this.$t('labelText.email'))
+              }
+            }
+          }
+        }
+      } else {
+        return false
+      }
+    })
+  }
 }
 </script>
 
 <style lang="scss">
-// References: https://www.zhangxinxu.com/wordpress/2018/01/css-caret-color-first-line/
-@supports (-webkit-mask: none) and (not (cater-color: $loginCursorColor)) {
-  .login-container .el-input {
-    input { color: $loginCursorColor; }
-    input::first-line { color: $lightGray; }
-  }
-}
-
 .login-container {
   .el-input {
     display: inline-block;
@@ -230,6 +294,24 @@ export default class extends Vue {
     border-radius: 5px;
     color: #454545;
   }
+
+  .reset-password-form {
+    .el-form-item {
+      background: #fff;
+      .el-input {
+        width: 100%;
+      }
+      input {
+        color: #454545;
+        caret-color: #454545;
+        padding: 12px 15px;
+        &:-webkit-autofill {
+          box-shadow: 0 0 0px 1000px $loginBg inset !important;
+          -webkit-text-fill-color: #fff !important;
+        }
+      }
+    }
+  }
 }
 </style>
 
@@ -239,14 +321,18 @@ export default class extends Vue {
   width: 100%;
   overflow: hidden;
   background-color: $loginBg;
-
-  .login-form {
+  .form {
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
     margin: 0 auto;
     overflow: hidden;
+  }
+  .login-form {
+    padding: 160px 35px 0;
+  }
+  .reset-password-form {
+    padding: 0px 35px 0;
   }
 
   .tips {
@@ -289,27 +375,8 @@ export default class extends Vue {
       cursor: pointer;
     }
   }
-
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $darkGray;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .thirdparty-button {
-    position: absolute;
-    right: 0;
-    bottom: 6px;
-  }
-
-  @media only screen and (max-width: 470px) {
-    .thirdparty-button {
-      display: none;
-    }
+  .forgot-password-link {
+    margin-bottom: 20px;
   }
 }
 </style>
