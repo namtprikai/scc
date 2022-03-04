@@ -62,7 +62,10 @@ export const constantRoutes: RouteConfig[] = [
   {
     path: '/active-admin/:hash',
     component: () => import('@/views/active-admin/index.vue'),
-    meta: { hidden: true }
+    meta: {
+      hidden: true,
+      title: 'activeAdmin'
+    }
   },
   {
     path: '*',

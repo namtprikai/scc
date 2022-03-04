@@ -26,15 +26,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { enabledVerifyEmail } from '@/api/admins'
 
 @Component({
-  name: 'VerifyEmailCreateAccount',
-  watch: {
-    $route: {
-      immediate: true,
-      handler() {
-        document.title = this.$t('screenTitle.activeAdmin').toString()
-      }
-    }
-  }
+  name: 'VerifyEmailCreateAccount'
 })
 export default class extends Vue {
   private status = 0 // 0: notThing, 1: isSuccess, 2: isError
