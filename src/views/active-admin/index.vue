@@ -23,7 +23,7 @@
 <script lang="ts">
 
 import { Component, Vue } from 'vue-property-decorator'
-import { enabledVerifyEmail } from '@/api/verifyEmail'
+import { enabledVerifyEmail } from '@/api/admins'
 
 @Component({
   name: 'VerifyEmailCreateAccount',
