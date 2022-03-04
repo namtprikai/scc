@@ -31,18 +31,18 @@ export const getLocale = () => {
     document.documentElement.lang = cookieLanguage
     return cookieLanguage
   }
+  // return language of browser
+  // const language = navigator.language.toLowerCase()
+  // const locales = Object.keys(messages)
+  // for (const locale of locales) {
+  //   if (language.indexOf(locale) > -1) {
+  //     document.documentElement.lang = locale
+  //     return locale
+  //   }
+  // }
 
-  const language = navigator.language.toLowerCase()
-  const locales = Object.keys(messages)
-  for (const locale of locales) {
-    if (language.indexOf(locale) > -1) {
-      document.documentElement.lang = locale
-      return locale
-    }
-  }
-
-  // Default language is english
-  return 'en'
+  // Default language is japanese
+  return 'ja'
 }
 
 const i18n = new VueI18n({
