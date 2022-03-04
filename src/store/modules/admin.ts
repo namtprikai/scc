@@ -171,6 +171,7 @@ class Admin extends VuexModule implements IAdminState {
     setAcToken(data.access_token)
   }
 
+  @Action
   public async GetAdminInfo() {
     if (this.acToken === '') {
       throw Error('GetAdminInfo: token is undefined!')
