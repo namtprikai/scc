@@ -53,6 +53,16 @@ export const constantRoutes: RouteConfig[] = [
     meta: { hidden: true }
   },
   {
+    path: '/reset-password/:hash',
+    component: () => import('@/views/reset-password/index.vue'),
+    meta: {
+      hidden: true,
+      title: 'resetPassword'
+    },
+
+    props: (route) => ({ hash: route.query })
+  },
+  {
     path: '/404',
     component: () => import(/* webpackChunkName: "404" */ '@/views/error-page/404.vue'),
     meta: { hidden: true }
@@ -275,7 +285,7 @@ export const asyncRoutes: RouteConfig[] = [
 ]
 
 const createRouter = () => new VueRouter({
-  // mode: 'history',  // Disabled due to Github Pages doesn't support this, enable this if you need.
+  mode: 'history',
   scrollBehavior: (to, from, savedPosition) => {
     if (savedPosition) {
       return savedPosition

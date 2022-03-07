@@ -51,3 +51,12 @@ export const enabledVerifyEmail = (params: string) =>
     url: `/admin/enabled/${params}/`,
     method: 'get'
   })
+
+export const changePassword = (data: any) => {
+  const { password, hash } = data
+  return request({
+    url: `/admin/reset-password/${hash}/`,
+    method: 'post',
+    data: { password: password }
+  })
+}
