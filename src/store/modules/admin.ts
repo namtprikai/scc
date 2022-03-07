@@ -157,7 +157,7 @@ class Admin extends VuexModule implements IAdminState {
   }
 
   @Action({ rawError: true })
-  public async ResetPassword(userInfo: { email: any }) {
+  public async ResetPassword(userInfo: { email: string }) {
     const { email } = userInfo
     return await resetPassword({ email })
   }
