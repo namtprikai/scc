@@ -266,44 +266,13 @@ export default class extends Vue {
 }
 </script>
 
-<style lang="scss">
-.login-container {
-  .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 85%;
-    input {
-      height: 47px;
-      background: transparent;
-      border: 0px;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: $lightGray;
-      caret-color: $loginCursorColor;
-      -webkit-appearance: none;
-      &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $loginBg inset !important;
-        -webkit-text-fill-color: #fff !important;
-        background: transparent;
-      }
-    }
-  }
-
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .login-container {
   height: 100%;
   width: 100%;
   overflow: hidden;
   background-color: $loginBg;
+
   .form {
     position: relative;
     width: 520px;
@@ -360,6 +329,33 @@ export default class extends Vue {
   }
   .forgot-password-link {
     margin-bottom: 20px;
+  }
+
+  ::v-deep .el-input {
+    display: inline-block;
+    height: 47px;
+    width: 85%;
+    input {
+      height: 47px;
+      background: transparent;
+      border: 0px;
+      border-radius: 0px;
+      padding: 12px 5px 12px 15px;
+      color: $lightGray;
+      caret-color: $loginCursorColor;
+      -webkit-appearance: none;
+      &:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px $loginBg inset !important;
+        -webkit-text-fill-color: #fff !important;
+        background: transparent;
+      }
+    }
+  }
+  .el-form-item {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    color: #454545;
   }
 }
 </style>
