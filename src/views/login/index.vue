@@ -75,9 +75,13 @@
       label-position="left"
     >
       <el-form-item
+        ref="email"
         :error="resetPasswordError.email"
         prop="email"
       >
+       <span class="svg-container">
+          <svg-icon name="email" />
+        </span>
         <el-input
           ref="email"
           v-model="resetPasswordForm.email"
@@ -88,6 +92,8 @@
         />
       </el-form-item>
       <el-button
+        type="primary"
+        style="width: 100%; margin-bottom: 30px"
         :loading="isForgetFormSubmitting"
         @click.native.prevent="resetPassword"
       >
@@ -190,11 +196,7 @@ export default class extends Vue {
     this.resetPasswordForm.email = ''
     this.resetPasswordError.email = ''
     this.isShowForgotPasswordForm = !this.isShowForgotPasswordForm
-    if (this.isShowForgotPasswordForm) {
-      this.$nextTick(() => {
-        (this.$refs.email as Input).focus()
-      })
-    }
+    if (this.isShowForgotPasswordForm) { (this.$refs.email as Input).focus() }
   }
 
   private login() {
@@ -270,7 +272,6 @@ export default class extends Vue {
     display: inline-block;
     height: 47px;
     width: 85%;
-
     input {
       height: 47px;
       background: transparent;
@@ -280,10 +281,10 @@ export default class extends Vue {
       color: $lightGray;
       caret-color: $loginCursorColor;
       -webkit-appearance: none;
-
       &:-webkit-autofill {
         box-shadow: 0 0 0px 1000px $loginBg inset !important;
         -webkit-text-fill-color: #fff !important;
+        background: transparent;
       }
     }
   }
@@ -293,24 +294,6 @@ export default class extends Vue {
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
-  }
-
-  .reset-password-form {
-    .el-form-item {
-      background: #fff;
-      .el-input {
-        width: 100%;
-      }
-      input {
-        color: #454545;
-        caret-color: #454545;
-        padding: 12px 15px;
-        &:-webkit-autofill {
-          box-shadow: 0 0 0px 1000px $loginBg inset !important;
-          -webkit-text-fill-color: #fff !important;
-        }
-      }
-    }
   }
 }
 </style>
