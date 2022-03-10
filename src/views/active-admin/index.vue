@@ -1,8 +1,9 @@
 <template>
     <div class="card">
-        <el-card class="box-card">
+        <el-card class="box-card" shadow="never">
             <div v-loading="loading"
                 v-bind:element-loading-text="loadingText"
+                element-loading-spinner="el-icon-loading"
                 class="loading-verify"
             >
             </div>
@@ -64,6 +65,11 @@ export default class extends Vue {
 }
 </script>
 <style lang="scss">
+.card{
+    position: relative;
+    display:flex;
+    justify-content: center;
+    align-items: center;
     .box-card{
         width: 480px;
         height: 200px;
@@ -72,23 +78,23 @@ export default class extends Vue {
         justify-content: center;
         align-items: center;
     }
-    .card{
-        position: relative;
-        display:flex;
-        justify-content: center;
-        align-items: center;
+    .el-card{
+        border: none;
     }
     .loading-verify{
         width: 480px;
-    }
-    .el-loading-spinner{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .el-loading-text{
-        padding-left: 16px;
-        padding-top: 11px;
+        .el-loading-spinner{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: -18px;
+            i{
+                font-size: 36px;
+            }
+            .el-loading-text{
+                padding-left: 16px;
+            }
+        }
     }
     .message{
         text-align: center;
@@ -97,4 +103,5 @@ export default class extends Vue {
     .goto-login{
         margin-top: 20px;
     }
+}
 </style>
