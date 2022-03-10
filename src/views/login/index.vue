@@ -75,7 +75,6 @@
       label-position="left"
     >
       <el-form-item
-        ref="email"
         :error="resetPasswordError.email"
         prop="email"
       >
@@ -196,7 +195,9 @@ export default class extends Vue {
     this.resetPasswordForm.email = ''
     this.resetPasswordError.email = ''
     this.isShowForgotPasswordForm = !this.isShowForgotPasswordForm
-    if (this.isShowForgotPasswordForm) { (this.$refs.email as Input).focus() }
+    this.$nextTick(() => {
+      if (this.isShowForgotPasswordForm) { (this.$refs.email as Input).focus() }
+    })
   }
 
   private login() {
