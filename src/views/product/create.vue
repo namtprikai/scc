@@ -240,7 +240,7 @@ export default class extends Vue {
 
   .form-product{
     width: 70%;
-    margin: 5% auto;
+    margin: 20px auto;
     @media only screen and (max-width: 767px) {
       width: 100%;
     }

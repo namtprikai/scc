@@ -168,6 +168,10 @@ aside {
 .popup-custom {
   width: 40%;
 
+  table {
+    width: 100%;
+  }
+
   .td-left {
   width: 25%;
   text-align: right;
@@ -203,7 +207,7 @@ aside {
   }
 
   .overflow-scroll {
-    overflow: scroll;
+    overflow: auto;
   }
 
   @media only screen and (max-width: 767px) {

@@ -1,26 +1,29 @@
-.add-form {
-  font-size: 1em !important;
-  input, select, span, button {
-    margin-right: 0.3em;
-    margin-bottom: 0.3em;
+.json-editor{
+  .block_content {
+    .add-form {
+      font-size: 14px;
+      input, select, span, button {
+        margin-right: 0.3em;
+        margin-bottom: 0.3em;
+      }
+      select {
+        padding: 0.3em 0.6em;
+        height: 2.35em;
+      }
+    }
+    .v-json-edit-icon-drag{
+      margin-right: 20px;
+    }
+    
+    .v-json-edit-icon-huishouzhan_huaban{
+      font-size: 20px;
+      color: red;
+    }
+    
+    .f-confirm {
+      color: #fff;
+      background-color: #1890ff;
+      border-color: #1890ff;
+    }
   }
-  select {
-    padding: 0.3em 0.6em !important;
-    height: 2.35em !important;
-  }
-}
-
-.v-json-edit-icon-drag{
-  margin-right: 20px !important;
-}
-
-.v-json-edit-icon-huishouzhan_huaban{
-  font-size: 20px;
-  color: red;
-}
-
-.f-confirm {
-  color: #fff !important;
-  background-color: #1890ff !important;
-  border-color: #1890ff !important;
 }
