@@ -64,7 +64,7 @@ export default class extends Vue {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .card{
     position: relative;
     display:flex;
@@ -83,7 +83,7 @@ export default class extends Vue {
     }
     .loading-verify{
         width: 480px;
-        .el-loading-spinner{
+        ::v-deep .el-loading-spinner{
             display: flex;
             align-items: center;
             justify-content: center;
