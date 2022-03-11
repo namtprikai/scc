@@ -3,9 +3,8 @@
     <el-form
       class="form-product"
       ref="createForm"
+      label-position="top"
       :rules="createRules"
-      :label-position="isMobile() ? 'top' : 'right'"
-      label-width="20%"
       :model="createForm"
     >
       <el-form-item label="temp" :error="createProductError.productName" prop="productName">
@@ -80,15 +79,6 @@ export default class extends Vue {
     config: {}
   }
 
-  // check screen display is mobile to responsive
-  public isMobile() {
-    if (screen.width < 768) {
-      return true
-    } else {
-      return false
-    }
-  }
-
   // createProduct rules
   private createRules = {
     productName: [
@@ -126,21 +116,30 @@ export default class extends Vue {
                       <div class="max-size-height overflow-scroll">${name}</div>
                     </td>
                 </tr>
-                <tr>
-                    <td class="td-left">${this.$t('labelText.maxFailureCountUser')}</td>
-                    <td class="td-center">:</td>
-                    <td class="td-right">${this.createForm.maxFailureCountUser === null ? '' : this.createForm.maxFailureCountUser}</td>
-                </tr>
-                <tr>
-                    <td class="td-left">${this.$t('labelText.maxFailureTimeUser')}</td>
-                    <td class="td-center">:</td>
-                    <td class="td-right">${this.createForm.maxFailureTimeUser === null ? '' : this.createForm.maxFailureTimeUser}</td>
-                </tr>
-                <tr>
-                    <td class="td-left">${this.$t('labelText.memo')}</td>
-                    <td class="td-center">:</td>
-                    <td class="td-right"><pre class="max-size-height max-size-width margin-none"><xmp>${JSON.stringify(this.createForm.config, undefined, 4)}</xmp></pre></td>
-                </tr>
+                ${this.createForm.maxFailureCountUser !== null && this.createForm.maxFailureCountUser !== ''
+                  ? `<tr>
+                      <td class="td-left">${this.$t('labelText.maxFailureCountUser')}</td>
+                      <td class="td-center">:</td>
+                      <td class="td-right">${this.createForm.maxFailureCountUser}</td>
+                  </tr>
+                  `
+                  : ''}
+                ${this.createForm.maxFailureTimeUser !== null && this.createForm.maxFailureTimeUser !== ''
+                  ? `<tr>
+                      <td class="td-left">${this.$t('labelText.maxFailureTimeUser')}</td>
+                      <td class="td-center">:</td>
+                      <td class="td-right">${this.createForm.maxFailureTimeUser}</td>
+                  </tr>
+                  `
+                  : ''}
+                ${Object.keys(this.createForm.config).length !== 0
+                  ? `<tr>
+                      <td class="td-left">${this.$t('labelText.memo')}</td>
+                      <td class="td-center">:</td>
+                      <td class="td-right"><pre class="max-size-height max-size-width margin-none"><xmp>${JSON.stringify(this.createForm.config, undefined, 4)}</xmp></pre></td>
+                  </tr>
+                  `
+                  : ''}
             </table>
           `,
           this.$t('text.createScreenModalConfirmTitle') as string, {
