@@ -75,6 +75,7 @@ export interface ICategory {
   created: Date | null
   modified: Date | null
 }
+
 export interface IProductDetailData {
   id: number
   name: string
@@ -84,3 +85,12 @@ export interface IProductDetailData {
   created: string
   modified: string
 }
+
+export interface IProductListItemData {
+  id: number
+  name: string
+  created: string
+  modified: string
+}
+
+

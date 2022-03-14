@@ -7,6 +7,19 @@ export const createProduct = (data: any) =>
     data
   })
 
+export const getProduct = (data : any) =>
+  request({
+    url: '/product/',
+    method: 'get',
+    data
+  })
+
+export const deleteProduct = (id: number) =>
+  request({
+    url: `/product/${id}/`,
+    method: 'delete'
+  })
+
 export const getDetailProduct = (id: number) =>
   request({
     url: `/product/${id}/`,
