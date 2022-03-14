@@ -154,3 +154,11 @@ aside {
 .no-padding {
   padding: 0px !important;
 }
+
+//custome validation error style
+.el-form-item{
+  margin-bottom: 24px;
+  .el-form-item__error{
+    padding-top: 6px ;
+  }
+}

@@ -14,6 +14,13 @@ export const login = (data: any) =>
     data
   })
 
+export const resetPassword = (data: any) =>
+  request({
+    url: '/admin/reset-password/',
+    method: 'post',
+    data
+  })
+
 export const logout = () =>
   request({
     url: '/admin/logout/',
