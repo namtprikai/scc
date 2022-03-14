@@ -63,6 +63,19 @@ export const constantRoutes: RouteConfig[] = [
     meta: { hidden: true }
   },
   {
+    path: '/active-admin/:hash',
+    component: () => import('@/views/active-admin/index.vue'),
+    meta: {
+      hidden: true,
+      title: 'activeAdmin'
+    }
+  },
+  {
+    path: '*',
+    redirect: '/404',
+    meta: { hidden: true }
+  },
+  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',

@@ -45,3 +45,9 @@ export const getPoliciesAdmin = (id: number) =>
     url: `/policy_group/${id}/policy/`,
     method: 'get'
   })
+
+export const enabledVerifyEmail = (params: string) =>
+  request({
+    url: `/admin/enabled/${params}/`,
+    method: 'get'
+  })
