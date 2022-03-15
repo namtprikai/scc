@@ -116,30 +116,21 @@ export default class extends Vue {
                       <div class="max-size-height overflow-scroll">${name}</div>
                     </td>
                 </tr>
-                ${this.createForm.maxFailureCountUser !== null && this.createForm.maxFailureCountUser !== ''
-                  ? `<tr>
-                      <td class="td-left">${this.$t('labelText.maxFailureCountUser')}</td>
-                      <td class="td-center">:</td>
-                      <td class="td-right">${this.createForm.maxFailureCountUser}</td>
-                  </tr>
-                  `
-                  : ''}
-                ${this.createForm.maxFailureTimeUser !== null && this.createForm.maxFailureTimeUser !== ''
-                  ? `<tr>
-                      <td class="td-left">${this.$t('labelText.maxFailureTimeUser')}</td>
-                      <td class="td-center">:</td>
-                      <td class="td-right">${this.createForm.maxFailureTimeUser}</td>
-                  </tr>
-                  `
-                  : ''}
-                ${Object.keys(this.createForm.config).length !== 0
-                  ? `<tr>
-                      <td class="td-left">${this.$t('labelText.memo')}</td>
-                      <td class="td-center">:</td>
-                      <td class="td-right"><pre class="max-size-height max-size-width margin-none"><xmp>${JSON.stringify(this.createForm.config, undefined, 4)}</xmp></pre></td>
-                  </tr>
-                  `
-                  : ''}
+                <tr>
+                    <td class="td-left">${this.$t('labelText.maxFailureCountUser')}</td>
+                    <td class="td-center">:</td>
+                    <td class="td-right">${this.createForm.maxFailureCountUser === null ? '' : this.createForm.maxFailureCountUser}</td>
+                </tr>
+                <tr>
+                    <td class="td-left">${this.$t('labelText.maxFailureTimeUser')}</td>
+                    <td class="td-center">:</td>
+                    <td class="td-right">${this.createForm.maxFailureTimeUser === null ? '' : this.createForm.maxFailureTimeUser}</td>
+                </tr>
+                <tr>
+                    <td class="td-left">${this.$t('labelText.memo')}</td>
+                    <td class="td-center">:</td>
+                    <td class="td-right"><pre class="max-size-height max-size-width margin-none"><xmp>${JSON.stringify(this.createForm.config, undefined, 4)}</xmp></pre></td>
+                </tr>
             </table>
           `,
           this.$t('text.createScreenModalConfirmTitle') as string, {
