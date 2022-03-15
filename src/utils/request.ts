@@ -20,6 +20,7 @@ export enum APIErrorCode {
 }
 
 export enum ValidationType {
+  Null = 'null',
   Empty = 'empty',
   Min = 'min',
   Max = 'max',

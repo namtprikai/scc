@@ -2,6 +2,7 @@
 // @import './mixins.scss'; // Already imported in style-resources-loader
 @import './transition.scss';
 @import './svgicon.scss';
+@import './json-editor.scss';
 
 /* Global scss */
 
@@ -160,5 +161,56 @@ aside {
   margin-bottom: 24px;
   .el-form-item__error{
     padding-top: 6px ;
+  }
+}
+
+// custom popup
+.popup-custom {
+  width: 40%;
+
+  table {
+    width: 100%;
+  }
+
+  .td-left {
+  width: 25%;
+  text-align: right;
+  }
+
+  .td-center {
+    width: 5%;
+    text-align: center;
+  }
+
+  .td-right {
+    width: 70%;
+    text-align: left;
+    word-break: break-all;
+  }
+
+  .max-size-height {
+    max-height: 200px;
+    @media only screen and (max-width: 767px) {
+      max-height: 100px;
+    }
+  }
+
+  .max-size-width {
+    max-width: 24vw;
+    @media only screen and (max-width: 767px) {
+      max-width: 60vw;
+    }
+  }
+
+  .margin-none {
+    margin: 0;
+  }
+
+  .overflow-scroll {
+    overflow: auto;
+  }
+
+  @media only screen and (max-width: 767px) {
+    width: 100%;
   }
 }
