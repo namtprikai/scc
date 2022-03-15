@@ -14,6 +14,12 @@ export const createRole = (data: any) =>
     data
   })
 
+export const detailRole = (id: number) =>
+  request({
+    url: `/role/${id}/`,
+    method: 'get'
+  })
+
 export const updateRole = (id: number, data: any) =>
   request({
     url: `/roles/${id}`,
@@ -32,4 +38,15 @@ export const getRoutes = (params: any) =>
     url: '/routes',
     method: 'get',
     params
+  })
+
+export const categoryRole = (id: number) =>
+  request({
+    url: `/role/${id}/category/`,
+    method: 'get'
+  })
+export const questionRole = (id: number) =>
+  request({
+    url: `/role/${id}/question/`,
+    method: 'get'
   })

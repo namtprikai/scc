@@ -54,3 +54,16 @@ export interface IAdminData {
   introduction: string
   roles: string[]
 }
+export interface IRole {
+  label: string
+  isLogin: boolean
+  created: Date | null
+  modified: Date | null
+}
+export interface ICategory {
+  id: number
+  label: string
+  isLogin: boolean
+  created: Date | null
+  modified: Date | null
+}

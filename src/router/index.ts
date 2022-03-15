@@ -96,6 +96,43 @@ export const constantRoutes: RouteConfig[] = [
   {
     path: '/',
     component: Layout,
+    redirect: '/products',
+    meta: {
+      title: 'product',
+      icon: 'list'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import(/* webpackChunkName: "example-create" */ '@/views/product/create.vue'),
+        name: 'CreateProduct',
+        meta: {
+          title: 'createProduct',
+          icon: 'edit',
+          noCache: true,
+          hidden: true
+
+        }
+      }
+    ]
+  },
+  {
+    path: '/role',
+    component: Layout,
+    children: [
+      {
+        path: 'edit/:id(\\d+)',
+        component: () => import(/* webpackChunkName: "edit-role" */ '@/views/role/edit.vue'),
+        name: 'edit-role',
+        meta: {
+          title: 'screenTitle.roleDetailt'
+        }
+      }
+    ]
+  },
+  {
+    path: '*',
+    redirect: '/404',
     meta: { hidden: true }
   }
 ]
