@@ -152,6 +152,10 @@ service.interceptors.response.use(
 
     // Forbidden, Not Found, Internal Server Error
     if ([403, 404, 500].includes(status)) {
+      // Except notfound error show message of active-admin screen
+      if (error.response.config.url?.includes('/admin/enabled/') && error.response.config.url.length > '/admin/enabled/'.length && status === 404) {
+        return Promise.reject(new Error(error.message))
+      }
       const errorCode = data?.errors && data?.errors[0]?.code
       if (errorCode && Object.values(APIErrorCode).includes(errorCode)) {
         Message({
