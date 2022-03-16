@@ -194,15 +194,16 @@ export default class extends Vue {
     }
   }
 
-}
-@media (max-width: 800px) {
-  .test-page-button {
-    display : none;
+  @media (max-width: 768px) {
+    .test-page-button {
+      display : none;
+    }
   }
-}
-@media (max-width: 800px) {
-  .production-page-button {
-    display : none;
+  @media (max-width: 768px) {
+    .production-page-button {
+      display : none;
+    }
   }
+
 }
 </style>
