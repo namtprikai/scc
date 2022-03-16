@@ -20,6 +20,7 @@ export enum APIErrorCode {
 }
 
 export enum ValidationType {
+  Null = 'null',
   Empty = 'empty',
   Min = 'min',
   Max = 'max',
@@ -117,9 +118,15 @@ service.interceptors.response.use(
     }
 
     if (status === 401) {
-      removeAcToken()
-      removeRfToken()
-      router.push('/admin/login')
+      if (error.response.config.url !== '/admin/login/') {
+        removeAcToken()
+        removeRfToken()
+        router.push('/login')
+      }
+
+      return Promise.reject(
+        new APIError(status, APIErrorCode.Unauthorized, data?.errors, message)
+      )
     }
 
     // Validation exception

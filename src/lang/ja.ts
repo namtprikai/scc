@@ -53,8 +53,7 @@ export default {
     conditionConditionGroup: '条件グループ'
   },
   validError: {
-    exists: '既に存在しています',
-    notExists: '存在していません',
+    exists: '存在していません',
     role: '権限が必要です',
     mismatch: '入力したデータが不一致です',
     limit: 'システムの限界を超えています',
@@ -120,7 +119,8 @@ export default {
     userModifySuccess: 'ユーザーを更新しました',
     userConditionModifySuccess: 'ユーザー条件を更新しました',
     userProductModifySuccess: 'ユーザープロダクトを更新しました',
-    userRoleModifySuccess: 'ユーザーロールを更新しました'
+    userRoleModifySuccess: 'ユーザーロールを更新しました',
+    loginError: 'ログイン情報が間違っています'
   },
   screenTitle: {
     error404: 'エラー404',

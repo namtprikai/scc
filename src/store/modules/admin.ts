@@ -1,5 +1,5 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
-import { login, logout, checkToken, getPoliciesAdmin, getDetailAdmin } from '@/api/admins'
+import { login, logout, checkToken, getPoliciesAdmin, getDetailAdmin, resetPassword, changePassword } from '@/api/admins'
 import { getAcToken, setAcToken, removeAcToken, getRfToken, setRfToken, removeRfToken, decodeToken } from '@/utils/cookies'
 import router, { resetRouter } from '@/router'
 import { PermissionModule } from './permission'
@@ -139,7 +139,7 @@ class Admin extends VuexModule implements IAdminState {
     TagsViewModule.delAllViews()
   }
 
-  @Action
+  @Action({ rawError: true })
   public async Login(adminInfo: { username: string, password: string }) {
     let { username, password } = adminInfo
     username = username.trim()
@@ -156,6 +156,12 @@ class Admin extends VuexModule implements IAdminState {
     this.SET_POLICY_GROUPS(tokenObject.policy_groups)
   }
 
+  @Action({ rawError: true })
+  public async ResetPassword(userInfo: { email: string }) {
+    const { email } = userInfo
+    return await resetPassword({ email })
+  }
+
   @Action
   public ResetToken() {
     removeAcToken()
@@ -167,11 +173,10 @@ class Admin extends VuexModule implements IAdminState {
   @Action
   public async CheckToken(refreshToken: string) {
     const { data } = await checkToken({ refresh_token: refreshToken })
-    debugger
     setAcToken(data.access_token)
   }
 
-  // @Action
+  @Action
   public async GetAdminInfo() {
     if (this.acToken === '') {
       throw Error('GetAdminInfo: token is undefined!')
@@ -245,6 +250,13 @@ class Admin extends VuexModule implements IAdminState {
     this.SET_AC_TOKEN('')
     this.SET_RF_TOKEN('')
     this.SET_ROLES([])
+  }
+
+  @Action({ rawError: true })
+  public async ChangePassword(changePass: { password: string, hash: string }) {
+    const { password, hash } = changePass
+    const { data } = await changePassword({ password: password, hash: hash })
+    return data
   }
 }
 

@@ -1,7 +1,6 @@
 export default {
   route: {
   },
-
   login: {
     title: 'Login Form',
     logIn: 'Login',
@@ -39,6 +38,10 @@ export default {
     menuProviderSetting: 'Set Provider',
     loggedInAdminSetting: 'Set Account',
     logout: 'Log Out'
+  },
+  message: {
+    adminActivating: 'Authentication processing ...',
+    adminActiveError: 'Authentication process failed',
+    adminActiveSuccess: 'Authentication process was successful'
   }
-
 }

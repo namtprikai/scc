@@ -14,6 +14,13 @@ export const login = (data: any) =>
     data
   })
 
+export const resetPassword = (data: any) =>
+  request({
+    url: '/admin/reset-password/',
+    method: 'post',
+    data
+  })
+
 export const logout = () =>
   request({
     url: '/admin/logout/',
@@ -38,3 +45,18 @@ export const getPoliciesAdmin = (id: number) =>
     url: `/policy_group/${id}/policy/`,
     method: 'get'
   })
+
+export const enabledVerifyEmail = (params: string) =>
+  request({
+    url: `/admin/enabled/${params}/`,
+    method: 'get'
+  })
+
+export const changePassword = (data: any) => {
+  const { password, hash } = data
+  return request({
+    url: `/admin/reset-password/${hash}/`,
+    method: 'post',
+    data: { password: password }
+  })
+}

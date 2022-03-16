@@ -19,12 +19,25 @@ export const constantRoutes: RouteConfig[] = [
   {
     path: '/login',
     component: () => import(/* webpackChunkName: "login" */ '@/views/login/index.vue'),
-    meta: { hidden: true }
+    meta: {
+      hidden: true,
+      title: 'login'
+    }
   },
   {
     path: '/auth-redirect',
     component: () => import(/* webpackChunkName: "auth-redirect" */ '@/views/login/auth-redirect.vue'),
     meta: { hidden: true }
+  },
+  {
+    path: '/reset-password/:hash',
+    component: () => import('@/views/reset-password/index.vue'),
+    meta: {
+      hidden: true,
+      title: 'resetPassword'
+    },
+
+    props: (route) => ({ hash: route.query })
   },
   {
     path: '/404',
@@ -37,10 +50,25 @@ export const constantRoutes: RouteConfig[] = [
     meta: { hidden: true }
   },
   {
-    path: '/',
-    component: Layout,
-    meta: { hidden: true }
+    path: '/active-admin/:hash',
+    component: () => import('@/views/active-admin/index.vue'),
+    meta: {
+      hidden: true,
+      title: 'activeAdmin'
+    }
   },
+  // {
+  //   path: '/products',
+  //   component: Layout,
+  //   redirect: '/products',
+  //   children: [
+  //     {
+  //       path: 'create',
+  //       component: () => import(/* webpackChunkName: "example-create" */ '@/views/product/create.vue'),
+  //       name: 'CreateProduct',
+  //     }
+  //   ]
+  // },
 
   {
     path: '/profile',
@@ -59,6 +87,16 @@ export const constantRoutes: RouteConfig[] = [
         }
       }
     ]
+  },
+  {
+    path: '*',
+    redirect: '/404',
+    meta: { hidden: true }
+  },
+  {
+    path: '/',
+    component: Layout,
+    meta: { hidden: true }
   }
 ]
 
@@ -71,11 +109,10 @@ export const asyncRoutes: RouteConfig[] = [
   Resource,
   AnalysisPresentState,
   SetProvider
-
 ]
 
 const createRouter = () => new VueRouter({
-  // mode: 'history',  // Disabled due to Github Pages doesn't support this, enable this if you need.
+  mode: 'history',
   scrollBehavior: (to, from, savedPosition) => {
     if (savedPosition) {
       return savedPosition

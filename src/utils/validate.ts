@@ -24,6 +24,7 @@ export const isValidURL = (url: string) => {
 // value: example: length, min value, max value ...
 export const getValidationMessage = (type:ValidationType, name:string|null|undefined|TranslateResult = null, value:number|null = null):string|TranslateResult => {
   switch (type) {
+    case ValidationType.Null:
     case ValidationType.Empty:
       return i18n.t('validError.required', { _field_: name })
     case ValidationType.Min:
