@@ -1,5 +1,5 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
-import { login, logout, checkToken, getPoliciesAdmin, getDetailAdmin, resetPassword } from '@/api/admins'
+import { login, logout, checkToken, getPoliciesAdmin, getDetailAdmin, resetPassword, changePassword } from '@/api/admins'
 import { getAcToken, setAcToken, removeAcToken, getRfToken, setRfToken, removeRfToken, decodeToken } from '@/utils/cookies'
 import router, { resetRouter } from '@/router'
 import { PermissionModule } from './permission'
@@ -250,6 +250,13 @@ class Admin extends VuexModule implements IAdminState {
     this.SET_AC_TOKEN('')
     this.SET_RF_TOKEN('')
     this.SET_ROLES([])
+  }
+
+  @Action({ rawError: true })
+  public async ChangePassword(changePass: { password: string, hash: string }) {
+    const { password, hash } = changePass
+    const { data } = await changePassword({ password: password, hash: hash })
+    return data
   }
 }
 
