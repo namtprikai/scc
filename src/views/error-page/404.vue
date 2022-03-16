@@ -293,7 +293,7 @@ export default class extends Vue {
     }
   }
 }
-@media (max-width: 800px) {
+@media (max-width: 768px) {
   .row {
     flex-direction: column;
   }
