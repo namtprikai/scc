@@ -1,4 +1,6 @@
 import request from '@/utils/request'
+import { ICreateAdminRequest } from './types/request'
+import { ICreateAdminResponse } from './types/response'
 
 export const getAdminInfo = (data: any) =>
   request({
@@ -51,3 +53,7 @@ export const enabledVerifyEmail = (params: string) =>
     url: `/admin/enabled/${params}/`,
     method: 'get'
   })
+
+export const createAdmin = (data: ICreateAdminRequest) => {
+  return request.post<ICreateAdminResponse>('/admin/', data)
+}
