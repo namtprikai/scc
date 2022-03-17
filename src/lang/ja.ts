@@ -201,6 +201,14 @@ export default {
     menuMediaList: 'メディア一覧',
     menuLogSearch: '利用履歴',
     menuValidateList: 'バリデーション一覧',
+    menuGeneralSettingFrame: '基本設定',
+    menuAdminSettingFrame: '管理者設定',
+    menuFaqFrame: 'FAQ',
+    menuFaqSettingFrame: 'FAQ設定',
+    menuResourceFrame: 'リソース',
+    menuPresentAnalysis: '現状分析',
+    menuProviderSetting: 'プロバイダ用設定',
+    menuCsvModify: 'CSV編集',
     menuDirectEdit: '直接編集',
     gotoLoginScreen: 'ログイン画面へ',
     adminIsMasterYes: 'マスター管理者',
@@ -255,4 +263,5 @@ export default {
     productDelete: 'プロダクトを削除しますか？',
     roleDelete: 'ロールを削除しますか？'
   }
+
 }

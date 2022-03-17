@@ -16,8 +16,8 @@
         mode="vertical"
       >
         <sidebar-item
-          v-for="route in routes"
-          :key="route.path"
+          v-for="(route, i) in routes"
+          :key="i"
           :item="route"
           :base-path="route.path"
           :is-collapse="isCollapse"
@@ -72,8 +72,8 @@ export default class extends Vue {
     const route = this.$route
     const { meta, path } = route
     // if set path, the sidebar will highlight the path you set
-    if (meta.activeMenu) {
-      return meta.activeMenu
+    if (meta?.activeMenu) {
+      return meta?.activeMenu
     }
     return path
   }

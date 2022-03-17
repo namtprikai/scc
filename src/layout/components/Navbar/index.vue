@@ -6,31 +6,36 @@
       class="hamburger-container"
       @toggle-click="toggleSideBar"
     />
-    <breadcrumb
-      id="breadcrumb-container"
-      class="breadcrumb-container"
+
+    <logo
+      id="logo-container"
+      class="logo-container"
+    />
+
+    <notification
+      id="notification-container"
+      class="notification-container"
     />
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <header-search class="right-menu-item" />
-        <error-log class="errLog-container right-menu-item hover-effect" />
-        <screenfull class="right-menu-item hover-effect" />
-        <el-tooltip
-          :content="$t('navbar.size')"
-          effect="dark"
-          placement="bottom"
-        >
-          <size-select class="right-menu-item hover-effect" />
-        </el-tooltip>
-        <lang-select class="right-menu-item hover-effect" />
+
+      <el-button onclick="location.href = '#/test-page';" class="test-page-button">
+        {{$t('text.testPage')}}
+      </el-button>
+
+      <el-button onclick="location.href = '#/production-page';" class="production-page-button" >
+        {{$t('text.productionPage')}}
+      </el-button>
+
       </template>
+
       <el-dropdown
         class="avatar-container right-menu-item hover-effect"
         trigger="click"
       >
         <div class="avatar-wrapper">
           <img
-            :src="avatar+'?imageView2/1/w/80/h/80'"
+            :src="'https://toigingiuvedep.vn/wp-content/uploads/2022/01/anh-avatar-cute.jpg'"
             class="user-avatar"
           >
           <i class="el-icon-caret-bottom" />
@@ -38,34 +43,15 @@
         <el-dropdown-menu slot="dropdown">
           <router-link to="/profile/">
             <el-dropdown-item>
-              {{ $t('navbar.profile') }}
-            </el-dropdown-item>
+              {{ $t('text.loggedInAdminSetting') }}
+          </el-dropdown-item>
           </router-link>
-          <router-link to="/">
-            <el-dropdown-item>
-              {{ $t('navbar.dashboard') }}
-            </el-dropdown-item>
-          </router-link>
-          <a
-            target="_blank"
-            href="https://github.com/armour/vue-typescript-admin-template/"
-          >
-            <el-dropdown-item>
-              {{ $t('navbar.github') }}
-            </el-dropdown-item>
-          </a>
-          <a
-            target="_blank"
-            href="https://armour.github.io/vue-typescript-admin-docs/"
-          >
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
           <el-dropdown-item
             divided
-            @click.native="logout"
+            @click.native="handleLogout"
           >
             <span style="display:block;">
-              {{ $t('navbar.logOut') }}
+              {{ $t('text.logout') }}
             </span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -78,26 +64,19 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { AppModule } from '@/store/modules/app'
 import { AdminModule } from '@/store/modules/admin'
-import Breadcrumb from '@/components/Breadcrumb/index.vue'
-import ErrorLog from '@/components/ErrorLog/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
-import HeaderSearch from '@/components/HeaderSearch/index.vue'
-import LangSelect from '@/components/LangSelect/index.vue'
-import Screenfull from '@/components/Screenfull/index.vue'
-import SizeSelect from '@/components/SizeSelect/index.vue'
+import Logo from '@/components/Logo/index.vue'
+import Notification from '@/components/Notification/index.vue'
 
 @Component({
   name: 'Navbar',
   components: {
-    Breadcrumb,
-    ErrorLog,
     Hamburger,
-    HeaderSearch,
-    LangSelect,
-    Screenfull,
-    SizeSelect
+    Logo,
+    Notification
   }
 })
+
 export default class extends Vue {
   get sidebar() {
     return AppModule.sidebar
@@ -111,13 +90,14 @@ export default class extends Vue {
     AppModule.ToggleSideBar(false)
   }
 
-  private async logout() {
-    await AdminModule.LogOut()
+  private handleLogout() {
+    AdminModule.LogOut()
     this.$router.push(`/login?redirect=${this.$route.fullPath}`).catch(err => {
       console.warn(err)
     })
   }
 }
+
 </script>
 
 <style lang="scss" scoped>
@@ -129,26 +109,26 @@ export default class extends Vue {
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {
-    line-height: 46px;
+    line-height: 5px;
     height: 100%;
     float: left;
-    padding: 0 15px;
+    padding: 7px 15px;
     cursor: pointer;
     transition: background .3s;
     -webkit-tap-highlight-color:transparent;
 
+  .logo-container {
+    border-radius: 20px;
+    padding: 5px;
+    float: left;
+  }
+  .notification-container {
+    text-align: center;
+  }
+
     &:hover {
       background: rgba(0, 0, 0, .025)
     }
-  }
-
-  .breadcrumb-container {
-    float: left;
-  }
-
-  .errLog-container {
-    display: inline-block;
-    vertical-align: top;
   }
 
   .right-menu {
@@ -163,9 +143,9 @@ export default class extends Vue {
     .right-menu-item {
       display: inline-block;
       padding: 0 8px;
-      height: 100%;
-      font-size: 18px;
-      color: #5a5e66;
+      height: 60%;
+      font-size: 14px;
+      color: #c0c4cc;
       vertical-align: text-bottom;
 
       &.hover-effect {
@@ -173,7 +153,7 @@ export default class extends Vue {
         transition: background .3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0,0,0, 0)
         }
       }
     }
@@ -182,7 +162,7 @@ export default class extends Vue {
       margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 5px;
+        margin-top: 0px;
         position: relative;
 
         .user-avatar {
@@ -201,6 +181,29 @@ export default class extends Vue {
         }
       }
     }
+    .test-page-button{
+      background-color : rgba(48,65,86);
+      color:#c0c4cc;
+
+    }
+    .production-page-button{
+      background-color : rgba(48,65,86);
+      color:#c0c4cc;
+      margin-right: 8px;
+
+    }
   }
+
+  @media (max-width: 768px) {
+    .test-page-button {
+      display : none;
+    }
+  }
+  @media (max-width: 768px) {
+    .production-page-button {
+      display : none;
+    }
+  }
+
 }
 </style>

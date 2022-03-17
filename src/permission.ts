@@ -76,5 +76,5 @@ router.afterEach((to: Route) => {
   // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
   NProgress.done()
   // set page title
-  document.title = getPageTitle(to.meta.title)
+  document.title = getPageTitle(to?.meta?.title)
 })

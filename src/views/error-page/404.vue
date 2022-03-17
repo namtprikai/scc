@@ -1,6 +1,8 @@
 <template>
   <div class="wscn-http404-container">
     <div class="wscn-http404">
+    <div class="row">
+      <div class="column">
       <div class="pic-404">
         <img
           class="pic-404__parent"
@@ -23,29 +25,34 @@
           alt="404"
         >
       </div>
+      </div>
+
+      <div class="column">
       <div class="text-404">
         <div class="text-404__oops">
           OOPS!
         </div>
         <div class="text-404__info">
-          All rights reserved
+          {{$t('screenTitle.error404')}}
           <a
             style="color:#20a0ff"
             href="https://wallstreetcn.com"
             target="_blank"
-          >wallstreetcn</a>
+          >{{$t('screenTitle.error404')}}</a>
         </div>
         <div class="text-404__headline">
-          {{ message }}
+          {{$t('screenTitle.error404')}}
         </div>
         <div class="text-404__info">
           Please check that the URL you entered is correct, or click the button below to return to the homepage.
         </div>
         <a
-          href=""
+          href="/#/"
           class="text-404__return-home"
-        >Back to home</a>
+        >{{$t('text.back')}}</a>
       </div>
+      </div>
+    </div>
     </div>
   </div>
 </template>
@@ -63,22 +70,28 @@ export default class extends Vue {
 
 <style lang="scss" scoped>
 .wscn-http404-container {
-  transform: translate(-50%,-50%);
-  position: absolute;
-  top: 40%;
-  left: 50%;
-}
 
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  padding-top: 10%;
+  margin-left:10%;
+}
+.column {
+  flex: 50%;
+  padding: 16px;
+
+}
 .wscn-http404 {
   position: relative;
-  width: 1200px;
-  padding: 0 50px;
+  padding: 20px 25px;
   overflow: hidden;
 
   .pic-404 {
     position: relative;
     float: left;
-    width: 600px;
+    max-width: 600px;
     overflow: hidden;
 
     &__parent {
@@ -207,7 +220,7 @@ export default class extends Vue {
   .text-404 {
     position: relative;
     float: left;
-    width: 300px;
+    max-width: 300px;
     padding: 30px 0;
     overflow: hidden;
 
@@ -278,6 +291,11 @@ export default class extends Vue {
         opacity: 1;
       }
     }
+  }
+}
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
   }
 }
 </style>
