@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 
 @Component({
   name: 'Notification'
@@ -23,7 +23,7 @@ export default class extends Vue {
     top: 50%;
     transform: translate(0, -50%);
     padding-left: 20px;
+    padding-top: 5px;
 }
 
 </style>
-

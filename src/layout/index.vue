@@ -10,17 +10,12 @@
     />
     <sidebar class="sidebar-container" />
     <div
-      :class="{hasTagsView: showTagsView}"
       class="main-container"
     >
       <div :class="{'fixed-header': fixedHeader}">
         <navbar />
-        <tags-view v-if="showTagsView" />
       </div>
       <app-main />
-      <right-panel v-if="showSettings">
-        <settings />
-      </right-panel>
     </div>
   </div>
 </template>
