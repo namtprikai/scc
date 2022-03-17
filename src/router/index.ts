@@ -64,10 +64,19 @@ export const constantRoutes: RouteConfig[] = [
     children: [
       {
         path: 'create',
-        component: () => import(/* webpackChunkName: "create-product" */ '@/views/product/create.vue'),
+        component: () => import('@/views/product/create.vue'),
         name: 'CreateProduct',
         meta: {
           title: 'productCreate',
+          hidden: true
+        }
+      },
+      {
+        path: ':id(\\d+)',
+        component: () => import('@/views/product/detail.vue'),
+        name: 'DetailProduct',
+        meta: {
+          title: 'productDetail',
           hidden: true
         }
       }

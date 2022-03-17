@@ -75,3 +75,12 @@ export interface ICategory {
   created: Date | null
   modified: Date | null
 }
+export interface IProductDetailData {
+  id: number
+  name: string
+  maxFailureCountUser: number | null
+  maxFailureTimeUser: number | null
+  config: object
+  created: string
+  modified: string
+}
