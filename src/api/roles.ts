@@ -5,7 +5,7 @@ export const getRoles = () => request.get<IRoleListItemData[]>('/role/')
 
 export const createRole = (data: any) =>
   request({
-    url: '/roles',
+    url: '/role/',
     method: 'post',
     data
   })

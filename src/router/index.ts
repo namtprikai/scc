@@ -136,6 +136,15 @@ export const constantRoutes: RouteConfig[] = [
         meta: {
           title: 'roleDetail'
         }
+      },
+      {
+        path: 'create',
+        component: () => import(/* webpackChunkName: "role-create" */ '@/views/role/create.vue'),
+        name: 'CreateRole',
+        meta: {
+          hidden: true,
+          title: 'roleCreate'
+        }
       }
     ]
   },
