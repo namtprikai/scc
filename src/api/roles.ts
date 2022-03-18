@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { IEditRole, IRole } from './types'
 
 export const getRoles = (params: any) =>
   request({
@@ -20,10 +21,10 @@ export const detailRole = (id: number) =>
     method: 'get'
   })
 
-export const updateRole = (id: number, data: any) =>
+export const updateRole = (id: number, data: IEditRole) =>
   request({
-    url: `/roles/${id}`,
-    method: 'put',
+    url: `/role/${id}/`,
+    method: 'patch',
     data
   })
 

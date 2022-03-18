@@ -60,9 +60,16 @@ export interface IRole {
   created: Date | null
   modified: Date | null
 }
+
+export interface IEditRole{
+  label:string
+  is_login:boolean
+}
+
 export interface ICategory {
   id: number
   label: string
+  text:string
   isLogin: boolean
   created: Date | null
   modified: Date | null

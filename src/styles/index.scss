@@ -220,13 +220,15 @@ aside {
   @media only screen and (max-width: 767px) {
     width: 100%;
   }
-  //form-style
-  .el-form {
-    &.el-form--label-top {
-      .el-form-item {
-        label {
-          font-weight: normal;
-        }
+}
+
+//form-style
+.el-form {
+  &.el-form--label-top {
+    .el-form-item {
+      .el-form-item__label {
+        font-weight: normal;
+        line-height: 20px;
       }
     }
   }
