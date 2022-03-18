@@ -37,22 +37,27 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
   components: {}
 })
 export default class extends Vue {
-  isSubmitForm = false
-  isShowDialog = false
   @Prop({ default: () => null }) private confirmData!: any;
   @Prop({ default: () => false }) private confirmdialogVisible!: boolean;
   @Prop({ default: () => null }) private title!: string;
   @Prop({ default: () => 25 }) private keyColumnWidth!: string;
   @Prop({ default: () => 75 }) private valueColumnWidth!: string;
 
+  get visible() {
+    return this.confirmdialogVisible
+  }
+
+  set visible(value) {
+    this.$emit('update:confirmdialogVisible', value)
+  }
+
   closeModal() {
-    this.isShowDialog = false
-    this.$emit('confirmDialogVisibleWasUpdated', this.isShowDialog = false)
+    this.visible = false
   }
 
   submit() {
     this.closeModal()
-    this.$root.$emit('submitForm')
+    this.$emit('ok')
   }
 }
 </script>
