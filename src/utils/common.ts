@@ -16,7 +16,7 @@ export const isMasterAdmin = () => {
 
 export const hasPolicy = (policyUriName: string, policyMethod: string) => {
   const hasPolicy = AdminModule.policyList.find(x => x.uriName === policyUriName && x.method === policyMethod)
-  if (hasPolicy) {
+  if (AdminModule.isMaster || hasPolicy) {
     return true
   }
   return false

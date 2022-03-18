@@ -197,8 +197,8 @@ class Admin extends VuexModule implements IAdminState {
             label: element.label,
             isActive: element.is_active,
             description: element.description,
-            uriName: '',
-            method: '',
+            uriName: element.uri_name,
+            method: element.method,
             modified: element.modified,
             created: element.created
           }
