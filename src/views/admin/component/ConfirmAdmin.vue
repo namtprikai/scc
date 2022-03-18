@@ -16,8 +16,8 @@
         </el-table-column>
         <el-table-column :minWidth="valueColumnWidth" prop="value">
             <template slot-scope="{row}">
-                <pre v-if="row.type === 'json'">
-                    <div>{{row.value}}</div>
+                <pre class="pre" v-if="row.type === 'json'">
+                    <div class="json-preview">{{row.value}}</div>
                 </pre>
                 <span v-else>{{ row.value }}</span>
             </template>
@@ -84,6 +84,13 @@ export default class extends Vue {
   }
   ::v-deep .text-right {
     text-align: right !important;
+  }
+  .pre{
+    margin: 0;
+  }
+  .json-preview{
+    margin-top: -24px;
+    margin-bottom: -48px;
   }
 }
 </style>

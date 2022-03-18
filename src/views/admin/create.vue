@@ -160,8 +160,8 @@ export default class extends Vue {
   async handleSubmit() {
     this.resetMessageValidate()
     const model: ICreateAdminRequest = {
-      name: this.createForm.loginName,
-      email: this.createForm.email,
+      name: this.createForm.loginName.trim(),
+      email: this.createForm.email.trim(),
       is_master: this.createForm.isMaster,
       config: this.createForm.config
     }
