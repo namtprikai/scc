@@ -10,7 +10,7 @@ import settings from './settings'
 
 NProgress.configure({ showSpinner: false })
 
-const whiteList = ['/login', '/auth-redirect', '/active-admin', '/404']
+const whiteList = ['/login', '/auth-redirect', '/active-admin', '/404', '/reset-password']
 
 const getPageTitle = (key: string) => {
   const hasKey = i18n.te(`screenTitle.${key}`)
@@ -60,7 +60,7 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
     }
   } else {
     // Has no token
-    if (whiteList.indexOf(to.path) !== -1 || whiteList.find(() => to.path.includes('active-admin'))) {
+    if (whiteList.indexOf(to.path) !== -1 || whiteList.find(() => to.path.includes('active-admin')) || to.path.includes('reset-password')) {
       // In the free login whitelist, go directly
       next()
     } else {
@@ -76,5 +76,5 @@ router.afterEach((to: Route) => {
   // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
   NProgress.done()
   // set page title
-  document.title = getPageTitle(to.meta.title)
+  document.title = getPageTitle(to?.meta?.title)
 })

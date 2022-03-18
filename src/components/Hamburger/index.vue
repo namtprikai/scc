@@ -8,7 +8,10 @@
       width="20"
       height="20"
     />
+    <p class="version">V0.1</p>
+
   </div>
+
 </template>
 
 <script lang="ts">
@@ -30,8 +33,8 @@ export default class extends Vue {
 .svg-icon {
   vertical-align: middle;
 }
-
-.is-active {
-  transform: rotate(180deg);
+.version{
+  font-size: 10px;
 }
+
 </style>

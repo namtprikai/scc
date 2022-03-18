@@ -57,3 +57,12 @@ export const enabledVerifyEmail = (params: string) =>
 export const createAdmin = (data: ICreateAdminRequest) => {
   return request.post<ICreateAdminResponse>('/admin/', data)
 }
+
+export const changePassword = (data: any) => {
+  const { password, hash } = data
+  return request({
+    url: `/admin/reset-password/${hash}/`,
+    method: 'post',
+    data: { password: password }
+  })
+}
