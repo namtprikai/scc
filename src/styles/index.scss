@@ -214,3 +214,54 @@ aside {
     width: 100%;
   }
 }
+
+.container, .md-container, .sm-container {
+  width: 100%;
+  padding: 20px 16px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .md-container {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+
+  .sm-container {
+    padding-left: 128px;
+    padding-right: 128px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .md-container {
+    padding-left: 96px;
+    padding-right: 96px;
+  }
+
+  .sm-container {
+    padding-left: 160px;
+    padding-right: 160px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .md-container {
+    padding-left: 160px;
+    padding-right: 160px;
+  }
+
+  .sm-container {
+    padding-left: 256px;
+    padding-right: 256px;
+  }
+}
