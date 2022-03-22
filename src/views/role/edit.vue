@@ -1,8 +1,8 @@
 <template>
-  <div class="page-container detail-role-container">
+  <div class="container detail-role-container">
     <role-detail :roleId="roleId" />
-    <list-category :roleId="roleId"  />
-    <list-question :roleId="roleId"  />
+    <list-category :roleId="roleId" class="mt-2" />
+    <list-question :roleId="roleId"  class="mt-2" />
   </div>
 </template>
 
@@ -11,7 +11,6 @@ import RoleDetail from './components/RoleDetail.vue'
 import ListQuestion from './components/ListQuestion.vue'
 import ListCategory from './components/ListCategory.vue'
 import { Component, Vue } from 'vue-property-decorator'
-import _ from 'lodash'
 @Component({
   name: 'EditRole',
   components: {
@@ -27,9 +26,9 @@ export default class extends Vue {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .detail-role-container {
-  padding: 20px 50px 20px 50px;
+  // padding: 20px 50px 20px 50px;
   .mt-2 {
     margin-top: 2rem;
   }

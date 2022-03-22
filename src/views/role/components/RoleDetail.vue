@@ -57,7 +57,7 @@
         </el-button>
       </el-form>
     </el-card>
-    <confirm-edit-role
+    <confirm-dialog
       :dialogVisible.sync="confirmdialogVisible"
       :confirmData="confirmData"
       :title="$t('text.modifyScreenModalConfirmTitle')"
@@ -70,16 +70,15 @@
 import { IRole } from '@/api/types'
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { detailRole, updateRole } from '@/api/roles'
-import _ from 'lodash'
+import { mapKeys, isEqual, camelCase } from 'lodash'
 import { getValidationMessage } from '@/utils/validate'
 import { ValidationError, ValidationType } from '@/utils/request'
-import ConfirmEditRole from './ConfirmEditRole.vue'
 import { ElForm } from 'element-ui/types/form'
-
+import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 @Component({
   name: 'RoleDetail',
   components: {
-    ConfirmEditRole
+    ConfirmDialog
   }
 })
 export default class extends Vue {
@@ -139,24 +138,25 @@ export default class extends Vue {
   async getdetailRole() {
     try {
       const { data } = await detailRole(this.roleId)
-      this.roleData = _.mapKeys(data, (v, k) => _.camelCase(k)) as IRole
+      this.roleData = mapKeys(data, (v, k) => camelCase(k)) as IRole
     } catch (err) {}
   }
 
+  // confirm data
   confirmRoleData() {
     (this.$refs.form as ElForm).validate(async(valid: boolean) => {
       if (valid) {
         this.confirmData = []
-        if (!_.isEqual(this.roleData, this.roleDataEdit)) {
+        if (!isEqual(this.roleData, this.roleDataEdit)) {
           // check label change
-          if (!_.isEqual(this.roleData.label, this.roleDataEdit.label)) {
+          if (!isEqual(this.roleData.label.trim(), this.roleDataEdit.label.trim())) {
             this.confirmData.push({
               key: this.$t('labelText.roleLabel'),
               value: this.roleDataEdit.label
             })
           }
-          // check is Login change
-          if (!_.isEqual(this.roleData.isLogin, this.roleDataEdit.isLogin)) {
+          // check is login change
+          if (!isEqual(this.roleData.isLogin, this.roleDataEdit.isLogin)) {
             this.confirmData.push({
               key: this.$t('labelText.roleIsLogin'),
               value: this.roleDataEdit.isLogin
@@ -172,6 +172,7 @@ export default class extends Vue {
     })
   }
 
+  // submit update role
   async handelUpdateRole() {
     if (!this.confirmData?.length) {
       return
@@ -179,29 +180,30 @@ export default class extends Vue {
     this.isFormSubmitting = true
     try {
       await updateRole(this.roleId, {
-        label: this.roleDataEdit.label,
+        label: this.roleDataEdit.label.trim(),
         is_login: this.roleDataEdit.isLogin
       })
       this.isFormSubmitting = false
+      // show pop up success message
       this.$alert(this.$t('message.roleModifySuccess') as string, '', {
         confirmButtonText: this.$t('text.ok') as string,
         type: 'success',
         center: true
       })
+      // set role origin data is role new data
       this.roleData = { ...this.roleDataEdit }
     } catch (err) {
       this.isFormSubmitting = false
       // check if error 422
       if (err instanceof ValidationError) {
-        const validationError = err as ValidationError
-        if (validationError.data?.length) {
-          const emailError = validationError.data.find(
+        if (err.data?.length) {
+          const errors = err.data.find(
             x => x.value === 'label'
           )
           // get message error
-          if (emailError && emailError?.type?.length) {
+          if (errors && errors?.type?.length) {
             this.dataError.label = getValidationMessage(
-              emailError.type[0],
+              errors.type[0],
               this.$t('labelText.roleLabel')
             )
           }
@@ -212,9 +214,6 @@ export default class extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.w-50 {
-  width: 50%;
-}
 .w-100 {
   width: 100%;
 }

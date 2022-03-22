@@ -3,6 +3,7 @@
     :title="title"
     :visible.sync="visible"
     class="confirmed-dialog"
+    center
     width="30%"
   >
     <el-table :show-header="false"

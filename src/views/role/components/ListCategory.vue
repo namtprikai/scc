@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <el-card class="box-card mt-2">
+    <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>{{ $t("text.roleCategoryList") }}</span>
       </div>
@@ -44,7 +44,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { ICategory } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
-import _ from 'lodash'
+import { mapKeys, camelCase } from 'lodash'
 import { categoryRole } from '@/api/roles'
 @Component({
   name: 'ListCategoryRole',
@@ -77,18 +77,18 @@ export default class extends Vue {
 
   async getListCategoryRole() {
     try {
-      // this.listLoading = true
+      this.listLoading = true
       const { data } = await categoryRole(this.roleId)
       const categories: Array<ICategory> = []
       data.forEach((element: any) => {
         categories.push(
-          _.mapKeys(element, (v, k) => _.camelCase(k)) as ICategory
+          mapKeys(element, (v, k) => camelCase(k)) as ICategory
         )
       })
       this.categories = categories
-      // this.listLoading = false
+      this.listLoading = false
     } catch (err) {
-      // this.listLoading = false
+      this.listLoading = false
     }
   }
 }

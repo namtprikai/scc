@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <el-card class="box-card mt-2">
+    <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>{{ $t("text.roleQuestionList") }}</span>
       </div>
@@ -26,13 +26,14 @@
         >
           <template slot-scope="{row}">
             <!-- <div v-for="item in row.category" :key="item.id">abc</div> -->
-            <div class="item-category">
+            <div v-if="row.category" class="item-category">
               <el-link
-               class="category-name"
+                class="category-name"
                 v-for="(item, index) in row.category"
-                :key="item.id"
+                :key="index"
                 type="primary"
                 :underline="false"
+                @click="toDetailEditQuestion(item)"
                 >{{
                   `${item}${getseparatorCharactor(index, row.category.length)} `
                 }}</el-link
@@ -75,7 +76,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { questionRole } from '@/api/roles'
 import Pagination from '@/components/Pagination/index.vue'
-import _ from 'lodash'
+import { mapKeys, camelCase } from 'lodash'
 import { ICategory } from '@/api/types'
 
 export interface IQuestionRole {
@@ -119,12 +120,12 @@ export default class extends Vue {
 
   async getListQuestionRole() {
     try {
-      // this.listLoading = true
+      this.listLoading = true
       const { data } = await questionRole(this.roleId)
       const questionRoles: Array<IQuestionRole> = []
       data.forEach((element: any) => {
         questionRoles.push(
-          _.mapKeys(element, (v, k) => _.camelCase(k)) as IQuestionRole
+          mapKeys(element, (v, k) => camelCase(k)) as IQuestionRole
         )
       })
       console.log(questionRoles)
@@ -138,9 +139,9 @@ export default class extends Vue {
         return obj
       })
       // this.list = categories
-      // this.listLoading = false
+      this.listLoading = false
     } catch (err) {
-      // this.listLoading = false
+      this.listLoading = false
     }
   }
 
@@ -153,6 +154,11 @@ export default class extends Vue {
 
   getseparatorCharactor(index: number, length: number) {
     return (index >= 0 && index < length - 1 && length) > 1 ? ',' : ''
+  }
+
+  // route to detail edit quesiton
+  toDetailEditQuestion(id:string) {
+    this.$router.push({ name: 'DetailEditQuestion', params: { id } })
   }
 }
 </script>
