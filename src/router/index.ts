@@ -64,7 +64,7 @@ export const constantRoutes: RouteConfig[] = [
     children: [
       {
         path: 'create',
-        component: () => import('@/views/product/create.vue'),
+        component: () => import(/* webpackChunkName: "create-product" */ '@/views/product/create.vue'),
         name: 'CreateProduct',
         meta: {
           title: 'productCreate',
@@ -73,7 +73,7 @@ export const constantRoutes: RouteConfig[] = [
       },
       {
         path: ':id(\\d+)',
-        component: () => import('@/views/product/detail.vue'),
+        component: () => import(/* webpackChunkName: "detail-product" */ '@/views/product/detail.vue'),
         name: 'DetailProduct',
         meta: {
           title: 'productDetail',

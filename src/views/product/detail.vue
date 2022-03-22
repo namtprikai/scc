@@ -5,11 +5,10 @@
       class="form-product"
       ref="updateForm"
       label-position="top"
-      :rules="createRules"
+      :rules="updateRules"
       :model="updateForm"
     >
       <el-form-item :label="$t('labelText.id')">
-        <!-- <span slot="label">{{ $t("labelText.id") }}</span> -->
         <el-input v-model="updateForm.id" tabindex="1" disabled></el-input>
       </el-form-item>
       <el-form-item :label="$t('labelText.created')">
@@ -37,6 +36,7 @@
       >
         <el-input
           v-model="updateForm.name"
+          @blur="updateForm.name = updateForm.name.trim()"
           tabindex="4"
           autofocus
         ></el-input>
@@ -72,12 +72,19 @@
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submit" tabindex="8">{{
+        <el-button type="primary" tabindex="8"
+        @click.native.prevent="confirmProductData">{{
           $t("text.update")
         }}</el-button>
       </el-form-item>
     </el-form>
     </el-card>
+    <confirm-dialog
+      :dialogVisible.sync="confirmdialogVisible"
+      :confirmData="confirmData"
+      :title="$t('text.modifyScreenModalConfirmTitle')"
+      @ok="handleSubmit"
+    />
   </div>
 </template>
 
@@ -90,16 +97,20 @@ import { ValidationError, ValidationType } from '@/utils/request'
 import { getValidationMessage } from '@/utils/validate'
 import { ProductErrorValue } from './product-error-value'
 import { IProductDetailData } from '@/api/types'
-import { mapKeys, snakeCase, camelCase } from 'lodash'
+import { mapKeys, snakeCase, camelCase, isEqual } from 'lodash'
+import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 
 @Component({
   name: 'DetailProduct',
   components: {
-    JsonEditor
+    JsonEditor,
+    ConfirmDialog
   }
 })
 
 export default class extends Vue {
+  confirmData: any = null;
+  public confirmdialogVisible = false;
   public labelPosition = 'right';
   public createProductError: any = {
     productName: null,
@@ -130,7 +141,8 @@ export default class extends Vue {
 
   created() {
     const id = this.$route.params && this.$route.params.id
-    this.fetchData(parseInt(id))
+    this.updateForm.id = parseInt(id)
+    this.fetchData(this.updateForm.id)
   }
 
   private async fetchData(id: number) {
@@ -141,8 +153,8 @@ export default class extends Vue {
   }
 
   // createProduct rules
-  public createRules = {
-    productName: [
+  public updateRules = {
+    name: [
       {
         required: true,
         message: getValidationMessage(
@@ -164,153 +176,124 @@ export default class extends Vue {
     }
   }
 
-  public submit() {
+  public confirmProductData() {
+    (this.$refs.updateForm as ElForm).validate(async(valid: boolean) => {
+      if (valid) {
+        this.confirmData = []
+        if (!isEqual(this.updateForm, this.productDataOld)) {
+          // check name change
+          if (!isEqual(this.updateForm.name, this.productDataOld.name)) {
+            this.confirmData.push({
+              key: this.$t('labelText.productName'),
+              value: this.updateForm.name
+            })
+          }
+
+          // check max failure count user change
+          if (!isEqual(this.updateForm.maxFailureCountUser, this.productDataOld.maxFailureCountUser)) {
+            this.confirmData.push({
+              key: this.$t('labelText.maxFailureCountUser'),
+              value: this.updateForm.maxFailureCountUser
+            })
+          }
+
+          // check max failure time user change
+          if (!isEqual(this.updateForm.maxFailureTimeUser, this.productDataOld.maxFailureTimeUser)) {
+            this.confirmData.push({
+              key: this.$t('labelText.maxFailureTimeUser'),
+              value: this.updateForm.maxFailureTimeUser
+            })
+          }
+
+          // check config change
+          if (!isEqual(this.updateForm.config, this.productDataOld.config)) {
+            this.confirmData.push({
+              key: this.$t('labelText.memo'),
+              value: JSON.stringify(this.updateForm.config, undefined, 4),
+              type: 'json'
+            })
+          }
+        }
+        this.confirmdialogVisible = true
+      } else {
+        return false
+      }
+    })
+  }
+
+  public handleSubmit() {
     (this.$refs.updateForm as ElForm).validate(async(valid: boolean) => {
       if (valid) {
         this.resetMessageValidate()
-        const name =
-          this.updateForm.name.trim() === null
-            ? ''
-            : this.updateForm.name
-              .trim()
-            // eslint-disable-next-line prefer-regex-literals
-              .replace(new RegExp('<', 'g'), '&lt;')
-            // eslint-disable-next-line prefer-regex-literals
-              .replace(new RegExp('>', 'g'), '&gt;')
-        this.$confirm(
-          `
-            ${JSON.stringify(this.updateForm) === JSON.stringify(this.productDataOld)
-            ? `${this.$t('helpText.screenItemNothingChanged')}`
-            : ''}
-            <table class="message">
-                ${this.updateForm.name !== this.productDataOld.name
-                ? `<tr>
-                    <td class="td-left">${this.$t('labelText.productName')}</td>
-                    <td class="td-center">:</td>
-                    <td class="td-right">
-                      <div class="max-size-height overflow-scroll">${name}</div>
-                    </td>
-                  </tr>
-                  `
-                  : ''}
-                ${this.updateForm.maxFailureCountUser !== this.productDataOld.maxFailureCountUser
-                  ? `<tr>
-                      <td class="td-left">${this.$t('labelText.maxFailureCountUser')}</td>
-                      <td class="td-center">:</td>
-                      <td class="td-right">${this.updateForm.maxFailureCountUser}</td>
-                  </tr>
-                  `
-                  : ''}
-                ${this.updateForm.maxFailureTimeUser !== this.productDataOld.maxFailureTimeUser
-                  ? `<tr>
-                      <td class="td-left">${this.$t('labelText.maxFailureTimeUser')}</td>
-                      <td class="td-center">:</td>
-                      <td class="td-right">${this.updateForm.maxFailureTimeUser}</td>
-                  </tr>
-                  `
-                  : ''}
-                ${JSON.stringify(this.updateForm.config) !== JSON.stringify(this.productDataOld.config)
-                  ? `<tr>
-                      <td class="td-left">${this.$t('labelText.memo')}</td>
-                      <td class="td-center">:</td>
-                      <td class="td-right"><pre class="max-size-height max-size-width margin-none"><xmp>${JSON.stringify(this.updateForm.config, undefined, 4)}</xmp></pre></td>
-                  </tr>
-                  `
-                  : ''}
-            </table>
-          `,
-          this.$t('text.modifyScreenModalConfirmTitle') as string,
-          {
-            confirmButtonText: this.$t('text.ok') as string,
-            cancelButtonText: this.$t('text.cancel') as string,
-            type: 'info',
-            dangerouslyUseHTMLString: true,
-            center: true,
-            customClass: 'popup-custom'
+        const dataPost = {
+          name:
+            this.updateForm.name.trim() === ''
+              ? null
+              : this.updateForm.name.trim(),
+          config: this.updateForm.config,
+          maxFailureCountUser:
+            this.updateForm.maxFailureCountUser?.toString() === ''
+              ? null
+              : this.updateForm.maxFailureCountUser,
+          maxFailureTimeUser:
+            this.updateForm.maxFailureTimeUser?.toString() === ''
+              ? null
+              : this.updateForm.maxFailureTimeUser
+        }
+        try {
+          const { data } = await updateProduct(this.updateForm.id, mapKeys(dataPost, (v, k) => snakeCase(k)))
+          if (data) {
+            this.productDataOld = Object.assign({}, this.updateForm)
+            // show modal create successfully
+            this.$alert(
+              this.$t('message.productModifySuccess') as string,
+              '',
+              {
+                confirmButtonText: this.$t('text.ok') as string,
+                type: 'success',
+                center: true
+              }
+            )
           }
-        )
-          .then(async() => {
-            try {
-              const dataPost = {
-                name:
-                  this.updateForm.name.trim() === ''
-                    ? null
-                    : this.updateForm.name.trim(),
-                config: this.updateForm.config,
-                maxFailureCountUser:
-                  this.updateForm.maxFailureCountUser?.toString() === ''
-                    ? null
-                    : this.updateForm.maxFailureCountUser,
-                maxFailureTimeUser:
-                  this.updateForm.maxFailureTimeUser?.toString() === ''
-                    ? null
-                    : this.updateForm.maxFailureTimeUser
-              }
-              try {
-                const { data } = await updateProduct(this.updateForm.id, mapKeys(dataPost, (v, k) => snakeCase(k)))
-                if (data) {
-                  this.productDataOld = Object.assign({}, this.updateForm)
-                  // show modal create successfully
-                  this.$alert(
-                    this.$t('message.productModifySuccess') as string,
-                    '',
-                    {
-                      confirmButtonText: this.$t('text.ok') as string,
-                      type: 'success',
-                      center: true
-                    }
-                  )
+        } catch (err) {
+          // check if error 422
+          if (err instanceof ValidationError) {
+            const validationError = err as ValidationError
+            if (validationError.data?.length) {
+              validationError.data.forEach(err => {
+                // get message error
+                switch (err.value) {
+                  case ProductErrorValue.Name:
+                    this.createProductError.productName = getValidationMessage(
+                      err.type[0],
+                      this.$t('labelText.productName')
+                    )
+                    break
+                  case ProductErrorValue.MaxFailureCountUser:
+                    this.createProductError.maxFailureCountUser = getValidationMessage(
+                      err.type[0],
+                      this.$t('labelText.maxFailureCountUser')
+                    )
+                    break
+                  case ProductErrorValue.MaxFailureTimeUser:
+                    this.createProductError.maxFailureTimeUser = getValidationMessage(
+                      err.type[0],
+                      this.$t('labelText.maxFailureTimeUser')
+                    )
+                    break
+                  case ProductErrorValue.Config:
+                    this.createProductError.config = getValidationMessage(
+                      err.type[0],
+                      this.$t('labelText.memo')
+                    )
+                    break
+                  default:
+                    break
                 }
-              } catch (err) {
-                // check if error 422
-                if (err instanceof ValidationError) {
-                  const validationError = err as ValidationError
-                  if (validationError.data?.length) {
-                    validationError.data.forEach(err => {
-                      // get message error
-                      switch (err.value) {
-                        case ProductErrorValue.Name:
-                          this.createProductError.productName = getValidationMessage(
-                            err.type[0],
-                            this.$t('labelText.productName')
-                          )
-                          break
-                        case ProductErrorValue.MaxFailureCountUser:
-                          this.createProductError.maxFailureCountUser = getValidationMessage(
-                            err.type[0],
-                            this.$t('labelText.maxFailureCountUser')
-                          )
-                          break
-                        case ProductErrorValue.MaxFailureTimeUser:
-                          this.createProductError.maxFailureTimeUser = getValidationMessage(
-                            err.type[0],
-                            this.$t('labelText.maxFailureTimeUser')
-                          )
-                          break
-                        case ProductErrorValue.Config:
-                          this.createProductError.config = getValidationMessage(
-                            err.type[0],
-                            this.$t('labelText.memo')
-                          )
-                          break
-                        default:
-                          break
-                      }
-                    })
-                  }
-                }
-              }
-            } catch (err) {
-              this.$message({
-                message: err as string,
-                type: 'error',
-                duration: 5 * 1000
               })
             }
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-          })
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          .catch(() => {})
+          }
+        }
       } else {
         return false
       }
