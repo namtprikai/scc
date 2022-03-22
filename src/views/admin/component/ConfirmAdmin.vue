@@ -4,7 +4,7 @@
    :visible.sync="confirmdialogVisible"
    :before-close="closeModal"
    class="confirmed-dialog">
-      <el-table :show-header="false" :data="confirmData" style="width: 100%">
+      <el-table :show-header="false" :data="confirmData" class="width-dialog">
         <el-table-column
             :minWidth="keyColumnWidth"
             class-name="text-right"
@@ -63,6 +63,9 @@ export default class extends Vue {
 </script>
 <style lang="scss" scoped>
 .confirmed-dialog {
+  .width-dialog{
+    width: 100%;
+  }
   ::v-deep .el-dialog__header{
       text-align: center;
   }
