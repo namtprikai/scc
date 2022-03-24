@@ -40,7 +40,7 @@
     </el-form>
     <comfirm-modal
       :title="$t('text.createScreenModalConfirmTitle')"
-      :confirmdialogVisible.sync="dialogFormVisible"
+      :dialogVisible.sync="dialogFormVisible"
       :confirmData="confirmData"
       @ok="handleSubmit"
       >
@@ -59,7 +59,7 @@ import { createAdmin } from '@/api/admins'
 import { ICreateAdminRequest } from '@/api/types/request'
 import { ElForm } from 'element-ui/types/form'
 import { CreateEditAdminErrorValue } from './type'
-import ComfirmModal from './component/ConfirmAdmin.vue'
+import ComfirmModal from '@/components/ConfirmDialog/index.vue'
 
 interface ICreateAdminItem {
     loginName: string
@@ -132,7 +132,6 @@ export default class extends Vue {
 
   async created() {
     this.showCheckbox = isMasterAdmin()
-    this.$root.$refs.CreateAdmin = this
   }
 
   private async showModal() {
@@ -219,7 +218,6 @@ export default class extends Vue {
 
 <style lang="scss" scoped>
 .create-admin-container {
-  padding: 15px;
   .item-master{
       margin-bottom: 12px;
   }
@@ -234,64 +232,6 @@ export default class extends Vue {
       ::v-deep .el-form-item__label{
       float: none;
     }
-  }
-  // .form-create-admin{
-  //   width: 70%;
-  //   margin: 20px auto;
-  //   @media only screen and (max-width: 767px) {
-  //     width: 100%;
-  //   }
-  // }
-}
-
-.container, .md-container, .sm-container {
-  width: 100%;
-  padding: 1.25rem 1rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media (min-width: 768px) {
-  .md-container {
-    padding-left: 4rem;
-    padding-right: 4rem
-  }
-
-  .sm-container {
-    padding-left: 8rem;
-    padding-right: 8rem
-  }
-}
-@media (min-width: 992px) {
-  .container {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-  }
-
-  .md-container {
-    padding-left: 6rem;
-    padding-right: 6rem;
-  }
-
-  .sm-container {
-    padding-left: 10rem;
-    padding-right: 10rem;
-  }
-}
-@media (min-width: 1200px) {
-  .container {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-
-  .md-container {
-    padding-left: 10rem;
-    padding-right: 10rem;
-  }
-
-  .sm-container {
-    padding-left: 16rem;
-    padding-right: 16rem;
   }
 }
 </style>
