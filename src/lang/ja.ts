@@ -50,7 +50,10 @@ export default {
     userConfig: 'メモ',
     userIsAuto: '自動生成ユーザー',
     conditionLabel: 'ラベル',
-    conditionConditionGroup: '条件グループ'
+    conditionConditionGroup: '条件グループ',
+    mediaFileName: 'ファイル名',
+    mediaFilePath: 'ファイルパス',
+    mediaFileSize: 'ファイルサイズ'
   },
   validError: {
     exists: '存在していません',
@@ -250,7 +253,17 @@ export default {
     userIsAutoYes: 'ログイン必要',
     userIsAutoNo: '自動生成',
     createScreenModalConfirmTitle: '入力内容確認',
-    modifyScreenModalConfirmTitle: '変更項目内容確認'
+    modifyScreenModalConfirmTitle: '変更項目内容確認',
+    mediaReload: 'リロード',
+    mediaUpload: 'アップロード',
+    mediaUrlCopy: 'URLコピー',
+    mediaSearchBar: 'ファイル名から絞り込む　※ファイル名に存在する文字列を入力してください',
+    mediaInsert: 'メディア新規追加',
+    adminDetail: '管理者詳細',
+    roleDetail: 'ロールの詳細',
+    roleCategoryList: 'ロールのカテゴリリスト',
+    roleQuestionList: 'ロールの質問リスト',
+    userDetail: 'ユーザー詳細'
   },
   helpText: {
     screenItemNothingChanged: '変更項目がありません',
@@ -261,7 +274,10 @@ export default {
     userEnableAsk: 'ユーザーを有効化に変更しますか？',
     userDisableAsk: 'ユーザーを無効化に変更しますか？',
     productDelete: 'プロダクトを削除しますか？',
-    roleDelete: 'ロールを削除しますか？'
+    roleDelete: 'ロールを削除しますか？',
+    mediaSelect: 'メディアを選択してください',
+    mediaDeleteOnce: '以下のファイルが削除されます。よろしいですか。',
+    mediaDelete: 'ファイルが削除されます。よろしいですか。'
   }
 
 }
