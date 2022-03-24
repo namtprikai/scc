@@ -117,7 +117,7 @@ export const constantRoutes: RouteConfig[] = [
         }
       },
       {
-        path: 'edit/:adminId(\\d+)',
+        path: ':adminId(\\d+)',
         component: () => import(/* webpackChunkName: "example-create" */ '@/views/admin/edit.vue'),
         name: 'EditAdmin',
         meta: {
