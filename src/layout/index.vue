@@ -115,11 +115,11 @@ export default class extends mixins(ResizeMixin) {
 
 .hideSidebar {
   .main-container {
-    margin-left: 54px;
+    margin-left: 0px;
   }
 
   .sidebar-container {
-    width: 54px !important;
+    width: 0px !important;
   }
 
   .fixed-header {
