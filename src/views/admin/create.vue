@@ -38,13 +38,13 @@
         >{{ $t('text.submit') }}</el-button>
       </el-form-item>
     </el-form>
-    <comfirm-modal
+    <confirm-dialog
       :title="$t('text.createScreenModalConfirmTitle')"
       :dialogVisible.sync="dialogFormVisible"
       :confirmData="confirmData"
       @ok="handleSubmit"
       >
-    </comfirm-modal>
+    </confirm-dialog>
   </div>
 
 </template>
@@ -59,7 +59,7 @@ import { createAdmin } from '@/api/admins'
 import { ICreateAdminRequest } from '@/api/types/request'
 import { ElForm } from 'element-ui/types/form'
 import { CreateEditAdminErrorValue } from './type'
-import ComfirmModal from '@/components/ConfirmDialog/index.vue'
+import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 
 interface ICreateAdminItem {
     loginName: string
@@ -79,7 +79,7 @@ interface ICreateAdminError {
   name: 'CreateAdmin',
   components: {
     JsonEditor,
-    ComfirmModal
+    ConfirmDialog
   }
 })
 
