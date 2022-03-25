@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { scrollTo } from '@/utils/scroll-to'
+// import { scrollTo } from '@/utils/scroll-to'
 
 @Component({
   name: 'Pagination'
@@ -52,16 +52,16 @@ export default class extends Vue {
 
   handleSizeChange(value: number) {
     this.$emit('pagination', { page: this.currentPage, limit: value })
-    if (this.autoScroll) {
-      scrollTo(0, 800)
-    }
+    // if (this.autoScroll) {
+    //   scrollTo(0, 800)
+    // }
   }
 
   handleCurrentChange(value: number) {
     this.$emit('pagination', { page: value, limit: this.pageSize })
-    if (this.autoScroll) {
-      scrollTo(0, 800)
-    }
+    // if (this.autoScroll) {
+    //   scrollTo(0, 800)
+    // }
   }
 }
 </script>

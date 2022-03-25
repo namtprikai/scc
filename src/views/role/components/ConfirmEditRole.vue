@@ -2,8 +2,8 @@
   <el-dialog
     :title="title"
     :visible.sync="visible"
-    class="confirmed-dialog"
     center
+    class="confirmed-dialog"
     width="30%"
   >
     <el-table :show-header="false"
@@ -20,12 +20,15 @@
       </el-table-column>
       <el-table-column :minWidth="valueColumnWidth" prop="value">
         <template slot-scope="{row}">
-        <div :class="{'json-format': row.type === 'json'}">{{row.value}}</div>
+          <pre v-if="row.type === 'json'">
+        <div>{{row.value}}</div>
+        </pre>
+          <span v-else>{{ row.value }}</span>
         </template>
       </el-table-column>
     </el-table>
     <span slot="footer" class="dialog-footer flex-center">
-      <el-button @click="cancel">{{ $t("text.cancel") }}</el-button>
+      <el-button @click="hidden">{{ $t("text.cancel") }}</el-button>
       <el-button type="primary"  @click="ok">{{
         $t("text.ok")
       }}</el-button>
@@ -35,20 +38,16 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 @Component({
-  name: 'ConfirmDialog',
+  name: 'ListCategoryRole',
   components: {}
 })
 export default class extends Vue {
-  // confirmdata
+  isShowDialog=false
   @Prop({ default: () => null }) private confirmData!: any;
-  // flag show/hide dialog
   @Prop({ default: () => false }) public dialogVisible!: boolean;
-  // dialog title
   @Prop({ default: () => null }) private title!: string;
-  // custome with key column
-  @Prop({ default: () => 25 }) private keyColumnWidth!: number;
-  // custome with value column
-  @Prop({ default: () => 75 }) private valueColumnWidth!: number;
+  @Prop({ default: () => 25 }) private keyColumnWidth!: string;
+  @Prop({ default: () => 75 }) private valueColumnWidth!: string;
 
   get visible() {
     return this.dialogVisible
@@ -58,16 +57,13 @@ export default class extends Vue {
     this.$emit('update:dialogVisible', false)
   }
 
-  // click button
   ok() {
-    this.visible = false
+    this.hidden()
     this.$emit('ok')
   }
 
-  // click button cancel
-  cancel() {
+  hidden() {
     this.visible = false
-    this.$emit('cancel')
   }
 }
 </script>
@@ -85,15 +81,9 @@ export default class extends Vue {
     &:before {
       height: 0px;
     }
-    .cell{
-        overflow: auto;
-    }
   }
   ::v-deep .text-right {
     text-align: right !important;
-  }
-  .json-format{
-      white-space: pre;
   }
 }
 </style>

@@ -89,6 +89,22 @@ export const constantRoutes: RouteConfig[] = [
     ]
   },
   {
+    path: '/roles',
+    component: Layout,
+    redirect: '/roles/list',
+    meta: { hidden: true },
+    children: [
+      {
+        path: ':id(\\d+)',
+        component: () => import(/* webpackChunkName: "edit-role" */ '@/views/role/edit.vue'),
+        name: 'DetailEditRole',
+        meta: {
+          title: 'roleDetail'
+        }
+      }
+    ]
+  },
+  {
     path: '*',
     redirect: '/404',
     meta: { hidden: true }

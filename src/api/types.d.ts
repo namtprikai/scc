@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 export interface IArticleData {
   id: number
   status: string
@@ -53,4 +54,24 @@ export interface IAdminData {
   avatar: string
   introduction: string
   roles: string[]
+}
+export interface IRole {
+  label: string
+  isLogin: boolean
+  created: Date | null
+  modified: Date | null
+}
+
+export interface IEditRole{
+  label:string
+  is_login:boolean
+}
+
+export interface ICategory {
+  id: number
+  label: string
+  text:string
+  isLogin: boolean
+  created: Date | null
+  modified: Date | null
 }
