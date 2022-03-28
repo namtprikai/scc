@@ -2,9 +2,8 @@ import { RouteConfig } from 'vue-router'
 import Layout from '@/layout/index.vue'
 
 const SettingApp: RouteConfig = {
-  path: '/settings',
+  path: '/',
   component: Layout,
-  redirect: '/setting/manager',
   name: 'Setting',
   meta: {
     title: 'menuGeneralSettingFrame'
@@ -12,8 +11,8 @@ const SettingApp: RouteConfig = {
   },
   children: [
     {
-      path: 'manager',
-      component: () => import(/* webpackChunkName: "manager app" */ '@/views/setting/manager/index.vue'),
+      path: 'products',
+      component: () => import(/* webpackChunkName: "product-list" */ '@/views/product/list.vue'),
       name: 'managerapp',
       meta: { title: 'menuAppList' }
     }

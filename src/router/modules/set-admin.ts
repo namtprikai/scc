@@ -2,9 +2,8 @@ import { RouteConfig } from 'vue-router'
 import Layout from '@/layout/index.vue'
 
 const SettingAdmin: RouteConfig = {
-  path: '/set-admin',
+  path: '/',
   component: Layout,
-  redirect: '/set-admin/list-admin',
   name: 'Setting Admin',
   meta: {
     title: 'menuAdminSettingFrame'
@@ -12,14 +11,14 @@ const SettingAdmin: RouteConfig = {
   },
   children: [
     {
-      path: 'list-admin',
+      path: 'admins',
       component: () => import(/* webpackChunkName: "menu2" */ '@/views/set-admin/list-admin/index.vue'),
       name: 'List Admin',
       meta: { title: 'menuAdminList' }
     },
     {
-      path: 'set-permission',
-      component: () => import(/* webpackChunkName: "menu2" */ '@/views/set-admin/set-permission/index.vue'),
+      path: 'roles',
+      component: () => import(/* webpackChunkName: "menu2" */ '@/views/role/list.vue'),
       name: 'Set Permission',
       meta: { title: 'menuPolicySetting' }
     }
