@@ -284,3 +284,8 @@ aside {
     padding-right: 256px;
   }
 }
+
+// Custom pagination
+.el-pagination .el-select .el-input {
+  width: 120px;
+}

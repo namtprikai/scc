@@ -1,12 +1,7 @@
 import request from '@/utils/request'
-import { IEditRole, IRole } from './types'
+import { IEditRole, IRole, IRoleListItemData } from './types'
 
-export const getRoles = (params: any) =>
-  request({
-    url: '/roles',
-    method: 'get',
-    params
-  })
+export const getRoles = () => request.get<IRoleListItemData[]>('/role/')
 
 export const createRole = (data: any) =>
   request({
@@ -28,11 +23,7 @@ export const updateRole = (id: number, data: IEditRole) =>
     data
   })
 
-export const deleteRole = (id: number) =>
-  request({
-    url: `/roles/${id}`,
-    method: 'delete'
-  })
+export const deleteRole = (id: number) => request.delete(`/role/${id}/`)
 
 export const getRoutes = (params: any) =>
   request({
