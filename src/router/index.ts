@@ -57,19 +57,22 @@ export const constantRoutes: RouteConfig[] = [
       title: 'activeAdmin'
     }
   },
-  // {
-  //   path: '/products',
-  //   component: Layout,
-  //   redirect: '/products',
-  //   children: [
-  //     {
-  //       path: 'create',
-  //       component: () => import(/* webpackChunkName: "example-create" */ '@/views/product/create.vue'),
-  //       name: 'CreateProduct',
-  //     }
-  //   ]
-  // },
-
+  {
+    path: '/products',
+    component: Layout,
+    meta: { hidden: true },
+    children: [
+      {
+        path: 'create',
+        component: () => import(/* webpackChunkName: "create-product" */ '@/views/product/create.vue'),
+        name: 'CreateProduct',
+        meta: {
+          title: 'productCreate',
+          hidden: true
+        }
+      }
+    ]
+  },
   {
     path: '/profile',
     component: Layout,

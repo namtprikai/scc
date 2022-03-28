@@ -4,7 +4,7 @@
     :visible.sync="visible"
     class="confirmed-dialog"
     center
-    width="30%"
+    top="0"
   >
     <el-table :show-header="false"
     :empty-text="$t('helpText.screenItemNothingChanged')"
@@ -86,7 +86,10 @@ export default class extends Vue {
       height: 0px;
     }
     .cell{
-        overflow: auto;
+      overflow: auto;
+      div{
+        max-height: 100px;
+      }
     }
   }
   ::v-deep .text-right {
@@ -94,6 +97,14 @@ export default class extends Vue {
   }
   .json-format{
       white-space: pre;
+  }
+  ::v-deep .el-dialog{
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40%;
+    @media (max-width: 767px) {
+      width: 100%;
+    }
   }
 }
 </style>
