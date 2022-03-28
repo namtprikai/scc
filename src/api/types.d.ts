@@ -82,6 +82,8 @@ export interface IProductDetailData {
   maxFailureCountUser: number | null
   maxFailureTimeUser: number | null
   config: object
+  created: string
+  modified: string
 }
 
 export interface IRoleListItemData {
@@ -102,5 +104,3 @@ export interface IProductListItemData {
   created: string
   modified: string
 }
-
-
