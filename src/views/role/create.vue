@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container sm-container">
+  <div class="sm-container">
     <el-form
       ref="createRoleForm"
       :model="createRoleForm"
