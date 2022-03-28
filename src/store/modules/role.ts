@@ -1,7 +1,5 @@
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators'
 import { createRole } from '@/api/roles'
-import { RouteConfig } from 'vue-router'
-import { asyncRoutes, constantRoutes } from '@/router'
 import store from '@/store'
 
 export interface RoleState {
@@ -29,6 +27,7 @@ class Role extends VuexModule implements RoleState {
     let { label, isLogin } = RoleInfo
     label = label.trim()
     const { data } = await createRole({ label: label, is_login: isLogin })
+    return data
   }
 }
 

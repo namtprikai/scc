@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { IEditRole, IRole, IRoleListItemData } from './types'
+import { IEditRole, IRoleListItemData } from './types'
 
 export const getRoles = () => request.get<IRoleListItemData[]>('/role/')
 
