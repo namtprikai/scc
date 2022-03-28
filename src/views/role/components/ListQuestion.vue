@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div class="page-container question-role">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>{{ $t("text.roleQuestionList") }}</span>
@@ -26,18 +26,18 @@
         >
           <template slot-scope="{row}">
             <!-- <div v-for="item in row.category" :key="item.id">abc</div> -->
-            <div v-if="row.category" class="item-category">
-              <el-link
-                class="category-name"
-                v-for="(item, index) in row.category"
-                :key="index"
-                type="primary"
-                :underline="false"
-                @click="toDetailEditQuestion(item)"
-                >{{
-                  `${item}${getseparatorCharactor(index, row.category.length)} `
-                }}</el-link
-              >
+            <div v-if="row.category" class="question-category">
+              <span v-for="(item, index) in row.category" :key="index">
+                <el-link
+                  class="category-name"
+                  type="primary"
+                  :underline="false"
+                  @click="toDetailEditQuestion(item.id)"
+                  >{{ item.label }}</el-link
+                >
+                <!-- show  separator-->
+                <span v-if="row.category.length&&index >= 0 && index < row.category.length - 1">{{' , '}}</span>
+              </span>
             </div>
           </template>
         </el-table-column>
@@ -74,7 +74,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { questionRole } from '@/api/roles'
+import { questionRole, categoryRole } from '@/api/roles'
 import Pagination from '@/components/Pagination/index.vue'
 import { mapKeys, camelCase } from 'lodash'
 import { ICategory } from '@/api/types'
@@ -88,10 +88,14 @@ export interface IQuestionRole {
   created: Date | string
   modified: Date | string
 }
-
-export interface IDetailQuestionRole {
+export interface ICategoryQuestionRole {
   id: number
-  category: Array<ICategory>
+  label: string
+}
+
+export interface IQuestionRoleDetail {
+  id: number
+  category: Array<ICategoryQuestionRole>
   title: string
   label: string
   isPublic: boolean
@@ -105,14 +109,13 @@ export interface IDetailQuestionRole {
 })
 export default class extends Vue {
   listLoading = false;
-  questions: Array<IDetailQuestionRole> = [];
-   private listQuery = {
-     page: 1,
-     limit: 10
-   };
+  questions: Array<IQuestionRoleDetail> = [];
+  private listQuery = {
+    page: 1,
+    limit: 10
+  };
 
   @Prop({ default: () => null }) private roleId!: number;
-  // @Prop({ default: () => null }) private questions!: Array<IDetailQuestionRole>;
 
   created() {
     this.getListQuestionRole()
@@ -121,30 +124,42 @@ export default class extends Vue {
   async getListQuestionRole() {
     try {
       this.listLoading = true
-      const { data } = await questionRole(this.roleId)
-      const questionRoles: Array<IQuestionRole> = []
-      data.forEach((element: any) => {
-        questionRoles.push(
-          mapKeys(element, (v, k) => camelCase(k)) as IQuestionRole
-        )
+      // Get all category role
+      const categoryResponse = await categoryRole(this.roleId, { all: true })
+      const categories: Array<ICategory> = []
+      categoryResponse.data.forEach((element: any) => {
+        categories.push(mapKeys(element, (v, k) => camelCase(k)) as ICategory)
       })
-      console.log(questionRoles)
-
-      this.questions = questionRoles.map(x => {
-        const obj: any = { ...x }
-        // x.category.forEach(categoryId => {
-        //   const category = this.listCartegory.find(x => x.id === categoryId)
-        //   if (category) obj.category.push(category)
-        // })
-        return obj
+      // get question role
+      const questionResponse = await questionRole(this.roleId)
+      const questionRoleDetails: Array<IQuestionRoleDetail> = []
+      questionResponse.data.forEach((element: any) => {
+        // clone to IQuestionRoleDetail from
+        const questionDetail: IQuestionRoleDetail = {
+          ...element,
+          category: []
+        }
+        // get list category of question from list category of role
+        element.category.forEach((categoryId:any) => {
+          const category = categories.find(x => x.id === categoryId)
+          // add category to list of category question
+          if (category) {
+            questionDetail.category.push({
+              id: category.id,
+              label: category.label
+            })
+          }
+        })
+        questionRoleDetails.push(questionDetail)
       })
-      // this.list = categories
+      this.questions = questionRoleDetails
       this.listLoading = false
     } catch (err) {
       this.listLoading = false
     }
   }
 
+  // handle pagination change
   get paginationData() {
     return this.questions.slice(
       (this.listQuery.page - 1) * this.listQuery.limit,
@@ -152,18 +167,21 @@ export default class extends Vue {
     )
   }
 
-  getseparatorCharactor(index: number, length: number) {
-    return (index >= 0 && index < length - 1 && length) > 1 ? ',' : ''
-  }
-
   // route to detail edit quesiton
-  toDetailEditQuestion(id:string) {
+  toDetailEditQuestion(id: string) {
     this.$router.push({ name: 'DetailEditQuestion', params: { id } })
   }
 }
 </script>
 <style lang="scss" scoped>
-.category-name{
-  cursor: pointer;
+.question-role {
+  .category-name {
+    cursor: pointer;
+  }
+  .question-category{
+    .category-name {
+      display: inherit;
+    }
+  }
 }
 </style>
