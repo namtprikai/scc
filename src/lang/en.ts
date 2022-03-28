@@ -13,6 +13,11 @@ export default {
   screenTitle: {
     error404: '404 Page Not Found'
   },
+  labelText: {
+    id: 'ID',
+    productName: 'product_name',
+    action: 'Action'
+  },
   text: {
     back: 'Back go home ',
     testPage: 'Test Page',
@@ -37,11 +42,18 @@ export default {
     menuPresentAnalysis: 'Analysis Present State',
     menuProviderSetting: 'Set Provider',
     loggedInAdminSetting: 'Set Account',
-    logout: 'Log Out'
+    logout: 'Log Out',
+    addNew: 'Add New',
+    delete: 'Delete',
+    detail: 'Detail'
   },
   message: {
     adminActivating: 'Authentication processing ...',
     adminActiveError: 'Authentication process failed',
-    adminActiveSuccess: 'Authentication process was successful'
+    adminActiveSuccess: 'Authentication process was successful',
+    serverConnectError: 'Server connection error'
+  },
+  helpText: {
+    productDelete: 'Delete product ?'
   }
 }

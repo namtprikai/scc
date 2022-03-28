@@ -63,12 +63,19 @@ export const constantRoutes: RouteConfig[] = [
     meta: { hidden: true },
     children: [
       {
+        path: '',
+        component: () => import(/* webpackChunkName: "list-product" */ '@/views/product/list.vue'),
+        name: 'ListProduct',
+        meta: {
+          title: 'productList'
+        }
+      },
+      {
         path: 'create',
         component: () => import(/* webpackChunkName: "create-product" */ '@/views/product/create.vue'),
         name: 'CreateProduct',
         meta: {
-          title: 'productCreate',
-          hidden: true
+          title: 'productCreate'
         }
       },
       {
@@ -81,6 +88,14 @@ export const constantRoutes: RouteConfig[] = [
         }
       }
     ]
+  },
+  {
+    path: '/active-admin/:hash',
+    component: () => import('@/views/active-admin/index.vue'),
+    meta: {
+      hidden: true,
+      title: 'activeAdmin'
+    }
   },
   {
     path: '/profile',
