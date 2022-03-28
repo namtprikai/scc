@@ -70,6 +70,15 @@ export const constantRoutes: RouteConfig[] = [
           title: 'productCreate',
           hidden: true
         }
+      },
+      {
+        path: ':id(\\d+)',
+        component: () => import(/* webpackChunkName: "detail-product" */ '@/views/product/detail.vue'),
+        name: 'DetailProduct',
+        meta: {
+          title: 'productDetail',
+          hidden: true
+        }
       }
     ]
   },

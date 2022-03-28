@@ -6,3 +6,16 @@ export const createProduct = (data: any) =>
     method: 'post',
     data
   })
+
+export const getDetailProduct = (id: number) =>
+  request({
+    url: `/product/${id}/`,
+    method: 'get'
+  })
+
+export const updateProduct = (id: number, data: any) =>
+  request({
+    url: `/product/${id}/`,
+    method: 'patch',
+    data
+  })
