@@ -250,6 +250,25 @@ class Admin extends VuexModule implements IAdminState {
     this.SET_AC_TOKEN('')
     this.SET_RF_TOKEN('')
     this.SET_ROLES([])
+    const adminInfo: IAdminState = {
+      id: 0,
+      acToken: '',
+      rfToken: '',
+      name: '',
+      config: null,
+      isMailauthCompleted: false,
+      isMaster: false,
+      policyGroups: [],
+      roles: [],
+      email: '',
+      isEnabled: false,
+      isLock: false,
+      created: '',
+      modified: '',
+      policyList: [],
+      products: []
+    }
+    this.SET_ADMIN_INFO(adminInfo)
   }
 
   @Action({ rawError: true })

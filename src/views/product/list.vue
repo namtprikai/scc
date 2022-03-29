@@ -76,7 +76,6 @@ export default class extends Vue {
       this.isLoading = true
       await getProduct(this.listQuery).then(response => {
         this.list = response.data
-        console.log(this.list)
         this.total = response.data.length
         if (this.dlt === true && this.total % this.listQuery.limit === 0) {
           this.listQuery.page = this.listQuery.page - 1
@@ -84,7 +83,6 @@ export default class extends Vue {
         }
         const start = (this.listQuery.page - 1) * this.listQuery.limit
         const end = start + this.listQuery.limit
-        console.log(start, end)
         this.list = this.list.slice(start, end)
       })
       this.isLoading = false
@@ -111,9 +109,7 @@ export default class extends Vue {
             return item.id === id
           })
           this.list.splice(index, 1)
-          console.log(index)
           this.dlt = true
-
           this.fetchData()
         } catch (e) {
         }
