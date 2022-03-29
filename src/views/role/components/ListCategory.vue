@@ -57,7 +57,6 @@ export default class extends Vue {
   categories: Array<ICategory> = [];
 
   @Prop({ default: () => null }) private roleId!: number;
-  // @Prop({ default: () => [] }) private categories!: Array<ICategory>;
 
   created() {
     this.getListCategoryRole()

@@ -32,10 +32,11 @@ export const getRoutes = (params: any) =>
     params
   })
 
-export const categoryRole = (id: number) =>
+export const categoryRole = (id: number, params:any = undefined) =>
   request({
     url: `/role/${id}/category/`,
-    method: 'get'
+    method: 'get',
+    params
   })
 export const questionRole = (id: number) =>
   request({
