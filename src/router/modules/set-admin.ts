@@ -2,7 +2,7 @@ import { RouteConfig } from 'vue-router'
 import Layout from '@/layout/index.vue'
 
 const SettingAdmin: RouteConfig = {
-  path: '/',
+  path: '/set-admin',
   component: Layout,
   name: 'Setting Admin',
   meta: {

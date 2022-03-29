@@ -162,9 +162,7 @@ export const constantRoutes: RouteConfig[] = [
     path: '/admins',
     component: Layout,
     redirect: '/admins',
-    meta: {
-      title: 'admin'
-    },
+    meta: { hidden: true },
     children: [
       {
         path: 'create',

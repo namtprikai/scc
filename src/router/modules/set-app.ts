@@ -2,7 +2,7 @@ import { RouteConfig } from 'vue-router'
 import Layout from '@/layout/index.vue'
 
 const SettingApp: RouteConfig = {
-  path: '/',
+  path: '/set-app',
   component: Layout,
   name: 'Setting',
   meta: {
