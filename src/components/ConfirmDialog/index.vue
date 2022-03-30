@@ -6,41 +6,91 @@
     center
     top="0"
   >
-    <el-table :show-header="false"
-    :empty-text="$t('helpText.screenItemNothingChanged')"
-     :data="confirmData" style="width: 100%">
-      <el-table-column
-        :minWidth="keyColumnWidth"
-        class-name="text-right"
-        prop="key"
+    <template v-if="isMultipleSection">
+      <div v-for="(item, index) in confirmData" v-bind:key="index">
+        <div class="section-title">{{ item.sectionTitle }}</div>
+        <el-table
+          :show-header="false"
+          :empty-text="$t('helpText.screenItemNothingChanged')"
+          :data="item.sectionData"
+          style="width: 100%"
+        >
+          <el-table-column
+            :minWidth="keyColumnWidth"
+            class-name="text-right"
+            prop="key"
+          >
+            <template slot-scope="{row}">
+              <span>{{ row.key }}:</span>
+            </template>
+          </el-table-column>
+          <el-table-column :minWidth="valueColumnWidth" prop="value">
+            <template slot-scope="{row}">
+              <div :class="{'json-format': row.type === 'json'}">
+                {{ row.value }}
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </template>
+    <template v-else>
+      <el-table
+        :show-header="false"
+        :empty-text="$t('helpText.screenItemNothingChanged')"
+        :data="confirmData"
+        style="width: 100%"
       >
-        <template slot-scope="{row}">
-          <span>{{ row.key }}:</span>
-        </template>
-      </el-table-column>
-      <el-table-column :minWidth="valueColumnWidth" prop="value">
-        <template slot-scope="{row}">
-        <div :class="{'json-format': row.type === 'json'}">{{row.value}}</div>
-        </template>
-      </el-table-column>
-    </el-table>
+        <el-table-column
+          :minWidth="keyColumnWidth"
+          class-name="text-right"
+          prop="key"
+        >
+          <template slot-scope="{row}">
+            <span>{{ row.key }}:</span>
+          </template>
+        </el-table-column>
+        <el-table-column :minWidth="valueColumnWidth" prop="value">
+          <template slot-scope="{row}">
+            <div :class="{'json-format': row.type === 'json'}">
+              {{ row.value }}
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </template>
+
     <span slot="footer" class="dialog-footer flex-center">
       <el-button @click="cancel">{{ $t("text.cancel") }}</el-button>
-      <el-button type="primary"  @click="ok">{{
-        $t("text.ok")
-      }}</el-button>
+      <el-button type="primary" @click="ok">{{ $t("text.ok") }}</el-button>
     </span>
   </el-dialog>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
+
+interface ConfirmData {
+  key: string
+  value: string
+  type?: string
+}
+
+interface ConfirmDataSection {
+  sectionTitle: string
+  sectionData: ConfirmData[]
+}
+
+export type ConfirmDialogData = ConfirmData[] | ConfirmDataSection[]
+
 @Component({
   name: 'ConfirmDialog',
   components: {}
 })
 export default class extends Vue {
   // confirmdata
-  @Prop({ default: () => null }) private confirmData!: any;
+  @Prop({ default: () => null, required: true }) private confirmData!: ConfirmDialogData;
+  // flag multiple section
+  @Prop({ default: () => false }) public isMultipleSection!: boolean;
   // flag show/hide dialog
   @Prop({ default: () => false }) public dialogVisible!: boolean;
   // dialog title
@@ -73,6 +123,15 @@ export default class extends Vue {
 </script>
 <style lang="scss" scoped>
 .confirmed-dialog {
+  ::v-deep .el-dialog__body {
+    max-height: 70vh;
+    overflow: auto;
+  }
+
+  .section-title {
+    font-size: 16px;
+    margin: 10px 0;
+  }
   .flex-center {
     display: flex;
     justify-content: center;
@@ -85,9 +144,9 @@ export default class extends Vue {
     &:before {
       height: 0px;
     }
-    .cell{
+    .cell {
       overflow: auto;
-      div{
+      div {
         max-height: 100px;
       }
     }
@@ -95,10 +154,10 @@ export default class extends Vue {
   ::v-deep .text-right {
     text-align: right !important;
   }
-  .json-format{
-      white-space: pre;
+  .json-format {
+    white-space: pre;
   }
-  ::v-deep .el-dialog{
+  ::v-deep .el-dialog {
     top: 50%;
     transform: translateY(-50%);
     width: 40%;

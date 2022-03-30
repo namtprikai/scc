@@ -43,33 +43,24 @@ const SettingAdmin: RouteConfig = {
         activeMenu: '/admins'
       }
     },
+    // {
+    //   path: '/policy-groups',
+    //   component: () => import(/* webpackChunkName: "policy-group-list" */ '@/views/policy-group/list.vue'),
+    //   name: 'ListPolicyGroup',
+    //   meta: {
+    //     title: 'policyGroupList',
+    //     name: 'menuPolicySetting'
+    //   }
+    // },
     {
-      path: 'roles',
-      component: () => import(/* webpackChunkName: "roles" */ '@/views/role/list.vue'),
-      name: 'ListRole',
+      path: '/policy-groups/create',
+      component: () => import(/* webpackChunkName: "policy-group-create" */ '@/views/policy-group/create.vue'),
+      name: 'CreatePolicyGroup',
       meta: {
-        name: 'menuPolicySetting',
-        title: 'roleList'
-      }
-    },
-    {
-      path: '/roles/create',
-      component: () => import(/* webpackChunkName: "role-create" */ '@/views/role/create.vue'),
-      name: 'CreateRole',
-      meta: {
+        title: 'policyGroupCreate',
+        noCache: true,
         hidden: true,
-        title: 'roleCreate',
-        activeMenu: '/roles'
-      }
-    },
-    {
-      path: '/roles/:id(\\d+)',
-      component: () => import(/* webpackChunkName: "role-edit" */ '@/views/role/edit.vue'),
-      name: 'EditRole',
-      meta: {
-        title: 'roleDetail',
-        hidden: true,
-        activeMenu: '/roles'
+        activeMenu: '/policy-groups'
       }
     }
   ]
