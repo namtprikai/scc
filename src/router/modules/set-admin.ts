@@ -64,6 +64,17 @@ const SettingAdmin: RouteConfig = {
       }
     },
     {
+      path: '/policy-groups/:id(\\d+)',
+      component: () => import(/* webpackChunkName: "detail-edit-policy-group" */ '@/views/policy-group/edit.vue'),
+      name: 'DetailEditPolicyGroup',
+      meta: {
+        title: 'policyGroupDetail',
+        noCache: true,
+        hidden: true,
+        activeMenu: '/policy-group'
+      }
+    },
+    {
       path: 'policy-groups/policies',
       component: () => import(/* webpackChunkName: "list-policy" */ '@/views/policy/list.vue'),
       name: 'Policies',
@@ -82,6 +93,7 @@ const SettingAdmin: RouteConfig = {
         activeMenu: '/policy-groups',
         hidden: true
       }
+
     }
   ]
 }
