@@ -1,6 +1,6 @@
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators'
 import { RouteConfig } from 'vue-router'
-import { asyncRoutes, constantRoutes } from '@/router'
+import { constantRoutes } from '@/router'
 import store from '@/store'
 
 const hasPermission = (roles: string[], route: RouteConfig) => {
@@ -11,6 +11,7 @@ const hasPermission = (roles: string[], route: RouteConfig) => {
   }
 }
 
+// filter routes by roles
 export const filterAsyncRoutes = (routes: RouteConfig[], roles: string[]) => {
   const res: RouteConfig[] = []
   routes.forEach(route => {
@@ -37,19 +38,13 @@ class Permission extends VuexModule implements IPermissionState {
 
   @Mutation
   private SET_ROUTES(routes: RouteConfig[]) {
-    this.routes = constantRoutes.concat(routes)
+    this.routes = routes
     this.dynamicRoutes = routes
   }
 
   @Action
-  public GenerateRoutes(roles: string[]) {
-    let accessedRoutes
-    if (roles.includes('admin')) {
-      accessedRoutes = asyncRoutes
-    } else {
-      accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-    }
-    this.SET_ROUTES(accessedRoutes)
+  public GenerateRoutes() {
+    this.SET_ROUTES(constantRoutes)
   }
 }
 

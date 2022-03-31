@@ -37,13 +37,12 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
         try {
           // Note: roles must be a object array! such as: ['admin'] or ['developer', 'editor']
           await AdminModule.GetAdminInfo()
-          const roles = ['admin']
           // Generate accessible routes map based on role
-          PermissionModule.GenerateRoutes(roles)
+          PermissionModule.GenerateRoutes()
           // Dynamically add accessible routes
-          PermissionModule.dynamicRoutes.forEach(route => {
-            router.addRoute(route)
-          })
+          // PermissionModule.dynamicRoutes.forEach(route => {
+          //   router.addRoute(route)
+          // })
           // Hack: ensure addRoutes is complete
           // Set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })
