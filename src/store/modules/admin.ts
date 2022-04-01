@@ -1,7 +1,7 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
 import { login, checkToken, getPoliciesAdmin, getDetailAdmin, resetPassword, changePassword } from '@/api/admins'
 import { getAcToken, setAcToken, removeAcToken, getRfToken, setRfToken, removeRfToken, decodeToken } from '@/utils/cookies'
-import router, { resetRouter } from '@/router'
+import { resetRouter } from '@/router'
 import { PermissionModule } from './permission'
 import { TagsViewModule } from './tags-view'
 import store from '@/store'
@@ -130,11 +130,11 @@ class Admin extends VuexModule implements IAdminState {
     // await this.GetUserInfo()
     resetRouter()
     // Generate dynamic accessible routes based on roles
-    PermissionModule.GenerateRoutes(this.roles)
+    PermissionModule.GenerateRoutes()
     // Add generated routes
-    PermissionModule.dynamicRoutes.forEach(route => {
-      router.addRoute(route)
-    })
+    // PermissionModule.dynamicRoutes.forEach(route => {
+    //   router.addRoute(route)
+    // })
     // Reset visited views and cached views
     TagsViewModule.delAllViews()
   }
@@ -150,7 +150,6 @@ class Admin extends VuexModule implements IAdminState {
     this.SET_AC_TOKEN(data.access_token)
     this.SET_RF_TOKEN(data.refresh_token)
     this.SET_ROLES(['admin'])
-    this.ChangeRoles()
     this.SET_NAME(tokenObject.name)
     this.SET_IS_MASTER(tokenObject.is_master)
     this.SET_POLICY_GROUPS(tokenObject.policy_groups)

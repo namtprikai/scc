@@ -5,17 +5,19 @@ const AnalysisPresentState: RouteConfig = {
   path: '/analysis-present-state',
   component: Layout,
   redirect: '/analysis-present-state/usage-history',
-  name: 'analysis-present-state',
+  name: 'MenuPresentAnalysis',
   meta: {
-    title: 'menuPresentAnalysis'
+    name: 'menuPresentAnalysis'
   },
   children: [
-
     {
       path: 'usage-history',
       component: () => import(/* webpackChunkName: "menu2" */ '@/views/analysis-present-state/usage-history/index.vue'),
-      name: 'Usage History',
-      meta: { title: 'menuLogSearch' }
+      name: 'MenuLogSearch',
+      meta: {
+        title: 'menuLogSearch',
+        name: 'menuLogSearch'
+      }
     }
   ]
 }

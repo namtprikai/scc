@@ -5,9 +5,10 @@ const Top: RouteConfig = {
   path: '/',
   component: Layout,
   redirect: '/top',
-  name: 'top',
+  name: 'Top',
   meta: {
-    title: 'menuTop'
+    title: 'menuTop',
+    name: 'menuTop'
   }
 }
 

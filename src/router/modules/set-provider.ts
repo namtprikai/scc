@@ -5,9 +5,9 @@ const SetProvider: RouteConfig = {
   path: '/set_provider',
   component: Layout,
   redirect: '/set_provider/list-validation',
-  name: 'set_provider',
+  name: 'SetProvider',
   meta: {
-    title: 'menuPresentAnalysis'
+    name: 'menuPresentAnalysis'
     // icon: 'set_provider'
   },
   children: [
@@ -15,8 +15,11 @@ const SetProvider: RouteConfig = {
     {
       path: 'list-validation',
       component: () => import(/* webpackChunkName: "menu2" */ '@/views/set-provider/list-validation/index.vue'),
-      name: 'List Validation',
-      meta: { title: 'menuValidateList' }
+      name: 'ListValidation',
+      meta: {
+        title: 'menuValidateList',
+        name: 'menuValidateList'
+      }
     }
 
   ]

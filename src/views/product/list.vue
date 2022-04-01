@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-row v-if = "ishideButton"  type="flex" justify="end">
-      <router-link to="/products/create">
+      <router-link :to="{name: 'CreateProduct'}">
         <el-button class="btn btn--add" type="primary" icon="el-icon-plus">{{ $t('text.addNew') }}</el-button>
       </router-link>
     </el-row>
@@ -25,7 +25,7 @@
       </el-table-column>
       <el-table-column align="center" prop="created_at" :label="$t('labelText.action')" width=200%>
         <template slot-scope="{row}">
-          <router-link :to="'/products/' + row.id">
+          <router-link :to="{name: 'EditProduct', params: {id: row.id}}">
             <el-button class="btn btn--action" type="primary" size="mini" icon="el-icon-view">
               {{ $t('text.detail') }}
             </el-button>

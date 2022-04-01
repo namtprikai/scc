@@ -58,38 +58,6 @@ export const constantRoutes: RouteConfig[] = [
     }
   },
   {
-    path: '/products',
-    component: Layout,
-    meta: { hidden: true },
-    children: [
-      {
-        path: '',
-        component: () => import(/* webpackChunkName: "list-product" */ '@/views/product/list.vue'),
-        name: 'ListProduct',
-        meta: {
-          title: 'productList'
-        }
-      },
-      {
-        path: 'create',
-        component: () => import(/* webpackChunkName: "create-product" */ '@/views/product/create.vue'),
-        name: 'CreateProduct',
-        meta: {
-          title: 'productCreate'
-        }
-      },
-      {
-        path: ':id(\\d+)',
-        component: () => import(/* webpackChunkName: "detail-product" */ '@/views/product/detail.vue'),
-        name: 'DetailProduct',
-        meta: {
-          title: 'productDetail',
-          hidden: true
-        }
-      }
-    ]
-  },
-  {
     path: '/active-admin/:hash',
     component: () => import('@/views/active-admin/index.vue'),
     meta: {
@@ -106,7 +74,6 @@ export const constantRoutes: RouteConfig[] = [
       {
         path: 'index',
         component: () => import(/* webpackChunkName: "profile" */ '@/views/profile/index.vue'),
-        name: 'Profile',
         meta: {
           title: 'profile',
           icon: 'user',
@@ -116,79 +83,10 @@ export const constantRoutes: RouteConfig[] = [
     ]
   },
   {
-    path: '/roles',
-    component: Layout,
-    redirect: '/roles/list',
-    meta: { hidden: true },
-    children: [
-      {
-        path: '',
-        component: () => import('@/views/role/list.vue'),
-        name: 'RoleList',
-        meta: {
-          title: 'roleList'
-        }
-      },
-      {
-        path: ':id(\\d+)',
-        component: () => import(/* webpackChunkName: "edit-role" */ '@/views/role/edit.vue'),
-        name: 'DetailEditRole',
-        meta: {
-          title: 'roleDetail'
-        }
-      },
-      {
-        path: 'create',
-        component: () => import(/* webpackChunkName: "role-create" */ '@/views/role/create.vue'),
-        name: 'CreateRole',
-        meta: {
-          hidden: true,
-          title: 'roleCreate'
-        }
-      }
-    ]
-  },
-  {
-    path: '*',
-    redirect: '/404',
-    meta: { hidden: true }
-  },
-  {
     path: '/',
     component: Layout,
     meta: { hidden: true }
   },
-  {
-    path: '/admins',
-    component: Layout,
-    redirect: '/admins',
-    meta: { hidden: true },
-    children: [
-      {
-        path: 'create',
-        component: () => import(/* webpackChunkName: "example-create" */ '@/views/admin/create.vue'),
-        name: 'CreateAdmin',
-        meta: {
-          title: 'adminCreate',
-          noCache: true,
-          hidden: true
-        }
-      },
-      {
-        path: ':adminId(\\d+)',
-        component: () => import(/* webpackChunkName: "example-create" */ '@/views/admin/edit.vue'),
-        name: 'EditAdmin',
-        meta: {
-          title: 'adminEdit',
-          noCache: true,
-          hidden: true
-        }
-      }
-    ]
-  }
-]
-
-export const asyncRoutes: RouteConfig[] = [
   top,
   SettingApp,
   SettingAdmin,
@@ -196,7 +94,12 @@ export const asyncRoutes: RouteConfig[] = [
   SetFAQ,
   Resource,
   AnalysisPresentState,
-  SetProvider
+  SetProvider,
+  {
+    path: '*',
+    redirect: '/404',
+    meta: { hidden: true }
+  }
 ]
 
 const createRouter = () => new VueRouter({
