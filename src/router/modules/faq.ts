@@ -19,6 +19,17 @@ const FAQ: RouteConfig = {
       }
     },
     {
+      path: 'users/create',
+      component: () => import(/* webpackChunkName: "user-create" */ '@/views/user/create.vue'),
+      name: 'CreateUser',
+      meta: {
+        title: 'userCreate',
+        activeMenu: '/users',
+        noCache: true,
+        hidden: true
+      }
+    },
+    {
       path: 'roles',
       component: () => import(/* webpackChunkName: "roles" */ '@/views/role/list.vue'),
       name: 'ListRole',
