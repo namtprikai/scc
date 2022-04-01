@@ -66,3 +66,7 @@ export const changePassword = (data: any) => {
     data: { password: password }
   })
 }
+
+export const getListAdmin = () => {
+  return request.get('/admin/')
+}

@@ -104,3 +104,18 @@ export interface IProductListItemData {
   created: string
   modified: string
 }
+
+export interface IAdminListItemData {
+  id: number
+  name: string
+  email: string
+  productId: number[]
+  productName: string[]
+  isMailauthCompleted: boolean
+  isMaster: boolean
+  isEnabled: boolean
+  isEnabledStr: string
+  isLock: boolean
+  create: string
+  modified: string
+}
