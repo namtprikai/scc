@@ -38,7 +38,7 @@
           :visible="this.dialogVisibleSuccess"
           width="30%"
           >
-          <span>{{$t('message.roleCreateSuccess')}} </span>
+          <span class='dialog--center'>{{$t('message.roleCreateSuccess')}} </span>
           <span slot="footer" class="dialog-footer">
             <el-button type="primary" @click="redirectList">{{$t('text.ok')}}</el-button>
           </span>
@@ -175,6 +175,11 @@ export default class extends Vue {
   text-align: center;
 }
 .el-dialog__header{
+  text-align: center;
+}
+
+.dialog--center {
+  display: block;
   text-align: center;
 }
 

@@ -11,7 +11,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component({
-  name: 'List Admin'
+  name: 'ListAdmin'
 })
 export default class extends Vue {}
 </script>

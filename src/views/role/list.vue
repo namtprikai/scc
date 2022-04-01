@@ -1,7 +1,7 @@
 <template>
   <div class="container role-list-container">
     <el-row type="flex" justify="end">
-      <router-link to="/roles/create">
+      <router-link :to="{name: 'CreateRole'}">
         <el-button type="primary" icon="el-icon-plus">{{ $t('text.addNew') }}</el-button>
       </router-link>
     </el-row>
@@ -28,7 +28,7 @@
 
       <el-table-column width="200" align="center" :label="$t('labelText.action')">
         <template slot-scope="{row}">
-          <router-link :to="'/roles/' + row.id">
+          <router-link :to="{name: 'EditRole', params: {id: row.id}}">
               <el-button class="role-table__button" type="primary" size="small" icon="el-icon-view">
                   {{ $t('text.detail') }}
               </el-button>

@@ -2,26 +2,31 @@ import { RouteConfig } from 'vue-router'
 import Layout from '@/layout/index.vue'
 
 const FAQ: RouteConfig = {
-  path: '/faq',
+  path: '/',
   component: Layout,
   redirect: '/faq/list-user',
-  name: 'FAQ',
   meta: {
-    title: 'menuFaqFrame'
-    // icon: 'setting'
+    title: 'menuFaqFrame',
+    name: 'menuFaqFrame'
   },
   children: [
     {
-      path: 'list-user',
-      component: () => import(/* webpackChunkName: "menu2" */ '@/views/faq/list-user/index.vue'),
-      name: 'List User',
-      meta: { title: 'menuUserList' }
+      path: 'users',
+      component: () => import(/* webpackChunkName: "list-user" */ '@/views/faq/list-user/index.vue'),
+      name: 'ListUser',
+      meta: {
+        title: 'menuUserList',
+        name: 'menuUserList'
+      }
     },
     {
       path: 'manager-user',
-      component: () => import(/* webpackChunkName: "menu2" */ '@/views/faq/manager-user/index.vue'),
-      name: 'Manager User',
-      meta: { title: 'menuUserRole' }
+      component: () => import(/* webpackChunkName: "manage-user" */ '@/views/faq/manager-user/index.vue'),
+      name: 'ManagerUser',
+      meta: {
+        title: 'menuUserRole',
+        name: 'menuUserRole'
+      }
     }
   ]
 }

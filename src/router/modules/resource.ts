@@ -5,17 +5,18 @@ const Resource: RouteConfig = {
   path: '/resource',
   component: Layout,
   redirect: '/resource/list-media',
-  name: 'resource',
   meta: {
-    title: 'menuResourceFrame'
-    // icon: 'setting'
+    name: 'menuResourceFrame'
   },
   children: [
     {
       path: 'list-media',
-      component: () => import(/* webpackChunkName: "menu2" */ '@/views/resource/list-media/index.vue'),
-      name: 'List Media',
-      meta: { title: 'menuMediaList' }
+      component: () => import(/* webpackChunkName: "list-media" */ '@/views/resource/list-media/index.vue'),
+      name: 'ListMedia',
+      meta: {
+        title: 'menuMediaList',
+        name: 'menuMediaList'
+      }
     }
   ]
 }

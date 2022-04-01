@@ -17,15 +17,15 @@
             :name="theOnlyOneChild.meta.icon"
           />
           <span
-            v-if="theOnlyOneChild.meta.title"
+            v-if="theOnlyOneChild.meta.name"
             slot="title"
-          >{{ $t('text.' + theOnlyOneChild.meta.title) }}</span>
+          >{{ $t('text.' + theOnlyOneChild.meta.name) }}</span>
         </el-menu-item>
       </sidebar-item-link>
     </template>
     <el-submenu
       v-else
-      :index="resolvePath(item.path)"
+      :index="resolvePath(item.meta.name)"
       popper-append-to-body
     >
       <template slot="title">
@@ -34,9 +34,9 @@
           :name="item.meta.icon"
         />
         <span
-          v-if="item.meta && item.meta.title"
+          v-if="item.meta && item.meta.name"
           slot="title"
-        >{{ $t('text.' + item.meta.title) }}</span>
+        >{{ $t('text.' + item.meta.name) }}</span>
       </template>
       <template v-if="item.children">
         <sidebar-item
@@ -96,7 +96,6 @@ export default class extends Vue {
   }
 
   get theOnlyOneChild() {
-    // console.log(this.showingChildNumber)
     if (this.showingChildNumber > 0) {
       return null
     }

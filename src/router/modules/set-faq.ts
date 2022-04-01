@@ -5,29 +5,37 @@ const SetFAQ: RouteConfig = {
   path: '/set-faq',
   component: Layout,
   redirect: '/set-faq/edit_csv',
-  name: 'Set FAQ',
+  name: 'SetFaq',
   meta: {
-    title: 'menuFaqSettingFrame'
-    // icon: 'setting'
+    name: 'menuFaqSettingFrame'
   },
   children: [
     {
       path: 'edit-csv',
       component: () => import(/* webpackChunkName: "menu2" */ '@/views/set-faq/edit-csv/index.vue'),
-      name: 'Edit CSV',
-      meta: { title: 'menuCsvModify' }
+      name: 'EditCsv',
+      meta: {
+        title: 'menuCsvModify',
+        name: 'menuFaqSettingFrame'
+      }
     },
     {
       path: 'direct-edit',
       component: () => import(/* webpackChunkName: "menu2" */ '@/views/set-faq/direct-edit/index.vue'),
-      name: 'Direct Edit',
-      meta: { title: 'menuDirectEdit' }
+      name: 'DirectEdit',
+      meta: {
+        title: 'menuDirectEdit',
+        name: 'menuDirectEdit'
+      }
     },
     {
       path: 'set-keyword',
       component: () => import(/* webpackChunkName: "menu2" */ '@/views/set-faq/set-keyword/index.vue'),
-      name: 'Set Keyword',
-      meta: { title: 'menuKeywordList' }
+      name: 'SetKeyword',
+      meta: {
+        title: 'menuKeywordList',
+        name: 'menuKeywordList'
+      }
     }
   ]
 }
