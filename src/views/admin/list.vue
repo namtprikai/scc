@@ -131,11 +131,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { getListAdmin } from '@/api/admins'
+import { getListAdmin, unlockAdmin, enabledAdmin, disabledAdmin } from '@/api/admins'
 import { getProduct } from '@/api/production'
 import { parseToCamelCase } from '@/utils/parse'
 import { hasPolicy } from '@/utils/common'
 import { IAdminListItemData, IProductListItemData } from '@/api/types'
+import { getValidationMessage } from '@/utils/validate'
+import { ValidationError } from '@/utils/request'
 
 import Pagination from '@/components/Pagination/index.vue'
 
@@ -209,12 +211,75 @@ export default class extends Vue {
     return this.admins.slice(start, end)
   }
 
-  private confirmUnlock(item: IAdminListItemData) {
-    alert(item.id)
+  private async confirmUnlock(item: IAdminListItemData) {
+    try {
+      await unlockAdmin(item.id)
+      this.fetchData()
+    } catch {}
   }
 
-  private confirmEnabledOrDisabled(item: IAdminListItemData) {
-    console.log(item.isEnabledStr)
+  private async confirmEnabledOrDisabled(item: IAdminListItemData) {
+    if (item.isEnabledStr === this.$t('text.disable').toString()) {
+      this.$confirm(this.$tc('helpText.adminDisableAsk'), {
+        confirmButtonText: this.$tc('text.ok'),
+        cancelButtonText: this.$tc('text.cancel'),
+        type: 'warning'
+      }).then(async() => {
+        try {
+          await disabledAdmin(item.id)
+        } catch (err) {
+          if (err instanceof ValidationError) {
+            const validationError = err as ValidationError
+            if (validationError.data?.length) {
+              validationError.data.forEach((err) => {
+                // get message error
+                switch (err.value) {
+                  case 'admin_id':
+                    this.$message({
+                      message: getValidationMessage(err.type[0]) as string,
+                      type: 'error',
+                      duration: 2000
+                    })
+                    break
+                  default:
+                    break
+                }
+              })
+            }
+          }
+        }
+      }).finally(async() => { this.fetchData() })
+    } else if (item.isEnabledStr === this.$t('text.enable').toString()) {
+      this.$confirm(this.$tc('helpText.adminEnableAsk'), {
+        confirmButtonText: this.$tc('text.ok'),
+        cancelButtonText: this.$tc('text.cancel'),
+        type: 'warning'
+      }).then(async() => {
+        try {
+          await enabledAdmin(item.id)
+        } catch (err) {
+          if (err instanceof ValidationError) {
+            const validationError = err as ValidationError
+            if (validationError.data?.length) {
+              validationError.data.forEach((err) => {
+                // get message error
+                switch (err.value) {
+                  case 'admin_id':
+                    this.$message({
+                      message: getValidationMessage(err.type[0]) as string,
+                      type: 'error',
+                      duration: 2000
+                    })
+                    break
+                  default:
+                    break
+                }
+              })
+            }
+          }
+        }
+      }).finally(async() => { this.fetchData() })
+    }
   }
 }
 </script>

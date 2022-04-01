@@ -11,7 +11,7 @@ const SettingAdmin: RouteConfig = {
   children: [
     {
       path: 'admins',
-      component: () => import(/* webpackChunkName: "admins" */ '@/views/set-admin/list-admin/index.vue'),
+      component: () => import(/* webpackChunkName: "admins" */ '@/views/admin/list.vue'),
       name: 'ListAdmin',
       meta: {
         title: 'adminList',
