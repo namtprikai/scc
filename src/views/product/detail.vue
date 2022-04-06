@@ -1,83 +1,87 @@
 <template>
   <div class="sm-container">
     <el-card class="box-card">
-    <el-form
-      class="form-product"
-      ref="updateForm"
-      label-position="top"
-      :rules="updateRules"
-      :model="updateForm"
-    >
-      <el-form-item :label="$t('labelText.id')">
-        <el-input v-model="updateForm.id" tabindex="1" disabled></el-input>
-      </el-form-item>
-      <el-form-item :label="$t('labelText.created')">
-        <el-date-picker
-          class="width-full"
-          type="date"
-          v-model="updateForm.created"
-          tabindex="2"
-          disabled
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item :label="$t('labelText.modified')">
-        <el-date-picker
-          class="width-full"
-          type="date"
-          v-model="updateForm.modified"
-          tabindex="3"
-          disabled
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item
-        :label="$t('labelText.productName')"
-        :error="createProductError.productName"
-        prop="name"
+      <el-form
+        class="form-product"
+        ref="updateForm"
+        label-position="top"
+        :rules="updateRules"
+        :model="updateForm"
       >
-        <el-input
-          v-model="updateForm.name"
-          @blur="updateForm.name = updateForm.name.trim()"
-          tabindex="4"
-          autofocus
-        ></el-input>
-      </el-form-item>
-      <el-form-item
-        :label="$t('labelText.maxFailureCountUser')"
-        :error="createProductError.maxFailureCountUser"
-      >
-        <el-input
-          type="number"
-          v-model.number="updateForm.maxFailureCountUser"
-          tabindex="5"
-        ></el-input>
-      </el-form-item>
-      <el-form-item :label="$t('labelText.maxFailureTimeUser')" :error="createProductError.maxFailureTimeUser">
-        <el-input
-          type="number"
-          v-model.number="updateForm.maxFailureTimeUser"
-          tabindex="6"
-        ></el-input>
-      </el-form-item>
-      <el-form-item :label="$t('labelText.memo')" :error="createProductError.config">
-        <div class="json-editor">
-          <json-editor
-            :options="{
-              confirmText: $t('text.ok'),
-              cancelText: $t('text.cancel')
-            }"
-            :objData="updateForm.config"
-            v-model="updateForm.config"
-            tabindex="7"
-          ></json-editor>
-        </div>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" tabindex="8"
-        @click.native.prevent="confirmProductData">{{
-          $t("text.update")
-        }}</el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item :label="$t('labelText.id')">
+          <el-input v-model="updateForm.id" tabindex="1" disabled></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('labelText.created')">
+          <el-date-picker
+            class="width-full"
+            type="date"
+            v-model="updateForm.created"
+            tabindex="2"
+            disabled
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item :label="$t('labelText.modified')">
+          <el-date-picker
+            class="width-full"
+            type="date"
+            v-model="updateForm.modified"
+            tabindex="3"
+            disabled
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item
+          :label="$t('labelText.productName')"
+          :error="createProductError.productName"
+          prop="name"
+        >
+          <el-input
+            v-model="updateForm.name"
+            @blur="updateForm.name = updateForm.name.trim()"
+            tabindex="4"
+            autofocus
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          :label="$t('labelText.maxFailureCountUser')"
+          :error="createProductError.maxFailureCountUser"
+        >
+          <el-input
+            type="number"
+            v-model.number="updateForm.maxFailureCountUser"
+            tabindex="5"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          :label="$t('labelText.maxFailureTimeUser')"
+          :error="createProductError.maxFailureTimeUser"
+        >
+          <el-input
+            type="number"
+            v-model.number="updateForm.maxFailureTimeUser"
+            tabindex="6"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          :label="$t('labelText.memo')"
+          :error="createProductError.config"
+        >
+          <div class="json-editor">
+            <json-editor
+              :objData="updateForm.config"
+              v-model="updateForm.config"
+              tabindex="7"
+            ></json-editor>
+          </div>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            type="primary"
+            tabindex="8"
+            @click.native.prevent="confirmProductData"
+            >{{ $t("text.update") }}</el-button
+          >
+        </el-form-item>
+      </el-form>
     </el-card>
     <confirm-dialog
       :dialogVisible.sync="confirmdialogVisible"
@@ -90,7 +94,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import JsonEditor from 'vue-json-edit/src/JsonEditor.vue'
+import JsonEditor from '@/components/JsonEdiitorContent/JsonEditor.vue'
 import { Form as ElForm } from 'element-ui'
 import { getDetailProduct, updateProduct } from '@/api/production'
 import { ValidationError, ValidationType } from '@/utils/request'
@@ -107,7 +111,6 @@ import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
     ConfirmDialog
   }
 })
-
 export default class extends Vue {
   confirmData: any = null;
   public confirmdialogVisible = false;
@@ -147,7 +150,9 @@ export default class extends Vue {
 
   private async fetchData(id: number) {
     const { data } = await getDetailProduct(id)
-    this.updateForm = mapKeys(data, (v, k) => camelCase(k)) as IProductDetailData
+    this.updateForm = mapKeys(data, (v, k) =>
+      camelCase(k)
+    ) as IProductDetailData
     this.updateForm.id = this.productDataOld.id = id
     this.productDataOld = Object.assign({}, this.updateForm)
   }
@@ -190,7 +195,12 @@ export default class extends Vue {
           }
 
           // check max failure count user change
-          if (!isEqual(this.updateForm.maxFailureCountUser, this.productDataOld.maxFailureCountUser)) {
+          if (
+            !isEqual(
+              this.updateForm.maxFailureCountUser,
+              this.productDataOld.maxFailureCountUser
+            )
+          ) {
             this.confirmData.push({
               key: this.$t('labelText.maxFailureCountUser'),
               value: this.updateForm.maxFailureCountUser
@@ -198,7 +208,12 @@ export default class extends Vue {
           }
 
           // check max failure time user change
-          if (!isEqual(this.updateForm.maxFailureTimeUser, this.productDataOld.maxFailureTimeUser)) {
+          if (
+            !isEqual(
+              this.updateForm.maxFailureTimeUser,
+              this.productDataOld.maxFailureTimeUser
+            )
+          ) {
             this.confirmData.push({
               key: this.$t('labelText.maxFailureTimeUser'),
               value: this.updateForm.maxFailureTimeUser
@@ -241,26 +256,25 @@ export default class extends Vue {
               : this.updateForm.maxFailureTimeUser
         }
         try {
-          const { data } = await updateProduct(this.updateForm.id, mapKeys(dataPost, (v, k) => snakeCase(k)))
+          const { data } = await updateProduct(
+            this.updateForm.id,
+            mapKeys(dataPost, (v, k) => snakeCase(k))
+          )
           if (data) {
             this.productDataOld = Object.assign({}, this.updateForm)
             // show modal create successfully
-            this.$alert(
-              this.$t('message.productModifySuccess') as string,
-              '',
-              {
-                confirmButtonText: this.$t('text.ok') as string,
-                type: 'success',
-                center: true
-              }
-            )
+            this.$alert(this.$t('message.productModifySuccess') as string, '', {
+              confirmButtonText: this.$t('text.ok') as string,
+              type: 'success',
+              center: true
+            })
           }
         } catch (err) {
           // check if error 422
           if (err instanceof ValidationError) {
             const validationError = err as ValidationError
             if (validationError.data?.length) {
-              validationError.data.forEach(err => {
+              validationError.data.forEach((err) => {
                 // get message error
                 switch (err.value) {
                   case ProductErrorValue.Name:
@@ -270,16 +284,18 @@ export default class extends Vue {
                     )
                     break
                   case ProductErrorValue.MaxFailureCountUser:
-                    this.createProductError.maxFailureCountUser = getValidationMessage(
-                      err.type[0],
-                      this.$t('labelText.maxFailureCountUser')
-                    )
+                    this.createProductError.maxFailureCountUser =
+                      getValidationMessage(
+                        err.type[0],
+                        this.$t('labelText.maxFailureCountUser')
+                      )
                     break
                   case ProductErrorValue.MaxFailureTimeUser:
-                    this.createProductError.maxFailureTimeUser = getValidationMessage(
-                      err.type[0],
-                      this.$t('labelText.maxFailureTimeUser')
-                    )
+                    this.createProductError.maxFailureTimeUser =
+                      getValidationMessage(
+                        err.type[0],
+                        this.$t('labelText.maxFailureTimeUser')
+                      )
                     break
                   case ProductErrorValue.Config:
                     this.createProductError.config = getValidationMessage(
@@ -303,7 +319,6 @@ export default class extends Vue {
 </script>
 
 <style lang="scss" scoped>
-
 .json-editor {
   padding: 10px 0;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
@@ -316,5 +331,4 @@ export default class extends Vue {
 .width-full {
   width: 100%;
 }
-
 </style>

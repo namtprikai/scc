@@ -8,22 +8,44 @@
         :rules="createRules"
         :model="createForm"
       >
-        <el-form-item :label="$t('labelText.productName')" :error="createProductError.productName" prop="name">
-          <el-input v-model="createForm.name" @blur="createForm.name = createForm.name.trim()" tabindex="1" autofocus></el-input>
+        <el-form-item
+          :label="$t('labelText.productName')"
+          :error="createProductError.productName"
+          prop="name"
+        >
+          <el-input
+            v-model="createForm.name"
+            @blur="createForm.name = createForm.name.trim()"
+            tabindex="1"
+            autofocus
+          ></el-input>
         </el-form-item>
-        <el-form-item :label="$t('labelText.maxFailureCountUser')" :error="createProductError.maxFailureCountUser">
-          <el-input type="number" v-model.number="createForm.maxFailureCountUser" tabindex="2"></el-input>
+        <el-form-item
+          :label="$t('labelText.maxFailureCountUser')"
+          :error="createProductError.maxFailureCountUser"
+        >
+          <el-input
+            type="number"
+            v-model.number="createForm.maxFailureCountUser"
+            tabindex="2"
+          ></el-input>
         </el-form-item>
-        <el-form-item :label="$t('labelText.maxFailureTimeUser')" :error="createProductError.maxFailureTimeUser">
-          <el-input type="number" v-model.number="createForm.maxFailureTimeUser" tabindex="3"></el-input>
+        <el-form-item
+          :label="$t('labelText.maxFailureTimeUser')"
+          :error="createProductError.maxFailureTimeUser"
+        >
+          <el-input
+            type="number"
+            v-model.number="createForm.maxFailureTimeUser"
+            tabindex="3"
+          ></el-input>
         </el-form-item>
-        <el-form-item :label="$t('labelText.memo')" :error="createProductError.config">
+        <el-form-item
+          :label="$t('labelText.memo')"
+          :error="createProductError.config"
+        >
           <div class="json-editor">
             <json-editor
-              :options="{
-                confirmText: $t('text.ok'),
-                cancelText: $t('text.cancel')
-              }"
               :objData="createForm.config"
               v-model="createForm.config"
               tabindex="4"
@@ -35,7 +57,8 @@
             type="primary"
             @click.native.prevent="confirmProductData"
             tabindex="5"
-          >{{ $t('text.submit') }}</el-button>
+            >{{ $t("text.submit") }}</el-button
+          >
         </el-form-item>
       </el-form>
     </el-card>
@@ -49,11 +72,8 @@
 </template>
 
 <script lang="ts">
-import {
-  Component,
-  Vue
-} from 'vue-property-decorator'
-import JsonEditor from 'vue-json-edit/src/JsonEditor.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import JsonEditor from '@/components/JsonEdiitorContent/JsonEditor.vue'
 import { Form as ElForm } from 'element-ui'
 import { createProduct } from '@/api/production'
 import { ValidationError, ValidationType } from '@/utils/request'
@@ -69,34 +89,36 @@ import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
     ConfirmDialog
   }
 })
-
 export default class extends Vue {
-  confirmData: any = null
-  public confirmdialogVisible = false
+  confirmData: any = null;
+  public confirmdialogVisible = false;
   public createProductError: any = {
     productName: null,
     maxFailureCountUser: null,
     maxFailureTimeUser: null,
     config: null
-  }
+  };
 
   public createForm = {
     name: '',
     maxFailureCountUser: null,
     maxFailureTimeUser: null,
     config: {}
-  }
+  };
 
   // createProduct rules
   public createRules = {
     name: [
       {
         required: true,
-        message: getValidationMessage(ValidationType.Empty, this.$t('labelText.productName')),
+        message: getValidationMessage(
+          ValidationType.Empty,
+          this.$t('labelText.productName')
+        ),
         trigger: 'blur'
       }
     ]
-  }
+  };
 
   // reset validate message error
   public resetMessageValidate() {
@@ -112,9 +134,18 @@ export default class extends Vue {
     (this.$refs.createForm as ElForm).validate(async(valid: boolean) => {
       if (valid) {
         this.confirmData = [
-          { key: this.$t('labelText.productName'), value: this.createForm.name },
-          { key: this.$t('labelText.maxFailureCountUser'), value: this.createForm.maxFailureCountUser },
-          { key: this.$t('labelText.maxFailureTimeUser'), value: this.createForm.maxFailureTimeUser },
+          {
+            key: this.$t('labelText.productName'),
+            value: this.createForm.name
+          },
+          {
+            key: this.$t('labelText.maxFailureCountUser'),
+            value: this.createForm.maxFailureCountUser
+          },
+          {
+            key: this.$t('labelText.maxFailureTimeUser'),
+            value: this.createForm.maxFailureTimeUser
+          },
           {
             key: this.$t('labelText.memo'),
             value: JSON.stringify(this.createForm.config, undefined, 4),
@@ -148,7 +179,9 @@ export default class extends Vue {
               : this.createForm.maxFailureTimeUser
         }
         try {
-          const { data } = await createProduct(mapKeys(dataPost, (v, k) => snakeCase(k)))
+          const { data } = await createProduct(
+            mapKeys(dataPost, (v, k) => snakeCase(k))
+          )
           if (data) {
             this.$alert(this.$t('message.productCreateSuccess') as string, '', {
               confirmButtonText: this.$t('text.ok') as string,
@@ -156,15 +189,17 @@ export default class extends Vue {
               center: true,
               callback: () => {
                 // redirect to products list
-                this.$router.push({
-                  name: 'ListProduct'
-                }).catch(err => {
-                  this.$message({
-                    message: err as string,
-                    type: 'error',
-                    duration: 5 * 1000
+                this.$router
+                  .push({
+                    name: 'ListProduct'
                   })
-                })
+                  .catch((err) => {
+                    this.$message({
+                      message: err as string,
+                      type: 'error',
+                      duration: 5 * 1000
+                    })
+                  })
               }
             })
           }
@@ -173,7 +208,7 @@ export default class extends Vue {
           if (err instanceof ValidationError) {
             const validationError = err as ValidationError
             if (validationError.data?.length) {
-              validationError.data.forEach(err => {
+              validationError.data.forEach((err) => {
                 // get message error
                 switch (err.value) {
                   case ProductErrorValue.Name:
@@ -183,16 +218,18 @@ export default class extends Vue {
                     )
                     break
                   case ProductErrorValue.MaxFailureCountUser:
-                    this.createProductError.maxFailureCountUser = getValidationMessage(
-                      err.type[0],
-                      this.$t('labelText.maxFailureCountUser')
-                    )
+                    this.createProductError.maxFailureCountUser =
+                      getValidationMessage(
+                        err.type[0],
+                        this.$t('labelText.maxFailureCountUser')
+                      )
                     break
                   case ProductErrorValue.MaxFailureTimeUser:
-                    this.createProductError.maxFailureTimeUser = getValidationMessage(
-                      err.type[0],
-                      this.$t('labelText.maxFailureTimeUser')
-                    )
+                    this.createProductError.maxFailureTimeUser =
+                      getValidationMessage(
+                        err.type[0],
+                        this.$t('labelText.maxFailureTimeUser')
+                      )
                     break
                   case ProductErrorValue.Config:
                     this.createProductError.config = getValidationMessage(
@@ -217,9 +254,9 @@ export default class extends Vue {
 
 <style lang="scss" scoped>
 .json-editor {
-    padding: 10px 0;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  }
+  padding: 10px 0;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
 
 ::v-deep .el-form-item__label {
   line-height: 20px !important;
