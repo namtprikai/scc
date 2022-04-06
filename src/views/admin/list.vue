@@ -133,7 +133,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { getListAdmin, unlockAdmin, enabledAdmin, disabledAdmin } from '@/api/admins'
 import { getProduct } from '@/api/production'
-import { parseToCamelCase } from '@/utils/parse'
+import { camelizeKeys } from '@/utils/parse'
 import { hasPolicy } from '@/utils/common'
 import { IAdminListItemData, IProductListItemData } from '@/api/types'
 import { getValidationMessage } from '@/utils/validate'
@@ -184,10 +184,10 @@ export default class extends Vue {
     try {
       this.isLoading = true
       const { data } = await getListAdmin()
-      const admins: IAdminListItemData[] = parseToCamelCase(data)
+      const admins: IAdminListItemData[] = camelizeKeys(data)
       if (this.hasPolicyGetProducts) {
         const products = await getProduct({})
-        this.products = parseToCamelCase(products.data)
+        this.products = camelizeKeys(products.data)
       }
       admins.forEach(admin => {
         admin.isEnabledStr = admin.isEnabled ? this.$t('text.enable').toString() : this.$t('text.disable').toString()
