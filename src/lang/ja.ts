@@ -53,7 +53,9 @@ export default {
     conditionConditionGroup: '条件グループ',
     mediaFileName: 'ファイル名',
     mediaFilePath: 'ファイルパス',
-    mediaFileSize: 'ファイルサイズ'
+    mediaFileSize: 'ファイルサイズ',
+    jsonKeyName: 'name1',
+    jsonValueName: 'value1'
   },
   validError: {
     exists: '存在していません',
