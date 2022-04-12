@@ -4,7 +4,6 @@ import Layout from '@/layout/index.vue'
 const FAQ: RouteConfig = {
   path: '/',
   component: Layout,
-  redirect: '/faq/list-user',
   meta: {
     title: 'menuFaqFrame',
     name: 'menuFaqFrame'
@@ -20,12 +19,32 @@ const FAQ: RouteConfig = {
       }
     },
     {
-      path: 'manager-user',
-      component: () => import(/* webpackChunkName: "manage-user" */ '@/views/faq/manager-user/index.vue'),
-      name: 'ManagerUser',
+      path: 'roles',
+      component: () => import(/* webpackChunkName: "roles" */ '@/views/role/list.vue'),
+      name: 'ListRole',
       meta: {
-        title: 'menuUserRole',
+        title: 'roleList',
         name: 'menuUserRole'
+      }
+    },
+    {
+      path: '/roles/create',
+      component: () => import(/* webpackChunkName: "role-create" */ '@/views/role/create.vue'),
+      name: 'CreateRole',
+      meta: {
+        hidden: true,
+        title: 'roleCreate',
+        activeMenu: '/roles'
+      }
+    },
+    {
+      path: '/roles/:id(\\d+)',
+      component: () => import(/* webpackChunkName: "role-edit" */ '@/views/role/edit.vue'),
+      name: 'EditRole',
+      meta: {
+        title: 'roleDetail',
+        hidden: true,
+        activeMenu: '/roles'
       }
     }
   ]
