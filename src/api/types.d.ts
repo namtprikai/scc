@@ -119,3 +119,30 @@ export interface IAdminListItemData {
   create: string
   modified: string
 }
+export interface IPolicyItem {
+  id: number
+  label: string
+  description: string | null
+  method: string
+  uri: string
+  isActive: boolean
+  created: string
+  modified: string
+}
+
+export interface ICreatePolicy {
+  label: string
+  description?: string
+  config?: any
+}
+
+export interface IUpdatePolicyPolicyGroup {
+  policy_id: number[]
+  delete_id: number[]
+}
+export interface IEditPolicy {
+  id: number
+  label: string
+  description: string | null
+  isActive: boolean
+}

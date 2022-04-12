@@ -43,33 +43,44 @@ const SettingAdmin: RouteConfig = {
         activeMenu: '/admins'
       }
     },
+    // {
+    //   path: '/policy-groups',
+    //   component: () => import(/* webpackChunkName: "policy-group-list" */ '@/views/policy-group/list.vue'),
+    //   name: 'ListPolicyGroup',
+    //   meta: {
+    //     title: 'policyGroupList',
+    //     name: 'menuPolicySetting'
+    //   }
+    // },
     {
-      path: 'roles',
-      component: () => import(/* webpackChunkName: "roles" */ '@/views/role/list.vue'),
-      name: 'ListRole',
+      path: '/policy-groups/create',
+      component: () => import(/* webpackChunkName: "policy-group-create" */ '@/views/policy-group/create.vue'),
+      name: 'CreatePolicyGroup',
       meta: {
-        name: 'menuPolicySetting',
-        title: 'roleList'
+        title: 'policyGroupCreate',
+        noCache: true,
+        hidden: true,
+        activeMenu: '/policy-groups'
       }
     },
     {
-      path: '/roles/create',
-      component: () => import(/* webpackChunkName: "role-create" */ '@/views/role/create.vue'),
-      name: 'CreateRole',
+      path: 'policy-groups/policies',
+      component: () => import(/* webpackChunkName: "list-policy" */ '@/views/policy/list.vue'),
+      name: 'Policies',
       meta: {
-        hidden: true,
-        title: 'roleCreate',
-        activeMenu: '/roles'
+        title: 'policyList',
+        activeMenu: '/policy-groups',
+        hidden: true
       }
     },
     {
-      path: '/roles/:id(\\d+)',
-      component: () => import(/* webpackChunkName: "role-edit" */ '@/views/role/edit.vue'),
-      name: 'EditRole',
+      path: 'policy-groups/policies/:id(\\d+)',
+      component: () => import(/* webpackChunkName: "detail-edit-policy" */ '@/views/policy/detail.vue'),
+      name: 'DetailEditPolicy',
       meta: {
-        title: 'roleDetail',
-        hidden: true,
-        activeMenu: '/roles'
+        title: 'policyDetail',
+        activeMenu: '/policy-groups',
+        hidden: true
       }
     }
   ]
