@@ -66,3 +66,19 @@ export const changePassword = (data: any) => {
     data: { password: password }
   })
 }
+
+export const getListAdmin = () => {
+  return request.get('/admin/')
+}
+
+export const unlockAdmin = (id: number) => {
+  return request.post('/admin/unlock/', { admin_id: id })
+}
+
+export const enabledAdmin = (id: number) => {
+  return request.post('/admin/enabled/', { admin_id: id })
+}
+
+export const disabledAdmin = (id: number) => {
+  return request.post('/admin/disabled/', { admin_id: id })
+}
