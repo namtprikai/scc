@@ -146,3 +146,8 @@ export interface IEditPolicy {
   description: string | null
   isActive: boolean
 }
+export interface IUserCreate {
+  name: string
+  email: string
+  config: object
+}
