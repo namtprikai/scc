@@ -6,7 +6,6 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import JsonView from './JsonView.vue'
 import { cloneDeep } from 'lodash'
-
 @Component({
   name: 'JsonEditor',
   components: {
@@ -18,23 +17,19 @@ export default class extends Vue {
   parsedData: any = [];
   wrapperType = 'object';
   lastParsedData = {};
-
   created() {
     this.lastParsedData = {}
     this.parsedData = this.jsonParse(this.objData)
   }
-
   // eslint-disable-next-line
   @Watch('objData') handleObjData(newValue: any, oldValue:any){
     this.parsedData = this.jsonParse(this.objData)
   }
-
   // eslint-disable-next-line
-  @Watch('parsedData') handleParsedData(newValue: any, oldValue:any){
+  @Watch('parsedData', {deep: true}) handleParsedData(newValue: any, oldValue:any){
     if (JSON.stringify(newValue) === JSON.stringify(this.lastParsedData)) {
       return
     }
-
     this.lastParsedData = cloneDeep(newValue)
     this.$emit('input', this.makeJson(this.parsedData))
   }
@@ -47,20 +42,17 @@ export default class extends Vue {
       keys.forEach((k, _index) => {
         const val = json[k]
         let parsedVal = val
-
         if (this.getType(val) === 'object') {
           parsedVal = parseJson(val)
         } else if (this.getType(val) === 'array') {
           parsedVal = parseArray(val)
         }
-
         const opt = {
           name: k,
           type: this.getType(val),
           childParams: null,
           remark: null
         }
-
         if (opt.type === 'array' || opt.type === 'object') {
           opt.childParams = parsedVal
           opt.remark = null
@@ -68,12 +60,10 @@ export default class extends Vue {
           opt.childParams = null
           opt.remark = parsedVal
         }
-
         result.push(opt)
       })
       return result
     }
-
     //
     const parseArray = (arrayObj: any) => {
       const result = []
@@ -85,14 +75,12 @@ export default class extends Vue {
         } else if (this.getType(val) === 'array') {
           parsedVal = parseArray(val)
         }
-
         const opt = {
           name: null,
           type: this.getType(val),
           childParams: null,
           remark: null
         }
-
         if (opt.type === 'array' || opt.type === 'object') {
           opt.childParams = parsedVal
           opt.remark = null
@@ -100,12 +88,10 @@ export default class extends Vue {
           opt.childParams = null
           opt.remark = parsedVal
         }
-
         result.push(opt)
       }
       return result
     }
-
     // --
     const parseBody = (data: any) => {
       let r = null
@@ -121,7 +107,6 @@ export default class extends Vue {
       }
       return r
     }
-
     return parseBody(jsonStr)
   }
 
@@ -156,12 +141,10 @@ export default class extends Vue {
         } else {
           val = el.remark
         }
-
         r[key] = val
       }
       return r
     }
-
     const revertWithArray = (data: any): any => {
       const arr = []
       for (let i = 0; i < data.length; ++i) {
@@ -174,12 +157,10 @@ export default class extends Vue {
         } else {
           r = el.remark
         }
-
         arr.push(r)
       }
       return arr
     }
-
     const revertMain = (data: any) => {
       let r = null
       switch (this.wrapperType) {
@@ -192,7 +173,6 @@ export default class extends Vue {
       }
       return r
     }
-
     return revertMain(dataArr)
   }
 }
