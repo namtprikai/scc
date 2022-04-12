@@ -56,7 +56,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import JsonEditor from 'vue-json-edit/src/JsonEditor.vue'
+import JsonEditor from '@/components/JsonEdiitorContent/JsonEditor.vue'
 import { getValidationMessage } from '@/utils/validate'
 import { ValidationError, ValidationType } from '@/utils/request'
 import { createUser } from '@/api/users'
@@ -156,7 +156,7 @@ export default class extends Vue {
     this.resetMessageValidate()
     try {
       this.isFormSubmitting = true
-      const { data } = await createUser(this.userData)
+      const { data } = await createUser({ ...this.userData, name: this.userData.name.trim(), email: this.userData.email.trim() })
       if (data) {
         this.isFormSubmitting = false
         // show modal create successfully
