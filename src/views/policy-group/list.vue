@@ -25,7 +25,7 @@
       </el-table-column>
       <el-table-column align="center" prop="created_at" :label="$t('labelText.action')" width=200%>
         <template slot-scope="{row}">
-          <router-link :to="{name: 'EditPolicyGroup', params: {id: row.id}}">
+          <router-link :to="{name: 'DetailEditPolicyGroup', params: {id: row.id}}">
             <el-button class="btn btn--action" type="primary" size="mini" icon="el-icon-view">
               {{ $t('text.detail') }}
             </el-button>

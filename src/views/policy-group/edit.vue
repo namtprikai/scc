@@ -57,15 +57,11 @@
 
         <el-form-item :label="$t('labelText.memo')" :error="dataError.config">
           <div class="json-editor">
-            <JsonEditor
-            :options="{
-              confirmText: $t('text.ok'),
-              cancelText: $t('text.cancel')
-            }"
+            <json-editor
             :objData="policyGroupData.config"
             v-model="policyGroupData.config"
             tabindex="7" >
-            </JsonEditor>
+            </json-editor>
           </div>
         </el-form-item>
       <div class="title-table">
@@ -153,7 +149,7 @@
 import { IPolicyGroupListItemData, IPolicyGroup, IPolicyListItemData } from '@/api/types'
 import { getPolicyPolicyGroup, getDetailPolicyGroup, updatePolicyGroup, updatePolicyPolicyGroup, getListPolicy } from '@/api/policy-group'
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import JsonEditor from 'vue-json-edit/src/JsonEditor.vue'
+import JsonEditor from '@/components/JsonEditorContent/JsonEditor.vue'
 import ConfirmDialog, {
   ConfirmDialogData
 } from '@/components/ConfirmDialog/index.vue'
