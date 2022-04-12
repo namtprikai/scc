@@ -108,7 +108,7 @@ export interface IProductListItemData {
 export interface IPolicyItem {
   id: number
   label: string
-  description: string
+  description: string | null
   method: string
   uri: string
   isActive: boolean
@@ -125,4 +125,10 @@ export interface ICreatePolicy {
 export interface IUpdatePolicyPolicyGroup {
   policy_id: number[]
   delete_id: number[]
+}
+export interface IEditPolicy {
+  id: number
+  label: string
+  description: string | null
+  isActive: boolean
 }

@@ -104,6 +104,7 @@ export default class extends Vue {
 .pagination-container {
   background: #fff;
   padding: 32px 0;
+  overflow: auto;
 }
 
 .pagination-container.hidden {
