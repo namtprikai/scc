@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import JsonEditor from '@/components/JsonEdiitorContent/JsonEditor.vue'
+import JsonEditor from '@/components/JsonEditorContent/JsonEditor.vue'
 import { Form as ElForm } from 'element-ui'
 import { ValidationError, ValidationType } from '@/utils/request'
 import { getValidationMessage } from '@/utils/validate'
