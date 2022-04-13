@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="container">
     <el-row v-if = "ishideButton"  type="flex" justify="end">
       <router-link :to="{name: 'CreateProduct'}">
         <el-button class="btn btn--add" type="primary" icon="el-icon-plus">{{ $t('text.addNew') }}</el-button>

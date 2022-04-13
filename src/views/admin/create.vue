@@ -1,5 +1,5 @@
 <template>
-  <div class="create-admin-container sm-container">
+  <div class="container create-admin-container">
     <el-form
       class="form-create-admin"
       ref="createForm"
