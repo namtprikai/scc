@@ -51,7 +51,7 @@ const FAQ: RouteConfig = {
     {
       path: '/roles/:id(\\d+)',
       component: () => import(/* webpackChunkName: "role-edit" */ '@/views/role/edit.vue'),
-      name: 'EditRole',
+      name: 'DetailEditRole',
       meta: {
         title: 'roleDetail',
         hidden: true,

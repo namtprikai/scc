@@ -172,7 +172,7 @@ export default class extends Vue {
   private listPolicyPolicyGroup : IPolicyGroupListItemData[] = [];
   private policyGroupId = 0;
   public confirmdialogVisible = false;
-  confirmData: ConfirmDialogData = [];
+  confirmData: ConfirmDialogData[] = [];
   isFormSubmitting = false;
   checkboxListIDAdd: number[] = [];
   checkboxListIDDelete: number[] = [];

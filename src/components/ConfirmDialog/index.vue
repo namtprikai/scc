@@ -80,7 +80,7 @@ interface ConfirmDataSection {
   sectionData: ConfirmData[]
 }
 
-export type ConfirmDialogData = ConfirmData[] | ConfirmDataSection[]
+export type ConfirmDialogData = ConfirmData | ConfirmDataSection
 
 @Component({
   name: 'ConfirmDialog',
@@ -88,7 +88,7 @@ export type ConfirmDialogData = ConfirmData[] | ConfirmDataSection[]
 })
 export default class extends Vue {
   // confirmdata
-  @Prop({ default: () => null, required: true }) private confirmData!: ConfirmDialogData;
+  @Prop({ default: () => null, required: true }) private confirmData!: ConfirmDialogData[];
   // flag multiple section
   @Prop({ default: () => false }) public isMultipleSection!: boolean;
   // flag show/hide dialog
