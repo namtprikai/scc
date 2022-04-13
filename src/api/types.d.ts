@@ -151,3 +151,33 @@ export interface IUserCreate {
   email: string
   config: object
 }
+
+export interface IPolicyGroupListItemData {
+  id: number
+  label: string
+  description: string
+  method: string
+  uri: string
+  isActive: boolean
+  created: string
+  modified: string
+}
+
+export interface IPolicyListItemData {
+  id: number
+  label: string
+  description: string
+  method: string
+  uri: string
+  isActive: boolean
+  created: string
+  modified: string
+  isCheck : boolean
+}
+export interface IPolicyGroup {
+  label: string
+  description: string
+  config: object
+  created: string
+  modified: string
+}
