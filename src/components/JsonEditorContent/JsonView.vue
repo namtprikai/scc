@@ -246,30 +246,33 @@ export default class extends Vue {
         }
       }
     }
-      ::v-deep select.select--modifier {
-        background-color: #FFFFFF;
-        background-image: none;
-        border-radius: 4px;
-        border: 1px solid #DCDFE6;
-        box-sizing: border-box;
-        color: #1f2d3d;
-        display: inline-block;
-        font-size: inherit;
-        outline: none;
-        transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
-      }
+  ::v-deep select.select--modifier {
+    background-color: #FFFFFF;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #DCDFE6;
+    box-sizing: border-box;
+    color: #1f2d3d;
+    display: inline-block;
+    font-size: inherit;
+    outline: none;
+    transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
 
-      .block--custom {
-        margin-bottom: 5px;
-      }
+  .block--custom {
+    margin-bottom: 5px;
+  }
 
-      select.tools-types {
-        background-color: #FFFFFF;
-        background-image: none;
-        border-radius: 4px;
-        border: 1px solid #DCDFE6;
-        box-sizing: border-box;
-        color: #1f2d3d;
-        outline: none;
-      }
+  select.tools-types {
+    background-color: #FFFFFF;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #DCDFE6;
+    box-sizing: border-box;
+    color: #1f2d3d;
+    outline: none;
+  }
+  .v-json-edit-icon-add{
+    font-size: 15px;
+  }
 </style>

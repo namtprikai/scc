@@ -1,5 +1,5 @@
 <template>
-  <div class="md-container ">
+  <div class="container ">
     <el-card class="box-card">
       <div class="policy-group-info">
         <template>
@@ -147,7 +147,7 @@
 <script lang="ts">
 
 import { IPolicyGroupListItemData, IPolicyGroup, IPolicyListItemData } from '@/api/types'
-import { getPolicyPolicyGroup, getDetailPolicyGroup, updatePolicyGroup, updatePolicyPolicyGroup, getListPolicy } from '@/api/policy-group'
+import { getPolicyPolicyGroup, getDetailPolicyGroup, updatePolicyGroup, updatePolicyPolicyGroup, getListPolicy } from '@/api/policy-groups'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import JsonEditor from '@/components/JsonEditorContent/JsonEditor.vue'
 import ConfirmDialog, {

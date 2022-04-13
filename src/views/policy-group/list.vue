@@ -1,8 +1,11 @@
 <template>
-  <div class="app-container md-container">
+  <div class="app-container">
     <el-row type="flex" justify="start">
       <router-link :to="{name: 'Policies'}">
         <el-button class="btn btn--add" type="primary" icon="el-icon-notebook-2">{{ $t('text.gotoScreenPolicyList') }}</el-button>
+      </router-link>
+      <router-link :to="{name: 'CreatePolicyGroup'}" class="align-right">
+        <el-button class="btn btn--add" type="primary" icon="el-icon-plus">{{ $t('text.addNew') }}</el-button>
       </router-link>
     </el-row>
     <el-table
@@ -40,7 +43,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { IPolicyGroupListItemData } from '@/api/types/policy_group'
-import { getPolicyGroup } from '@/api/policy_group'
+import { getPolicyGroup } from '@/api/policy-groups'
 import Pagination from '@/components/Pagination/index.vue'
 
 @Component({
@@ -91,5 +94,9 @@ export default class extends Vue {
 }
 .btn--add{
   margin-bottom: 15px;
+}
+
+.align-right {
+  margin-left: auto;
 }
 </style>

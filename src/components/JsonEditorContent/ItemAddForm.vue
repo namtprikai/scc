@@ -183,4 +183,8 @@ export default class extends Vue {
     }
   }
 }
+
+.v-json-edit-icon-add{
+  font-size: 15px;
+}
 </style>
