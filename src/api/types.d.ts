@@ -181,6 +181,7 @@ export interface IPolicyGroup {
   created: string
   modified: string
 }
+
 export interface IEditValidation {
   pattern: string | null
   max: number | null
@@ -212,3 +213,17 @@ export interface IUserListItemData {
   created:string
   modified:string
 }
+
+export interface IListValidation {
+  id: number
+  table_name: string
+  column_name: string
+  type: string
+  pattern: number[]
+  system_maximum: string[]
+  max: number
+  min: number
+  create: string
+  modified: string
+}
+
