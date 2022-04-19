@@ -77,7 +77,7 @@
         :label="$t('labelText.isMailauthCompleted')"
       >
         <template slot-scope="{row}">
-          <span>{{ row.isMailauthCompleted ?  $t('text.userIsMailauthCompletedNo') : $t('text.userIsMailauthCompletedYes')}}</span>
+          <span>{{ row.isMailauthCompleted ?  $t('text.userIsMailauthCompletedYes') : $t('text.userIsMailauthCompletedNo')}}</span>
         </template>
       </el-table-column>
 
@@ -105,7 +105,7 @@
         :label="$t('labelText.userIsAuto')"
       >
         <template slot-scope="{row}">
-          <span>{{ row.isAuto ?  $t('text.userIsAutoNo') : $t('text.userIsAutoYes')}}</span>
+          <span>{{ row.isAuto ?  $t('text.userIsAutoYes') : $t('text.userIsAutoNo')}}</span>
         </template>
       </el-table-column>
       <el-table-column
