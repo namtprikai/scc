@@ -151,3 +151,29 @@ export interface IUserCreate {
   email: string
   config: object
 }
+
+export interface IListChangeProductAdminItem {
+  id: number
+  name: string
+  isCheck: boolean
+  created: string
+  modified: string
+}
+
+export interface IUpdateProductAdmin {
+  productId: number[]
+  deleteId: number[]
+}
+
+export interface IListChangePolicyGroupAdminItem {
+  id: number
+  label: string
+  isCheck: boolean
+  created: string
+  modified: string
+}
+
+export interface IUpdatePolicyGroupAdmin {
+  policyGroupId: number[]
+  deleteId: number[]
+}

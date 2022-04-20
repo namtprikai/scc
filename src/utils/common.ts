@@ -1,13 +1,13 @@
 import { AdminModule } from '@/store/modules/admin'
 import { getAcToken, decodeToken } from './cookies'
 
-export const isLoggedInAdmin = () => {
+export const isLoggedInAdmin = (id: number) => {
   const token = getAcToken()
   let tokenInfo: any
   if (token) {
     tokenInfo = decodeToken(token)
   }
-  return AdminModule.id === tokenInfo.id
+  return AdminModule.id === tokenInfo.id && AdminModule.id === id
 }
 
 export const isMasterAdmin = () => {

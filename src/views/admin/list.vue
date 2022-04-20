@@ -248,6 +248,8 @@ export default class extends Vue {
             }
           }
         }
+      }).catch(() => {
+        //
       }).finally(async() => { this.fetchData() })
     } else if (item.isEnabledStr === this.$t('text.enable').toString()) {
       this.$confirm(this.$tc('helpText.adminEnableAsk'), {
@@ -278,6 +280,8 @@ export default class extends Vue {
             }
           }
         }
+      }).catch(() => {
+        //
       }).finally(async() => { this.fetchData() })
     }
   }
