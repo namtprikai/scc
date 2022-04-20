@@ -12,7 +12,7 @@ import SetFAQ from './modules/set-faq'
 import Resource from './modules/resource'
 import AnalysisPresentState from './modules/analysis-present-state'
 import SetProvider from './modules/set-provider'
-import top from './modules/top'
+import Top from './modules/top'
 Vue.use(VueRouter)
 
 export const constantRoutes: RouteConfig[] = [
@@ -87,7 +87,7 @@ export const constantRoutes: RouteConfig[] = [
     component: Layout,
     meta: { hidden: true }
   },
-  top,
+  Top,
   SettingApp,
   SettingAdmin,
   FAQ,

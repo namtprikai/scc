@@ -1,5 +1,5 @@
 <template>
-  <div class="create-admin-container sm-container">
+  <div class="container create-admin-container">
     <el-form
       class="form-create-admin"
       ref="createForm"
@@ -67,7 +67,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import JsonEditor from '@/components/JsonEdiitorContent/JsonEditor.vue'
+import JsonEditor from '@/components/JsonEditorContent/JsonEditor.vue'
 import { getValidationMessage } from '@/utils/validate'
 import { ValidationError, ValidationType } from '@/utils/request'
 import { isMasterAdmin } from '@/utils/common'

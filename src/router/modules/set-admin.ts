@@ -43,15 +43,15 @@ const SettingAdmin: RouteConfig = {
         activeMenu: '/admins'
       }
     },
-    // {
-    //   path: '/policy-groups',
-    //   component: () => import(/* webpackChunkName: "policy-group-list" */ '@/views/policy-group/list.vue'),
-    //   name: 'ListPolicyGroup',
-    //   meta: {
-    //     title: 'policyGroupList',
-    //     name: 'menuPolicySetting'
-    //   }
-    // },
+    {
+      path: 'policy-groups',
+      component: () => import(/* webpackChunkName: "policy-groups" */ '@/views/policy-group/list.vue'),
+      name: 'ListPolicyGroup',
+      meta: {
+        name: 'menuPolicySetting',
+        title: 'policyGroupList'
+      }
+    },
     {
       path: '/policy-groups/create',
       component: () => import(/* webpackChunkName: "policy-group-create" */ '@/views/policy-group/create.vue'),
@@ -61,6 +61,17 @@ const SettingAdmin: RouteConfig = {
         noCache: true,
         hidden: true,
         activeMenu: '/policy-groups'
+      }
+    },
+    {
+      path: '/policy-groups/:id(\\d+)',
+      component: () => import(/* webpackChunkName: "detail-edit-policy-group" */ '@/views/policy-group/edit.vue'),
+      name: 'DetailEditPolicyGroup',
+      meta: {
+        title: 'policyGroupDetail',
+        noCache: true,
+        hidden: true,
+        activeMenu: '/policy-group'
       }
     },
     {
@@ -82,6 +93,7 @@ const SettingAdmin: RouteConfig = {
         activeMenu: '/policy-groups',
         hidden: true
       }
+
     }
   ]
 }

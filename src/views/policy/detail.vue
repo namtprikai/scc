@@ -1,5 +1,5 @@
 <template>
-  <div class="sm-container">
+  <div class="container">
     <el-card class="box-card">
     <el-form
       class="form-policy"

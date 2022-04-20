@@ -49,7 +49,7 @@
     </div>
 
     <div class="f-btns">
-      <el-button type="primary" @click.native.prevent="confirm" tabindex="5">{{
+      <el-button type="primary" class="primary" @click.native.prevent="confirm" tabindex="5">{{
         $t("text.ok")
       }}</el-button>
       <button class="pure-button" @click="cancel">
@@ -65,6 +65,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 @Component({
   name: 'ItemAddForm'
 })
+
 export default class extends Vue {
   @Prop({ default: true }) private needName!: boolean;
   formats = ['string', 'array', 'object', 'number', 'boolean'];
@@ -106,6 +107,7 @@ export default class extends Vue {
 </script>
 
 <style lang="scss" scoped>
+ @import "./assets/styles/common.scss";
 .f-input,
 .f-btns {
   display: inline-block;
@@ -147,7 +149,7 @@ export default class extends Vue {
         transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
       }
 
-      button.pure-button {
+      button {
         height: auto;
         display: inline-block;
         line-height: 1;
@@ -172,7 +174,17 @@ export default class extends Vue {
         border-radius: 4px;
         margin-right: 5px;
       }
+
+      button.primary {
+        color: #FFFFFF;
+        background-color: #1890ff;
+        border-color: #1890ff;
+      }
     }
   }
+}
+
+.v-json-edit-icon-add{
+  font-size: 15px;
 }
 </style>

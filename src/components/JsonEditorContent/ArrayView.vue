@@ -65,7 +65,6 @@
               </template>
             </span>
           </div>
-
           <div class="tools">
             <select
               v-model="member.type"
@@ -104,18 +103,21 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import Draggable from 'vuedraggable'
+// import JsonView from './JsonView.vue'
 import ItemAddForm from './ItemAddForm.vue'
-import JsonView from './JsonView.vue'
 
 @Component({
   name: 'ArrayView',
   components: {
     ItemAddForm,
-    JsonView
+    JsonView: () => import('./JsonView.vue'),
+    Draggable
   }
 })
+
 export default class extends Vue {
-  @Prop({ default: () => [] }) private parsedData!: any[];
+  @Prop({ default: () => [] }) parsedData!: any[];
   formats = ['string', 'array', 'object', 'number', 'boolean'];
   flowData = this.parsedData;
   toAddItem = false;
@@ -151,14 +153,14 @@ export default class extends Vue {
     const oj = {
       name: obj.key,
       type: obj.type,
-      childParams: null,
+      childParams: [],
       remark: null
     }
     if (obj.type === 'array' || obj.type === 'object') {
       oj.childParams = obj.val
       oj.remark = null
     } else {
-      oj.childParams = null
+      oj.childParams = []
       oj.remark = obj.val
     }
 
@@ -192,3 +194,57 @@ export default class extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  @import "./assets/styles/common.scss";
+  .json-editor {
+    .block_content{
+      .add-form select,
+      .add-form input {
+        // -webkit-appearance: none;
+        background-color: #FFFFFF;
+        background-image: none;
+        border-radius: 4px;
+        border: 1px solid #DCDFE6;
+        box-sizing: border-box;
+        color: #1f2d3d;
+        display: inline-block;
+        font-size: inherit;
+        height: 30px;
+        line-height: 30px;
+        outline: none;
+        padding: 0 15px;
+        transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+      }
+    }
+  }
+  ::v-deep select.select--modifier {
+    background-color: #FFFFFF;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #DCDFE6;
+    box-sizing: border-box;
+    color: #1f2d3d;
+    display: inline-block;
+    font-size: inherit;
+    outline: none;
+    transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .block--custom {
+    margin-bottom: 5px;
+  }
+
+  select.tools-types {
+    background-color: #FFFFFF;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #DCDFE6;
+    box-sizing: border-box;
+    color: #1f2d3d;
+    outline: none;
+  }
+.v-json-edit-icon-add{
+  font-size: 15px;
+}
+</style>

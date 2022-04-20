@@ -56,7 +56,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import JsonEditor from '@/components/JsonEdiitorContent/JsonEditor.vue'
+import JsonEditor from '@/components/JsonEditorContent/JsonEditor.vue'
 import { getValidationMessage } from '@/utils/validate'
 import { ValidationError, ValidationType } from '@/utils/request'
 import { createUser } from '@/api/users'

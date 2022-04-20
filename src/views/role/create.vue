@@ -1,5 +1,5 @@
 <template>
-  <div class="sm-container">
+  <div class="container">
     <el-form
       ref="createRoleForm"
       :model="createRoleForm"
@@ -34,23 +34,13 @@
       </el-button>
     </el-form>
     <div>
-        <el-dialog
-          :visible="this.dialogVisibleSuccess"
-          width="30%"
-          >
-          <span class='dialog--center'>{{$t('message.roleCreateSuccess')}} </span>
-          <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="redirectList">{{$t('text.ok')}}</el-button>
-          </span>
-        </el-dialog>
-
-        <confirm-dialog
-          :dialogVisible.sync="dialogVisible"
-          :confirmData="confirmData"
-          :title="$t('text.createScreenModalConfirmTitle')"
-          @ok="handleCreateRole"
-          keyColumnWidth="80"
-        />
+      <confirm-dialog
+        :dialogVisible.sync="dialogVisible"
+        :confirmData="confirmData"
+        :title="$t('text.createScreenModalConfirmTitle')"
+        @ok="handleCreateRole"
+        keyColumnWidth="80"
+      />
     </div>
   </div>
 </template>
@@ -73,7 +63,6 @@ import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 export default class extends Vue {
   private isSubmitting = false;
   private dialogVisible = false;
-  private dialogVisibleSuccess = false;
   private confirmData: any = null;
 
   private createRoleForm = {
@@ -121,9 +110,30 @@ export default class extends Vue {
       if (valid) {
         this.isSubmitting = true
         try {
-          await RoleModule.Create(this.createRoleForm)
           this.dialogVisible = false
-          this.dialogVisibleSuccess = true
+          const data = await RoleModule.Create(this.createRoleForm)
+          if (data) {
+          // show modal create successfully
+            this.$alert(this.$t('message.roleCreateSuccess') as string, '', {
+              confirmButtonText: this.$t('text.ok') as string,
+              type: 'success',
+              center: true,
+              callback: () => {
+                // redirect to roles list screen
+                this.$router
+                  .push({
+                    name: 'ListRole'
+                  })
+                  .catch((err) => {
+                    this.$message({
+                      message: err as string,
+                      type: 'error',
+                      duration: 5 * 1000
+                    })
+                  })
+              }
+            })
+          }
         } catch (error) {
           this.isSubmitting = false
           this.dialogVisible = false
