@@ -318,7 +318,8 @@ export default {
     validationSearchButtonSearch: '検索',
     csvModifyCurrentFaqDownload: '現在のFAQをダウンロード',
     csvModifyFaqUploadConfirmModalTitle: 'アップロード確認',
-    csvModifyFaqUploadConfirmModalText: '次のファイルをアップロードします。よろしいですか？'
+    csvModifyFaqUploadConfirmModalText: '次のファイルをアップロードします。よろしいですか？',
+    confirmFileMessage: '以下のファイルがアップロードされます、よろしいですか？'
   },
   helpText: {
     screenItemNothingChanged: '変更項目がありません',

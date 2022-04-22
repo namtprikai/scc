@@ -59,3 +59,6 @@ export enum PolicyUriName {
   LostPasswordUserSendEmail = 'lost-password-user-send-email',
   LostPasswordUserVerifyEmail = 'lost-password-user-verify-email'
 }
+export const IMAGE_TYPE = 'image'
+export const VIDEO_TYPE = 'video'
+export const AUDIO_TYPE = 'audio'

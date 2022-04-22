@@ -1,6 +1,7 @@
 import i18n from '@/lang'
 import { ValidationType } from '@/utils/request'
 import { TranslateResult } from 'vue-i18n'
+
 export const isValidUsername = (str: string) => {
   return str.trim() !== ''
 }
@@ -49,4 +50,19 @@ export const getValidationMessage = (type: ValidationType, name: string | null |
     case ValidationType.Hierarchy:
       return i18n.t(`validError.${type}`)
   }
+}
+
+export const isAudio = (fileName: string) => {
+  const reg = (/\.(mp3)$/i)
+  return reg.test(fileName)
+}
+
+export const isVideo = (fileName: string) => {
+  const reg = (/\.(mp4|webm)$/i)
+  return reg.test(fileName)
+}
+
+export const isImage = (fileName: string) => {
+  const reg = (/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i)
+  return reg.test(fileName)
 }
