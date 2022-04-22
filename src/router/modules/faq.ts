@@ -30,6 +30,17 @@ const FAQ: RouteConfig = {
       }
     },
     {
+      path: 'users/:id(\\d+)',
+      component: () => import(/* webpackChunkName: "user-edit" */ '@/views/user/edit.vue'),
+      name: 'DetailEditUser',
+      meta: {
+        title: 'userDetail',
+        activeMenu: '/users',
+        noCache: true,
+        hidden: true
+      }
+    },
+    {
       path: 'roles',
       component: () => import(/* webpackChunkName: "roles" */ '@/views/role/list.vue'),
       name: 'ListRole',
