@@ -71,7 +71,7 @@
       </div>
       <el-table
         v-loading="isLoading"
-        :data="listPolicy"
+        :data="list"
         border
         fit
         max-height="600"
@@ -117,11 +117,10 @@
       </el-table>
 
       <pagination
-        v-show="total > 0"
-        :total="total"
+        v-show="listPolicy.length > 0"
+        :total="listPolicy.length"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
-        @pagination="fetchData"
       />
       <div class="button-update">
         <el-button  type="primary" @click="confirmUpdate">{{ $t('text.update') }} </el-button>
@@ -158,6 +157,7 @@ import { ValidationError, ValidationType } from '@/utils/request'
 import { getValidationMessage } from '@/utils/validate'
 import { ElForm } from 'element-ui/types/form'
 import Pagination from '@/components/Pagination/index.vue'
+import { camelizeKeys } from '@/utils/parse'
 @Component({
   name: 'DetailEditPolicyGroup',
   components: {
@@ -178,7 +178,7 @@ export default class extends Vue {
   checkboxListIDDelete: number[] = [];
   checkboxListLabelAdd: string[] = [];
   checkboxListLabelDelete: string[] = [];
-  private dlt = false;
+
   private checkItem = false;
   sectionDataEditPolicyGroup: any = [];
   sectionDataAddDeletePolicyGroup: any = [];
@@ -202,7 +202,6 @@ export default class extends Vue {
   };
 
   private isLoading = true;
-  private total = 0;
   private listQuery = {
     page: 1,
     limit: 10
@@ -279,29 +278,29 @@ export default class extends Vue {
       this.sectionDataAddDeletePolicyGroup = []
 
       this.isLoading = true
-      await getListPolicy(this.listQuery).then(response => {
-        this.listPolicy = response.data
-        for (const item in this.listPolicy) {
-          const checkItem = this.listPolicyPolicyGroup.find(x => x.id === this.listPolicy[item].id)
-          if (checkItem) {
-            this.listPolicy[item].isCheck = true
-          } else {
-            this.listPolicy[item].isCheck = false
-          }
+      const { data } = await getListPolicy(this.listQuery)
+      const policys : IPolicyListItemData[] = camelizeKeys(data)
+      this.listPolicy = policys
+
+      for (const item in this.listPolicy) {
+        const checkItem = this.listPolicyPolicyGroup.find(x => x.id === this.listPolicy[item].id)
+        if (checkItem) {
+          this.listPolicy[item].isCheck = true
+        } else {
+          this.listPolicy[item].isCheck = false
         }
-        this.total = response.data.length
-        if (this.dlt === true && this.total % this.listQuery.limit === 0) {
-          this.listQuery.page = this.listQuery.page - 1
-          this.dlt = false
-        }
-        const start = (this.listQuery.page - 1) * this.listQuery.limit
-        const end = start + this.listQuery.limit
-        this.listPolicy = this.listPolicy.slice(start, end)
-      })
+      }
+
       this.isLoading = false
     } catch {
       this.isLoading = false
     }
+  }
+
+  private get list() {
+    const start = (this.listQuery.page - 1) * this.listQuery.limit
+    const end = start + this.listQuery.limit
+    return this.listPolicy.slice(start, end)
   }
 
   checkEqualList(arr1: any, arr2: any) {
@@ -329,13 +328,35 @@ export default class extends Vue {
           this.checkboxListLabelAdd.push(label)
         }
       } else {
-        this.checkboxListIDDelete.push(id)
-        this.checkboxListLabelDelete.push(label)
+        if (this.checkboxListIDAdd.includes(id)) {
+          this.checkboxListIDAdd = this.checkboxListIDAdd.filter(function(item) {
+            return item !== id
+          })
+          this.checkboxListLabelAdd = this.checkboxListLabelAdd.filter(function(item) {
+            return item !== label
+          })
+          this.listPolicy[(id - 1)].isCheck = false
+        } else {
+          this.checkboxListIDDelete.push(id)
+          this.checkboxListLabelDelete.push(label)
+          this.listPolicy[(id - 1)].isCheck = false
+        }
       }
     } else {
       if (checked) {
-        this.checkboxListIDAdd.push(id)
-        this.checkboxListLabelAdd.push(label)
+        if (this.checkboxListIDDelete.includes(id)) {
+          this.checkboxListIDDelete = this.checkboxListIDDelete.filter(function(item) {
+            return item !== id
+          })
+          this.checkboxListLabelDelete = this.checkboxListLabelDelete.filter(function(item) {
+            return item !== label
+          })
+          this.listPolicy[(id - 1)].isCheck = true
+        } else {
+          this.checkboxListIDAdd.push(id)
+          this.checkboxListLabelAdd.push(label)
+          this.listPolicy[(id - 1)].isCheck = true
+        }
       } else {
         if (this.checkboxListIDAdd.includes(id)) {
           this.checkboxListIDAdd = this.checkboxListIDAdd.filter(function(item) {
@@ -463,8 +484,8 @@ export default class extends Vue {
         center: true
       })
 
-      this.dlt = true
       // reload data
+      await this.getListPolicyPolicyGroup()
       await this.fetchData()
       this.policyGroupData = { ...this.policyGroupData }
     } catch (err) {
