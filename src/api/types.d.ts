@@ -199,3 +199,16 @@ export interface IValidationDetail {
   created: string
   modified: string
 }
+export interface IUserListItemData {
+  id:number
+  productId:number[]
+  productName: string[]
+  name:string
+  email:string
+  isMailauthCompleted:boolean
+  isAuto:boolean
+  isEnabled:boolean|string
+  isLock:boolean
+  created:string
+  modified:string
+}

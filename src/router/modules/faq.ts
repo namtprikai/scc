@@ -11,10 +11,10 @@ const FAQ: RouteConfig = {
   children: [
     {
       path: 'users',
-      component: () => import(/* webpackChunkName: "list-user" */ '@/views/faq/list-user/index.vue'),
+      component: () => import(/* webpackChunkName: "list-user" */ '@/views/user/list.vue'),
       name: 'ListUser',
       meta: {
-        title: 'menuUserList',
+        title: 'userList',
         name: 'menuUserList'
       }
     },
