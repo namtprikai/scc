@@ -10,9 +10,9 @@ const SetProvider: RouteConfig = {
     name: 'menuPresentAnalysis'
   },
   children: [
-  {
+    {
       path: 'validations',
-      component: () => import(/* webpackChunkName: "search validation" */ '@/views/search-validation/index.vue'),
+      component: () => import(/* webpackChunkName: "search validation" */ '@/views/validation/index.vue'),
       name: 'SearchValidation',
       meta: {
         title: 'validationSearch',

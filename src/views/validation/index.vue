@@ -23,7 +23,7 @@
         </el-form-item>
 
         <el-form-item align="left">
-          <el-button class="btn btn--action" type="primary" @click="handleSearch()"><i class="el-icon-search">  {{ $t('screenTitle.logSearch') }}</i></el-button>
+          <el-button class="btn btn--action" type="primary" @click="handleSearch()"><i class="el-icon-search">  {{ $t('text.validationSearchButtonSearch') }}</i></el-button>
         </el-form-item>
 
       </el-form>

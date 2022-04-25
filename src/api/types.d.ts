@@ -226,4 +226,3 @@ export interface IListValidation {
   create: string
   modified: string
 }
-
