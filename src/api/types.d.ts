@@ -181,3 +181,21 @@ export interface IPolicyGroup {
   created: string
   modified: string
 }
+export interface IEditValidation {
+  pattern: string | null
+  max: number | null
+  min: number | null
+}
+
+export interface IValidationDetail {
+  id: number
+  tableName: string
+  columnName: string
+  type: string
+  pattern: string | null
+  systemMaximum: number
+  max: number | null
+  min: number | null
+  created: string
+  modified: string
+}

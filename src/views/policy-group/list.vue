@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="container">
     <el-row type="flex" justify="start">
       <router-link :to="{name: 'Policies'}">
         <el-button class="btn btn--add" type="primary" icon="el-icon-notebook-2">{{ $t('text.gotoScreenPolicyList') }}</el-button>

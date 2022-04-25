@@ -12,7 +12,7 @@ import ListQuestion from './components/ListQuestion.vue'
 import ListCategory from './components/ListCategory.vue'
 import { Component, Vue } from 'vue-property-decorator'
 @Component({
-  name: 'EditRole',
+  name: 'DetailEditRole',
   components: {
     RoleDetail,
     ListQuestion,
