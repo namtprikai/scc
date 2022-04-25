@@ -78,6 +78,7 @@ import {
 } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 import { hasPolicy } from '@/utils/common'
+import { PolicyMethod, PolicyUriName } from '@/utils/constant'
 import { getProduct } from '@/api/production'
 import { changeProductAdmin, getListProductAdmin } from '@/api/admins'
 import { camelizeKeys, snakeKeys } from '@/utils/parse'
@@ -128,12 +129,12 @@ export default class extends Vue {
         deleteId: []
       }
       this.originAddProducts = []
-      if (hasPolicy('get-list-create-product', 'get')) {
+      if (hasPolicy(PolicyUriName.GetListCreateProduct, PolicyMethod.Get)) {
         const { data } = await getProduct({})
         const productAdminLogin: IListChangeProductAdminItem[] = camelizeKeys(
           data
         )
-        if (hasPolicy('get-update-product-admin', 'get')) {
+        if (hasPolicy(PolicyUriName.GetUpdateProductAdmin, PolicyMethod.Get)) {
           const products = await getListProductAdmin(this.adminId)
           this.productsAdminChange = camelizeKeys(products.data)
         }

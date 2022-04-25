@@ -14,6 +14,7 @@ import ChangePassword from './components/ChangePassword.vue'
 import ChangeProduct from './components/ChangeProduct.vue'
 import ChangePolicyGroup from './components/ChangePolicyGroup.vue'
 import { isLoggedInAdmin, hasPolicy } from '@/utils/common'
+import { PolicyUriName, PolicyMethod } from '@/utils/constant'
 
 @Component({
   name: 'EditAdmin',
@@ -30,7 +31,7 @@ export default class extends Vue {
 
   async created() {
     this.adminId = parseInt(this.$route.params.adminId)
-    this.isShowChangePassword = hasPolicy('change-password-admin', 'post') || isLoggedInAdmin(this.adminId)
+    this.isShowChangePassword = hasPolicy(PolicyUriName.ChangePasswordAdmin, PolicyMethod.Post) || isLoggedInAdmin(this.adminId)
   }
 }
 </script>

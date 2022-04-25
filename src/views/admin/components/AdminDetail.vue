@@ -135,6 +135,7 @@ import JsonEditor from '@/components/JsonEditorContent/JsonEditor.vue'
 import { getValidationMessage } from '@/utils/validate'
 import { ValidationError, ValidationType } from '@/utils/request'
 import { isMasterAdmin, hasPolicy, isLoggedInAdmin } from '@/utils/common'
+import { PolicyUriName, PolicyMethod } from '@/utils/constant'
 import {
   disabledAdmin,
   enabledAdmin,
@@ -248,10 +249,10 @@ export default class extends Vue {
 
   created() {
     this.isMaster = isMasterAdmin()
-    this.hasPolicyEnabled = hasPolicy('enable-admin', 'post')
-    this.hasPolicyDisabled = hasPolicy('disable-admin', 'post')
-    this.hasPolicyUnlocked = hasPolicy('unlock-admin', 'post')
-    this.hasPolicyGetProducts = hasPolicy('get-list-create-product', 'get')
+    this.hasPolicyEnabled = hasPolicy(PolicyUriName.EnableAdmin, PolicyMethod.Post)
+    this.hasPolicyDisabled = hasPolicy(PolicyUriName.DisableAdmin, PolicyMethod.Post)
+    this.hasPolicyUnlocked = hasPolicy(PolicyUriName.UnlockAdmin, PolicyMethod.Post)
+    this.hasPolicyGetProducts = hasPolicy(PolicyUriName.GetListCreateProduct, PolicyMethod.Get)
     this.getAdminInfo(this.adminId)
   }
 
@@ -259,10 +260,10 @@ export default class extends Vue {
     try {
       const { data } = await getDetailAdmin(id)
       const admin = camelizeKeys(data)
-      admin.isMailauthCompleted = admin.isMailauthCompleted === 1
-      admin.isMaster = admin.isMaster === 1
-      admin.isEnabled = admin.isEnabled === 1
-      admin.isLock = admin.isLock === 1
+      admin.isMailauthCompleted = !!admin.isMailauthCompleted
+      admin.isMaster = !!admin.isMaster
+      admin.isEnabled = !!admin.isEnabled
+      admin.isLock = !!admin.isLock
       this.updateForm = admin
       this.adminDataOld = Object.assign({}, this.updateForm)
       this.isDisableUnlockBtn =

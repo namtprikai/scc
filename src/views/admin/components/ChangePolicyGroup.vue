@@ -75,7 +75,7 @@ import { IListChangePolicyGroupAdminItem, IUpdatePolicyGroupAdmin } from '@/api/
 import Pagination from '@/components/Pagination/index.vue'
 import { getListPolicyGroup } from '@/api/policy-groups'
 import { changePolicyGroupAdmin, getListPolicyGroupAdmin } from '@/api/admins'
-
+import { PolicyMethod, PolicyUriName } from '@/utils/constant'
 import { ValidationError } from '@/utils/request'
 import { getValidationMessage } from '@/utils/validate'
 import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
@@ -125,12 +125,12 @@ export default class extends Vue {
         deleteId: []
       }
       this.originAddPolicyGroups = []
-      if (hasPolicy('get-list-create-policy-group', 'get')) {
+      if (hasPolicy(PolicyUriName.GetListCreatePolicyGroup, PolicyMethod.Get)) {
         const { data } = await getListPolicyGroup()
         const policyGroupAdminLogin: IListChangePolicyGroupAdminItem[] = camelizeKeys(
           data
         )
-        if (hasPolicy('get-list-update-policy-group-admin', 'get')) {
+        if (hasPolicy(PolicyUriName.GetListUpdatePolicyGroupAdmin, PolicyMethod.Get)) {
           const products = await getListPolicyGroupAdmin(this.adminId)
           this.policyGroupsChange = camelizeKeys(products.data)
         }
