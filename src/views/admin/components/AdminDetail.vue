@@ -264,6 +264,7 @@ export default class extends Vue {
       admin.isMaster = !!admin.isMaster
       admin.isEnabled = !!admin.isEnabled
       admin.isLock = !!admin.isLock
+      admin.config = admin.config == null ? {} : admin.config
       this.updateForm = admin
       this.adminDataOld = Object.assign({}, this.updateForm)
       this.isDisableUnlockBtn =
@@ -397,6 +398,9 @@ export default class extends Vue {
   }
 
   async handleSubmit() {
+    if (!this.confirmData?.length) {
+      return
+    }
     this.resetMessageValidate()
     const model: any = snakeKeys(this.updateForm)
     try {
