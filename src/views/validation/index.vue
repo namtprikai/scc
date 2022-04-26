@@ -87,7 +87,7 @@
 
       <el-table-column align="center" :label="$t('labelText.action')" width=100%>
         <template slot-scope="{row}">
-          <router-link :to="{name: 'DetailValidation', params: {id: row.id}}">
+          <router-link :to="{name: 'DetailEditValidation', params: {id: row.id}}">
             <el-button class="btn btn--action" type="primary" size="mini" icon="el-icon-view">
               {{ $t('text.detail') }}
             </el-button>

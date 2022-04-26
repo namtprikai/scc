@@ -193,6 +193,9 @@ export default class extends Vue {
   }
 
   async handleSubmit() {
+    if (!this.confirmData?.length) {
+      return
+    }
     const model: any = snakeKeys(this.updatePolicyGroupAdmin)
     try {
       const { data } = await changePolicyGroupAdmin(this.adminId, model)
