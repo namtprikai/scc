@@ -1,5 +1,5 @@
 <template>
-  <div class="create-user-container sm-container">
+  <div class="create-user-container container">
     <el-form ref="createForm" :rules="createRules" :model="userData">
       <el-form-item
         :label="$t('labelText.userName')"

@@ -207,3 +207,48 @@ export interface IUpdatePolicyGroupAdmin {
   policyGroupId: number[]
   deleteId: number[]
 }
+
+export interface IEditValidation {
+  pattern: string | null
+  max: number | null
+  min: number | null
+}
+
+export interface IValidationDetail {
+  id: number
+  tableName: string
+  columnName: string
+  type: string
+  pattern: string | null
+  systemMaximum: number
+  max: number | null
+  min: number | null
+  created: string
+  modified: string
+}
+export interface IUserListItemData {
+  id:number
+  productId:number[]
+  productName: string[]
+  name:string
+  email:string
+  isMailauthCompleted:boolean
+  isAuto:boolean
+  isEnabled:boolean|string
+  isLock:boolean
+  created:string
+  modified:string
+}
+
+export interface IListValidation {
+  id: number
+  table_name: string
+  column_name: string
+  type: string
+  pattern: number[]
+  system_maximum: string[]
+  max: number
+  min: number
+  create: string
+  modified: string
+}

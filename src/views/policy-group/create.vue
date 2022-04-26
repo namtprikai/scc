@@ -12,6 +12,7 @@
             v-model="form.label"
             @blur="form.label = form.label.trim()"
             tabindex="1"
+            autofocus
           ></el-input>
         </el-form-item>
         <el-form-item
@@ -71,9 +72,7 @@ import { Form as ElForm } from 'element-ui'
 import { ValidationError, ValidationType } from '@/utils/request'
 import { getValidationMessage } from '@/utils/validate'
 import PolicySelection from './components/PolicySelection.vue'
-import ConfirmDialog, {
-  ConfirmDialogData
-} from '@/components/ConfirmDialog/index.vue'
+import ConfirmDialog, { ConfirmDialogData } from '@/components/ConfirmDialog/index.vue'
 import { ICreatePolicy, IPolicyItem } from '@/api/types'
 import {
   createPolicyGroup,
@@ -95,7 +94,7 @@ interface IPolicyFormError {
   }
 })
 export default class extends Vue {
-  confirmData: ConfirmDialogData = [];
+  confirmData: ConfirmDialogData[] = [];
   confirmDialogVisible = false;
   selectedPolicies: IPolicyItem[] = [];
   isSubmitting = false;
@@ -193,7 +192,7 @@ export default class extends Vue {
           center: true,
           callback: () => {
             this.$router.push({
-              name: 'PolicyGroupList'
+              name: 'ListPolicyGroup'
             })
           }
         })

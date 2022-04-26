@@ -11,10 +11,10 @@ const FAQ: RouteConfig = {
   children: [
     {
       path: 'users',
-      component: () => import(/* webpackChunkName: "list-user" */ '@/views/faq/list-user/index.vue'),
+      component: () => import(/* webpackChunkName: "list-user" */ '@/views/user/list.vue'),
       name: 'ListUser',
       meta: {
-        title: 'menuUserList',
+        title: 'userList',
         name: 'menuUserList'
       }
     },
@@ -51,7 +51,7 @@ const FAQ: RouteConfig = {
     {
       path: '/roles/:id(\\d+)',
       component: () => import(/* webpackChunkName: "role-edit" */ '@/views/role/edit.vue'),
-      name: 'EditRole',
+      name: 'DetailEditRole',
       meta: {
         title: 'roleDetail',
         hidden: true,

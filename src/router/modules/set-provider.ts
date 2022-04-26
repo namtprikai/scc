@@ -2,26 +2,33 @@ import { RouteConfig } from 'vue-router'
 import Layout from '@/layout/index.vue'
 
 const SetProvider: RouteConfig = {
-  path: '/set_provider',
+
+  path: '/',
   component: Layout,
-  redirect: '/set_provider/list-validation',
   name: 'SetProvider',
   meta: {
     name: 'menuPresentAnalysis'
-    // icon: 'set_provider'
   },
   children: [
-
     {
-      path: 'list-validation',
-      component: () => import(/* webpackChunkName: "menu2" */ '@/views/set-provider/list-validation/index.vue'),
-      name: 'ListValidation',
+      path: 'validations',
+      component: () => import(/* webpackChunkName: "search validation" */ '@/views/validation/index.vue'),
+      name: 'SearchValidation',
       meta: {
-        title: 'menuValidateList',
+        title: 'validationSearch',
         name: 'menuValidateList'
       }
+    },
+    {
+      path: '/validations/:id(\\d+)',
+      component: () => import(/* webpackChunkName: "list-validation" */ '@/views/validation/edit.vue'),
+      name: 'DetailEditValidation',
+      meta: {
+        title: 'validationDetail',
+        hidden: true,
+        activeMenu: '/validations'
+      }
     }
-
   ]
 }
 
