@@ -138,7 +138,7 @@ import { hasPolicy } from '@/utils/common'
 import { IAdminListItemData, IProductListItemData } from '@/api/types'
 import { getValidationMessage } from '@/utils/validate'
 import { ValidationError } from '@/utils/request'
-
+import { PolicyUriName, PolicyMethod } from '@/utils/constant'
 import Pagination from '@/components/Pagination/index.vue'
 
 @Component({
@@ -174,10 +174,10 @@ export default class extends Vue {
 
   created() {
     this.fetchData()
-    this.hasPolicyEnabled = hasPolicy('enable-admin', 'post')
-    this.hasPolicyDisabled = hasPolicy('disable-admin', 'post')
-    this.hasPolicyUnlocked = hasPolicy('unlock-admin', 'post')
-    this.hasPolicyGetProducts = hasPolicy('get-list-create-product', 'get')
+    this.hasPolicyEnabled = hasPolicy(PolicyUriName.EnableAdmin, PolicyMethod.Post)
+    this.hasPolicyDisabled = hasPolicy(PolicyUriName.DisableAdmin, PolicyMethod.Post)
+    this.hasPolicyUnlocked = hasPolicy(PolicyUriName.UnlockAdmin, PolicyMethod.Post)
+    this.hasPolicyGetProducts = hasPolicy(PolicyUriName.GetListCreateProduct, PolicyMethod.Get)
   }
 
   private async fetchData() {
@@ -248,6 +248,8 @@ export default class extends Vue {
             }
           }
         }
+      }).catch(() => {
+        //
       }).finally(async() => { this.fetchData() })
     } else if (item.isEnabledStr === this.$t('text.enable').toString()) {
       this.$confirm(this.$tc('helpText.adminEnableAsk'), {
@@ -278,6 +280,8 @@ export default class extends Vue {
             }
           }
         }
+      }).catch(() => {
+        //
       }).finally(async() => { this.fetchData() })
     }
   }

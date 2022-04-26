@@ -36,7 +36,7 @@ const SettingAdmin: RouteConfig = {
       component: () => import(/* webpackChunkName: "admin-show" */ '@/views/admin/edit.vue'),
       name: 'EditAdmin',
       meta: {
-        title: 'adminEdit',
+        title: 'adminDetail',
         noCache: true,
         hidden: true,
         name: 'adminEdit',

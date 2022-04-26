@@ -45,6 +45,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { IProductListItemData } from '@/api/types'
 import { getProduct, deleteProduct } from '@/api/production'
 import { hasPolicy } from '@/utils/common'
+import { PolicyMethod, PolicyUriName } from '@/utils/constant'
 import Pagination from '@/components/Pagination/index.vue'
 
 @Component({
@@ -68,7 +69,7 @@ export default class extends Vue {
 
   created() {
     this.fetchData()
-    this.ishideButton = hasPolicy('get-list-create-product', 'post')
+    this.ishideButton = hasPolicy(PolicyUriName.GetListCreateProduct, PolicyMethod.Post)
   }
 
   async fetchData() {

@@ -34,6 +34,7 @@ export enum ValidationType {
   Unique = 'unique',
   Lock = 'lock',
   Hierarchy = 'hierarchy',
+  Confirmed = 'confirmed'
 }
 
 export interface IValidationData {

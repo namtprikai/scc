@@ -24,15 +24,13 @@
       >
         <el-input v-model="createForm.email" tabindex="2"></el-input>
       </el-form-item>
-      <el-form-item
-        :label="$t('labelText.isMasterAdmin')"
-        :error="createAdminError.isMaster"
-        v-if="showCheckbox"
-        class="item-master"
-      >
-        <div>
-          <el-checkbox v-model="createForm.isMaster" tabindex="3"></el-checkbox>
-        </div>
+      <el-form-item v-if="showCheckbox" class="item-master">
+        <el-checkbox
+          :label="$t('labelText.isMasterAdmin')"
+          v-model="createForm.isMaster"
+          name="type"
+          tabindex="3"
+        />
       </el-form-item>
       <el-form-item
         :label="$t('labelText.config')"
@@ -221,7 +219,7 @@ export default class extends Vue {
                 name: 'EditAdmin',
                 params: { adminId: data.id.toString() }
               })
-              .catch((err) => {
+              .catch(err => {
                 this.$message({
                   message: err as string,
                   type: 'error',
@@ -235,7 +233,7 @@ export default class extends Vue {
       if (err instanceof ValidationError) {
         const validationError = err as ValidationError
         if (validationError.data?.length) {
-          validationError.data.forEach((err) => {
+          validationError.data.forEach(err => {
             // get message error
             switch (err.value) {
               case CreateEditAdminErrorValue.LoginName:

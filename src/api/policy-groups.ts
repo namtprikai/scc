@@ -14,6 +14,10 @@ export const createPolicyGroup = (data: ICreatePolicy) =>
 export const updatePolicyOfPolicyGroup = (policyGroupId: string, data: IUpdatePolicyPolicyGroup) =>
   request.post(`/policy_group/${policyGroupId}/policy/`, data)
 
+export const getListPolicyGroup = () => {
+  return request.get('/policy_group/')
+}
+
 export const getPolicyPolicyGroup = (id: number, params: any) =>
   request({
     url: `/policy_group/${id}/policy/`,

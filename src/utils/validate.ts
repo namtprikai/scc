@@ -38,6 +38,8 @@ export const getValidationMessage = (type: ValidationType, name: string | null |
       return i18n.t('validError.maxLength', { _field_: name })
     case ValidationType.Pattern:
       return i18n.t('validError.regex', { _field_: name })
+    case ValidationType.Confirmed:
+      return i18n.t('validError.confirmed', { _field_: name })
     case ValidationType.Exists:
     case ValidationType.Role:
     case ValidationType.Mismatch:

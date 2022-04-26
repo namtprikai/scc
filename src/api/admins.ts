@@ -82,3 +82,27 @@ export const enabledAdmin = (id: number) => {
 export const disabledAdmin = (id: number) => {
   return request.post('/admin/disabled/', { admin_id: id })
 }
+
+export const editAdmin = (id: number, data: any) => {
+  return request.patch(`/admin/${id}/`, data)
+}
+
+export const changePasswordAdmin = (id: number, data: any) => {
+  return request.post(`/admin/${id}/password/`, data)
+}
+
+export const getListProductAdmin = (id: number) => {
+  return request.get(`/admin/${id}/product/`)
+}
+
+export const changeProductAdmin = (id: number, data: any) => {
+  return request.post(`/admin/${id}/product/`, data)
+}
+
+export const getListPolicyGroupAdmin = (id: number) => {
+  return request.get(`/admin/${id}/policy_group/`)
+}
+
+export const changePolicyGroupAdmin = (id: number, data: any) => {
+  return request.post(`/admin/${id}/policy_group/`, data)
+}
