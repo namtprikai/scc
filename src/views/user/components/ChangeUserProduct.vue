@@ -5,7 +5,7 @@
         <span>{{ $t("text.userProductModify") }}</span>
       </div>
       <el-table
-        v-loading="listLoading"
+        v-loading="isLoading"
         :data="paginationData"
         row-key="id"
         border
@@ -39,7 +39,7 @@
         <el-table-column :label="$t('text.enable')" align="center" width="100">
           <template slot-scope="{row}">
             <el-checkbox
-              :checked="isRowSelected(row.id)"
+              v-model="row.isCheck"
               @change="toggleRowSelection(row, $event)"
             ></el-checkbox>
           </template>
@@ -55,7 +55,7 @@
         <el-button
           type="primary"
           @click.native.prevent="confirmDataModal"
-          :disabled="products.length === 0"
+          v-if="products.length > 0"
           >{{ $t("text.update") }}</el-button
         >
       </el-row>
@@ -77,6 +77,14 @@ import { getProduct } from '@/api/production'
 import { getUserProducts, updateUserProducts } from '@/api/users'
 import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 
+export interface IProductItemData {
+  id: number
+  name: string
+  created: Date | null
+  modified: Date | null
+  isCheck: boolean
+}
+
 @Component({
   name: 'UpdateUserProduct',
   components: {
@@ -85,11 +93,10 @@ import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
   }
 })
 export default class extends Vue {
-  isFormSubmitting = false;
   confirmData: any = null;
   public confirmdialogVisible = false;
-  listLoading = false;
-  products: Array<IProductListItemData> = [];
+  isLoading = false;
+  products: Array<IProductItemData> = [];
   userProducts: Array<IProductListItemData> = [];
   userProductsOld: Array<IProductListItemData> = [];
   userProductsAdd: Array<IProductListItemData> = [];
@@ -114,33 +121,28 @@ export default class extends Vue {
   }
 
   async getListUserProducts() {
+    this.isLoading = true
     try {
-      this.listLoading = true
       const { data } = await getUserProducts(this.userId)
       this.userProducts = data
       this.userProductsOld = [...this.userProducts]
-      this.listLoading = false
-    } catch (err) {
-      this.listLoading = false
-    }
+    } catch (err) {}
     this.getListProducts()
+    this.isLoading = false
   }
 
   async getListProducts() {
     try {
-      this.listLoading = true
-
       // get list products
-      const { data } = await getProduct({})
-      this.products = data
-      this.listLoading = false
-    } catch (err) {
-      this.listLoading = false
-    }
-  }
-
-  isRowSelected(id: number) {
-    return this.userProducts.some((item) => item.id === id)
+      const productsResponse = await getProduct({})
+      const items: Array<IProductItemData> = []
+      productsResponse.data.forEach((item: any) => {
+        const productDetail: IProductItemData = item
+        productDetail.isCheck = this.userProducts.some((x) => item.id === x.id)
+        items.push(productDetail)
+      })
+      this.products = items
+    } catch (err) {}
   }
 
   toggleRowSelection(row: IProductListItemData, checked: boolean) {
@@ -151,7 +153,6 @@ export default class extends Vue {
         (item) => item.id !== row.id
       )
     }
-    this.$emit('input', this.userProducts)
   }
 
   // confirm data
@@ -187,13 +188,11 @@ export default class extends Vue {
     if (!this.userProductsAdd.length && !this.userProductsDelete.length) {
       return
     }
-    this.isFormSubmitting = true
     try {
       await updateUserProducts(this.userId, {
         product_id: this.userProductsAdd.map((x) => x.id),
         delete_id: this.userProductsDelete.map((x) => x.id)
       })
-      this.isFormSubmitting = false
       // show pop up success message
       this.$alert(this.$t('message.userProductModifySuccess') as string, '', {
         confirmButtonText: this.$t('text.ok') as string,
@@ -201,12 +200,10 @@ export default class extends Vue {
         center: true
       })
       // set user origin data is user new data
-      this.userProductsOld = [...this.userProducts]
       this.userProductsAdd = []
       this.userProductsDelete = []
-    } catch (err) {
-      this.isFormSubmitting = false
-    }
+      this.getListUserProducts()
+    } catch (err) {}
   }
 }
 </script>

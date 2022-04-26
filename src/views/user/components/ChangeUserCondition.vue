@@ -5,7 +5,7 @@
         <span>{{ $t("text.userConditionModify") }}</span>
       </div>
       <el-table
-        v-loading="listLoading"
+        v-loading="isLoading"
         :data="paginationData"
         row-key="id"
         border
@@ -56,7 +56,7 @@
         <el-table-column :label="$t('text.enable')" align="center" width="100">
           <template slot-scope="{row}">
             <el-checkbox
-              :checked="isRowSelected(row.id)"
+              v-model="row.isCheck"
               @change="toggleRowSelection(row, $event)"
             ></el-checkbox>
           </template>
@@ -72,7 +72,7 @@
         <el-button
           type="primary"
           @click.native.prevent="confirmDataModal"
-          :disabled="conditionsItemData.length === 0"
+          v-if="conditionsItemData.length > 0"
           >{{ $t("text.update") }}</el-button
         >
       </el-row>
@@ -103,6 +103,7 @@ export interface IConditionItemData {
   conditionGroupId: number
   created: Date | null
   modified: Date | null
+  isCheck: boolean
 }
 
 @Component({
@@ -113,11 +114,9 @@ export interface IConditionItemData {
   }
 })
 export default class extends Vue {
-  isFormSubmitting = false;
   confirmData: any = null;
   public confirmdialogVisible = false;
-  listLoading = false;
-  conditions: Array<ICondition> = [];
+  isLoading = false;
   conditionsItemData: Array<IConditionItemData> = [];
   userConditions: Array<ICondition> = [];
   userConditionsOld: Array<ICondition> = [];
@@ -144,8 +143,6 @@ export default class extends Vue {
 
   async getListConditions() {
     try {
-      this.listLoading = true
-
       // get list condition groups
       const conditionGroupsResponse = await getConditionGroups()
       const conditionGroups: Array<IConditionGroup> = []
@@ -157,8 +154,9 @@ export default class extends Vue {
 
       // get list conditions
       const conditionsResponse = await getConditions()
-      conditionsResponse.data.forEach((element: any) => {
-        const conditionDetail: IConditionItemData = mapKeys(element, (v, k) =>
+      const items: Array<IConditionItemData> = []
+      conditionsResponse.data.forEach((item: any) => {
+        const conditionDetail: IConditionItemData = mapKeys(item, (v, k) =>
           camelCase(k)
         ) as IConditionItemData
         const conditionGroup = conditionGroups.find(
@@ -168,17 +166,18 @@ export default class extends Vue {
         if (conditionGroup) {
           conditionDetail.conditionGroupLabel = conditionGroup.label
         }
-        this.conditionsItemData.push(conditionDetail)
+        conditionDetail.isCheck = this.userConditions.some(
+          (x) => item.id === x.id
+        )
+        items.push(conditionDetail)
       })
-      this.listLoading = false
-    } catch (err) {
-      this.listLoading = false
-    }
+      this.conditionsItemData = items
+    } catch (err) {}
   }
 
   async getListUserConditions() {
+    this.isLoading = true
     try {
-      this.listLoading = true
       const { data } = await getUserConditions(this.userId)
       const items: Array<ICondition> = []
       data.forEach((element: any) => {
@@ -186,15 +185,9 @@ export default class extends Vue {
       })
       this.userConditions = items
       this.userConditionsOld = [...this.userConditions]
-      this.listLoading = false
-    } catch (err) {
-      this.listLoading = false
-    }
+    } catch (err) {}
     this.getListConditions()
-  }
-
-  isRowSelected(id: number) {
-    return this.userConditions.some((item) => item.id === id)
+    this.isLoading = false
   }
 
   toggleRowSelection(row: IConditionItemData, checked: boolean) {
@@ -241,13 +234,11 @@ export default class extends Vue {
     if (!this.userConditionsAdd.length && !this.userConditionsDelete.length) {
       return
     }
-    this.isFormSubmitting = true
     try {
       await updateUserConditions(this.userId, {
         condition_id: this.userConditionsAdd.map((x) => x.id),
         delete_id: this.userConditionsDelete.map((x) => x.id)
       })
-      this.isFormSubmitting = false
       // show pop up success message
       this.$alert(this.$t('message.userConditionModifySuccess') as string, '', {
         confirmButtonText: this.$t('text.ok') as string,
@@ -255,12 +246,10 @@ export default class extends Vue {
         center: true
       })
       // set user origin data is user new data
-      this.userConditionsOld = [...this.userConditions]
       this.userConditionsAdd = []
       this.userConditionsDelete = []
-    } catch (err) {
-      this.isFormSubmitting = false
-    }
+      this.getListUserConditions()
+    } catch (err) {}
   }
 }
 </script>

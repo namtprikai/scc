@@ -15,7 +15,7 @@
         <el-form-item>
           <el-button
             type="primary"
-            tabindex="8"
+            tabindex="1"
             :icon="
               userDataEdit.isEnabled
                 ? 'el-icon-circle-close'
@@ -34,7 +34,7 @@
           >
           <el-button
             type="warning"
-            tabindex="8"
+            tabindex="2"
             icon="el-icon-unlock"
             @click="confirmUnlock(userId)"
             :disabled="!(hasPolicyUnlocked && userDataEdit.isLock)"
@@ -42,23 +42,23 @@
           >
         </el-form-item>
         <el-form-item :label="$t('labelText.id')">
-          <el-input v-model="userId" tabindex="1" disabled></el-input>
+          <el-input v-model="userId" tabindex="3" disabled></el-input>
         </el-form-item>
         <el-form-item :label="$t('labelText.created')">
           <el-date-picker
-            class="width-full"
+            class="width-date"
             type="date"
             v-model="userDataEdit.created"
-            tabindex="2"
+            tabindex="4"
             disabled
           ></el-date-picker>
         </el-form-item>
         <el-form-item :label="$t('labelText.modified')">
           <el-date-picker
-            class="width-full"
+            class="width-date"
             type="date"
             v-model="userDataEdit.modified"
-            tabindex="3"
+            tabindex="5"
             disabled
           ></el-date-picker>
         </el-form-item>
@@ -70,7 +70,7 @@
           <el-input
             v-model="userDataEdit.name"
             @blur="userDataEdit.name = userDataEdit.name.trim()"
-            tabindex="4"
+            tabindex="6"
             autofocus
           ></el-input>
         </el-form-item>
@@ -81,8 +81,12 @@
         >
           <el-input
             v-model="userDataEdit.email"
-            @blur="userDataEdit.email = userDataEdit.email.trim()"
-            tabindex="4"
+            @blur="
+              userDataEdit.email = userDataEdit.email
+                ? userDataEdit.email.trim()
+                : userDataEdit.email
+            "
+            tabindex="7"
             autofocus
           ></el-input>
         </el-form-item>
@@ -91,6 +95,7 @@
             :label="$t('labelText.isMailauthCompleted')"
             v-model="userDataEdit.isMailauthCompleted"
             name="type"
+            tabindex="8"
             disabled
           />
         </el-form-item>
@@ -99,6 +104,7 @@
             :label="$t('labelText.userIsAuto')"
             v-model="userDataEdit.isAuto"
             name="type"
+            tabindex="9"
             disabled
           />
         </el-form-item>
@@ -107,14 +113,14 @@
             <json-editor
               :objData="userDataEdit.config"
               v-model="userDataEdit.config"
-              tabindex="7"
+              tabindex="10"
             ></json-editor>
           </div>
         </el-form-item>
         <el-form-item>
           <el-button
             type="primary"
-            tabindex="8"
+            tabindex="11"
             @click.native.prevent="confirmUserData"
             >{{ $t("text.update") }}</el-button
           >
@@ -148,6 +154,7 @@ import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 import JsonEditor from '@/components/JsonEditorContent/JsonEditor.vue'
 import { hasPolicy } from '@/utils/common'
 import { UserErrorValue } from '../user-error-value'
+import { PolicyUriName, PolicyMethod } from '@/utils/constant'
 @Component({
   name: 'UserDetail',
   components: {
@@ -242,9 +249,18 @@ export default class extends Vue {
 
   created() {
     this.getdetailUser()
-    this.hasPolicyEnabled = hasPolicy('enable-user', 'post')
-    this.hasPolicyDisabled = hasPolicy('disable-user', 'post')
-    this.hasPolicyUnlocked = hasPolicy('lock-user', 'post')
+    this.hasPolicyEnabled = hasPolicy(
+      PolicyUriName.EnableUser,
+      PolicyMethod.Post
+    )
+    this.hasPolicyDisabled = hasPolicy(
+      PolicyUriName.DisableUser,
+      PolicyMethod.Post
+    )
+    this.hasPolicyUnlocked = hasPolicy(
+      PolicyUriName.LockUser,
+      PolicyMethod.Post
+    )
   }
 
   // get user detail
@@ -407,13 +423,10 @@ export default class extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.w-100 {
+.width-date {
   width: 100%;
-}
-.form-sm {
-  width: 50%;
-  @media only screen and (max-width: 991px) {
-    width: 100%;
+  @media only screen and (min-width: 991px) {
+    width: 30%;
   }
 }
 .json-editor {

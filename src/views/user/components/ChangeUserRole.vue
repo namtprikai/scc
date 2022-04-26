@@ -5,7 +5,7 @@
         <span>{{ $t("text.userRoleModify") }}</span>
       </div>
       <el-table
-        v-loading="listLoading"
+        v-loading="isLoading"
         :data="paginationData"
         row-key="id"
         border
@@ -28,7 +28,9 @@
         >
           <template slot-scope="{row}">
             <el-link type="primary">
-              <router-link :to="{name: 'EditRole', params: {id: row.id}}">
+              <router-link
+                :to="{name: 'DetailEditRole', params: {id: row.id}}"
+              >
                 <span>{{ row.label }}</span>
               </router-link>
             </el-link>
@@ -37,7 +39,7 @@
         <el-table-column :label="$t('text.enable')" align="center" width="100">
           <template slot-scope="{row}">
             <el-checkbox
-              :checked="isRowSelected(row.id)"
+              v-model="row.isCheck"
               @change="toggleRowSelection(row, $event)"
             ></el-checkbox>
           </template>
@@ -53,7 +55,7 @@
         <el-button
           type="primary"
           @click.native.prevent="confirmDataModal"
-          :disabled="roles.length === 0"
+          v-if="roles.length > 0"
           >{{ $t("text.update") }}</el-button
         >
       </el-row>
@@ -75,6 +77,14 @@ import { getRoles } from '@/api/roles'
 import { getUserRoles, updateUserRoles } from '@/api/users'
 import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 
+export interface IRoleItemData {
+  id: number
+  label: string
+  created: Date | null
+  modified: Date | null
+  isCheck: boolean
+}
+
 @Component({
   name: 'UpdateUserRole',
   components: {
@@ -83,11 +93,10 @@ import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
   }
 })
 export default class extends Vue {
-  isFormSubmitting = false;
   confirmData: any = null;
   public confirmdialogVisible = false;
-  listLoading = false;
-  roles: Array<IRoleListItemData> = [];
+  isLoading = false;
+  roles: Array<IRoleItemData> = [];
   userRoles: Array<IRoleListItemData> = [];
   userRolesOld: Array<IRoleListItemData> = [];
   userRolesAdd: Array<IRoleListItemData> = [];
@@ -113,32 +122,27 @@ export default class extends Vue {
 
   async getListRoles() {
     try {
-      this.listLoading = true
-
       // get list roles
-      const { data } = await getRoles()
-      this.roles = data
-      this.listLoading = false
-    } catch (err) {
-      this.listLoading = false
-    }
+      const rolessResponse = await getRoles()
+      const items: Array<IRoleItemData> = []
+      rolessResponse.data.forEach((item: any) => {
+        const roleDetail: IRoleItemData = item
+        roleDetail.isCheck = this.userRoles.some((x) => item.id === x.id)
+        items.push(roleDetail)
+      })
+      this.roles = items
+    } catch (err) {}
   }
 
   async getListUserRoles() {
+    this.isLoading = true
     try {
-      this.listLoading = true
       const { data } = await getUserRoles(this.userId)
       this.userRoles = data
       this.userRolesOld = [...this.userRoles]
-      this.listLoading = false
-    } catch (err) {
-      this.listLoading = false
-    }
+    } catch (err) {}
     this.getListRoles()
-  }
-
-  isRowSelected(id: number) {
-    return this.userRoles.some((item) => item.id === id)
+    this.isLoading = false
   }
 
   toggleRowSelection(row: IRoleListItemData, checked: boolean) {
@@ -147,7 +151,6 @@ export default class extends Vue {
     } else {
       this.userRoles = this.userRoles.filter((item) => item.id !== row.id)
     }
-    this.$emit('input', this.userRoles)
   }
 
   // confirm data
@@ -183,13 +186,11 @@ export default class extends Vue {
     if (!this.userRolesAdd.length && !this.userRolesDelete.length) {
       return
     }
-    this.isFormSubmitting = true
     try {
       await updateUserRoles(this.userId, {
         role_id: this.userRolesAdd.map((x) => x.id),
         delete_id: this.userRolesDelete.map((x) => x.id)
       })
-      this.isFormSubmitting = false
       // show pop up success message
       this.$alert(this.$t('message.userRoleModifySuccess') as string, '', {
         confirmButtonText: this.$t('text.ok') as string,
@@ -197,12 +198,10 @@ export default class extends Vue {
         center: true
       })
       // set user origin data is user new data
-      this.userRolesOld = [...this.userRoles]
       this.userRolesAdd = []
       this.userRolesDelete = []
-    } catch (err) {
-      this.isFormSubmitting = false
-    }
+      this.getListUserRoles()
+    } catch (err) {}
   }
 }
 </script>

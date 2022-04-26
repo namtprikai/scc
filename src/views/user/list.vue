@@ -114,7 +114,7 @@
         :label="$t('labelText.action')"
       >
         <template slot-scope="{row}">
-          <router-link :to="{name: 'DetailEditUser', params: {userId: row.id}}">
+          <router-link :to="{name: 'DetailEditUser', params: {id: row.id}}">
             <el-button
               type="primary"
               size="small"
