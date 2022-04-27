@@ -36,7 +36,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="fetchData" />
+    <pagination v-show="this.listProduct.length>0" :total="this.listProduct.length" :page.sync="listQuery.page" :limit.sync="listQuery.limit" />
   </div>
 </template>
 
@@ -46,6 +46,7 @@ import { IProductListItemData } from '@/api/types'
 import { getProduct, deleteProduct } from '@/api/production'
 import { hasPolicy } from '@/utils/common'
 import { PolicyMethod, PolicyUriName } from '@/utils/constant'
+import { camelizeKeys } from '@/utils/parse'
 import Pagination from '@/components/Pagination/index.vue'
 
 @Component({
@@ -56,9 +57,8 @@ import Pagination from '@/components/Pagination/index.vue'
 })
 
 export default class extends Vue {
-  private list : IProductListItemData[] = [];
+  private listProduct : IProductListItemData[] = [];
   private isLoading = true;
-  private total = 0;
   private dlt = false ;
   private listQuery = {
     page: 1,
@@ -75,20 +75,23 @@ export default class extends Vue {
   async fetchData() {
     try {
       this.isLoading = true
-      await getProduct(this.listQuery).then(response => {
-        this.list = response.data
-        this.total = response.data.length
-        if (this.dlt === true && this.total % this.listQuery.limit === 0) {
-          this.listQuery.page = this.listQuery.page - 1
-          this.dlt = false
-        }
-        const start = (this.listQuery.page - 1) * this.listQuery.limit
-        const end = start + this.listQuery.limit
-        this.list = this.list.slice(start, end)
-      })
+      const { data } = await getProduct(this.listQuery)
+      const products : IProductListItemData[] = camelizeKeys(data) as IProductListItemData[]
+      this.listProduct = products
       this.isLoading = false
     } catch {
+      this.isLoading = false
     }
+  }
+
+  private get list() {
+    if (this.dlt === true && this.listProduct.length % this.listQuery.limit === 0) {
+      this.listQuery.page = this.listQuery.page - 1
+      this.dlt = false
+    }
+    const start = (this.listQuery.page - 1) * this.listQuery.limit
+    const end = start + this.listQuery.limit
+    return this.listProduct.slice(start, end)
   }
 
   private handleDelete(row : number, id : number) {
@@ -112,7 +115,7 @@ export default class extends Vue {
           this.list.splice(index, 1)
           this.dlt = true
           this.fetchData()
-        } catch (e) {
+        } catch {
         }
       })
   }

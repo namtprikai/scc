@@ -36,7 +36,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="fetchData" />
+    <pagination v-show="this.listPolicyGroup.length>0" :total="this.listPolicyGroup.length" :page.sync="listQuery.page" :limit.sync="listQuery.limit" />
   </div>
 </template>
 
@@ -45,7 +45,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { IPolicyGroupListItemData } from '@/api/types/policy_group'
 import { getPolicyGroup } from '@/api/policy-groups'
 import Pagination from '@/components/Pagination/index.vue'
-
+import { camelizeKeys } from '@/utils/parse'
 @Component({
   name: 'ListPolicyGroup',
   components: {
@@ -54,10 +54,8 @@ import Pagination from '@/components/Pagination/index.vue'
 })
 
 export default class extends Vue {
-  private list : IPolicyGroupListItemData[] = [];
+  private listPolicyGroup : IPolicyGroupListItemData[] = [];
   private isLoading = true;
-  private total = 0;
-  private dlt = false ;
   private listQuery = {
     page: 1,
     limit: 10
@@ -70,20 +68,19 @@ export default class extends Vue {
   async fetchData() {
     try {
       this.isLoading = true
-      await getPolicyGroup(this.listQuery).then(response => {
-        this.list = response.data
-        this.total = response.data.length
-        if (this.dlt === true && this.total % this.listQuery.limit === 0) {
-          this.listQuery.page = this.listQuery.page - 1
-          this.dlt = false
-        }
-        const start = (this.listQuery.page - 1) * this.listQuery.limit
-        const end = start + this.listQuery.limit
-        this.list = this.list.slice(start, end)
-      })
+      const { data } = await getPolicyGroup(this.listQuery)
+      const policyGroup : IPolicyGroupListItemData[] = camelizeKeys(data) as IPolicyGroupListItemData[]
+      this.listPolicyGroup = policyGroup
       this.isLoading = false
     } catch {
+      this.isLoading = false
     }
+  }
+
+  private get list() {
+    const start = (this.listQuery.page - 1) * this.listQuery.limit
+    const end = start + this.listQuery.limit
+    return this.listPolicyGroup.slice(start, end)
   }
 }
 </script >
