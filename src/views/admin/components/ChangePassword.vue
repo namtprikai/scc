@@ -16,7 +16,7 @@
         >
           <el-input
             v-model="changePassForm.currentPassword"
-            tabindex="1"
+            tabindex="11"
             type="password"
             :placeholder="$t('labelText.currentPassword')"
           ></el-input>
@@ -24,7 +24,7 @@
         <el-form-item :error="changePassError.newPassword" prop="newPassword">
           <el-input
             v-model="changePassForm.newPassword"
-            tabindex="2"
+            tabindex="12"
             type="password"
             :placeholder="$t('labelText.newPassword')"
           ></el-input>
@@ -36,7 +36,7 @@
           <el-input
             v-model="changePassForm.confirmPassword"
             type="password"
-            tabindex="2"
+            tabindex="13"
             :placeholder="$t('labelText.confirmPassword')"
           ></el-input>
         </el-form-item>
