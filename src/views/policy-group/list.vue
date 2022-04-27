@@ -33,6 +33,9 @@
               {{ $t('text.detail') }}
             </el-button>
           </router-link>
+          <el-button class="role-table__button" type="danger" size="small" icon="el-icon-delete" @click="confirmDelete(row)">
+            {{ $t('text.delete') }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -43,7 +46,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { IPolicyGroupListItemData } from '@/api/types/policy_group'
-import { getPolicyGroup } from '@/api/policy-groups'
+import { getPolicyGroup, deletePolicyGroup } from '@/api/policy-groups'
 import Pagination from '@/components/Pagination/index.vue'
 import { camelizeKeys } from '@/utils/parse'
 @Component({
@@ -81,6 +84,19 @@ export default class extends Vue {
     const start = (this.listQuery.page - 1) * this.listQuery.limit
     const end = start + this.listQuery.limit
     return this.listPolicyGroup.slice(start, end)
+  }
+
+  private confirmDelete(item: IPolicyGroupListItemData) {
+    this.$confirm(this.$tc('helpText.policyGroupDelete'), {
+      confirmButtonText: this.$tc('text.ok'),
+      cancelButtonText: this.$tc('text.cancel'),
+      type: 'warning'
+    }).then(async() => {
+      try {
+        await deletePolicyGroup(item.id)
+        this.fetchData()
+      } catch { }
+    })
   }
 }
 </script >

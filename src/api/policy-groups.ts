@@ -52,3 +52,9 @@ export const updatePolicyPolicyGroup = (id: number, data: IUpdatePolicyPolicyGro
     method: 'post',
     data
   })
+
+export const deletePolicyGroup = (id: number) =>
+  request({
+    url: `/policy_group/${id}/`,
+    method: 'delete'
+  })
