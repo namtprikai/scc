@@ -149,7 +149,36 @@ export interface IEditPolicy {
 export interface IUserCreate {
   name: string
   email: string
-  config: object
+  config: object | null
+}
+export interface IUser {
+  id: number
+  name: string
+  email: string
+  config: object | null
+  isMailauthCompleted: boolean
+  isAuto: boolean
+  isEnabled: boolean
+  isLock: boolean
+  created: Date | null
+  modified: Date | null
+}
+
+export interface IConditionGroup{
+  id: number
+  level: string
+  label: string
+  config: object | null
+  isSetting: boolean
+  created: Date | null
+  modified: Date | null
+}
+export interface ICondition{
+  id: number
+  label: string
+  conditionGroupId: number
+  created: Date | null
+  modified: Date | null
 }
 
 export interface IPolicyGroupListItemData {
