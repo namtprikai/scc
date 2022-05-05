@@ -58,7 +58,7 @@
         :label="$t('labelText.isEnabled')"
       >
         <template slot-scope="{row}">
-          <el-select :class="row.id" v-if="hasPolicyEnabled || hasPolicyDisabled"  v-model="row.isEnabledStr" @change="confirmEnabledOrDisabled(row)">
+          <el-select :class="row.id" v-if="hasPolicyEnabled || hasPolicyDisabled"  v-model="row.isEnabled" @change="confirmEnabledOrDisabled(row)">
             <el-option
               v-for="item in optionEnables"
               :key="item.value"
@@ -158,11 +158,11 @@ export default class extends Vue {
   private hasPolicyGetProducts = false
   private optionEnables =[
     {
-      value: this.$t('text.enable').toString(),
+      value: true,
       label: this.$t('text.enable').toString()
     },
     {
-      value: this.$t('text.disable').toString(),
+      value: false,
       label: this.$t('text.disable').toString()
     }
   ]
@@ -190,7 +190,7 @@ export default class extends Vue {
         this.products = camelizeKeys(products.data)
       }
       admins.forEach(admin => {
-        admin.isEnabledStr = admin.isEnabled ? this.$t('text.enable').toString() : this.$t('text.disable').toString()
+        admin.isEnabled = !!admin.isEnabled
         if (admin.productId.length > 0) {
           admin.productName = this.products.filter(x => admin.productId.includes(x.id)).map(x => x.name)
         } else {
@@ -219,71 +219,39 @@ export default class extends Vue {
   }
 
   private async confirmEnabledOrDisabled(item: IAdminListItemData) {
-    if (item.isEnabledStr === this.$t('text.disable').toString()) {
-      this.$confirm(this.$tc('helpText.adminDisableAsk'), {
-        confirmButtonText: this.$tc('text.ok'),
-        cancelButtonText: this.$tc('text.cancel'),
-        type: 'warning'
-      }).then(async() => {
-        try {
-          await disabledAdmin(item.id)
-        } catch (err) {
-          if (err instanceof ValidationError) {
-            const validationError = err as ValidationError
-            if (validationError.data?.length) {
-              validationError.data.forEach((err) => {
-                // get message error
-                switch (err.value) {
-                  case 'admin_id':
-                    this.$message({
-                      message: getValidationMessage(err.type[0]) as string,
-                      type: 'error',
-                      duration: 2000
-                    })
-                    break
-                  default:
-                    break
-                }
-              })
-            }
+    this.$confirm(!item.isEnabled ? this.$tc('helpText.adminDisableAsk') : this.$tc('helpText.adminEnableAsk'), {
+      confirmButtonText: this.$tc('text.ok'),
+      cancelButtonText: this.$tc('text.cancel'),
+      type: 'warning'
+    }).then(async() => {
+      try {
+        !item.isEnabled ? await disabledAdmin(item.id) : await enabledAdmin(item.id)
+        this.fetchData()
+      } catch (err) {
+        item.isEnabled = !item.isEnabled
+        if (err instanceof ValidationError) {
+          const validationError = err as ValidationError
+          if (validationError.data?.length) {
+            validationError.data.forEach((err) => {
+              // get message error
+              switch (err.value) {
+                case 'admin_id':
+                  this.$message({
+                    message: getValidationMessage(err.type[0]) as string,
+                    type: 'error',
+                    duration: 2000
+                  })
+                  break
+                default:
+                  break
+              }
+            })
           }
         }
-      }).catch(() => {
-        //
-      }).finally(async() => { this.fetchData() })
-    } else if (item.isEnabledStr === this.$t('text.enable').toString()) {
-      this.$confirm(this.$tc('helpText.adminEnableAsk'), {
-        confirmButtonText: this.$tc('text.ok'),
-        cancelButtonText: this.$tc('text.cancel'),
-        type: 'warning'
-      }).then(async() => {
-        try {
-          await enabledAdmin(item.id)
-        } catch (err) {
-          if (err instanceof ValidationError) {
-            const validationError = err as ValidationError
-            if (validationError.data?.length) {
-              validationError.data.forEach((err) => {
-                // get message error
-                switch (err.value) {
-                  case 'admin_id':
-                    this.$message({
-                      message: getValidationMessage(err.type[0]) as string,
-                      type: 'error',
-                      duration: 2000
-                    })
-                    break
-                  default:
-                    break
-                }
-              })
-            }
-          }
-        }
-      }).catch(() => {
-        //
-      }).finally(async() => { this.fetchData() })
-    }
+      }
+    }).catch(() => {
+      item.isEnabled = !item.isEnabled
+    })
   }
 }
 </script>
