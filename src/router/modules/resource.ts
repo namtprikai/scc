@@ -2,19 +2,18 @@ import { RouteConfig } from 'vue-router'
 import Layout from '@/layout/index.vue'
 
 const Resource: RouteConfig = {
-  path: '/resource',
+  path: '/',
   component: Layout,
-  redirect: '/resource/list-media',
   meta: {
     name: 'menuResourceFrame'
   },
   children: [
     {
-      path: 'list-media',
-      component: () => import(/* webpackChunkName: "list-media" */ '@/views/resource/list-media/index.vue'),
+      path: 'media',
+      component: () => import(/* webpackChunkName: "list-media" */ '@/views/media/list.vue'),
       name: 'ListMedia',
       meta: {
-        title: 'menuMediaList',
+        title: 'mediaList',
         name: 'menuMediaList'
       }
     }

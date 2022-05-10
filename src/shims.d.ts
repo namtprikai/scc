@@ -11,6 +11,14 @@ declare module '*.gif' {
   export const gif: any
 }
 
+declare module '*.jpg' {
+  export const jpg: any
+}
+
+declare module '*.png' {
+  export const png: any
+}
+
 // TODO: remove this part after vue-count-to has its typescript file
 declare module 'vue-count-to'
 
