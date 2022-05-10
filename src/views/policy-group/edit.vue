@@ -4,7 +4,7 @@
       <div class="policy-group-info">
         <template>
           <span>{{ $t('text.policyGroupInfo') }}</span>
-        </template>>
+        </template>
       </div>
 
     <el-form ref="form" :model="policyGroupData" label-position="top" :rules="rules">
@@ -236,10 +236,10 @@ export default class extends Vue {
     ]
   };
 
-  created() {
+  async created() {
     this.policyGroupId = parseInt(this.$route.params.id)
     this.detailPolicyGroup()
-    this.getListPolicyPolicyGroup()
+    await this.getListPolicyPolicyGroup()
     this.fetchData()
   }
 
@@ -255,6 +255,9 @@ export default class extends Vue {
     try {
       const { data } = await getDetailPolicyGroup(this.policyGroupId)
       this.policyGroupData = mapKeys(data, (v, k) => camelCase(k)) as IPolicyGroup
+      if (this.policyGroupData.config === null) {
+        this.policyGroupData.config = {}
+      }
     } catch (err) {}
   }
 
