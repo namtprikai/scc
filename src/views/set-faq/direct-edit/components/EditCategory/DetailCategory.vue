@@ -1,0 +1,126 @@
+<template>
+  <el-card
+    class="box-card box_detail_category"
+    :shadow="'never'"
+    >
+    <div slot="header" class="clearfix card_item_title">
+      <span>{{$t('text.directEditDetail')}}</span>
+    </div>
+    <el-form label-position="top" :model="dataCategoryNew" status-icon ref="ruleForm" label-width="120px" class="demo-ruleForm">
+      <el-form-item :label="$t('labelText.directEditCategoryLabel')" prop="pass">
+        <el-input type="text" v-model="dataCategoryNew.label" autocomplete="off" :size="'medium'"></el-input>
+      </el-form-item>
+      <el-form-item :label="$t('labelText.directEditCategoryText')" prop="checkPass">
+        <el-input type="text" v-model="dataCategoryNew.text" autocomplete="off" :size="'medium'"></el-input>
+      </el-form-item>
+      <el-form-item
+        :label="$t('labelText.config')"
+        :error="updateCategoryError.config"
+        class="item-config"
+      >
+        <div class="json-editor">
+          <json-editor
+            :options="{
+              confirmText: $t('text.ok'),
+              cancelText: $t('text.cancel')
+            }"
+            :objData="dataCategoryNew.config"
+            v-model="dataCategoryNew.config"
+            tabindex="4"
+          ></json-editor>
+        </div>
+      </el-form-item>
+      <el-button type="primary" class="btn_save_edit" @click="submitForm('ruleForm')" :disabled="disabled" :size="'medium'">{{$t('text.save')}}</el-button>
+    </el-form>
+  </el-card>
+</template>
+
+<script lang='ts'>
+import Vue from 'vue'
+import Component from 'vue-class-component'
+import JsonEditor from '@/components/JsonEditorContent/JsonEditor.vue'
+import { Prop, Watch } from 'vue-property-decorator'
+import { getDetailCategory, lockCategory } from '@/api/categories'
+import { ICategoryDetailData } from '@/api/types'
+import { mapKeys, snakeCase, camelCase, isEqual } from 'lodash'
+
+@Component({
+  name: 'ListCategory',
+  components: {
+    JsonEditor
+  }
+})
+
+export default class ListCategory extends Vue {
+  @Prop({ default: () => null }) private categorySeleted!: any
+  disabled = true
+  public dataCategoryNew: ICategoryDetailData = {
+    id: 0,
+    label: '',
+    text: '',
+    config: {},
+    created: null,
+    modified: null
+  }
+
+  public updateCategoryError: any = {
+    config: null
+  }
+
+  public dataCategoryOld: ICategoryDetailData = {
+    id: 0,
+    label: '',
+    text: '',
+    config: {},
+    created: null,
+    modified: null
+  }
+
+  @Watch('categorySeleted')
+  onCategorySelectedChanged() {
+    if (this.categorySeleted.type === 'categories') this.handleGetDetailCategories()
+    else this.handleGetDetailQuestions()
+  }
+
+  async handleGetDetailCategories() {
+    try {
+      const { data } = await getDetailCategory(this.categorySeleted.id)
+
+      /* Get all key of object data and change this to camelCase */
+      this.dataCategoryNew = mapKeys(data, (v, k) =>
+        camelCase(k)
+      ) as ICategoryDetailData
+
+      /* If data.config == null then set data.config = {} */
+      if (data.config === null) this.dataCategoryNew.config = {}
+
+      this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
+
+      // const lockResult = await lockCategory(this.categorySeleted.id)
+      // console.log('log result: ' + lockResult)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  handleGetDetailQuestions() {
+    console.log('question')
+  }
+
+  submitForm() {
+    alert('submit form')
+  }
+}
+</script>
+
+<style lang="scss">
+.btn_save_edit{
+  width: 100%;
+  font-weight: bold;
+}
+.el-form-item {
+  &__label {
+    text-align: left;
+  }
+}
+</style>
