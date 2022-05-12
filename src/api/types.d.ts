@@ -281,3 +281,23 @@ export interface IListValidation {
   create: string
   modified: string
 }
+
+export interface IValidationItemData {
+  id: number
+  tableName: string
+  columnName: string
+  type: string
+  pattern: number[]
+  systemMaximum: string[]
+  max: number
+  min: number
+  create: string
+  modified: string
+}
+export interface IKeyword {
+  id: number
+  label: string
+  weight: string
+  create: string
+  modified: string
+}
