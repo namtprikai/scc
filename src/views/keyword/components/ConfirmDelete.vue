@@ -4,10 +4,12 @@
     :visible.sync="visible"
     class="confirmed-delete-dialog"
     top="0"
+    center
+    @open="dialogOpen"
   >
     <template>
       <div class="confirm-data">
-        <div class="item" v-for="(item, index) in confirmData" :key="index">{{ item }}</div>
+        <div v-for="(item, index) in confirmData" class="item" :key="index">{{ item }} </div>
       </div>
       <div class="confirm-delete">
         <div class="title">{{ $t("text.keywordModalContent") }}</div>
@@ -67,6 +69,10 @@ export default class extends Vue {
     this.visible = false
     this.$emit('cancel')
   }
+
+  dialogOpen() {
+    this.confirmText = ''
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -74,19 +80,24 @@ export default class extends Vue {
   ::v-deep .el-dialog__body {
     max-height: 70vh;
     overflow: auto;
-    padding: 0px 20px;
+   padding: 0px;
   }
   .confirm-data {
-    padding:0px  20px 20px 20px;
+    padding: 20px;
     max-height: 40vh;
     overflow: auto;
-    .item{
-        padding: 5px 0px;
+    margin-bottom: 10px;
+    .item {
+      line-height: 40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding-left: 20px;
     }
   }
   .confirm-delete {
-    border-top: 1px solid #dcdfe6;
-    padding-top: 20px;
+    border-top: 1px solid #ebebeb;
+    padding: 20px;
     .title {
       margin-bottom: 20px;
     }

@@ -1,5 +1,8 @@
 <template>
-  <div class="container keyword-list-container">
+  <div
+    class="container keyword-list-container"
+    v-loading.fullscreen.lock="isLoading"
+  >
     <div class="keyword-list-wrapper">
       <div class="keyword-list-title">
         <el-checkbox
@@ -39,7 +42,7 @@
           </div>
         </div>
       </div>
-      <div class="keyword-list-content">
+      <div v-if="list.length" class="keyword-list-content">
         <div v-for="item in list" :key="item.id" class="keyword-item">
           <div class="title">
             <div class="selection">
@@ -70,67 +73,69 @@
           ></el-slider>
         </div>
       </div>
-    <!-- <el-empty description="description"></el-empty> -->
-    <pagination
-      v-show="keywords.length > 0"
-      :total="keywords.length"
-      :page.sync="listQuery.page"
-      :limit.sync="listQuery.limit"
-    />
-    <confirm-delete
-      :dialogVisible.sync="deleteDialogVisible"
-      :confirmData="deleteLabels"
-      :title="$t('helpText.keywordDeleteOnce')"
-      @ok="deleteKeyword"
-    />
-    <confirm-dialog
-      :title="$t('text.modifyScreenModalConfirmTitle')"
-      :dialogVisible.sync="confirmDialogVisible"
-      :confirmData="updateData"
-      @ok="updateKeyword"
-    >
-      <div slot="content" slot-scope="{data}">
-        <el-table
-          v-if="data.length"
-          :empty-text="$t('helpText.screenItemNothingChanged')"
-          :data="data"
-          style="width: 100%"
-          row-key="id"
-          border
-          fit
-          highlight-current-row
-        >
-          <el-table-column
-            align="center"
-            :label="$t('text.keywordModalEditLabelBefore')"
-          >
-            <template slot-scope="{row}">
-              <span>{{ row.originLabel }}</span>
-            </template>
-          </el-table-column>
+      <el-empty v-else></el-empty>
 
-          <el-table-column
-            align="center"
-            :label="$t('text.keywordModalEditLabelAfter')"
+      <pagination
+        v-show="keywords.length > 0"
+        :total="keywords.length"
+        :page.sync="listQuery.page"
+        :limit.sync="listQuery.limit"
+      />
+
+      <confirm-delete
+        :dialogVisible.sync="deleteDialogVisible"
+        :confirmData="deleteLabels"
+        :title="$t('helpText.keywordDeleteOnce')"
+        @ok="deleteKeyword"
+      />
+      <confirm-dialog
+        :title="$t('text.modifyScreenModalConfirmTitle')"
+        :dialogVisible.sync="confirmDialogVisible"
+        :confirmData="updateData"
+        @ok="updateKeyword"
+      >
+        <div slot="content" slot-scope="{data}">
+          <el-table
+            v-if="data.length"
+            :empty-text="$t('helpText.screenItemNothingChanged')"
+            :data="data"
+            style="width: 100%"
+            row-key="id"
+            border
+            fit
+            highlight-current-row
           >
-            <template slot-scope="{row}">
-              <span>{{ row.label }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            :label="$t('text.keywordModalEditKeywordWeight')"
-          >
-            <template slot-scope="{row}">
-              <span>{{ row.weight }}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div v-else class="no-changed">
-          {{ $t("helpText.screenItemNothingChanged") }}
+            <el-table-column
+              align="center"
+              :label="$t('text.keywordModalEditLabelBefore')"
+            >
+              <template slot-scope="{row}">
+                <span>{{ row.originLabel }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+              align="center"
+              :label="$t('text.keywordModalEditLabelAfter')"
+            >
+              <template slot-scope="{row}">
+                <span>{{ row.label }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              align="center"
+              :label="$t('text.keywordModalEditKeywordWeight')"
+            >
+              <template slot-scope="{row}">
+                <span>{{ row.weight }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div v-else class="no-changed">
+            {{ $t("helpText.screenItemNothingChanged") }}
+          </div>
         </div>
-      </div>
-    </confirm-dialog>
+      </confirm-dialog>
     </div>
   </div>
 </template>
@@ -151,7 +156,7 @@ import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 import { ValidationError } from '@/utils/request'
 import { getValidationMessage } from '@/utils/validate'
 import { nextTick } from 'process'
-import { log } from 'console'
+import { error } from 'console'
 
 export interface IKeywordDataItem {
   id: number
@@ -180,7 +185,6 @@ export default class extends Vue {
   private validations: IValidationItemData[] = [];
   private originKeywords: IKeywordDataItem[] = [];
   private keywords: IKeywordDataItem[] = [];
-  private pageData: IKeywordDataItem[] = [];
   private isLoading = true;
   private listQuery = {
     page: 1,
@@ -203,31 +207,37 @@ export default class extends Vue {
     this.fetchKeyword()
   }
 
+  // get indertinate select all checkbox
   private get isIndeterminate() {
     const isEnabelCount = this.list.filter(x => x.isEnabled).length
     return isEnabelCount > 0 && isEnabelCount < this.list.length
   }
 
+  // get check all status select all checkbox
   private get isCheckAll() {
     return this.list.length > 0 && !this.list.find(x => !x.isEnabled)
   }
 
+  // set check all
   private set isCheckAll(value) {
     this.list.forEach(element => {
       element.isEnabled = value
     })
   }
 
+  // get list data pagination
   private get list() {
     const start = (this.listQuery.page - 1) * this.listQuery.limit
     const end = start + this.listQuery.limit
     return this.keywords.slice(start, end)
   }
 
+  // get enable status edit&delete button
   private get enableItems() {
     return this.keywords.filter(x => x.isEnabled).length
   }
 
+  // fetch search validation data
   async fetchSearchValidation() {
     const params = {
       table_name: JSON.stringify(['keywords']),
@@ -248,7 +258,9 @@ export default class extends Vue {
     }
   }
 
+  // fetch keyword data
   async fetchKeyword() {
+    this.isLoading = true
     try {
       const { data } = await getListKeyword()
       this.originKeywords = data
@@ -259,8 +271,10 @@ export default class extends Vue {
     } catch (err) {
       //
     }
+    this.isLoading = false
   }
 
+  // confirm delete
   confirmDelete() {
     this.deleteDialogVisible = true
     this.deleteLabels = this.keywords
@@ -268,6 +282,7 @@ export default class extends Vue {
       .map(y => y.label)
   }
 
+  // handle delete keyword
   async deleteKeyword() {
     try {
       await deleteKeyword({
@@ -300,6 +315,7 @@ export default class extends Vue {
     }
   }
 
+  // confirm update keyword
   confirmUpdate() {
     this.confirmDialogVisible = true
     const selectedItems = this.keywords.filter(x => x.isEnabled)
@@ -319,6 +335,7 @@ export default class extends Vue {
     })
   }
 
+  // update keyword
   async updateKeyword() {
     if (!this.updateData.length) return
     try {
@@ -348,7 +365,7 @@ export default class extends Vue {
             this.$message({
               message: getValidationMessage(
                 errors.type[0],
-                this.$t(`keyword.${errors.value}`)
+                this.getErrorValue(errors.value)
               ) as string,
               type: 'error',
               duration: 5 * 1000
@@ -359,14 +376,25 @@ export default class extends Vue {
     }
   }
 
+  // check two keyword object equal
   checkIsEqual(value: IKeywordDataItem, other: IKeywordDataItem) {
     return value.label === other.label && value.weight === other.weight
   }
 
+  // round two number after '.'
   valueChange(event: number, keyword: IKeywordDataItem) {
     nextTick(() => {
       this.$set(keyword, 'weight', Math.round(event * 100) / 100)
     })
+  }
+
+  getErrorValue(key:string) {
+    switch (key) {
+      case 'label':
+        return this.$t('labelText.keywordLabel')
+      case 'weight':
+        return this.$t('labelText.keywordWeight')
+    }
   }
 }
 </script>
@@ -374,13 +402,14 @@ export default class extends Vue {
 <style lang="scss" scoped>
 .keyword-list-container {
   .keyword-list-wrapper {
-    width: 50%;
     border: 1px solid #ebebeb;
     padding: 20px;
     border-radius: 4px;
     .keyword-list-title {
       display: flex;
       align-items: center;
+      border-bottom: 1px solid #ebebeb;
+      padding-bottom: 20px;
     }
     .action-container {
       flex: 1;
@@ -412,11 +441,9 @@ export default class extends Vue {
         }
       }
     }
-    @media (max-width: 767px) {
-      width: 100%;
-    }
+
     @media (max-width: 375px) {
-       ::v-deep .check-all {
+      ::v-deep .check-all {
         .el-checkbox__label {
           display: none;
         }
