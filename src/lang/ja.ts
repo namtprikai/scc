@@ -73,7 +73,9 @@ export default {
     keywordAllSelect: '全部選択',
     csvModifyFaqFileName: 'ファイル名',
     csvModifyFaqFileSize: 'ファイルサイズ',
-    csvModifyFaqDownloadBeforeUpload: '編集開始と同時にバックアップファイル（CSVファイル）を保存する（推奨）'
+    csvModifyFaqDownloadBeforeUpload: '編集開始と同時にバックアップファイル（CSVファイル）を保存する（推奨）',
+    directEditKeyword: 'キーワード',
+    directEditPublic: '公開'
   },
   validError: {
     exists: '存在していません',
@@ -319,7 +321,9 @@ export default {
     csvModifyCurrentFaqDownload: '現在のFAQをダウンロード',
     csvModifyFaqUploadConfirmModalTitle: 'アップロード確認',
     csvModifyFaqUploadConfirmModalText: '次のファイルをアップロードします。よろしいですか？',
-    confirmFileMessage: '以下のファイルがアップロードされます、よろしいですか？'
+    confirmFileMessage: '以下のファイルがアップロードされます、よろしいですか？',
+    directEditPublicYes: '公開',
+    directEditPublicNo: '非公開'
   },
   helpText: {
     screenItemNothingChanged: '変更項目がありません',
