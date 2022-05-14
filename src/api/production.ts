@@ -32,3 +32,9 @@ export const updateProduct = (id: number, data: any) =>
     method: 'patch',
     data
   })
+
+export const getCategoryQuestion = (id: number) =>
+  request({
+    url: `/product/${id}/category/`,
+    method: 'get'
+  })
