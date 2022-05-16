@@ -433,6 +433,7 @@ export default {
     searchRecommendQaDeleteAsk: '検索推奨ＱＡを削除しますか？',
     searchRecommendQaDetailAddAsk: '検索推奨ＱＡ一覧に追加しますか？',
     searchRecommendQaDetailRemoveAsk: '検索推奨ＱＡを外しますか？',
-    searchRecommendQaDetailOrderAsk: '検索推奨ＱＡの表示順を変更しますか？'
+    searchRecommendQaDetailOrderAsk: '検索推奨ＱＡの表示順を変更しますか？',
+    conditionGroupDeleteConfirm: '条件グループを削除しますか？'
   }
 }
