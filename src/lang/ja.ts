@@ -323,8 +323,7 @@ export default {
     csvModifyFaqUploadConfirmModalText: '次のファイルをアップロードします。よろしいですか？',
     confirmFileMessage: '以下のファイルがアップロードされます、よろしいですか？',
     directEditPublicYes: '公開',
-    directEditPublicNo: '非公開',
-    directEditAddMedia: 'メディアの追加'
+    directEditPublicNo: '非公開'
   },
   helpText: {
     screenItemNothingChanged: '変更項目がありません',
