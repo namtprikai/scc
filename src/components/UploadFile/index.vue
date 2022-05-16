@@ -1,104 +1,129 @@
 <template lang="">
   <el-dialog
-    :title="$t('text.directEditAddMedia')"
+    :title="$t('text.mediaInsert')"
     :visible.sync="visible"
     class="confirmed-dialog"
     center
-    top="0"
   >
-    <el-upload
-      action=""
-      class="upload-demo"
-      :on-change="handleChange"
-      :file-list="filesMedia"
-      ref="upload"
-      :auto-upload="false">
-      <el-button slot="trigger" size="small" type="primary" class="form__upload">{{$t("helpText.mediaSelect") }} ></el-button>
-    </el-upload>
-    <span slot="footer" class="dialog-footer flex-center">
-      <el-button @click="cancel">{{ $t("text.cancel") }}</el-button>
-      <el-button type="primary" @click="ok">{{ $t("text.ok") }}</el-button>
-    </span>
+    <el-row class="block-col-2">
+        <el-col :span="24" class="insert-content">
+            <el-dropdown trigger="click">
+                <span class="el-dropdown-link">
+                    <el-button type="primary">
+                        {{ $t('text.mediaInsert') }}
+                    </el-button>
+                </span>
+                <el-dropdown-menu slot="dropdown" class="dropdown-menu-content">
+                    <el-dropdown-item>
+                        <el-upload
+                            action=""
+                            class="upload-demo"
+                            :on-change="(file) => {
+ handleChangeFile(file, 'image')
+}"
+                            :show-file-list="false"
+                            :auto-upload="false">
+                                {{ $t('text.mediaInsertImage') }}
+                        </el-upload>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                        <el-upload
+                            action=""
+                            class="upload-demo"
+                            :on-change="(file) => {
+ handleChangeFile(file, 'video')
+}"
+                            :show-file-list="false"
+                            :auto-upload="false">
+                                {{ $t('text.mediaInsertVideo') }}
+                        </el-upload>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                        <el-upload
+                            action=""
+                            class="upload-demo"
+                            :on-change="(file) => {
+ handleChangeFile(file, 'audio')
+}"
+                            :show-file-list="false"
+                            :auto-upload="false">
+                                {{ $t('text.mediaInsertSound') }}
+                        </el-upload>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                        <el-upload
+                            action=""
+                            class="upload-demo"
+                            :on-change="(file) => {
+ handleChangeFile(file, 'file')
+}"
+                            :show-file-list="false"
+                            :auto-upload="false">
+                                {{ $t('text.mediaInsertFile') }}
+                        </el-upload>
+                    </el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </el-col>
+    </el-row>
   </el-dialog>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
+import { isImage, isAudio, isVideo } from '@/utils/validate'
 
 @Component({
   name: 'UploadFileDiaLog',
   components: {}
 })
 export default class extends Vue {
-  //   @Prop({ default: () => false }) public isMultipleSection!: boolean;
-  // flag show/hide dialog
-  @Prop({ default: () => false }) public dialogVisible!: boolean;
-  // list file media
-  @Prop({ default: () => null }) public filesMedia!: any;
+    @Prop({ default: () => false }) public dialogVisible!: boolean;
 
-  get visible() {
-    return this.dialogVisible
-  }
+    get visible() {
+      return this.dialogVisible
+    }
 
-  set visible(value) {
-    this.$emit('update:dialogVisible', false)
-  }
+    set visible(value) {
+      this.$emit('update:dialogVisible', false)
+    }
 
-  // get files() {
-  //   return this.filesMedia
-  // }
+    handleChangeFile(file: any, type: string) {
+      if (this.checkFileUpload(file, type)) {
+        this.visible = false
+        this.$emit('handleInsertMedia', file)
+      }
+    }
 
-  // set files(value) {
-  //   this.$emit('update:filesMedia', this.filesMedia)
-  // }
+    checkFileUpload(file: any, type: string) {
+      let typeFile = true
+      if (type === 'image') {
+        typeFile = isImage(file.name)
+        if (!typeFile) {
+          this.$message.error('Image must be PNG/JPG/JPEG/GIF/TIFF/WEBP/BMP format!')
+        }
+      } else if (type === 'video') {
+        typeFile = isVideo(file.name)
 
-  // click button
-  ok() {
-    // this.$emit('update:filesMedia', this.filesMedia)
-    this.visible = false
-    // this.files = this.filesMedia
-    this.$emit('ok')
-  }
+        if (!typeFile) {
+          this.$message.error('Video must be MP4/MOV/WMV/FLV/AVI/AVCHD/WEBM/MKV format!')
+        }
+      } else if (type === 'audio') {
+        typeFile = isAudio(file.name)
 
-  // click button cancel
-  cancel() {
-    this.visible = false
-    this.$emit('cancel')
-  }
-
-  handleChange(file: any, filesMedia: any) {
-    this.filesMedia = filesMedia.slice(-3)
-  }
+        if (!typeFile) {
+          this.$message.error('Audio picture must be MP3/WMA/WAV/FLAC format!')
+        }
+      } else {
+        return true
+      }
+      return typeFile
+    }
 }
 </script>
 <style lang="scss" scoped>
-.confirmed-dialog {
-  ::v-deep .el-dialog__body {
-    max-height: 70vh;
-    overflow: auto;
-  }
-
-  .scenario {
-    padding: 20px 40px;
-    max-height: 500px;
-    overflow: auto;
-    border: 1px solid #e6ebf5;
-    margin-top: 20px;
-    border-radius: 5px;
-  }
-  ::v-deep .el-dialog {
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40%;
-    @media (max-width: 767px) {
-      width: 100%;
+    .insert-content {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 50px;
     }
-  }
-  .keyword-group {
-      border-bottom: 1px solid #e6ebf5;
-      padding: 5px 0;
-      .keyword {
-          margin: 5px;
-      }
-  }
-}
 </style>

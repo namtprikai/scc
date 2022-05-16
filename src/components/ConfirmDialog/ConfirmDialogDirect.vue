@@ -6,9 +6,9 @@
     center
     top="0"
   >
-    <el-row v-for="data in confirmData" :key="data.key" style="margin-bottom: 20px">
-      <el-col :span="6" style="text-align: right; padding: 0 10px;">{{ data.label }}:</el-col>
-      <el-col :span="18" v-if="data.type === 'array' && data.value && data.key === 'keywords'" style="padding: 0 10px;">
+    <el-row v-for="data in confirmData" :key="data.key" class="confirmed-dialog-row">
+      <el-col :span="6" class="field-label">{{ data.label }}:</el-col>
+      <el-col :span="18" v-if="Array.isArray(data.value) && data.key === 'keywords'" class="keyword-col">
         <div v-for="(keywords, indexKeywords) in data.value" :key="indexKeywords" class="tag-group keyword-group">
             <el-tag
                 v-for="(keyword, indexKeyword) in keywords"
@@ -21,17 +21,20 @@
             </el-tag>
         </div>
       </el-col>
-      <el-col :span="18" v-else-if="data.value && data.key === 'answer'" style="padding: 0 10px;">
+      <el-col :span="18" v-else-if="data.key === 'answer'" class="answer-col">
         <el-collapse v-model="activeName" accordion>
           <el-collapse-item title="Show all text" name="1">
             {{ data.value }}
           </el-collapse-item>
         </el-collapse>
       </el-col>
-      <el-col :span="24" v-else-if="data.type === 'array' && data.value && data.key === 'scenario'" style="padding: 20px 40px;">
-        <div class="scenario" v-html="handleScenario(data.value, 0)"></div>
+      <el-col :span="24" v-else-if="typeof(data.value) === 'object' && data.key === 'scenario'" class="scenario-col">
+        <tree :treeData="data.value"/>
       </el-col>
-      <el-col :span="18" v-else style="padding: 0 10px;">
+      <el-col :span="18" v-else-if="data.key === 'is_public' && typeof(data.value) === 'boolean'">
+        {{ data.value ? $t("text.directEditPublicYes") : $t("text.directEditPublicNo") }}
+      </el-col>
+      <el-col :span="18" v-else class="other-col">
         {{ data.value }}
       </el-col>
     </el-row>
@@ -43,12 +46,12 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
+import Tree from '@/components/Condition/Tree.vue'
 
 interface ConfirmData {
   key: string
   label: string
-  value: string
-  type?: string
+  value: any
 }
 
 interface ConfirmDataSection {
@@ -60,13 +63,13 @@ export type ConfirmDialogData = ConfirmData | ConfirmDataSection
 
 @Component({
   name: 'ConfirmDialogDirect',
-  components: {}
+  components: {
+    Tree
+  }
 })
 export default class extends Vue {
   // confirmdata
   @Prop({ default: () => null, required: true }) private confirmData!: ConfirmDialogData[];
-  // flag multiple section
-  //   @Prop({ default: () => false }) public isMultipleSection!: boolean;
   // flag show/hide dialog
   @Prop({ default: () => false }) public dialogVisible!: boolean;
   // dialog title
@@ -91,54 +94,36 @@ export default class extends Vue {
     this.visible = false
     this.$emit('cancel')
   }
-
-  // get html scenario tree
-  handleScenario(dataConditions: any, widthDiv: number) {
-    let html = ''
-    widthDiv += 15
-    for (let i = 0; i < dataConditions.length; i++) {
-      if (dataConditions[i].status_handle) {
-        html += "<div class='scenario-tag' style='padding-left: " +
-          widthDiv +
-          "px; min-height: 25px; margin-bottom: 5px'>" +
-          "<div style='width: 100%; border: 2px solid #ff4949; padding: 3px 5px; line-height: 23px; border-radius: 3px;'>" +
-          dataConditions[i].label +
-          '</div></div>'
-      } else {
-        html += "<div class='scenario-tag' style='padding-left: " +
-          widthDiv +
-          "px; min-height: 25px; margin-bottom: 5px'>" +
-          "<div style='width: 100%; border: 1px solid #999; padding: 3px 5px; line-height: 23px; border-radius: 3px;'>" +
-          dataConditions[i].label +
-          '</div></div>'
-      }
-      if (dataConditions[i].conditions) {
-        html += this.handleScenario(dataConditions[i].conditions, widthDiv)
-      } else if (dataConditions[i].condition_group) {
-        const newArray = Array(dataConditions[i].condition_group)
-        html += this.handleScenario(newArray, widthDiv)
-      } else {
-        continue
-      }
-    }
-    return html
-  }
 }
 </script>
 <style lang="scss" scoped>
+::v-deep .el-dialog__body {
+  max-height: 70vh;
+  overflow: auto;
+}
 .confirmed-dialog {
-  ::v-deep .el-dialog__body {
-    max-height: 70vh;
-    overflow: auto;
-  }
+  .confirmed-dialog-row {
+    margin-bottom: 20px;
+    .field-label {
+      text-align: right;
+      padding: 0 10px;
+    }
+    .keyword-col, .answer-col, .other-col {
+      padding: 0 10px;
+    }
+    .scenario-col {
+      padding: 20px 40px;
+    }
+    .keyword-col {
+      .keyword-group {
+        border-bottom: 1px solid #e6ebf5;
+        padding: 5px 0;
+        .keyword {
+            margin: 5px;
+        }
+      }
+    }
 
-  .scenario {
-    padding: 20px 40px;
-    max-height: 500px;
-    overflow: auto;
-    border: 1px solid #e6ebf5;
-    margin-top: 20px;
-    border-radius: 5px;
   }
   ::v-deep .el-dialog {
     top: 50%;
@@ -148,12 +133,6 @@ export default class extends Vue {
       width: 100%;
     }
   }
-  .keyword-group {
-      border-bottom: 1px solid #e6ebf5;
-      padding: 5px 0;
-      .keyword {
-          margin: 5px;
-      }
-  }
+
 }
 </style>
