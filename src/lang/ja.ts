@@ -332,6 +332,7 @@ export default {
     productDelete: 'プロダクトを削除しますか？',
     roleDelete: 'ロールを削除しますか？',
     mediaSelect: 'メディアを選択してください',
+    mediaUploadAsk: '次のファイルをアップロードします。よろしいですか？',
     mediaDeleteOnce: '以下のファイルが削除されます。よろしいですか。',
     mediaDelete: 'ファイルが削除されます。よろしいですか。',
     keywordDeleteOnce: '以下の選択されたキーワードを削除しますか？',

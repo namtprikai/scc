@@ -4,7 +4,8 @@ export const createMedia = (params: any) =>
   request({
     url: '/media/',
     method: 'post',
-    params
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data: params
   })
 
 export const getMedia = (params: any) =>
