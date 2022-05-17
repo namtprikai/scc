@@ -3,13 +3,9 @@
     <el-select
       v-model="valueSelected"
       style="width:90%"
+      default-first-option
       @change="changeProduct"
     >
-      <el-option
-        :key="0"
-        :label="'Select'"
-        :value="0"
-      />
       <el-option
         v-for="item in data"
         :key="item.id"
@@ -36,7 +32,7 @@ import { number } from 'echarts'
 
 export default class SelectProductEl extends Vue {
   @Prop({ default: () => null }) private data!:any
-  valueSelected = 0
+  valueSelected = 1
 
   async changeProduct() {
     try {

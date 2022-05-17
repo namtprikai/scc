@@ -6,18 +6,26 @@
     <div slot="header" class="clearfix card_item_title">
       <span>{{$t('text.directEditDetail')}}</span>
     </div>
-    <el-form label-position="top" :model="dataCategoryNew" :v-loading="isLoading" status-icon ref="ruleForm" label-width="120px" class="demo-ruleForm">
+    <el-form
+      label-position="top"
+      :model="dataCategoryNew"
+      :v-loading="isLoading"
+      status-icon
+      ref="dataCategoryNew"
+      label-width="120px"
+      class="demo-ruleForm"
+      :rules="updateRules"
+    >
       <el-form-item
         :label="$t('labelText.directEditCategoryLabel')"
-        prop="pass"
+        prop="label"
         :error="updateCategoryError.label"
-
       >
         <el-input type="text" v-model="dataCategoryNew.label" autocomplete="off" :size="'medium'"></el-input>
       </el-form-item>
       <el-form-item
         :label="$t('labelText.directEditCategoryText')"
-        prop="checkPass"
+        prop="text"
         :error="updateCategoryError.text"
       >
         <el-input type="text" v-model="dataCategoryNew.text" autocomplete="off" :size="'medium'"></el-input>
@@ -39,18 +47,14 @@
           ></json-editor>
         </div>
       </el-form-item>
-      <el-button type="primary" class="btn_save_edit" @click="submitForm(categorySeleted.id)" :disabled="disabled" :size="'medium'">{{$t('text.save')}}</el-button>
+      <el-button type="primary" class="btn_save_edit" @click.native.prevent="submitForm" :disabled="disabled" :size="'medium'">{{$t('text.save')}}</el-button>
     </el-form>
-    <confirm-dialog-request
+    <confirm-dialog-direct
       :confirmData="confirmData"
       :dialogVisible="dialogVisible"
       :title="title"
       @ok="handleAccept"
       @cancel="handleCancel"
-    />
-
-    <confirm-dialog
-
     />
   </el-card>
 </template>
@@ -68,7 +72,7 @@ import { Prop, Watch } from 'vue-property-decorator'
 import { getDetailCategory, lockCategory, editCategory } from '@/api/categories'
 import { ICategoryDetailData } from '@/api/types'
 import { mapKeys, snakeCase, camelCase, isEqual } from 'lodash'
-import { ValidationError, APIErrorCode, APIError } from '@/utils/request'
+import { ValidationType, ValidationError, APIErrorCode, APIError } from '@/utils/request'
 
 @Component({
   name: 'ListCategory',
@@ -125,11 +129,35 @@ export default class ListCategory extends Vue {
   // reset validate message error
   public resetMessageValidate() {
     this.editCategoryError = {
-      label: '',
-      text: '',
-      config: ''
+      label: null,
+      text: null,
+      config: null
     }
   }
+
+  // createProduct rules
+  public updateRules = {
+    label: [
+      {
+        required: true,
+        message: getValidationMessage(
+          ValidationType.Empty,
+          this.$t('labelText.directEditCategoryLabel')
+        ),
+        trigger: 'blur'
+      }
+    ],
+    text: [
+      {
+        required: true,
+        message: getValidationMessage(
+          ValidationType.Empty,
+          this.$t('labelText.directEditCategoryText')
+        ),
+        trigger: 'blur'
+      }
+    ]
+  };
 
   async handleGetDetailCategories() {
     this.isLoading = true
@@ -171,10 +199,11 @@ export default class ListCategory extends Vue {
     }
   }
 
-  submitForm(idCategory: number) {
+  submitForm() {
     (this.$refs.dataCategoryNew as ElForm).validate(async(valid: boolean) => {
       if (valid) {
         this.confirmData = []
+        console.log('submit label ' + this.dataCategoryNew.label)
         // check label change
         if (!isEqual(this.dataCategoryNew.label, this.dataCategoryOld.label)) {
           const objLabel = {
@@ -209,8 +238,9 @@ export default class ListCategory extends Vue {
     })
   }
 
-  async handleAccept() {
+  handleAccept() {
     (this.$refs.dataCategoryNew as ElForm).validate(async(valid: boolean) => {
+      this.dialogVisible = false
       if (valid) {
         this.resetMessageValidate()
         const dataPost = {
@@ -249,18 +279,18 @@ export default class ListCategory extends Vue {
                   case CategoryErrorValue.Label:
                     this.updateCategoryError.label = getValidationMessage(
                       err.type[0],
-                      this.$t('labelText.productName')
+                      this.$t('validError.required', { _field_: this.$t('labelText.directEditCategoryLabel') })
                     )
                     break
                   case CategoryErrorValue.Text:
-                    this.updateCategoryError.maxFailureCountUser =
+                    this.updateCategoryError.text =
                       getValidationMessage(
                         err.type[0],
-                        this.$t('labelText.maxFailureCountUser')
+                        this.$t('validError.required', { _field_: this.$t('labelText.directEditCategoryText') })
                       )
                     break
                   case CategoryErrorValue.Config:
-                    this.updateCategoryError.maxFailureTimeUser =
+                    this.updateCategoryError.config =
                       getValidationMessage(
                         err.type[0],
                         this.$t('labelText.config')
