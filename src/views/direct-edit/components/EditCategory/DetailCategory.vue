@@ -70,7 +70,8 @@ import { getValidationMessage } from '@/utils/validate'
 import { Form as ElForm } from 'element-ui'
 import { Prop, Watch } from 'vue-property-decorator'
 import { getDetailCategory, lockCategory, editCategory } from '@/api/categories'
-import { ICategoryDetailData } from '@/api/types'
+import { getDetailQuestion } from '@/api/questions'
+import { ICategoryDetailData, IQuestionDetailData } from '@/api/types'
 import { mapKeys, snakeCase, camelCase, isEqual } from 'lodash'
 import { ValidationType, ValidationError, APIErrorCode, APIError } from '@/utils/request'
 
@@ -85,6 +86,7 @@ import { ValidationType, ValidationError, APIErrorCode, APIError } from '@/utils
 
 export default class ListCategory extends Vue {
   @Prop({ default: () => null }) private categorySeleted!: any
+  @Prop({ default: () => null }) private productId!: any
   disabled = true
   confirmData: any = []
   dialogVisible = false
@@ -92,8 +94,19 @@ export default class ListCategory extends Vue {
   isLoading = false
   public dataCategoryNew: ICategoryDetailData = {
     id: 0,
+    parentId: null,
     label: '',
     text: '',
+    config: {},
+    created: null,
+    modified: null
+  }
+
+  public dataQuestionNew: IQuestionDetailData = {
+    id: 0,
+    label: '',
+    text: '',
+    isPublic: 0,
     config: {},
     created: null,
     modified: null
@@ -107,8 +120,19 @@ export default class ListCategory extends Vue {
 
   public dataCategoryOld: ICategoryDetailData = {
     id: 0,
+    parentId: null,
     label: '',
     text: '',
+    config: {},
+    created: null,
+    modified: null
+  }
+
+  public dataQuestionOld: IQuestionDetailData = {
+    id: 0,
+    label: '',
+    text: '',
+    isPublic: 0,
     config: {},
     created: null,
     modified: null
@@ -163,7 +187,7 @@ export default class ListCategory extends Vue {
     this.isLoading = true
     try {
       const { data } = await getDetailCategory(this.categorySeleted.id)
-
+      console.log(JSON.stringify(data))
       /* Get all key of object data and change this to camelCase */
       this.dataCategoryNew = mapKeys(data, (v, k) =>
         camelCase(k)
@@ -174,14 +198,27 @@ export default class ListCategory extends Vue {
 
       this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
       this.lockCategory(this.categorySeleted.id)
-    } catch (error) {
-      console.log(error)
-    }
+    } catch (error) {}
     this.isLoading = false
   }
 
-  handleGetDetailQuestions() {
-    console.log('question')
+  async handleGetDetailQuestions() {
+    this.isLoading = true
+    try {
+      const { data } = await getDetailQuestion(this.categorySeleted.id)
+      if (data.config === null) data.config = {}
+      /* Get all key of object data and change this to camelCase */
+      this.dataQuestionNew = mapKeys(data, (v, k) =>
+        camelCase(k)
+      ) as IQuestionDetailData
+
+      /* If data.config == null then set data.config = {} */
+      /* if (data.config === null) this.dataCategoryNew.config = {}
+
+      this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
+      this.lockCategory(this.categorySeleted.id) */
+    } catch (error) {}
+    this.isLoading = false
   }
 
   async lockCategory(idCategory: number) {
@@ -203,7 +240,6 @@ export default class ListCategory extends Vue {
     (this.$refs.dataCategoryNew as ElForm).validate(async(valid: boolean) => {
       if (valid) {
         this.confirmData = []
-        console.log('submit label ' + this.dataCategoryNew.label)
         // check label change
         if (!isEqual(this.dataCategoryNew.label, this.dataCategoryOld.label)) {
           const objLabel = {
@@ -241,6 +277,7 @@ export default class ListCategory extends Vue {
   handleAccept() {
     (this.$refs.dataCategoryNew as ElForm).validate(async(valid: boolean) => {
       this.dialogVisible = false
+      this.isLoading = true
       if (valid) {
         this.resetMessageValidate()
         const dataPost = {
@@ -248,11 +285,12 @@ export default class ListCategory extends Vue {
             this.dataCategoryNew.label.trim() === ''
               ? null
               : this.dataCategoryNew.label.trim(),
-          config: this.dataCategoryNew.config,
           text:
             this.dataCategoryNew.text.trim() === ''
               ? null
-              : this.dataCategoryNew.text.trim()
+              : this.dataCategoryNew.text.trim(),
+          config: this.dataCategoryNew.config,
+          parentId: this.dataCategoryNew.parentId
         }
         try {
           const { data } = await editCategory(
@@ -306,6 +344,8 @@ export default class ListCategory extends Vue {
       } else {
         return false
       }
+      this.isLoading = false
+      this.$emit('reloadListCategory', this.productId)
     })
   }
 

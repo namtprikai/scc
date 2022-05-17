@@ -22,9 +22,7 @@
 import Component from 'vue-class-component'
 import Vue from 'vue'
 import { IProductListItemData } from '@/api/types'
-import { Prop } from 'vue-property-decorator'
-import { getCategoryQuestion } from '@/api/production'
-import { number } from 'echarts'
+import { Prop, Watch } from 'vue-property-decorator'
 
 @Component({
   name: 'SelectProductEl'
@@ -33,14 +31,14 @@ import { number } from 'echarts'
 export default class SelectProductEl extends Vue {
   @Prop({ default: () => null }) private data!:any
   valueSelected = 1
+  @Watch('data')
+  onDataChanged() {
+    this.valueSelected = this.data[0].id
+    this.changeProduct()
+  }
 
-  async changeProduct() {
-    try {
-      const { data } = await getCategoryQuestion(this.valueSelected)
-      this.$emit('getCategoryQuestion', data)
-    } catch (error) {
-      console.log(error)
-    }
+  changeProduct() {
+    this.$emit('getCategoryQuestion', this.valueSelected)
   }
 }
 </script>

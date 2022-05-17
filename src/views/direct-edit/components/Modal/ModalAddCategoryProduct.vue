@@ -4,7 +4,6 @@
     :visible.sync="visible"
     :before-close="handleClose"
     width="30%">
-    {{data}}
     <el-form label-position="top" status-icon ref="ruleForm" label-width="120px" class="demo-ruleForm">
       <el-form-item :label="selectLabel" prop="pass">
         <el-select
@@ -31,7 +30,6 @@
       <el-button type="info" @click="handleClose">{{$t('text.cancel')}}</el-button>
       <el-button type="primary" @click="dialogFormVisible = false">{{$t('text.save')}}</el-button>
     </span>
-    {{data.products}}
   </el-dialog>
 </template>
 

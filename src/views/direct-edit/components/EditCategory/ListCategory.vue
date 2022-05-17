@@ -10,7 +10,7 @@
       <li
         v-for="categoryItem, key of arrayCategories[index]"
         :key="key"
-        :class="{'infinite-list-item': true, 'active': isActive(categoryItem.id)}"
+        :class="{'infinite-list-item': true, 'active': isActive(categoryItem.id, categoryItem.type)}"
         :style="{width: categoryItem.level === 1 ? elementWidth : (parseInt(elementWidth) - (categoryItem.level*5)+'%')}"
         :id="'category_item_'+categoryItem.id"
         @click="getDetailCategory(categoryItem.id, categoryItem.type)"
@@ -81,8 +81,8 @@
 <script lang='ts'>
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import ModalAddCategoryProduct from '@/components/Modal/ModalAddCategoryProduct.vue'
-import ModalCategoryDelete from '@/components/Modal/ModalCategoryDelete.vue'
+import ModalAddCategoryProduct from '@/views/direct-edit/components/Modal/ModalAddCategoryProduct.vue'
+import ModalCategoryDelete from '@/views/direct-edit/components/Modal/ModalCategoryDelete.vue'
 import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 import { Prop, Watch } from 'vue-property-decorator'
 import { forEach } from 'lodash'
@@ -119,7 +119,7 @@ export default class ListCategory extends Vue {
   typeItemSelected = ''
   productItemSelected = null
   elementWidth = '100%'
-  activeItem = 0
+  activeItem = ''
   options = [
     {
       value: '1',
@@ -178,12 +178,12 @@ export default class ListCategory extends Vue {
 
   /* Begin: Function get detail category */
   getDetailCategory(id: number, type: string) {
-    this.activeItem = id
+    this.activeItem = type + '_' + id
     this.$emit('detailCategory', { id, type })
   }
 
-  isActive(id: number) {
-    return this.activeItem === id
+  isActive(id: number, type: string) {
+    return this.activeItem === type + '_' + id
   }
 
   /* Begin: Function add category to product */
@@ -195,8 +195,6 @@ export default class ListCategory extends Vue {
       type: type,
       products: products
     }
-
-    console.log(this.itemSelectedData)
   }
 
   /* Begin: Function update visible of modal when user press button cancel in modal */

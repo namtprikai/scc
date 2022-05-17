@@ -11,11 +11,14 @@
         <list-category
           :listCategories="listCategories"
           @detailCategory="handleDetailCategory"
+          v-loading="isLoading"
         />
       </el-col>
       <el-col :span="12" class="box_detail_category">
         <detail-category
           :categorySeleted='categorySeleted'
+          :productId='productId'
+          @reloadListCategory='getCategoryQuestion'
         />
       </el-col>
     </el-row>
@@ -28,7 +31,7 @@ import Component from 'vue-class-component'
 import SelectProductEl from './EditCategory/SelectProductEl.vue'
 import ListCategory from './EditCategory/ListCategory.vue'
 import DetailCategory from './EditCategory/DetailCategory.vue'
-import { getProduct } from '@/api/production'
+import { getProduct, getCategoryQuestion } from '@/api/production'
 import { IProductListItemData } from '@/api/types'
 import { camelizeKeys } from '@/utils/parse'
 
@@ -44,12 +47,13 @@ import { camelizeKeys } from '@/utils/parse'
 export default class EditCategory extends Vue {
   listQuery = {}
   listProduct: IProductListItemData[] = []
+  productId = 0
   categorySeleted = {
     id: 0,
     type: ''
   }
 
-  private isLoading = true
+  private isLoading = false
   listCategories = []
 
   created() {
@@ -75,9 +79,14 @@ export default class EditCategory extends Vue {
     }
   }
 
-  getCategoryQuestion(data: any) {
-    console.log(data)
-    this.listCategories = data
+  async getCategoryQuestion(idProduct: number) {
+    this.isLoading = true
+    try {
+      const { data } = await getCategoryQuestion(idProduct)
+      this.listCategories = data
+      this.productId = idProduct
+    } catch (error) {}
+    this.isLoading = false
   }
 }
 </script>

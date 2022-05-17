@@ -78,8 +78,19 @@ export interface ICategory {
 
 export interface ICategoryDetailData {
   id: number
+  parentId: number | null
   label: string
   text: string
+  config: object
+  created: Date | null
+  modified: Date | null
+}
+
+export interface IQuestionDetailData {
+  id: number
+  label: string
+  text: string
+  isPublic: number
   config: object
   created: Date | null
   modified: Date | null
