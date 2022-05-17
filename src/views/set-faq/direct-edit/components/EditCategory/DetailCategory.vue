@@ -43,6 +43,7 @@ import { Prop, Watch } from 'vue-property-decorator'
 import { getDetailCategory, lockCategory } from '@/api/categories'
 import { ICategoryDetailData } from '@/api/types'
 import { mapKeys, snakeCase, camelCase, isEqual } from 'lodash'
+import { ValidationType, ValidationError, APIErrorCode, APIError } from '@/utils/request'
 
 @Component({
   name: 'ListCategory',
@@ -96,8 +97,7 @@ export default class ListCategory extends Vue {
 
       this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
 
-      // const lockResult = await lockCategory(this.categorySeleted.id)
-      // console.log('log result: ' + lockResult)
+      this.lockCategory(this.categorySeleted.id)
     } catch (error) {
       console.log(error)
     }
@@ -105,6 +105,21 @@ export default class ListCategory extends Vue {
 
   handleGetDetailQuestions() {
     console.log('question')
+  }
+
+  async lockCategory(idCategory: number) {
+    try {
+      const lockResult = await lockCategory(idCategory)
+      this.disabled = false
+    } catch (error) {
+      if (error instanceof APIError && error.errorCode === APIErrorCode.Unauthorized) {
+        this.$message({
+          message: this.$tc(error.errorCode),
+          type: 'error',
+          duration: 5000
+        })
+      }
+    }
   }
 
   submitForm() {

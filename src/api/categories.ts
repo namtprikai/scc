@@ -7,6 +7,6 @@ export const getDetailCategory = (id: number) =>
 
 export const lockCategory = (id: number) =>
   request({
-    url: `/category/${id}/lock`,
+    url: `/category/${id}/lock/`,
     method: 'get'
   })
