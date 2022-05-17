@@ -15,24 +15,26 @@
         $t("text.deleteMultiple")
       }} <span v-if="deleteIds.length > 0">({{deleteIds.length}})</span> </el-button>
     </el-row>
-    <el-row v-if="isAddNew">
-      <el-form ref="form" class="form">
-        <div class="form__content">
-          <div class="file-name"><span v-show="!isUpload" >{{$t("labelText.mediaFileName") }}</span></div>
-          <el-upload
-              action=""
-              class="upload-demo"
-              :before-remove="handleRemoveFile"
-              :on-change="handleChooseFile"
-              :limit="1"
-              ref="upload"
-              :auto-upload="false">
-              <el-button slot="trigger" size="small" type="primary" class="form__upload">{{$t("helpText.mediaSelect") }} ></el-button>
-            </el-upload>
-        </div>
-        <el-button class="form__submit" size="small" type="success" @click="handleUpload">{{$t("text.mediaUpload") }}</el-button>
+    <el-collapse-transition>
+      <el-row v-if="isAddNew">
+        <el-form ref="form" class="form">
+          <div class="form__content">
+            <div class="file-name"><span v-show="!isUpload" >{{$t("labelText.mediaFileName") }}</span></div>
+            <el-upload
+                action=""
+                class="upload-demo"
+                :before-remove="handleRemoveFile"
+                :on-change="handleChooseFile"
+                :limit="1"
+                ref="upload"
+                :auto-upload="false">
+                <el-button slot="trigger" size="small" type="primary" class="form__upload">{{$t("helpText.mediaSelect") }} ></el-button>
+              </el-upload>
+          </div>
+        <el-button class="form__submit" size="small" :disabled="!this.isUpload" type="success" @click="handleUpload">{{$t("text.mediaUpload") }}</el-button>
         </el-form>
-    </el-row>
+      </el-row>
+    </el-collapse-transition>
     <el-row type="flex">
       <div class="searc-input">
         <el-input :placeholder="$t('text.mediaSearchBar')" v-model="keyword" @input.native="handleFilterMedia">
@@ -56,7 +58,7 @@
               <el-button
                 size="small"
                 icon="el-icon-document-copy"
-                @click="copyURL(item.filePath)"
+                v-clipboard:copy="item.filePath"
               >
                 {{ $t("text.mediaUrlCopy") }}
               </el-button>
@@ -87,7 +89,7 @@
     <confirm-dialog
       :dialogVisible.sync="confirmdialogVisible"
       :confirmData="confirmDataUpload"
-      :title="$t('text.confirmFileMessage')"
+      :title="$t('helpText.mediaUploadAsk')"
       @ok="submitUpload"
       keyColumnWidth="40"
     />
@@ -101,7 +103,7 @@ import { IMediaListItemData } from '@/api/types/media'
 import { getMedia, deleteMedia, deleteMediaAll, createMedia } from '@/api/media'
 import { camelizeKeys } from '@/utils/parse'
 import { formatBytes } from '@/utils/common'
-import ConfirmPopup from './confirmPopup.vue'
+import ConfirmPopup from './components/confirmPopup.vue'
 import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 import { isAudio, isVideo } from '@/utils/validate'
 import audioImage from '@/assets/images/default_audio.jpg'
@@ -126,7 +128,7 @@ export default class extends Vue {
   private total = 0;
   public confirmpopupVisible = false;
   public confirmdialogVisible = false;
-  private fileMedia: Record<string, any> = {};
+  private fileMedia: any;
 
   private dlt = false ;
   private isUpload = false;
@@ -180,44 +182,30 @@ export default class extends Vue {
     }
   }
 
-  private async copyURL(path: string) {
-    try {
-      await navigator.clipboard.writeText(path)
-    } catch ($e) {
-    }
-  }
-
   private async submitUpload() {
     try {
-      const data = await createMedia(this.fileMedia)
+      const formData = new FormData()
+      formData.append('upload_file', this.fileMedia.raw)
+      const data = await createMedia(formData)
       if (data) {
-        // show modal create successfully
-        this.$alert(this.$t('message.roleCreateSuccess') as string, '', {
-          confirmButtonText: this.$t('text.ok') as string,
-          type: 'success',
-          center: true,
-          callback: () => {
-            // redirect to media list screen
-            this.$router
-              .push({
-                name: 'ListMedia'
-              })
-              .catch((err) => {
-                this.$message({
-                  message: err as string,
-                  type: 'error',
-                  duration: 5 * 1000
-                })
-              })
-          }
-        })
+        this.$router
+          .push({
+            name: 'ListMedia'
+          })
+          .catch((err) => {
+            this.$message({
+              message: err as string,
+              type: 'error',
+              duration: 5 * 1000
+            })
+          })
       }
     } catch {
     }
   }
 
   private addNew() {
-    this.isAddNew = true
+    this.isAddNew = !this.isAddNew
   }
 
   private hadleCheck(event: boolean, id: number) {
@@ -239,11 +227,6 @@ export default class extends Vue {
       .then(async() => {
         try {
           await deleteMedia(id)
-          this.$message({
-            message: this.$tc('message.productDeleteSuccess'),
-            type: 'success',
-            duration: 2000
-          })
           const index = this.mediaList.findIndex(function(item) {
             return item.id === id
           })
@@ -267,11 +250,14 @@ export default class extends Vue {
   private async handleDeleteAll() {
     try {
       await deleteMediaAll({ media_id: this.deleteIds })
-      this.$message({
-        message: this.$tc('message.productDeleteSuccess'),
-        type: 'success',
-        duration: 2000
+      this.deleteIds.forEach((id: any) => {
+        const index = this.mediaList.findIndex(function(item) {
+          return item.id === id
+        })
+        this.mediaList.splice(index, 1)
       })
+      this.dlt = true
+      this.deleteIds = []
       this.fetchData()
     } catch (e) {
     }
