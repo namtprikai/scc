@@ -152,7 +152,8 @@ export default {
     keywordModifySuccess: 'キーワードを更新しました',
     keywordDeleteSuccess: 'キーワードを削除しました',
     csvModifyFaqUploadSuccess: 'FAQ編集処理が成功しました',
-    categoryDeleteSuccess: 'Category_delete_success'
+    categoryDeleteSuccess: 'Category_delete_success',
+    categoryModifySuccess: 'categoryModifySuccess'
   },
   screenTitle: {
     error404: 'エラー404',
