@@ -30,8 +30,15 @@
           ></json-editor>
         </div>
       </el-form-item>
-      <el-button type="primary" class="btn_save_edit" @click="submitForm('ruleForm')" :disabled="disabled" :size="'medium'">{{$t('text.save')}}</el-button>
+      <el-button type="primary" class="btn_save_edit" @click="submitForm(categorySeleted.id)" :disabled="disabled" :size="'medium'">{{$t('text.save')}}</el-button>
     </el-form>
+    <confirm-dialog
+      :confirmData="confirmData"
+      :dialogVisible="dialogVisible"
+      :title="title"
+      @ok="handleAccept"
+      @cancel="handleCancel"
+    />
   </el-card>
 </template>
 
@@ -39,6 +46,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import JsonEditor from '@/components/JsonEditorContent/JsonEditor.vue'
+import ConfirmDialog from '@/components/ConfirmDialog/ConfirmDialogDirect.vue'
 import { Prop, Watch } from 'vue-property-decorator'
 import { getDetailCategory, lockCategory } from '@/api/categories'
 import { ICategoryDetailData } from '@/api/types'
@@ -48,13 +56,17 @@ import { ValidationType, ValidationError, APIErrorCode, APIError } from '@/utils
 @Component({
   name: 'ListCategory',
   components: {
-    JsonEditor
+    JsonEditor,
+    ConfirmDialog
   }
 })
 
 export default class ListCategory extends Vue {
   @Prop({ default: () => null }) private categorySeleted!: any
   disabled = true
+  confirmData: any = []
+  dialogVisible = false
+  title = this.$t('text.modifyScreenModalConfirmTitle')
   public dataCategoryNew: ICategoryDetailData = {
     id: 0,
     label: '',
@@ -96,7 +108,6 @@ export default class ListCategory extends Vue {
       if (data.config === null) this.dataCategoryNew.config = {}
 
       this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
-
       this.lockCategory(this.categorySeleted.id)
     } catch (error) {
       console.log(error)
@@ -109,7 +120,7 @@ export default class ListCategory extends Vue {
 
   async lockCategory(idCategory: number) {
     try {
-      const lockResult = await lockCategory(idCategory)
+      await lockCategory(idCategory)
       this.disabled = false
     } catch (error) {
       if (error instanceof APIError && error.errorCode === APIErrorCode.Unauthorized) {
@@ -122,8 +133,43 @@ export default class ListCategory extends Vue {
     }
   }
 
-  submitForm() {
-    alert('submit form')
+  submitForm(idCategory: number) {
+    this.confirmData = []
+    if (this.dataCategoryNew.label !== this.dataCategoryOld.label) {
+      const objLabel = {
+        key: 'label',
+        label: 'Label',
+        value: this.dataCategoryNew.label
+      }
+      this.confirmData.push(objLabel)
+    }
+
+    if (this.dataCategoryNew.text !== this.dataCategoryOld.text) {
+      const objText = {
+        key: 'text',
+        label: 'Text',
+        value: this.dataCategoryNew.text
+      }
+      this.confirmData.push(objText)
+    }
+
+    if (JSON.stringify(this.dataCategoryNew.config) !== JSON.stringify(this.dataCategoryOld.config)) {
+      const objConfig = {
+        key: 'config',
+        label: 'Config',
+        value: this.dataCategoryNew.config
+      }
+      this.confirmData.push(objConfig)
+    }
+    this.dialogVisible = true
+  }
+
+  handleAccept() {
+    this.dialogVisible = false
+  }
+
+  handleCancel() {
+    this.dialogVisible = false
   }
 }
 </script>
