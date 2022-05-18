@@ -28,10 +28,10 @@
                 :limit="1"
                 ref="upload"
                 :auto-upload="false">
-                <el-button slot="trigger" size="small" type="primary" class="form__upload">{{$t("helpText.mediaSelect") }} ></el-button>
+                <el-button slot="trigger" size="small" type="primary" class="form__upload">{{$t("helpText.mediaSelect") }}</el-button>
               </el-upload>
           </div>
-        <el-button class="form__submit" size="small" :disabled="!this.isUpload" type="success" @click="handleUpload">{{$t("text.mediaUpload") }}</el-button>
+        <el-button class="form__submit" size="small" :disabled="!this.isUpload" :loading="isSubmiting" type="success" @click="handleUpload">{{$t("text.mediaUpload") }}</el-button>
         </el-form>
       </el-row>
     </el-collapse-transition>
@@ -47,7 +47,7 @@
         <el-col :span="6" v-for="(item, index) in mediaList" :key="index" class="mr-10">
           <el-card>
             <div class="thumbnail">
-              <img :src="urlImage(item)" class="image">
+              <img :src="urlImage(item)" class="image" @click="handlePreview(urlImage(item), item.fileName)">
             </div>
             <el-checkbox @change="hadleCheck($event, item.id)"></el-checkbox>
             <div class="card__content" style="padding: 14px;">
@@ -92,6 +92,12 @@
       :title="$t('helpText.mediaUploadAsk')"
       @ok="submitUpload"
       keyColumnWidth="40"
+      @cancel="handleCancel"
+    />
+    <image-preview
+      :dialogVisible.sync="confirmPreviewVisible"
+      :itemMedia="previewItem"
+      keyColumnWidth="40"
     />
   </div>
 </template>
@@ -104,6 +110,7 @@ import { getMedia, deleteMedia, deleteMediaAll, createMedia } from '@/api/media'
 import { camelizeKeys } from '@/utils/parse'
 import { formatBytes } from '@/utils/common'
 import ConfirmPopup from './components/confirmPopup.vue'
+import ImagePreview from './components/imagePreview.vue'
 import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 import { isAudio, isVideo } from '@/utils/validate'
 import audioImage from '@/assets/images/default_audio.jpg'
@@ -114,7 +121,8 @@ import videoImage from '@/assets/images/default_video.png'
   components: {
     Pagination,
     ConfirmPopup,
-    ConfirmDialog
+    ConfirmDialog,
+    ImagePreview
   }
 })
 export default class extends Vue {
@@ -128,7 +136,10 @@ export default class extends Vue {
   private total = 0;
   public confirmpopupVisible = false;
   public confirmdialogVisible = false;
+  public confirmPreviewVisible = false;
+  public isSubmiting = false;
   private fileMedia: any;
+  private previewItem = {}
 
   private dlt = false ;
   private isUpload = false;
@@ -187,20 +198,17 @@ export default class extends Vue {
       const formData = new FormData()
       formData.append('upload_file', this.fileMedia.raw)
       const data = await createMedia(formData)
+      this.isSubmiting = false
       if (data) {
+        this.isAddNew = false
+        this.fetchData()
         this.$router
           .push({
             name: 'ListMedia'
           })
-          .catch((err) => {
-            this.$message({
-              message: err as string,
-              type: 'error',
-              duration: 5 * 1000
-            })
-          })
       }
     } catch {
+      this.isSubmiting = false
     }
   }
 
@@ -275,6 +283,7 @@ export default class extends Vue {
         value: formatBytes(this.fileMedia.size)
       }
     )
+    this.isSubmiting = true
     this.confirmdialogVisible = true
   }
 
@@ -296,6 +305,15 @@ export default class extends Vue {
 
   private handleReload() {
     window.location.reload()
+  }
+
+  private handlePreview(filePath: string, fileName: string) {
+    this.confirmPreviewVisible = true
+    this.previewItem = { filePath: filePath, fileName: fileName }
+  }
+
+  private handleCancel() {
+    this.isSubmiting = false
   }
 }
 </script >
@@ -340,6 +358,7 @@ export default class extends Vue {
       width: 100%;
       height: 140px;
       object-fit: cover;
+      cursor: pointer;
     }
   }
   .searc-input {
