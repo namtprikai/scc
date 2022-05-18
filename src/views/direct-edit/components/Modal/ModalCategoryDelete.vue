@@ -8,7 +8,7 @@
 
     <!-- If checked == true then show verify input -->
     <div class="verify-delete" v-if="checked">
-      <p>{{$t('text.directEditDeleteCategoryAllProductVerify')}}</p>
+      <p>{{$t('text.directEditDeleteCategoryAllProductVerify', {_keyWorld_: "削除"})}}</p>
       <el-input placeholder="削除" v-model="input"></el-input>
       <el-alert type="error" v-if="error" :closable="false">{{$t('validError.mismatch')}}</el-alert>
     </div>
@@ -39,6 +39,9 @@ export default class ModalCategoryDelete extends Vue {
   // Display/hidden error
   @Prop({ default: () => false }) private error!: boolean;
 
+  // Product id
+  @Prop({ default: () => false }) private productId!: number;
+
   checked = false
   input = ''
 
@@ -50,9 +53,11 @@ export default class ModalCategoryDelete extends Vue {
 
   handleDelete() {
     const confirmDelete = {
+      id: this.data.id,
       checked: this.checked,
       input: this.input,
-      type: this.data.type
+      type: this.data.type,
+      productId: this.productId
     }
     this.$emit('delete', confirmDelete)
   }

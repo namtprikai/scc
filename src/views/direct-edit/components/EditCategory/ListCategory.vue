@@ -57,7 +57,8 @@
       :modalTitle="$t(titleDialog)"
       :visible.sync="dialogAddVisible"
       :selectLabel="$t('text.directEditAddToProduct')"
-      :options="options"
+      :options="listProduct"
+      :productId="productId"
       :data="itemSelectedData"
       @updateVisible="changeVisible"
     />
@@ -65,11 +66,12 @@
       :visible.sync="dialogDeleteVisible"
       :data="itemSelectedData"
       :error="errorVerifyDelete"
+      :productId="productId"
       @updateVisible="changeVisible"
       @delete="handleDelete"
     />
     <confirm-dialog
-      :title="$t('Message.categoryDeleteSuccess')"
+      :title="$t('message.categoryDeleteSuccess')"
       :dialogVisible.sync="confirmVisible"
       :confirmData="confirmData"
       @ok="handleSubmit"
@@ -86,6 +88,7 @@ import ModalCategoryDelete from '@/views/direct-edit/components/Modal/ModalCateg
 import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 import { Prop, Watch } from 'vue-property-decorator'
 import { forEach } from 'lodash'
+import { delCategoryProduct } from '@/api/categories'
 
 interface CategoryListItem {
   id: number
@@ -107,6 +110,8 @@ interface CategoryListItem {
 export default class ListCategory extends Vue {
   // Prop get list category from parent screen
   @Prop({ default: () => null }) private listCategories!: Array<CategoryListItem>;
+  @Prop({ default: () => null }) private listProduct!: any
+  @Prop({ default: () => null }) private productId!: number
 
   titleDialog = ''
   dialogAddVisible = false
@@ -120,18 +125,7 @@ export default class ListCategory extends Vue {
   productItemSelected = null
   elementWidth = '100%'
   activeItem = ''
-  options = [
-    {
-      value: '1',
-      label: '1'
-    }, {
-      value: '2',
-      label: '2'
-    }, {
-      value: '3',
-      label: '3'
-    }
-  ]
+  isLoading = false
 
   arrayCategories: any = []
 
@@ -213,17 +207,41 @@ export default class ListCategory extends Vue {
   }
 
   /* Begin: Function handle delete category when user click button delete in modal */
-  handleDelete(confirmDelete: any) {
-    if (confirmDelete.checked) {
-      if (confirmDelete.input === '削除') {
-        // Check showed message error then hidden message
-        if (this.errorVerifyDelete === true) this.errorVerifyDelete = false
-        console.log('Call api delete all')
+  async handleDelete(confirmDelete: any) {
+    try {
+      if (confirmDelete.checked) {
+        if (confirmDelete.input === '削除') {
+          // Check showed message error then hidden message
+          if (this.errorVerifyDelete === true) this.errorVerifyDelete = false
+          const { data } = await delCategoryProduct(confirmDelete.id, { product_id: confirmDelete.productId })
+          if (data) {
+            this.$alert(this.$t('message.categoryDeleteSuccess') as string, '', {
+              confirmButtonText: this.$t('text.ok') as string,
+              type: 'success',
+              center: true
+            })
+          }
+        } else {
+          this.errorVerifyDelete = true
+        }
       } else {
-        this.errorVerifyDelete = true
+        /* Call api delete thuong */
+        const { data } = await delCategoryProduct(confirmDelete.id, { product_id: confirmDelete.productId })
+        if (data) {
+          this.$alert(this.$t('message.categoryDeleteSuccess') as string, '', {
+            confirmButtonText: this.$t('text.ok') as string,
+            type: 'success',
+            center: true
+          })
+        }
       }
-    } else {
-      console.log('Call api delete thuong')
+      this.$emit('reloadListCategory', this.productId)
+    } catch (error) {
+      this.$message({
+        message: this.$tc('message.serverConnectError'),
+        type: 'error',
+        duration: 5000
+      })
     }
   }
 

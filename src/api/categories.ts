@@ -15,3 +15,15 @@ export const lockCategory = (id: number) =>
     url: `/category/${id}/lock/`,
     method: 'get'
   })
+export const addCategoryProduct = (id: number, data: any) =>
+  request({
+    url: `/category/${id}/product/add/`,
+    method: 'post',
+    data
+  })
+export const delCategoryProduct = (id: number, data: any) =>
+  request({
+    url: `/category/${id}/product/remove/`,
+    method: 'post',
+    data
+  })

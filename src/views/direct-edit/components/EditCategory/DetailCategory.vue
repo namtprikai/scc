@@ -8,7 +8,7 @@
     </div>
     <el-form
       label-position="top"
-      :model="dataCategoryNew"
+      :model="categorySeleted.type === 'categories' ? dataCategoryNew : dataQuestionNew"
       :v-loading="isLoading"
       status-icon
       ref="dataCategoryNew"
@@ -21,21 +21,23 @@
         prop="label"
         :error="updateCategoryError.label"
       >
-        <el-input type="text" v-model="dataCategoryNew.label" autocomplete="off" :size="'medium'"></el-input>
+        <el-input type="text" v-model="dataCategoryNew.label" autocomplete="off" :size="'medium'" v-if="categorySeleted.type === 'categories'"></el-input>
+        <el-input type="text" v-model="dataQuestionNew.label" autocomplete="off" :size="'medium'" v-else></el-input>
       </el-form-item>
       <el-form-item
         :label="$t('labelText.directEditCategoryText')"
         prop="text"
         :error="updateCategoryError.text"
       >
-        <el-input type="text" v-model="dataCategoryNew.text" autocomplete="off" :size="'medium'"></el-input>
+        <el-input type="text" v-model="dataCategoryNew.text" autocomplete="off" :size="'medium'"  v-if="categorySeleted.type === 'categories'"></el-input>
+        <el-input type="text" v-model="dataQuestionNew.text" autocomplete="off" :size="'medium'"  v-else></el-input>
       </el-form-item>
       <el-form-item
         :label="$t('labelText.config')"
         class="item-config"
         :error="updateCategoryError.config"
       >
-        <div class="json-editor">
+        <div class="json-editor" v-if="categorySeleted.type === 'categories'">
           <json-editor
             :options="{
               confirmText: $t('text.ok'),
@@ -43,6 +45,17 @@
             }"
             :objData="dataCategoryNew.config"
             v-model="dataCategoryNew.config"
+            tabindex="4"
+          ></json-editor>
+        </div>
+        <div class="json-editor" v-else>
+          <json-editor
+            :options="{
+              confirmText: $t('text.ok'),
+              cancelText: $t('text.cancel')
+            }"
+            :objData="dataQuestionNew.config"
+            v-model="dataQuestionNew.config"
             tabindex="4"
           ></json-editor>
         </div>
@@ -92,6 +105,8 @@ export default class ListCategory extends Vue {
   dialogVisible = false
   title = this.$t('text.modifyScreenModalConfirmTitle')
   isLoading = false
+  dataSelected = null
+
   public dataCategoryNew: ICategoryDetailData = {
     id: 0,
     parentId: null,
@@ -187,7 +202,6 @@ export default class ListCategory extends Vue {
     this.isLoading = true
     try {
       const { data } = await getDetailCategory(this.categorySeleted.id)
-      console.log(JSON.stringify(data))
       /* Get all key of object data and change this to camelCase */
       this.dataCategoryNew = mapKeys(data, (v, k) =>
         camelCase(k)
@@ -205,6 +219,8 @@ export default class ListCategory extends Vue {
   async handleGetDetailQuestions() {
     this.isLoading = true
     try {
+      /* Waiting GetFullDetailQuestion API
+      const { data } = await getFullDetailQuestion(this.categorySeleted.id) */
       const { data } = await getDetailQuestion(this.categorySeleted.id)
       if (data.config === null) data.config = {}
       /* Get all key of object data and change this to camelCase */
@@ -213,10 +229,10 @@ export default class ListCategory extends Vue {
       ) as IQuestionDetailData
 
       /* If data.config == null then set data.config = {} */
-      /* if (data.config === null) this.dataCategoryNew.config = {}
+      if (data.config === null) this.dataQuestionNew.config = {}
 
-      this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
-      this.lockCategory(this.categorySeleted.id) */
+      this.dataQuestionOld = Object.assign({}, this.dataQuestionNew)
+      this.lockCategory(this.categorySeleted.id)
     } catch (error) {}
     this.isLoading = false
   }
@@ -300,7 +316,7 @@ export default class ListCategory extends Vue {
           if (data) {
             this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
             // show modal create successfully
-            this.$alert(this.$t('message.productModifySuccess') as string, '', {
+            this.$alert(this.$t('message.categoryModifySuccess') as string, '', {
               confirmButtonText: this.$t('text.ok') as string,
               type: 'success',
               center: true

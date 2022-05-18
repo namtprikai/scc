@@ -4,6 +4,11 @@ export const getDetailQuestion = (id: number) =>
     url: `/question/${id}/`,
     method: 'get'
   })
+export const getFullDetailQuestion = (id: number) =>
+  request({
+    url: `/question/${id}/details`,
+    method: 'get'
+  })
 // export const editCategory = (id: number, data: any) =>
 //   request({
 //     url: `/category/${id}/`,

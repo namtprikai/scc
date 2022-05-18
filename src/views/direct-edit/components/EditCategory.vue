@@ -10,7 +10,10 @@
       <el-col :span="12" class="box_list_category">
         <list-category
           :listCategories="listCategories"
+          :listProduct="listProduct"
+          :productId='productId'
           @detailCategory="handleDetailCategory"
+          @reloadListCategory='getCategoryQuestion'
           v-loading="isLoading"
         />
       </el-col>

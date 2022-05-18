@@ -152,8 +152,9 @@ export default {
     keywordModifySuccess: 'キーワードを更新しました',
     keywordDeleteSuccess: 'キーワードを削除しました',
     csvModifyFaqUploadSuccess: 'FAQ編集処理が成功しました',
-    categoryDeleteSuccess: 'Category_delete_success',
-    categoryModifySuccess: 'categoryModifySuccess'
+    categoryDeleteSuccess: 'カテゴリを追加しました',
+    categoryModifySuccess: 'カテゴリを更新しました',
+    directEditAddCategoryToProductsSuccess: 'カテゴリはプロダクトに追加しました'
   },
   screenTitle: {
     error404: 'エラー404',
@@ -340,7 +341,7 @@ export default {
     directEditApplyChildCategoriesQuestion: '子カテゴリと質問に適用',
     directEditDeleteCategoryConfirm: 'アプリケーションからカテゴリが削除されます。よろしいですか？',
     directEditDeleteCategoryAllProduct: '完全削除（すべてアプリケーションから削除されます）',
-    directEditDeleteCategoryAllProductVerify: 'カテゴリが削除されたことを確認するには、テキスト入力フィールドに「削除」を入力します'
+    directEditDeleteCategoryAllProductVerify: 'カテゴリが削除されたことを確認するには、テキスト入力フィールドに「{_keyWorld_}」を入力します'
   },
   helpText: {
     screenItemNothingChanged: '変更項目がありません',
