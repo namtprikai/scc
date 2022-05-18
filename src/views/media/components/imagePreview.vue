@@ -1,14 +1,13 @@
 <template lang="">
   <el-dialog
-    :title="title"
     :visible.sync="visible"
     class="confirmed-dialog"
     center
     top="0"
+    :title="itemMedia.fileName"
   >
-    <div>{{itemMedia.fileName}}</div>
     <div class="thumbnail">
-      <img :src="urlImage(itemMedia.filePath)" class="image">
+      <img :src="itemMedia.filePath" class="image">
     </div>
     <span slot="footer" class="dialog-footer flex-center">
       <el-button type="primary" @click="ok">{{ $t("text.ok") }}</el-button>
@@ -17,18 +16,13 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { IMediaListItemData } from '@/api/types/media'
-import { isAudio, isVideo } from '@/utils/validate'
-import audioImage from '@/assets/images/default_audio.jpg'
-import videoImage from '@/assets/images/default_video.png'
 
 @Component({
-  name: 'ImagePreview',
-  components: {}
+  name: 'ImagePreview'
 })
 export default class extends Vue {
   // confirmdata
-  @Prop({ default: () => null, required: true }) private itemMedia!: IMediaListItemData;
+  @Prop({ default: () => null, required: true }) private itemMedia!: object;
   // flag show/hide dialog
   @Prop({ default: () => false }) public dialogVisible!: boolean;
 
@@ -44,22 +38,6 @@ export default class extends Vue {
   ok() {
     this.visible = false
     this.$emit('ok')
-  }
-
-  private urlImage(item: any) {
-    let url:any = ''
-    switch (true) {
-      case isAudio(item.fileName):
-        url = audioImage
-        break
-      case isVideo(item.fileName):
-        url = videoImage
-        break
-      default:
-        url = item.filePath
-        break
-    }
-    return url
   }
 }
 </script>
@@ -79,19 +57,10 @@ export default class extends Vue {
     justify-content: center;
     align-items: center;
   }
-  ::v-deep td {
-    border-bottom: 0px;
-  }
-  ::v-deep .el-table {
-    &:before {
-      height: 0px;
-    }
-    .cell {
-      overflow: auto;
-      div {
-        max-height: 100px;
-      }
-    }
+  img {
+    width: 100%;
+    max-height: 250px;
+    margin: auto;
   }
   ::v-deep .text-right {
     text-align: right !important;

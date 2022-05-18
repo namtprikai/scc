@@ -66,3 +66,7 @@ export const isImage = (fileName: string) => {
   const reg = (/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i)
   return reg.test(fileName)
 }
+
+export const isValidFile = (file: any) => {
+  return isAudio(file.name) || isImage(file.name) || isVideo(file.name)
+}
