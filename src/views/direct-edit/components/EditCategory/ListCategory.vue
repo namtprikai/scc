@@ -30,10 +30,10 @@
             style="overflow:auto"
             v-if="categoryItem.type === 'categories'"
           >
-            <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddChildCategory')}}</li>
+            <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addChildCategory(categoryItem.id, categoryItem.level, categoryItem.products, index)">{{$t('text.directEditAddChildCategory')}}</li>
             <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddNewQuestion')}}</li>
             <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addToProduct(categoryItem.id, keyTitleDialog, categoryItem.products, 'categories')">{{$t('text.directEditAddToProduct')}}</li>
-            <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="deleteCategory(categoryItem.id, 'categories')">{{$t('text.delete')}}</li>
+            <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="deleteItem(categoryItem.id, 'categories')">{{$t('text.delete')}}</li>
           </ul>
         <!-- End: Category menu-->
 
@@ -45,7 +45,7 @@
             v-else
           >
             <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addToProduct(categoryItem.id, keyTitleDialog, categoryItem.products, 'question')">{{$t('text.directEditAddToProduct')}}</li>
-            <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="deleteCategory(categoryItem.id, 'question')">{{$t('text.delete')}}</li>
+            <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="deleteItem(categoryItem.id, 'question')">{{$t('text.delete')}}</li>
           </ul>
         <!-- End: Question menu-->
 
@@ -58,7 +58,6 @@
       :visible.sync="dialogAddVisible"
       :selectLabel="$t('text.directEditAddToProduct')"
       :options="listProduct"
-      :productId="productId"
       :data="itemSelectedData"
       @updateVisible="changeVisible"
     />
@@ -88,7 +87,9 @@ import ModalCategoryDelete from '@/views/direct-edit/components/Modal/ModalCateg
 import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 import { Prop, Watch } from 'vue-property-decorator'
 import { forEach } from 'lodash'
-import { delCategoryProduct } from '@/api/categories'
+import { delCategoryProduct, delCategory } from '@/api/categories'
+import { delQuestion, delQuestionProduct } from '@/api/questions'
+import { APIErrorCode, APIError } from '@/utils/request'
 
 interface CategoryListItem {
   id: number
@@ -133,6 +134,10 @@ export default class ListCategory extends Vue {
     this.getArrayCategory(this.listCategories, 1, 'categories')
   }
 
+  @Watch('arrayCategories') onArrayCategoriesChange() {
+    this.$emit('reloadListCategory', this.productId)
+  }
+
   getArrayCategory(categories: any, level: number, type: string) {
     for (let i = 0; i < categories.length; i++) {
       const arrayGroupCategories: any = []
@@ -166,7 +171,7 @@ export default class ListCategory extends Vue {
 
   getQuestions(questions: any, level: number, arrayGroupCategories: any) {
     forEach(questions, function(question) {
-      arrayGroupCategories.push({ id: question.id, text: question.text, products: question.products, level: level, type: 'questions' })
+      arrayGroupCategories.push({ id: question.id, text: question.text, products: question.product_id, level: level, type: 'questions' })
     })
   }
 
@@ -178,6 +183,14 @@ export default class ListCategory extends Vue {
 
   isActive(id: number, type: string) {
     return this.activeItem === type + '_' + id
+  }
+
+  /* Begin: Function add child category */
+  addChildCategory(parentId: number, parentLevel: number, products: any, categoryGroup: number) {
+    const idChildCategory = this.makeid()
+    const newCategoryItem = { id: idChildCategory, level: parentLevel + 1, products: products, text: 'Category new ' + idChildCategory, type: 'categories' }
+    this.arrayCategories[categoryGroup].push(newCategoryItem)
+    // this.$emit('reloadListCategory', this.productId)
   }
 
   /* Begin: Function add category to product */
@@ -198,7 +211,7 @@ export default class ListCategory extends Vue {
   }
 
   /* Begin: Function delete category/question */
-  deleteCategory(id: number, type: string) {
+  deleteItem(id: number, type: string) {
     this.dialogDeleteVisible = true
     this.itemSelectedData = {
       id: id,
@@ -209,50 +222,87 @@ export default class ListCategory extends Vue {
   /* Begin: Function handle delete category when user click button delete in modal */
   async handleDelete(confirmDelete: any) {
     try {
-      if (confirmDelete.checked) {
-        if (confirmDelete.input === '削除') {
-          // Check showed message error then hidden message
-          if (this.errorVerifyDelete === true) this.errorVerifyDelete = false
-          const { data } = await delCategoryProduct(confirmDelete.id, { product_id: confirmDelete.productId })
-          if (data) {
+      /* Delete category */
+      if (confirmDelete.type === 'categories') {
+        if (confirmDelete.checked) {
+          if (confirmDelete.input === '削除') {
+            /* Check showed message error then hidden message */
+            if (this.errorVerifyDelete === true) this.errorVerifyDelete = false
+
+            /* Call API delete category */
+            await delCategory(confirmDelete.id)
             this.$alert(this.$t('message.categoryDeleteSuccess') as string, '', {
               confirmButtonText: this.$t('text.ok') as string,
               type: 'success',
               center: true
             })
+          } else {
+            this.errorVerifyDelete = true
+            return
           }
         } else {
-          this.errorVerifyDelete = true
-        }
-      } else {
-        /* Call api delete thuong */
-        const { data } = await delCategoryProduct(confirmDelete.id, { product_id: confirmDelete.productId })
-        if (data) {
+          await delCategoryProduct(confirmDelete.id, { product_id: confirmDelete.productId })
           this.$alert(this.$t('message.categoryDeleteSuccess') as string, '', {
             confirmButtonText: this.$t('text.ok') as string,
             type: 'success',
             center: true
           })
         }
+      } else {
+        /* Delete questions */
+        if (confirmDelete.checked) {
+          if (confirmDelete.input === '削除') {
+            /* Check showed message error then hidden message */
+            if (this.errorVerifyDelete === true) this.errorVerifyDelete = false
+
+            /* Call API delete category */
+            await delQuestion(confirmDelete.id)
+            this.$alert(this.$t('message.questionDeleteSuccess') as string, '', {
+              confirmButtonText: this.$t('text.ok') as string,
+              type: 'success',
+              center: true
+            })
+          } else {
+            this.errorVerifyDelete = true
+            return
+          }
+        } else {
+          await delQuestionProduct(confirmDelete.id, { delete_id: confirmDelete.productId })
+          this.$alert(this.$t('message.questionDeleteSuccess') as string, '', {
+            confirmButtonText: this.$t('text.ok') as string,
+            type: 'success',
+            center: true
+          })
+        }
       }
+      this.dialogDeleteVisible = false
       this.$emit('reloadListCategory', this.productId)
     } catch (error) {
-      this.$message({
-        message: this.$tc('message.serverConnectError'),
-        type: 'error',
-        duration: 5000
-      })
+      if (error instanceof APIError && error.errorCode === APIErrorCode.Unauthorized) {
+        this.$message({
+          message: this.$tc('message.serverConnectError'),
+          type: 'error',
+          duration: 5000
+        })
+      }
     }
-  }
-
-  /* Begin: Function delete question */
-  deleteQuestion(idCategory: number) {
-    console.log(idCategory)
   }
 
   handleSubmit() {
     console.log('Oke')
   }
+
+  /* Begin: Function random Id category when add child category */
+  private makeid(length = 5) {
+    let result = ''
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    const charactersLength = characters.length
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength))
+    }
+    return result
+  }
+  /* End: private makeid(length = 5) */
 }
 </script>
 

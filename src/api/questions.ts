@@ -9,14 +9,20 @@ export const getFullDetailQuestion = (id: number) =>
     url: `/question/${id}/details`,
     method: 'get'
   })
-// export const editCategory = (id: number, data: any) =>
-//   request({
-//     url: `/category/${id}/`,
-//     method: 'patch',
-//     data
-//   })
-// export const lockCategory = (id: number) =>
-//   request({
-//     url: `/category/${id}/lock/`,
-//     method: 'get'
-//   })
+export const addQuestionProduct = (id: number, data: any) =>
+  request({
+    url: `/question/${id}/product/add/`,
+    method: 'post',
+    data
+  })
+export const delQuestion = (id: number) =>
+  request({
+    url: `/question/${id}/`,
+    method: 'delete'
+  })
+export const delQuestionProduct = (id: number, data: any) =>
+  request({
+    url: `/question/${id}/product/`,
+    method: 'post',
+    data
+  })

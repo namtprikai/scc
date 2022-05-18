@@ -21,6 +21,11 @@ export const addCategoryProduct = (id: number, data: any) =>
     method: 'post',
     data
   })
+export const delCategory = (id: number) =>
+  request({
+    url: `/category/${id}/`,
+    method: 'delete'
+  })
 export const delCategoryProduct = (id: number, data: any) =>
   request({
     url: `/category/${id}/product/remove/`,
