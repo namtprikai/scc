@@ -1,6 +1,5 @@
 export default {
-  route: {
-  },
+  route: {},
   login: {
     title: 'Login Form',
     logIn: 'Login',
@@ -8,7 +7,8 @@ export default {
     password: 'Password',
     any: 'any',
     thirdparty: 'Or connect with',
-    thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !'
+    thirdpartyTips:
+      'Can not be simulated on local, so please combine you own business simulation! ! !'
   },
   screenTitle: {
     error404: '404 Page Not Found'
@@ -16,7 +16,16 @@ export default {
   labelText: {
     id: 'ID',
     productName: 'product_name',
-    action: 'Action'
+    action: 'Action',
+    deploy: 'Deploy',
+    directEditPublic: 'Puplic',
+    directEditQuestionTitle: 'Public Title',
+    directEditQuestionLabel: 'Public Label',
+    directEditKeywork: 'Keywork',
+    directEditAnswer: 'Answer',
+    directEditScenario: 'Scenario',
+    directEditCategoriesQuestionTitle: 'Categories / Quetions',
+    directEditAddCategory: 'Add Category'
   },
   text: {
     back: 'Back go home ',
@@ -45,7 +54,8 @@ export default {
     logout: 'Log Out',
     addNew: 'Add New',
     delete: 'Delete',
-    detail: 'Detail'
+    detail: 'Detail',
+    save: 'Save'
   },
   message: {
     adminActivating: 'Authentication processing ...',

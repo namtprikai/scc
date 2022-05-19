@@ -21,7 +21,7 @@ const SetFAQ: RouteConfig = {
     },
     {
       path: 'direct-edit',
-      component: () => import(/* webpackChunkName: "menu2" */ '@/views/set-faq/direct-edit/index.vue'),
+      component: () => import(/* webpackChunkName: "menu2" */ '@/views/direct-edit/index.vue'),
       name: 'DirectEdit',
       meta: {
         title: 'menuDirectEdit',
