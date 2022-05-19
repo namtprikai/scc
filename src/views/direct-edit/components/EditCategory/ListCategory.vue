@@ -31,7 +31,7 @@
             v-if="categoryItem.type === 'categories'"
           >
             <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addChildCategory(categoryItem.id, categoryItem.level, categoryItem.products, index)">{{$t('text.directEditAddChildCategory')}}</li>
-            <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddNewQuestion')}}</li>
+            <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addNewQuestion(categoryItem.id, categoryItem.level, categoryItem.products, index)">{{$t('text.directEditAddNewQuestion')}}</li>
             <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addToProduct(categoryItem.id, keyTitleDialog, categoryItem.products, 'categories')">{{$t('text.directEditAddToProduct')}}</li>
             <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="deleteItem(categoryItem.id, 'categories')">{{$t('text.delete')}}</li>
           </ul>
@@ -73,7 +73,6 @@
       :title="$t('message.categoryDeleteSuccess')"
       :dialogVisible.sync="confirmVisible"
       :confirmData="confirmData"
-      @ok="handleSubmit"
     >
     </confirm-dialog>
   </el-card>
@@ -127,8 +126,11 @@ export default class ListCategory extends Vue {
   elementWidth = '100%'
   activeItem = ''
   isLoading = false
+  numChildCategory = 1
+  categoryItemSelected = ''
 
   arrayCategories: any = []
+  arrayCategoriesOld: any = null
 
   @Watch('listCategories') onListCategoriesChange() {
     this.getArrayCategory(this.listCategories, 1, 'categories')
@@ -177,6 +179,10 @@ export default class ListCategory extends Vue {
 
   /* Begin: Function get detail category */
   getDetailCategory(id: number, type: string) {
+    if (this.arrayCategoriesOld !== null && this.categoryItemSelected !== id.toString()) {
+      this.arrayCategories = this.arrayCategoriesOld
+      this.numChildCategory = 1
+    }
     this.activeItem = type + '_' + id
     this.$emit('detailCategory', { id, type })
   }
@@ -186,11 +192,42 @@ export default class ListCategory extends Vue {
   }
 
   /* Begin: Function add child category */
-  addChildCategory(parentId: number, parentLevel: number, products: any, categoryGroup: number) {
+  private addChildCategory(parentId: number, parentLevel: number, products: any, categoryGroup: number) {
+    this.arrayCategoriesOld = Object.assign({}, this.arrayCategories)
     const idChildCategory = this.makeid()
-    const newCategoryItem = { id: idChildCategory, level: parentLevel + 1, products: products, text: 'Category new ' + idChildCategory, type: 'categories' }
+    this.categoryItemSelected = idChildCategory
+    const newCategoryItem = { id: idChildCategory, level: parentLevel + 1, products: products, text: 'Category new ' + this.numChildCategory, type: 'categories' }
     this.arrayCategories[categoryGroup].push(newCategoryItem)
-    // this.$emit('reloadListCategory', this.productId)
+    this.numChildCategory++
+    this.activeItem = 'categories_' + idChildCategory
+
+    /* Re-render view */
+    this.$forceUpdate()
+  }
+
+  /* Begin: Function add new question */
+  private addNewQuestion(parentId: number, parentLevel: number, products: any, categoryGroup: number) {
+    this.arrayCategoriesOld = Object.assign({}, this.arrayCategories)
+    const idNewQuestion = this.makeid()
+    this.categoryItemSelected = idNewQuestion
+    const newQuestionItem = { id: idNewQuestion, level: parentLevel + 1, products: products, text: 'Question new ' + this.numChildCategory, type: 'question' }
+    this.arrayCategories[categoryGroup].push(newQuestionItem)
+    this.numChildCategory++
+    this.activeItem = 'question_' + idNewQuestion
+
+    /* Re-render view */
+    this.$forceUpdate()
+
+    /* Create new question detail to pass detail screen */
+    /* const newQuestionDetail = {
+      public: true,
+      title: 'Question new ' + this.numChildCategory,
+      label: 'Question new ' + this.numChildCategory,
+      config: {},
+      keyWorld: [],
+      type: 'answer',
+      contentAnswer: ''
+    } */
   }
 
   /* Begin: Function add category to product */
@@ -286,10 +323,6 @@ export default class ListCategory extends Vue {
         })
       }
     }
-  }
-
-  handleSubmit() {
-    console.log('Oke')
   }
 
   /* Begin: Function random Id category when add child category */
