@@ -131,6 +131,7 @@ export default class ListCategory extends Vue {
 
   arrayCategories: any = []
   arrayCategoriesOld: any = null
+  newCategoryDetail: any = null
 
   @Watch('listCategories') onListCategoriesChange() {
     this.getArrayCategory(this.listCategories, 1, 'categories')
@@ -178,13 +179,19 @@ export default class ListCategory extends Vue {
   }
 
   /* Begin: Function get detail category */
-  getDetailCategory(id: number, type: string) {
+  /* addChildCategory: if true - category add from click to button addChildCategory
+                        false - category select from database */
+  getDetailCategory(id: any, type: string) {
     if (this.arrayCategoriesOld !== null && this.categoryItemSelected !== id.toString()) {
       this.arrayCategories = this.arrayCategoriesOld
       this.numChildCategory = 1
     }
     this.activeItem = type + '_' + id
-    this.$emit('detailCategory', { id, type })
+
+    let data = { id, type, addChildCategory: false }
+    /* Check if typeof(id) is string then data = newCategoryDetail */
+    if (typeof (id) === 'string') data = this.newCategoryDetail
+    this.$emit('detailCategory', data)
   }
 
   isActive(id: number, type: string) {
@@ -198,8 +205,22 @@ export default class ListCategory extends Vue {
     this.categoryItemSelected = idChildCategory
     const newCategoryItem = { id: idChildCategory, level: parentLevel + 1, products: products, text: 'Category new ' + this.numChildCategory, type: 'categories' }
     this.arrayCategories[categoryGroup].push(newCategoryItem)
+
+    /* New category detail */
+    this.newCategoryDetail = {
+      label: 'Category new ' + this.numChildCategory,
+      text: 'Category new ' + this.numChildCategory,
+      config: {},
+      parentId: parentId,
+      type: 'categories',
+      productId: this.productId,
+      addChildCategory: true
+    }
+
     this.numChildCategory++
     this.activeItem = 'categories_' + idChildCategory
+
+    this.getDetailCategory(idChildCategory, 'categories')
 
     /* Re-render view */
     this.$forceUpdate()

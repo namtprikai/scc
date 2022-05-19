@@ -82,7 +82,7 @@ import { CategoryErrorValue } from '@/views/direct-edit/category-error-value'
 import { getValidationMessage } from '@/utils/validate'
 import { Form as ElForm } from 'element-ui'
 import { Prop, Watch } from 'vue-property-decorator'
-import { getDetailCategory, lockCategory, editCategory } from '@/api/categories'
+import { createCategory, getDetailCategory, lockCategory, editCategory } from '@/api/categories'
 import { getDetailQuestion } from '@/api/questions'
 import { ICategoryDetailData, IQuestionDetailData } from '@/api/types'
 import { mapKeys, snakeCase, camelCase, isEqual } from 'lodash'
@@ -113,6 +113,8 @@ export default class ListCategory extends Vue {
     label: '',
     text: '',
     config: {},
+    addChildCategory: false,
+    productId: 0,
     created: null,
     modified: null
   }
@@ -139,6 +141,8 @@ export default class ListCategory extends Vue {
     label: '',
     text: '',
     config: {},
+    addChildCategory: false,
+    productId: 0,
     created: null,
     modified: null
   }
@@ -201,17 +205,25 @@ export default class ListCategory extends Vue {
   async handleGetDetailCategories() {
     this.isLoading = true
     try {
-      const { data } = await getDetailCategory(this.categorySeleted.id)
-      /* Get all key of object data and change this to camelCase */
-      this.dataCategoryNew = mapKeys(data, (v, k) =>
-        camelCase(k)
-      ) as ICategoryDetailData
+      if (this.categorySeleted.addChildCategory === true) {
+        this.dataCategoryNew = mapKeys(this.categorySeleted, (v, k) =>
+          camelCase(k)
+        ) as ICategoryDetailData
 
-      /* If data.config == null then set data.config = {} */
-      if (data.config === null) this.dataCategoryNew.config = {}
+        this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
+      } else {
+        const { data } = await getDetailCategory(this.categorySeleted.id)
+        /* Get all key of object data and change this to camelCase */
+        this.dataCategoryNew = mapKeys(data, (v, k) =>
+          camelCase(k)
+        ) as ICategoryDetailData
 
-      this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
-      this.lockCategory(this.categorySeleted.id)
+        /* If data.config == null then set data.config = {} */
+        if (data.config === null) this.dataCategoryNew.config = {}
+
+        this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
+        this.lockCategory(this.categorySeleted.id)
+      }
     } catch (error) {}
     this.isLoading = false
   }
@@ -296,32 +308,52 @@ export default class ListCategory extends Vue {
       this.isLoading = true
       if (valid) {
         this.resetMessageValidate()
-        const dataPost = {
-          label:
-            this.dataCategoryNew.label.trim() === ''
-              ? null
-              : this.dataCategoryNew.label.trim(),
-          text:
-            this.dataCategoryNew.text.trim() === ''
-              ? null
-              : this.dataCategoryNew.text.trim(),
-          config: this.dataCategoryNew.config,
-          parentId: this.dataCategoryNew.parentId
+        let dataPost = {}
+        if (this.dataCategoryNew.addChildCategory === true) {
+          dataPost = {
+            label:
+              this.dataCategoryNew.label.trim() === ''
+                ? null
+                : this.dataCategoryNew.label.trim(),
+            text:
+              this.dataCategoryNew.text.trim() === ''
+                ? null
+                : this.dataCategoryNew.text.trim(),
+            productId: [this.dataCategoryNew.productId],
+            parentId: this.dataCategoryNew.parentId
+          }
+        } else {
+          dataPost = {
+            label:
+              this.dataCategoryNew.label.trim() === ''
+                ? null
+                : this.dataCategoryNew.label.trim(),
+            text:
+              this.dataCategoryNew.text.trim() === ''
+                ? null
+                : this.dataCategoryNew.text.trim(),
+            config: this.dataCategoryNew.config,
+            parentId: this.dataCategoryNew.parentId
+          }
         }
         try {
-          const { data } = await editCategory(
-            this.categorySeleted.id,
-            mapKeys(dataPost, (v, k) => snakeCase(k))
-          )
-          if (data) {
-            this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
-            // show modal create successfully
-            this.$alert(this.$t('message.categoryModifySuccess') as string, '', {
-              confirmButtonText: this.$t('text.ok') as string,
-              type: 'success',
-              center: true
-            })
+          if (this.dataCategoryNew.addChildCategory === true) {
+            await createCategory(
+              mapKeys(dataPost, (v, k) => snakeCase(k))
+            )
+          } else {
+            await editCategory(
+              this.categorySeleted.id,
+              mapKeys(dataPost, (v, k) => snakeCase(k))
+            )
           }
+          this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
+          // show modal create successfully
+          this.$alert(this.$t('message.categoryModifySuccess') as string, '', {
+            confirmButtonText: this.$t('text.ok') as string,
+            type: 'success',
+            center: true
+          })
         } catch (err) {
           // check if error 422
           if (err instanceof ValidationError) {

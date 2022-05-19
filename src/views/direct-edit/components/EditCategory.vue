@@ -76,9 +76,13 @@ export default class EditCategory extends Vue {
   }
 
   handleDetailCategory(infoCategory: any) {
-    this.categorySeleted = {
-      id: infoCategory.id,
-      type: infoCategory.type
+    if (infoCategory.addChildCategory === false) {
+      this.categorySeleted = {
+        id: infoCategory.id,
+        type: infoCategory.type
+      }
+    } else {
+      this.categorySeleted = infoCategory
     }
   }
 

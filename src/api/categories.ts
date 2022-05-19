@@ -1,4 +1,10 @@
 import request from '@/utils/request'
+export const createCategory = (data: any) =>
+  request({
+    url: '/category/',
+    method: 'post',
+    data
+  })
 export const getDetailCategory = (id: number) =>
   request({
     url: `/category/${id}/`,

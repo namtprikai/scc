@@ -82,6 +82,8 @@ export interface ICategoryDetailData {
   label: string
   text: string
   config: object
+  addChildCategory: boolean
+  productId: number
   created: Date | null
   modified: Date | null
 }

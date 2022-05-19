@@ -154,7 +154,7 @@ export default {
     csvModifyFaqUploadSuccess: 'FAQ編集処理が成功しました',
     categoryDeleteSuccess: 'カテゴリを追加しました',
     categoryModifySuccess: 'カテゴリを更新しました',
-    questionDeleteSuccess: 'questionDeleteSuccess',
+    questionDeleteSuccess: '質問を削除しました',
     directEditAddCategoryToProductsSuccess: 'カテゴリはプロダクトに追加しました'
   },
   screenTitle: {
