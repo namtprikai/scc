@@ -341,7 +341,7 @@ export default class extends Vue {
     try {
       await updateKeyword(
         this.updateData.map(x => ({
-          label: x.label,
+          label: x.label ? x.label : null,
           id: x.id,
           weight: x.weight
         }))
