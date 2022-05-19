@@ -44,6 +44,7 @@
     "vue-count-to": "^1.0.13",
     "vue-i18n": "^8.24.2",
     "vue-image-crop-upload": "^2.5.0",
+    "vue-input-tag": "^2.0.7",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.5.1",
     "vue-splitpane": "^1.0.6",

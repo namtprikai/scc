@@ -104,7 +104,8 @@ export default {
     between: '{_field_}は{min}から{max}の間でなければなりません',
     confirmed: '{_field_}が一致しません',
     digits: '{_field_}は{length}桁の数字でなければなりません',
-    dimensions: '{_field_}は幅{width}px、高さ{height}px以内でなければなりません',
+    dimensions:
+      '{_field_}は幅{width}px、高さ{height}px以内でなければなりません',
     email: '{_field_}は有効なメールアドレスではありません',
     excluded: '{_field_}は不正な値です',
     ext: '{_field_}は有効なファイル形式ではありません',
@@ -140,9 +141,11 @@ export default {
     adminActiveError: '認証処理が失敗しました',
     adminActiveSuccess: '認証処理が成功しました',
     adminProductModifySuccess: '管理者のプロジェクト情報の更新が成功しました',
-    adminPolicyGroupModifySuccess: '管理者のポリシーグループ情報の更新が成功しました',
+    adminPolicyGroupModifySuccess:
+      '管理者のポリシーグループ情報の更新が成功しました',
     passwordResetSuccess: 'パスワード再設定しました',
-    pleaseCheckEmail: 'ご登録のメールアドレスをご確認し、次の行動をお行いください',
+    pleaseCheckEmail:
+      'ご登録のメールアドレスをご確認し、次の行動をお行いください',
     productCreateSuccess: 'プロダクトを作成しました',
     productModifySuccess: 'プロダクトを更新しました',
     productDeleteSuccess: 'プロダクトを削除しました',
@@ -325,7 +328,8 @@ export default {
     mediaReload: 'リロード',
     mediaUpload: 'アップロード',
     mediaUrlCopy: 'URLコピー',
-    mediaSearchBar: 'ファイル名から絞り込む　※ファイル名に存在する文字列を入力してください',
+    mediaSearchBar:
+      'ファイル名から絞り込む　※ファイル名に存在する文字列を入力してください',
     mediaAddNew: 'メディア新規追加',
     adminDetail: '管理者詳細',
     roleDetail: 'ロールの詳細',
