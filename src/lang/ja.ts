@@ -74,10 +74,14 @@ export default {
     csvModifyFaqFileName: 'ファイル名',
     csvModifyFaqFileSize: 'ファイルサイズ',
     csvModifyFaqDownloadBeforeUpload: '編集開始と同時にバックアップファイル（CSVファイル）を保存する（推奨）',
-    directEditKeyword: 'キーワード',
     directEditPublic: '公開',
+    directEditQuestionTitle: '質問タイトル',
+    directEditQuestionLabel: 'メモ',
+    directEditKeywork: 'キーワード',
     directEditAnswer: '回答',
-    directEditScenario: 'シナリオ'
+    directEditScenario: 'シナリオ',
+    directEditCategoriesQuestionTitle: 'カテゴリ・質問',
+    directEditAddCategory: 'カテゴリの追加'
   },
   validError: {
     exists: '存在していません',
@@ -94,7 +98,8 @@ export default {
     between: '{_field_}は{min}から{max}の間でなければなりません',
     confirmed: '{_field_}が一致しません',
     digits: '{_field_}は{length}桁の数字でなければなりません',
-    dimensions: '{_field_}は幅{width}px、高さ{height}px以内でなければなりません',
+    dimensions:
+      '{_field_}は幅{width}px、高さ{height}px以内でなければなりません',
     email: '{_field_}は有効なメールアドレスではありません',
     excluded: '{_field_}は不正な値です',
     ext: '{_field_}は有効なファイル形式ではありません',
@@ -130,9 +135,11 @@ export default {
     adminActiveError: '認証処理が失敗しました',
     adminActiveSuccess: '認証処理が成功しました',
     adminProductModifySuccess: '管理者のプロジェクト情報の更新が成功しました',
-    adminPolicyGroupModifySuccess: '管理者のポリシーグループ情報の更新が成功しました',
+    adminPolicyGroupModifySuccess:
+      '管理者のポリシーグループ情報の更新が成功しました',
     passwordResetSuccess: 'パスワード再設定しました',
-    pleaseCheckEmail: 'ご登録のメールアドレスをご確認し、次の行動をお行いください',
+    pleaseCheckEmail:
+      'ご登録のメールアドレスをご確認し、次の行動をお行いください',
     productCreateSuccess: 'プロダクトを作成しました',
     productModifySuccess: 'プロダクトを更新しました',
     productDeleteSuccess: 'プロダクトを削除しました',
@@ -288,7 +295,8 @@ export default {
     mediaReload: 'リロード',
     mediaUpload: 'アップロード',
     mediaUrlCopy: 'URLコピー',
-    mediaSearchBar: 'ファイル名から絞り込む　※ファイル名に存在する文字列を入力してください',
+    mediaSearchBar:
+      'ファイル名から絞り込む　※ファイル名に存在する文字列を入力してください',
     mediaAddNew: 'メディア新規追加',
     adminDetail: '管理者詳細',
     roleDetail: 'ロールの詳細',
@@ -313,7 +321,8 @@ export default {
     logSearchTaskCompletedDate: '対応日時',
     deleteMultiple: '一括削除',
     updateMultiple: '一括更新',
-    keywordModalContent: '削除されたことを確認するには、テキスト入力フィールドに「削除」と入力します',
+    keywordModalContent:
+      '削除されたことを確認するには、テキスト入力フィールドに「削除」と入力します',
     mediaInsert: '挿入',
     mediaInsertImage: '画像挿入',
     mediaInsertVideo: '動画挿入',
@@ -325,7 +334,8 @@ export default {
     csvModifyFaqUploadConfirmModalText: '次のファイルをアップロードします。よろしいですか？',
     confirmFileMessage: '以下のファイルがアップロードされます、よろしいですか？',
     directEditPublicYes: '公開',
-    directEditPublicNo: '非公開'
+    directEditPublicNo: '非公開',
+    save: '保存'
   },
   helpText: {
     screenItemNothingChanged: '変更項目がありません',
@@ -343,6 +353,7 @@ export default {
     keywordDeleteOnce: '以下の選択されたキーワードを削除しますか？',
     policyGroupDelete: 'ポリシーグループを削除しますか？',
     csvModifyFaqSelect: 'FAQファイルを選択してください',
-    csvModifyFaqUploadConfirmDownload: '・編集を行って保存すると編集前の状態は失われます。バックアップを取りたい場合は以下のチェックボックスを選択し、編集前の状態をCSVファイルで保存してください'
+    csvModifyFaqUploadConfirmDownload:
+      '・編集を行って保存すると編集前の状態は失われます。バックアップを取りたい場合は以下のチェックボックスを選択し、編集前の状態をCSVファイルで保存してください'
   }
 }
