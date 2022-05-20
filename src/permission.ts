@@ -29,7 +29,8 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
   if (AdminModule.acToken) {
     if (to.path === '/login') {
       // If is logged in, redirect to the home page
-      next({ path: '/' })
+      // next({ path: '/' })
+      router.push({ path: '/', replace: true })
       NProgress.done()
     } else {
       // next()
@@ -45,12 +46,14 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
           // })
           // Hack: ensure addRoutes is complete
           // Set the replace: true, so the navigation will not leave a history record
-          next({ ...to, replace: true })
+          router.push({ path: to.fullPath, replace: true })
+          // next({ ...to, replace: true })
         } catch (err: any) {
           // Remove token and redirect to login page
           AdminModule.ResetToken()
           Message.error(err || 'Has Error')
-          next(`/login?redirect=${to.path}`)
+          // next(`/login?redirect=${to.path}`)
+          router.push({ path: `/login?redirect=${to.path}`, replace: true })
           NProgress.done()
         }
       } else {
