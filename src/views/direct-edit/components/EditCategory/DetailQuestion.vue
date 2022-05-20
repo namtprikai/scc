@@ -66,7 +66,6 @@
               {{ $t("labelText.directEditScenario") }}
             </el-radio>
           </div>
-
           <tinymce
             ref="editor"
             v-model="questionForm.answer.text"
@@ -104,7 +103,7 @@ import DraggableSelect from '@/components/DraggableSelect/index.vue'
 import { IDetailQuestion } from '@/api/types/question'
 
 @Component({
-  name: 'Form Quetion',
+  name: 'FormQuestion',
   components: {
     JsonEditor,
     Tinymce,
@@ -112,14 +111,29 @@ import { IDetailQuestion } from '@/api/types/question'
   }
 })
 export default class extends Vue {
-  questionForm: IDetailQuestion | null = null;
+  questionForm: IDetailQuestion = {
+    id: 0,
+    title: '',
+    label: '',
+    isPublic: true,
+    config: {},
+    keywords: [],
+    answer: {
+      id: 0,
+      text: '',
+      config: {}
+    }
+  };
+
+  rules = {}
+  isAnswer = '';
+
+  @Prop({ default: null }) private detailQuestion!: IDetailQuestion;
 
   @Watch('detailQuestion')
   onChangeQuestion() {
     this.questionForm = this.detailQuestion
   }
-
-  @Prop({ default: null }) private detailQuestion!: IDetailQuestion;
 }
 </script>
 
