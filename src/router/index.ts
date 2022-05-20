@@ -54,7 +54,7 @@ export const constantRoutes: RouteConfig[] = [
     component: () => import('@/views/active-admin/index.vue'),
     meta: {
       hidden: true,
-      title: 'activeAdmin'
+      title: 'activateAdmin'
     }
   },
   {
@@ -62,7 +62,7 @@ export const constantRoutes: RouteConfig[] = [
     component: () => import('@/views/active-admin/index.vue'),
     meta: {
       hidden: true,
-      title: 'activeAdmin'
+      title: 'activateAdmin'
     }
   },
   {
