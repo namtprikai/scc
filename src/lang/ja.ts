@@ -77,7 +77,10 @@ export default {
     directEditKeyword: 'キーワード',
     directEditPublic: '公開',
     directEditAnswer: '回答',
-    directEditScenario: 'シナリオ'
+    directEditScenario: 'シナリオ',
+    directEditCategoryLabel: 'ラベル',
+    directEditCategoryText: 'テキスト',
+    directEditCategoryMemo: 'メモ'
   },
   validError: {
     exists: '存在していません',
@@ -150,7 +153,11 @@ export default {
     loginError: 'ログイン情報が間違っています',
     keywordModifySuccess: 'キーワードを更新しました',
     keywordDeleteSuccess: 'キーワードを削除しました',
-    csvModifyFaqUploadSuccess: 'FAQ編集処理が成功しました'
+    csvModifyFaqUploadSuccess: 'FAQ編集処理が成功しました',
+    categoryDeleteSuccess: 'カテゴリを追加しました',
+    categoryModifySuccess: 'カテゴリを更新しました',
+    questionDeleteSuccess: '質問を削除しました',
+    directEditAddCategoryToProductsSuccess: 'カテゴリはプロダクトに追加しました'
   },
   screenTitle: {
     error404: 'エラー404',
@@ -325,7 +332,19 @@ export default {
     csvModifyFaqUploadConfirmModalText: '次のファイルをアップロードします。よろしいですか？',
     confirmFileMessage: '以下のファイルがアップロードされます、よろしいですか？',
     directEditPublicYes: '公開',
-    directEditPublicNo: '非公開'
+    directEditPublicNo: '非公開',
+    directEditDeploy: 'Deloy',
+    directEditCategoriesQuestionTitle: 'カテゴリ・質問',
+    directEditDetail: '詳細',
+    save: '保存',
+    directEditAddChildCategory: '子カテゴリの追加',
+    directEditAddNewQuestion: '新規質問の追加',
+    directEditAddToProduct: 'プロダクトに追加',
+    directEditAddCategoryToProductsTitle: 'カテゴリにプロダクトを追加',
+    directEditApplyChildCategoriesQuestion: '子カテゴリと質問に適用',
+    directEditDeleteCategoryConfirm: 'アプリケーションからカテゴリが削除されます。よろしいですか？',
+    directEditDeleteCategoryAllProduct: '完全削除（すべてアプリケーションから削除されます）',
+    directEditDeleteCategoryAllProductVerify: 'カテゴリが削除されたことを確認するには、テキスト入力フィールドに「{_keyWorld_}」を入力します'
   },
   helpText: {
     screenItemNothingChanged: '変更項目がありません',
