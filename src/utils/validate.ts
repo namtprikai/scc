@@ -53,12 +53,12 @@ export const getValidationMessage = (type: ValidationType, name: string | null |
 }
 
 export const isAudio = (fileName: string) => {
-  const reg = (/\.(mp3)$/i)
+  const reg = (/\.(mp3|wma|wav|flac)$/i)
   return reg.test(fileName)
 }
 
 export const isVideo = (fileName: string) => {
-  const reg = (/\.(mp4|webm)$/i)
+  const reg = (/\.(mp4|webm|mov|wmv|flv|avi|avchd|mkv)$/i)
   return reg.test(fileName)
 }
 
