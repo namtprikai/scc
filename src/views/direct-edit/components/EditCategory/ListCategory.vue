@@ -85,7 +85,6 @@ import ModalAddCategoryProduct from '@/views/direct-edit/components/Modal/ModalA
 import ModalCategoryDelete from '@/views/direct-edit/components/Modal/ModalCategoryDelete.vue'
 import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 import { Prop, Watch } from 'vue-property-decorator'
-import { forEach } from 'lodash'
 import { delCategoryProduct, delCategory } from '@/api/categories'
 import { delQuestion, delQuestionProduct } from '@/api/questions'
 import { APIErrorCode, APIError } from '@/utils/request'
@@ -141,41 +140,31 @@ export default class ListCategory extends Vue {
     this.$emit('reloadListCategory', this.productId)
   }
 
-  getArrayCategory(categories: any, level: number, type: string) {
+  getArrayCategory(categories: any, level: number, type: string, arrayGroupCategories: any = [], parent = true) {
     for (let i = 0; i < categories.length; i++) {
-      const arrayGroupCategories: any = []
-
       // Get parent category
       const objCategory = { id: categories[i].id, text: categories[i].text, products: categories[i].products, level: level, type: type }
       arrayGroupCategories.push(objCategory)
 
-      // Check if exist child categories the get and push in to arrGroupCateories
-      if (categories[i].categories) {
-        level++
-        this.getChildCategories(categories[i].categories, level, arrayGroupCategories)
+      // If exist question then get all questions and push in arrayGroupCategories
+      if (categories[i].questions && categories[i].questions.length > 0) {
+        const arrayQuestions = categories[i].questions
+        for (let x = 0; x < arrayQuestions.length; x++) {
+          arrayGroupCategories.push({ id: arrayQuestions[x].id, text: arrayQuestions[x].text, products: arrayQuestions[x].products, level: level + 1, type: 'questions' })
+        }
       }
 
-      if (categories[i].questions) {
-        level++
-        this.getQuestions(categories[i].questions, level, arrayGroupCategories)
+      // Check if exist child categories then call function getArrayCategory
+      if (categories[i].categories && categories[i].categories.length > 0) {
+        this.getArrayCategory(categories[i].categories, level + 1, 'categories', arrayGroupCategories, false)
       }
-      level = 1
 
       // Push array group categories to array categories
-      this.arrayCategories[i] = arrayGroupCategories
+      if (parent === true) {
+        this.arrayCategories[i] = arrayGroupCategories
+        arrayGroupCategories = []
+      }
     }
-  }
-
-  getChildCategories(categories: any, level: number, arrayGroupCategories: any) {
-    forEach(categories, function(category) {
-      arrayGroupCategories.push({ id: category.id, text: category.text, products: category.products, level: level, type: 'categories' })
-    })
-  }
-
-  getQuestions(questions: any, level: number, arrayGroupCategories: any) {
-    forEach(questions, function(question) {
-      arrayGroupCategories.push({ id: question.id, text: question.text, products: question.product_id, level: level, type: 'questions' })
-    })
   }
 
   /* Begin: Function get detail category */

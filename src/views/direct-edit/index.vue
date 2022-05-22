@@ -4,7 +4,7 @@
       :closable="false"
       title="direct edit"
     />
-    <EditCategory/>
+    <edit-category/>
   </div>
 </template>
 
