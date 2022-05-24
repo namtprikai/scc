@@ -418,7 +418,7 @@ export default class ListCategory extends Vue {
   margin: 0;
 }
 .infinite-list-item{
-  border: 1px solid;
+  border: 1px solid #dcdfe6;
   list-style: none;
   margin-bottom: 10px;
   min-height: 20px;
@@ -427,7 +427,8 @@ export default class ListCategory extends Vue {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 5px 10px;
+  border-radius: 3px;
 }
 
 /* Category menu */
@@ -441,23 +442,22 @@ export default class ListCategory extends Vue {
 }
 .category-list-menu-item{
   list-style: none;
-  margin-bottom: 10px;
   min-height: 40px;
   display: flex;
   flex-direction: row;
   justify-content: left;
   align-items: center;
-  padding: 10px;
+  padding: 5px 10px;
   cursor: pointer;
 }
 
 .category-list-menu-item:hover{
-  background: #ccc;
+  background: #f2f8fe;
 }
 
 .border{
-  border-top: 1px solid #999999;
-  border-bottom: 1px solid #999999;
+  border-top: 1px solid #dcdfe6;
+  border-bottom: 1px solid #dcdfe6;
   box-sizing: border-box;
 }
 
