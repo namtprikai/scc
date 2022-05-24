@@ -279,7 +279,7 @@ export default class ListCategory extends Vue {
         text: '',
         config: {}
       },
-      type: 'question',
+      type: 'questions',
       addNewQuestion: true
     }
 
