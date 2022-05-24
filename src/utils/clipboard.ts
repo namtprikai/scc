@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Clipboard from 'clipboard'
+import i18n from '@/lang'
 
 export const clipboardSuccess = () =>
   Vue.prototype.$message({
-    message: 'Copy successfully',
+    message: i18n.t('message.mediaListUrlCopySuccess'),
     type: 'success',
     duration: 1500
   })
@@ -23,7 +24,7 @@ export const handleClipboard = (text: string, event: MouseEvent) => {
     clipboard.destroy()
   })
   clipboard.on('error', () => {
-    clipboardError()
+    // clipboardError()
     clipboard.destroy()
   });
   (clipboard as any).onClick(event)

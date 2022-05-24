@@ -1,4 +1,11 @@
 <template>
+  <el-dialog
+    :visible.sync="visible"
+    class="confirmed-dialog"
+    center
+    lock-scroll
+    width="80%"
+  >
   <div class="container media-page">
     <el-row type="flex" justify="end">
       <el-button
@@ -51,7 +58,8 @@
             :handleDelete="handleDelete"
             :confirmDataUpload="confirmDataUpload"
             :hadleCheck="hadleCheck"
-            :isInsert="false"/>
+            :isInsert="true"
+            />
         </el-col>
       </el-form>
     </el-row>
@@ -76,25 +84,26 @@
       @cancel="handleCancel"
     />
   </div>
+</el-dialog>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import Pagination from '@/components/Pagination/index.vue'
 import { IMediaListItemData } from '@/api/types/media'
 import { getMedia, deleteMedia, deleteMediaAll, createMedia } from '@/api/media'
 import { camelizeKeys } from '@/utils/parse'
 import { formatBytes } from '@/utils/common'
-import Media from './components/media.vue'
-import ConfirmPopup from './components/confirmPopup.vue'
-import ImagePreview from './components/imagePreview.vue'
+import Media from './media.vue'
+import ConfirmPopup from './confirmPopup.vue'
+import ImagePreview from './imagePreview.vue'
 import ConfirmDialog from '@/components/ConfirmDialog/index.vue'
 import { isAudio, isVideo } from '@/utils/validate'
 import audioImage from '@/assets/images/default_audio.jpg'
 import videoImage from '@/assets/images/default_video.png'
 
 @Component({
-  name: 'ListMedia',
+  name: 'PopupMediaList',
   components: {
     Media,
     Pagination,
@@ -127,8 +136,18 @@ export default class extends Vue {
     limit: 10
   }
 
+  @Prop({ default: () => false }) public dialogVisible!: boolean;
+
   created() {
     this.fetchData()
+  }
+
+  get visible() {
+    return this.dialogVisible
+  }
+
+  set visible(value) {
+    this.$emit('update:dialogVisible', false)
   }
 
   get paginationData() {
@@ -153,7 +172,7 @@ export default class extends Vue {
   private handleFilterMedia() {
     this.isLoading = true
     if (this.keyword) {
-      const strRegEx = '[^,]*' + this.keyword.toLowerCase() + '[,$]*'
+      const strRegEx = '[^,]*' + this.keyword + '[,$]*'
       const filterMedia = this.medias.filter(media => media.fileName.toLowerCase().match(strRegEx))
       this.mediaList = filterMedia
     } else {
@@ -246,7 +265,7 @@ export default class extends Vue {
   private async handleDeleteAll() {
     try {
       await deleteMediaAll({ media_id: this.deleteIds })
-      this.$alert(this.$t('message.mediaListDeleteOnceSuccess') as string, '', {
+      this.$alert(this.$t('Message.mediaListDeleteOnceSuccess') as string, '', {
         confirmButtonText: this.$t('text.ok') as string,
         type: 'success',
         center: true,
@@ -302,7 +321,8 @@ export default class extends Vue {
       page: 1,
       limit: 10
     }
-    this.fetchData()
+    this.mediaList = this.medias
+    this.deleteIds = []
   }
 
   private handlePreview(filePath: string, fileName: string) {
@@ -389,6 +409,11 @@ export default class extends Vue {
     left: 50%;
     transform: translateX(-50%);
   }
+
+  :v-deep .el-dialog{
+    height: 90vh;
+    overflow-y: scroll;
+}
 }
 
 </style>

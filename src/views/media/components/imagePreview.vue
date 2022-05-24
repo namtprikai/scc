@@ -57,10 +57,13 @@ export default class extends Vue {
     justify-content: center;
     align-items: center;
   }
-  img {
-    width: 100%;
-    max-height: 250px;
-    margin: auto;
+  .thumbnail{
+    text-align: center;
+      img {
+        max-width: 100%;
+        max-height: 250px;
+        margin: auto;
+      }
   }
   ::v-deep .text-right {
     text-align: right !important;
