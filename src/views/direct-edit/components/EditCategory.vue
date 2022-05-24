@@ -33,7 +33,7 @@
             @reloadListCategory='getCategoryQuestion'
           />
           <detail-question
-            v-show="categorySeleted.type === 'question'"
+            v-show="categorySeleted.type === 'questions'"
             :detailQuestion='categorySeleted'
           />
         </el-card>
@@ -72,6 +72,13 @@ export default class EditCategory extends Vue {
     type: ''
   }
 
+  productDefault = [{
+    id: 0,
+    name: String(this.$t('validError.exists')),
+    created: '',
+    modified: ''
+  }]
+
   private isLoading = false
   listCategories = []
 
@@ -83,8 +90,14 @@ export default class EditCategory extends Vue {
     this.isLoading = true
     try {
       const { data } = await getProduct(this.listQuery)
-      const products : IProductListItemData[] = camelizeKeys(data) as IProductListItemData[]
-      this.listProduct = products
+
+      /* IF data not empty then get data to show in select product
+        Else using default data
+      */
+      if (data.length > 0) {
+        const products : IProductListItemData[] = camelizeKeys(data) as IProductListItemData[]
+        this.listProduct = products
+      } else this.listProduct = this.productDefault
     } catch {}
     this.isLoading = false
   }

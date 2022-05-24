@@ -21,7 +21,6 @@
 <script lang='ts'>
 import Component from 'vue-class-component'
 import Vue from 'vue'
-import { IProductListItemData } from '@/api/types'
 import { Prop, Watch } from 'vue-property-decorator'
 
 @Component({
@@ -30,11 +29,13 @@ import { Prop, Watch } from 'vue-property-decorator'
 
 export default class SelectProduct extends Vue {
   @Prop({ default: () => null }) private data!:any
-  valueSelected = 1
+  valueSelected = 0
   @Watch('data')
   onDataChanged() {
-    this.valueSelected = this.data[0].id
-    this.changeProduct()
+    if (this.data[0].id !== 0) {
+      this.valueSelected = this.data[0].id
+      this.changeProduct()
+    }
   }
 
   changeProduct() {
