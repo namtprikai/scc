@@ -41,10 +41,10 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/profile/">
+          <router-link :to="{name: 'EditAdmin', params: {adminId: adminId}}">
             <el-dropdown-item>
               {{ $t('text.loggedInAdminSetting') }}
-          </el-dropdown-item>
+            </el-dropdown-item>
           </router-link>
           <el-dropdown-item
             divided
@@ -67,6 +67,7 @@ import { AdminModule } from '@/store/modules/admin'
 import Hamburger from '@/components/Hamburger/index.vue'
 import Logo from '@/components/Logo/index.vue'
 import Notification from '@/components/Notification/index.vue'
+import { getAcToken, decodeToken } from '@/utils/cookies'
 
 @Component({
   name: 'Navbar',
@@ -78,12 +79,22 @@ import Notification from '@/components/Notification/index.vue'
 })
 
 export default class extends Vue {
+  adminId = 0
+  created() {
+    this.getAdminId()
+  }
+
   get sidebar() {
     return AppModule.sidebar
   }
 
   get device() {
     return AppModule.device.toString()
+  }
+
+  private getAdminId() {
+    const token: string = getAcToken()!
+    this.adminId = decodeToken(token).id
   }
 
   private toggleSideBar() {
@@ -107,7 +118,6 @@ export default class extends Vue {
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
-
   .hamburger-container {
     line-height: 5px;
     height: 100%;
@@ -116,18 +126,24 @@ export default class extends Vue {
     cursor: pointer;
     transition: background .3s;
     -webkit-tap-highlight-color:transparent;
-
-  .logo-container {
-    border-radius: 20px;
-    padding: 5px;
-    float: left;
-  }
-  .notification-container {
-    text-align: center;
-  }
+    .logo-container {
+      border-radius: 20px;
+      padding: 5px;
+      float: left;
+    }
+    .notification-container {
+      text-align: center;
+    }
 
     &:hover {
       background: rgba(0, 0, 0, .025)
+    }
+  }
+
+  .hamburger-container.is-active {
+    ::v-deep .svg-icon{
+      transform: rotate(180deg);
+
     }
   }
 
