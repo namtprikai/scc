@@ -43,8 +43,12 @@
                 :id="'category-list-menu-'+categoryItem.id"
                 style="overflow:auto"
               >
-                <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addChildCategory(categoryItem.id, categoryItem.level, categoryItem.products, index)">{{$t('text.directEditAddChildCategory')}}</li>
-                <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addNewQuestion(categoryItem.id, categoryItem.level, categoryItem.products, index)">{{$t('text.directEditAddNewQuestion')}}</li>
+                <li v-if="categoryItem.existQuestion" class="category-list-menu-item disabled" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddChildCategory')}}</li>
+                <li v-else class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addChildCategory(categoryItem.id, categoryItem.level, categoryItem.products, index)">{{$t('text.directEditAddChildCategory')}}</li>
+
+                <li v-if="categoryItem.existCategory" class="category-list-menu-item disabled" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddNewQuestion')}}</li>
+                <li v-else class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addNewQuestion(categoryItem.id, categoryItem.level, categoryItem.products, index)">{{$t('text.directEditAddNewQuestion')}}</li>
+
                 <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addToProduct(categoryItem.id, keyTitleDialog, categoryItem.products, 'categories')">{{$t('text.directEditAddToProduct')}}</li>
                 <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="deleteItem(categoryItem.id, 'categories')">{{$t('text.delete')}}</li>
               </ul>
@@ -172,14 +176,25 @@ export default class ListCategory extends Vue {
     this.$emit('reloadListCategory', this.productId)
   }
 
-  getArrayCategory(categories: any, level: number, type: string, arrayGroupCategories: any = [], parent = true) {
+  getArrayCategory(categories: any, level: number, type: string, arrayGroupCategories: any = [], parent = true, parentItem = 0) {
     for (let i = 0; i < categories.length; i++) {
       // Get parent category
-      const objCategory = { id: categories[i].id, text: categories[i].text, products: categories[i].products, level: level, type: type }
+      const objCategory = { id: categories[i].id, text: categories[i].text, products: categories[i].products, level: level, type: type, existQuestion: false, existCategory: false }
       arrayGroupCategories.push(objCategory)
 
       // If exist question then get all questions and push in arrayGroupCategories
       if (categories[i].questions && categories[i].questions.length > 0) {
+        /* If current item is not parrent */
+        if (!parent) {
+          /* Check categories in arrayGroupCategories exist id parent right?? */
+          for (let x = 0; x < arrayGroupCategories.length; x++) {
+            /* if exist category in arrayGroupCategories then assign existQuestion is true */
+            if (parentItem === arrayGroupCategories[x].id) {
+              arrayGroupCategories[x].existQuestion = true
+            }
+          }
+        }
+
         const arrayQuestions = categories[i].questions
         for (let x = 0; x < arrayQuestions.length; x++) {
           arrayGroupCategories.push({ id: arrayQuestions[x].id, text: arrayQuestions[x].text, products: arrayQuestions[x].products, level: level + 1, type: 'questions' })
@@ -188,7 +203,14 @@ export default class ListCategory extends Vue {
 
       // Check if exist child categories the get and push in to arrGroupCateories
       if (categories[i].categories && categories[i].categories.length > 0) {
-        this.getArrayCategory(categories[i].categories, level + 1, 'categories', arrayGroupCategories, false)
+        if (!parent) {
+          for (let j = 0; j < arrayGroupCategories.length; j++) {
+            if (parentItem === arrayGroupCategories[j].id) {
+              arrayGroupCategories[j].existCategory = true
+            }
+          }
+        }
+        this.getArrayCategory(categories[i].categories, level + 1, 'categories', arrayGroupCategories, false, categories[i].id)
       }
 
       // Push array group categories to array categories
