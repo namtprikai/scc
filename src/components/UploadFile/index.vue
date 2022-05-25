@@ -98,21 +98,10 @@ export default class extends Vue {
       let typeFile = true
       if (type === 'image') {
         typeFile = isImage(file.name)
-        if (!typeFile) {
-          this.$message.error('Image must be PNG/JPG/JPEG/GIF/TIFF/WEBP/BMP format!')
-        }
       } else if (type === 'video') {
         typeFile = isVideo(file.name)
-
-        if (!typeFile) {
-          this.$message.error('Video must be MP4/MOV/WMV/FLV/AVI/AVCHD/WEBM/MKV format!')
-        }
       } else if (type === 'audio') {
         typeFile = isAudio(file.name)
-
-        if (!typeFile) {
-          this.$message.error('Audio picture must be MP3/WMA/WAV/FLAC format!')
-        }
       } else {
         return true
       }
