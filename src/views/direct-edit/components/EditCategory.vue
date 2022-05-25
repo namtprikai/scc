@@ -16,7 +16,6 @@
           @reloadListCategory='getCategoryQuestion'
           v-loading="isLoading"
         />
-        <el-button type="primary" class="btn-add-category">{{$t('labelText.directEditAddCategory')}}</el-button>
       </el-col>
       <el-col :span="14" class="box_detail_category">
         <el-card
@@ -27,16 +26,15 @@
             <span>{{$t('text.directEditDetail')}}</span>
           </div>
           <detail-category
-            v-show="categorySeleted.type === 'categories'"
+            v-show="itemType === 'categories'"
             :categorySeleted='categorySeleted'
             :productId='productId'
             @reloadListCategory='getCategoryQuestion'
           />
           <detail-question
-            v-show="categorySeleted.type === 'questions'"
-            :detailQuestion='categorySeleted'
+            v-show="itemType === 'questions'"
+            :detailQuestion='questionSelected'
             :productId="productId"
-            :categorySeleted="categorySeleted"
           />
         </el-card>
       </el-col>
@@ -69,10 +67,23 @@ export default class EditCategory extends Vue {
   listQuery = {}
   listProduct: IProductListItemData[] = []
   productId = 0
+  itemType = 'category'
   categorySeleted = {
     id: 0,
     type: ''
   }
+
+  questionSelected = {
+    id: 0,
+    type: ''
+  }
+
+  productDefault = [{
+    id: 0,
+    name: String(this.$t('validError.exists')),
+    created: '',
+    modified: ''
+  }]
 
   private isLoading = false
   listCategories = []
@@ -85,14 +96,20 @@ export default class EditCategory extends Vue {
     this.isLoading = true
     try {
       const { data } = await getProduct(this.listQuery)
-      const products : IProductListItemData[] = camelizeKeys(data) as IProductListItemData[]
-      this.listProduct = products
+      /* IF data not empty then get data to show in select product
+        Else using default data
+      */
+      if (data.length > 0) {
+        const products : IProductListItemData[] = camelizeKeys(data) as IProductListItemData[]
+        this.listProduct = products
+      } else this.listProduct = this.productDefault
     } catch {}
     this.isLoading = false
   }
 
   handleDetailCategory(infoCategory: any) {
     if (infoCategory.type === 'categories') {
+      this.itemType = 'categories'
       if (infoCategory.addChildCategory === false) {
         this.categorySeleted = {
           id: infoCategory.id,
@@ -102,13 +119,14 @@ export default class EditCategory extends Vue {
         this.categorySeleted = infoCategory
       }
     } else {
+      this.itemType = 'questions'
       if (infoCategory.addNewQuestion === false) {
-        this.categorySeleted = {
+        this.questionSelected = {
           id: infoCategory.id,
           type: infoCategory.type
         }
       } else {
-        this.categorySeleted = infoCategory
+        this.questionSelected = infoCategory
       }
     }
   }
@@ -135,6 +153,10 @@ export default class EditCategory extends Vue {
 .box-card{
   width: 100%;
   height: calc(100vh - 200px);
+}
+.form_detail {
+  width: 100%;
+  height: calc(100vh - 300px);
   overflow: auto;
 }
 .box_list_category {
@@ -143,15 +165,6 @@ export default class EditCategory extends Vue {
 .card_item_title{
   text-align: center;
   color: #008CFF;
-}
-
-.btn-add-category {
-  position: absolute;
-  z-index: 1000;
-  bottom: 0;
-  width: 90%;
-  left: 50%;
-  transform: translate(-50%, 0);
 }
 
 @media screen and (max-width:1024px) {

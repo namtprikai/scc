@@ -2,7 +2,7 @@
   <div>
     <el-form
       label-position="top"
-      :model="categorySeleted.type === 'categories' ? dataCategoryNew : dataQuestionNew"
+      :model="dataCategoryNew"
       :v-loading="isLoading"
       status-icon
       ref="dataCategoryNew"
@@ -15,23 +15,21 @@
         prop="label"
         :error="updateCategoryError.label"
       >
-        <el-input v-if="categorySeleted.type === 'categories'" type="text" v-model="dataCategoryNew.label" autocomplete="off" :size="'medium'"></el-input>
-        <el-input v-else type="text" v-model="dataQuestionNew.label" autocomplete="off" :size="'medium'"></el-input>
+        <el-input type="text" v-model="dataCategoryNew.label" autocomplete="off" :size="'medium'"></el-input>
       </el-form-item>
       <el-form-item
         :label="$t('labelText.directEditCategoryText')"
         prop="text"
         :error="updateCategoryError.text"
       >
-        <el-input v-if="categorySeleted.type === 'categories'" type="text" v-model="dataCategoryNew.text" autocomplete="off" :size="'medium'"></el-input>
-        <el-input v-else type="text" v-model="dataQuestionNew.text" autocomplete="off" :size="'medium'"></el-input>
+        <el-input type="text" v-model="dataCategoryNew.text" autocomplete="off" :size="'medium'"></el-input>
       </el-form-item>
       <el-form-item
         :label="$t('labelText.config')"
         class="item-config"
         :error="updateCategoryError.config"
       >
-        <div v-if="categorySeleted.type === 'categories'" class="json-editor">
+        <div class="json-editor">
           <json-editor
             :options="{
               confirmText: $t('text.ok'),
@@ -42,23 +40,12 @@
             tabindex="4"
           ></json-editor>
         </div>
-        <div v-else class="json-editor">
-          <json-editor
-            :options="{
-              confirmText: $t('text.ok'),
-              cancelText: $t('text.cancel')
-            }"
-            :objData="dataQuestionNew.config"
-            v-model="dataQuestionNew.config"
-            tabindex="4"
-          ></json-editor>
-        </div>
       </el-form-item>
       <el-button type="primary" class="btn_save_edit" @click.native.prevent="submitForm" :disabled="disabled" :size="'medium'">{{$t('text.save')}}</el-button>
     </el-form>
     <confirm-dialog-direct
       :confirmData="confirmData"
-      :dialogVisible="dialogVisible"
+      :dialogVisible.sync="dialogVisible"
       :title="title"
       @ok="handleAccept"
       @cancel="handleCancel"
@@ -77,8 +64,7 @@ import { getValidationMessage } from '@/utils/validate'
 import { Form as ElForm } from 'element-ui'
 import { Prop, Watch } from 'vue-property-decorator'
 import { createCategory, getDetailCategory, lockCategory, editCategory } from '@/api/categories'
-import { getDetailQuestion } from '@/api/questions'
-import { ICategoryDetailData, IQuestionDetailData } from '@/api/types'
+import { ICategoryDetailData } from '@/api/types'
 import { mapKeys, snakeCase, camelCase, isEqual } from 'lodash'
 import { ValidationType, ValidationError, APIErrorCode, APIError } from '@/utils/request'
 
@@ -113,16 +99,6 @@ export default class ListCategory extends Vue {
     modified: null
   }
 
-  public dataQuestionNew: IQuestionDetailData = {
-    id: 0,
-    label: '',
-    text: '',
-    isPublic: 0,
-    config: {},
-    created: null,
-    modified: null
-  }
-
   public updateCategoryError: any = {
     label: null,
     text: null,
@@ -141,16 +117,6 @@ export default class ListCategory extends Vue {
     modified: null
   }
 
-  public dataQuestionOld: IQuestionDetailData = {
-    id: 0,
-    label: '',
-    text: '',
-    isPublic: 0,
-    config: {},
-    created: null,
-    modified: null
-  }
-
   public editCategoryError: any = {
     label: '',
     text: '',
@@ -159,8 +125,7 @@ export default class ListCategory extends Vue {
 
   @Watch('categorySeleted')
   onCategorySelectedChanged() {
-    if (this.categorySeleted.type === 'categories') this.handleGetDetailCategories()
-    else this.handleGetDetailQuestions()
+    this.handleGetDetailCategories()
   }
 
   // reset validate message error
@@ -222,33 +187,20 @@ export default class ListCategory extends Vue {
     this.isLoading = false
   }
 
-  async handleGetDetailQuestions() {
-    this.isLoading = true
+  async lockCategory(id: number) {
     try {
-      /* Waiting GetFullDetailQuestion API
-      const { data } = await getFullDetailQuestion(this.categorySeleted.id) */
-      const { data } = await getDetailQuestion(this.categorySeleted.id)
-      if (data.config) data.config = {}
-      /* Get all key of object data and change this to camelCase */
-      this.dataQuestionNew = mapKeys(data, (v, k) =>
-        camelCase(k)
-      ) as IQuestionDetailData
-
-      /* If data.config == null then set data.config = {} */
-      if (data.config === null) this.dataQuestionNew.config = {}
-
-      this.dataQuestionOld = Object.assign({}, this.dataQuestionNew)
-      this.lockCategory(this.categorySeleted.id)
-    } catch (error) {}
-    this.isLoading = false
-  }
-
-  async lockCategory(idCategory: number) {
-    try {
-      await lockCategory(idCategory)
+      await lockCategory(id)
       this.disabled = false
     } catch (error) {
       if (error instanceof APIError && error.errorCode === APIErrorCode.Unauthorized) {
+        this.$message({
+          message: this.$tc(error.errorCode),
+          type: 'error',
+          duration: 5000
+        })
+      }
+
+      if (error instanceof APIError && error.errorCode === APIErrorCode.Locked) {
         this.$message({
           message: this.$tc(error.errorCode),
           type: 'error',
@@ -267,7 +219,7 @@ export default class ListCategory extends Vue {
         if (!isEqual(this.dataCategoryNew.label, this.dataCategoryOld.label)) {
           const objLabel = {
             key: 'label',
-            label: 'Label',
+            label: this.$t('labelText.directEditCategoryLabel'),
             value: this.dataCategoryNew.label
           }
           arrStatusChanged[0] = true
@@ -279,7 +231,7 @@ export default class ListCategory extends Vue {
         if (!isEqual(this.dataCategoryNew.text, this.dataCategoryOld.text)) {
           const objText = {
             key: 'text',
-            label: 'Text',
+            label: this.$t('labelText.directEditCategoryText'),
             value: this.dataCategoryNew.text
           }
           arrStatusChanged[1] = true
@@ -291,7 +243,7 @@ export default class ListCategory extends Vue {
         if (!isEqual(this.dataCategoryNew.config, this.dataCategoryOld.config)) {
           const objConfig = {
             key: 'config',
-            label: 'Config',
+            label: this.$t('labelText.config'),
             value: JSON.stringify(this.dataCategoryNew.config)
           }
           arrStatusChanged[2] = true

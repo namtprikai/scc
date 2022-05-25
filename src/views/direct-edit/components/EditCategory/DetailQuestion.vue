@@ -115,11 +115,13 @@ import Tinymce from '@/components/Tinymce/index.vue'
 import JsonEditor from '@/components/JsonEditorContent/JsonEditor.vue'
 import TagsInput from '@/components/TagsInput/index.vue'
 import { IDetailQuestion } from '@/api/types/question'
-import { createQuestionAnswer } from '@/api/questions'
+import { createQuestionAnswer, getDetailQuestion, lockQuestion } from '@/api/questions'
 import ConfirmDialogDirect from '@/components/ConfirmDialog/ConfirmDialogDirect.vue'
 import { TranslateResult } from 'vue-i18n'
 import { getValidationMessage } from '@/utils/validate'
 import { ValidationType, APIErrorCode, APIError } from '@/utils/request'
+
+import { mapKeys, snakeCase, camelCase, isEqual } from 'lodash'
 
 interface ConfirmData {
   key: keyof IDetailQuestion | 'public'
@@ -155,8 +157,24 @@ export default class extends Vue {
     }
   };
 
+  dataQuestionOld: IDetailQuestion = {
+    id: 0,
+    title: '',
+    label: '',
+    isPublic: true,
+    config: {},
+    keywords: [],
+    answer: {
+      id: 0,
+      text: '',
+      config: {}
+    }
+  };
+
   isAnswer = '1';
   openDialog = false;
+  isLoading = false;
+  disabled = true;
 
   confirmData: ConfirmData[] = [
     {
@@ -206,7 +224,57 @@ export default class extends Vue {
 
   @Watch('detailQuestion')
   onChangeQuestion() {
-    this.questionForm = this.detailQuestion
+    // this.questionForm = this.detailQuestion
+    this.handleGetDetailQuestions()
+  }
+
+  async handleGetDetailQuestions() {
+    this.isLoading = true
+    try {
+      /* Waiting GetFullDetailQuestion API
+      const { data } = await getFullDetailQuestion(this.detailQuestion.id)
+      if (data.config) data.config = {}
+      //Get all key of object data and change this to camelCase
+      this.questionForm = mapKeys(data, (v, k) =>
+        camelCase(k)
+      ) as IDetailQuestion
+
+      // If data.config == null then set data.config = {}
+      if (data.config === null) this.questionForm.config = {}
+    */
+
+      this.questionForm = {
+        id: 0,
+        title: 'Question demo',
+        label: 'Question demo',
+        isPublic: true,
+        config: {},
+        keywords: [],
+        answer: {
+          id: 0,
+          text: '',
+          config: {}
+        }
+      }
+      this.dataQuestionOld = Object.assign({}, this.questionForm)
+      this.lockQuestion(this.categorySeleted.id)
+    } catch (error) {}
+    this.isLoading = false
+  }
+
+  async lockQuestion(id: number) {
+    try {
+      await lockQuestion(id)
+      this.disabled = false
+    } catch (error) {
+      if (error instanceof APIError && error.errorCode === APIErrorCode.Unauthorized) {
+        this.$message({
+          message: this.$tc(error.errorCode),
+          type: 'error',
+          duration: 5000
+        })
+      }
+    }
   }
 
   addKeyword() {

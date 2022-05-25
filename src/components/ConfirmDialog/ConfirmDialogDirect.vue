@@ -22,7 +22,7 @@
         </div>
       </el-col>
       <el-col :span="18" v-else-if="data.key === 'answer'" class="answer-col">
-        <el-collapse v-model="activeName" accordion>
+        <el-collapse accordion>
           <el-collapse-item title="Show all text" name="1">
             {{ data.value }}
           </el-collapse-item>

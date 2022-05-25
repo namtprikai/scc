@@ -14,7 +14,7 @@
       >
       </el-option>
     </el-select>
-    <el-button type="primary">{{$t('text.directEditDeploy')}}</el-button>
+    <el-button type="primary">{{$t('text.directEditDeloy')}}</el-button>
   </div>
 </template>
 
