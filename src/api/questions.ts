@@ -26,3 +26,9 @@ export const delQuestionProduct = (id: number, data: any) =>
     method: 'post',
     data
   })
+export const createQuestion = (data: any) =>
+  request({
+    url: '/question/scenario/',
+    method: 'post',
+    data
+  })
