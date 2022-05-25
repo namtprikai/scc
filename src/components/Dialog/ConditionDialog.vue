@@ -5,17 +5,27 @@
     class="confirmed-dialog"
     center
   >
-    <el-row :gutter="24">
-      <el-col :span="24" class="input-label">
-        <span>{{ $t('text.directEditConditionGroupLabel') }}</span>
-      </el-col>
-      <el-col :span="24">
-        <el-input placeholder="Please input" v-model="conditionEdit.text"></el-input>
-      </el-col>
-      <el-col :span="24" class="input-label">
-        <span>{{ $t('text.directEditConditionGroupMemo') }}</span>
-      </el-col>
-      <el-col :span="24">
+    <el-form
+      class="form-product"
+      ref="createForm"
+      label-position="top"
+      :rules="editRules"
+      :model="conditionEdit"
+    >
+      <el-form-item
+        :label="$t('text.directEditConditionGroupLabel')"
+        prop="text"
+      >
+        <el-input
+          v-model="conditionEdit.text"
+          tabindex="1"
+          autofocus
+        ></el-input>
+      </el-form-item>
+      <el-form-item
+        :label="$t('text.directEditConditionGroupMemo')"
+        prop="config"
+      >
         <div class="json-editor">
           <json-editor
             :objData="conditionEdit.config"
@@ -23,17 +33,19 @@
             tabindex="7"
           />
         </div>
-      </el-col>
-    </el-row>
-    <span slot="footer" class="dialog-footer flex-center">
-      <el-button @click="cancel">{{ $t("text.cancel") }}</el-button>
-      <el-button type="primary" @click="ok">{{ $t("text.ok") }}</el-button>
-    </span>
+      </el-form-item>
+      <el-form-item class="group-button">
+          <el-button @click="cancel">{{ $t("text.cancel") }}</el-button>
+          <el-button type="primary" @click="ok">{{ $t("text.ok") }}</el-button>
+      </el-form-item>
+    </el-form>
   </el-dialog>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import JsonEditor from '@/components/JsonEditorContent/JsonEditor.vue'
+import { getValidationMessage } from '@/utils/validate'
+import { ValidationType } from '@/utils/request'
 
 @Component({
   name: 'ConditionDialog',
@@ -51,6 +63,19 @@ export default class extends Vue {
 
   @Watch('conditionEdit')
 
+  private editRules = {
+    text: [
+      {
+        required: true,
+        message: getValidationMessage(
+          ValidationType.Empty,
+          this.$t('text.directEditConditionGroupLabel')
+        ),
+        trigger: 'blur'
+      }
+    ]
+  }
+
   get visible() {
     return this.dialogVisible
   }
@@ -61,8 +86,10 @@ export default class extends Vue {
 
   // click button
   ok() {
-    this.visible = false
-    this.$emit('ok', this.conditionEdit)
+    if (this.conditionEdit.text) {
+      this.visible = false
+      this.$emit('ok', this.conditionEdit)
+    }
   }
 
   // click button cancel
@@ -79,5 +106,9 @@ export default class extends Vue {
   }
   .input-label {
     margin: 10px 0 !important;
+  }
+  .group-button {
+    display: flex;
+    justify-content: center;
   }
 </style>

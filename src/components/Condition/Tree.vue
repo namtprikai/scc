@@ -92,6 +92,8 @@ export default class extends Vue {
         this.conditionEdit.text = conditionResult.text
         if (conditionResult.config) {
           this.conditionEdit.config = conditionResult.config
+        } else {
+          this.conditionEdit.config = {}
         }
         this.confirmdialogVisible = true
       }

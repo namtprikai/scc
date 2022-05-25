@@ -404,7 +404,8 @@ export default {
     searchRecommendQaDetailNonDisplayListTitle: '非表示QA一覧',
     searchRecommendQaDetailPinTypeYesAddBtn: '推奨QA追加',
     searchRecommendQaDetailPinTypeNoAddBtn: '非表示QA追加',
-    directEditDeploy: 'Deploy'
+    directEditDeploy: 'Deploy',
+    directEditConditionGroupTitle: '条件グループ編集'
   },
   helpText: {
     screenItemNothingChanged: '変更項目がありません',
