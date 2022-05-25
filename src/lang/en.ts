@@ -20,12 +20,12 @@ export default {
     deploy: 'Deploy',
     directEditPublic: 'Puplic',
     directEditQuestionTitle: 'Public Title',
-    directEditQuestionLabel: 'Public Label',
     directEditKeywork: 'Keywork',
     directEditAnswer: 'Answer',
     directEditScenario: 'Scenario',
     directEditCategoriesQuestionTitle: 'Categories / Quetions',
-    directEditAddCategory: 'Add Category'
+    directEditAddCategory: 'Add Category',
+    directEditAddGroup: 'addGroup'
   },
   text: {
     back: 'Back go home ',
@@ -55,7 +55,9 @@ export default {
     addNew: 'Add New',
     delete: 'Delete',
     detail: 'Detail',
-    save: 'Save'
+    save: 'Save',
+    directEditDeploy: 'Deploy',
+    createScreenModalConfirmTitle: 'Confirm Input'
   },
   message: {
     adminActivating: 'Authentication processing ...',

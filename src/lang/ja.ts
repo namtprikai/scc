@@ -403,7 +403,8 @@ export default {
     searchRecommendQaDetailListTitle: '推奨QA一覧',
     searchRecommendQaDetailNonDisplayListTitle: '非表示QA一覧',
     searchRecommendQaDetailPinTypeYesAddBtn: '推奨QA追加',
-    searchRecommendQaDetailPinTypeNoAddBtn: '非表示QA追加'
+    searchRecommendQaDetailPinTypeNoAddBtn: '非表示QA追加',
+    directEditDeploy: 'Deploy'
   },
   helpText: {
     screenItemNothingChanged: '変更項目がありません',
