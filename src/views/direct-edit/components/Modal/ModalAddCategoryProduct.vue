@@ -3,7 +3,7 @@
     :title="modalTitle"
     :visible.sync="visible"
     :before-close="handleClose"
-    width="30%">
+  >
     <el-form
       label-position="top"
       status-icon ref="ruleForm"
@@ -30,7 +30,7 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="checkPass" v-if="data.type === 'categories'">
-        <el-checkbox v-model="checked">{{ $t('text.directEditApplyChildCategoriesQuestion') }}</el-checkbox>
+        <el-checkbox v-model="checked" style="white-space: break-spaces">{{ $t('text.directEditApplyChildCategoriesQuestion') }}</el-checkbox>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -131,5 +131,13 @@ export default class ModalAddCategoryProduct extends Vue {
 <style lang="scss" scoped>
 .select-products {
   width: 100%;
+}
+.el-dialog {
+    width: 30%;
+  }
+@media screen and (max-width:1024px) {
+  .el-dialog {
+    width: 90%;
+  }
 }
 </style>

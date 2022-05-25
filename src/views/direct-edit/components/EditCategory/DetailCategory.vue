@@ -58,7 +58,7 @@
     </el-form>
     <confirm-dialog-direct
       :confirmData="confirmData"
-      :dialogVisible="dialogVisible"
+      :dialogVisible.sync="dialogVisible"
       :title="title"
       @ok="handleAccept"
       @cancel="handleCancel"
@@ -267,7 +267,7 @@ export default class ListCategory extends Vue {
         if (!isEqual(this.dataCategoryNew.label, this.dataCategoryOld.label)) {
           const objLabel = {
             key: 'label',
-            label: 'Label',
+            label: this.$t('labelText.directEditCategoryLabel'),
             value: this.dataCategoryNew.label
           }
           arrStatusChanged[0] = true
@@ -279,7 +279,7 @@ export default class ListCategory extends Vue {
         if (!isEqual(this.dataCategoryNew.text, this.dataCategoryOld.text)) {
           const objText = {
             key: 'text',
-            label: 'Text',
+            label: this.$t('labelText.directEditCategoryText'),
             value: this.dataCategoryNew.text
           }
           arrStatusChanged[1] = true
@@ -291,7 +291,7 @@ export default class ListCategory extends Vue {
         if (!isEqual(this.dataCategoryNew.config, this.dataCategoryOld.config)) {
           const objConfig = {
             key: 'config',
-            label: 'Config',
+            label: this.$t('labelText.config'),
             value: JSON.stringify(this.dataCategoryNew.config)
           }
           arrStatusChanged[2] = true

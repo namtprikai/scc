@@ -1,10 +1,11 @@
 <template>
   <el-dialog
+    class="dialog_delete"
     :visible.sync="visible"
     :before-close="handleClose"
-    width="30%">
+  >
     <p>{{$t('text.directEditDeleteCategoryConfirm')}}</p>
-    <el-checkbox v-model="checked">{{ $t('text.directEditDeleteCategoryAllProduct') }}</el-checkbox>
+    <el-checkbox v-model="checked"><span style="white-space: break-spaces">{{ $t('text.directEditDeleteCategoryAllProduct') }}</span></el-checkbox>
 
     <!-- If checked == true then show verify input -->
     <div class="verify-delete" v-if="checked">
@@ -65,5 +66,12 @@ export default class ModalCategoryDelete extends Vue {
 </script>
 
 <style lang="scss" scoped>
-
+.el-dialog {
+    width: 30%;
+  }
+@media screen and (max-width:1024px) {
+  .el-dialog {
+    width: 80%;
+  }
+}
 </style>

@@ -6,77 +6,81 @@
     <div slot="header" class="clearfix card_item_title">
       <span>{{$t('text.directEditCategoriesQuestionTitle')}}</span>
     </div>
-    <ul class="infinite-list" style="overflow:auto" v-for="groupCat, index in listCategories" :key="index">
-      <li
-        v-for="categoryItem, key of arrayCategories[index]"
-        :key="key"
-        :class="{'infinite-list-item': true, 'active': isActive(categoryItem.id, categoryItem.type)}"
-        :style="{width: categoryItem.level === 1 ? elementWidth : (parseInt(elementWidth) - (categoryItem.level*5)+'%')}"
-        :id="'category_item_'+categoryItem.id"
-        @click="getDetailCategory(categoryItem.id, categoryItem.type, true)"
-      >
-        {{categoryItem.text}}
-        <!-- Begin: Category menu-->
-        <el-popover
-          placement="bottom"
-          width="200"
-          trigger="click"
-          :id="'category-menu-box-'+categoryItem.id"
-          popper-class="category-menu-box"
+    <div class="box_list_category">
+      <ul class="infinite-list" style="overflow:auto" v-for="groupCat, index in listCategories" :key="index">
+        <li
+          v-for="categoryItem, key of arrayCategories[index]"
+          :key="key"
+          :class="{'infinite-list-item': true, 'active': isActive(categoryItem.id, categoryItem.type)}"
+          :style="{width: categoryItem.level === 1 ? elementWidth : (parseInt(elementWidth) - ((categoryItem.level-1)*5)+'%')}"
+          :id="'category_item_'+categoryItem.id"
+          @click="getDetailCategory(categoryItem.id, categoryItem.type, true)"
         >
-          <div v-if="categoryItem.type === 'categories'">
-            <ul
-              v-if="menuDisabled || categoryItem.disabled"
-              class="category-list-menu disabled"
-              :id="'category-list-menu-'+categoryItem.id"
-              style="overflow:auto"
-            >
-              <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddChildCategory')}}</li>
-              <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddNewQuestion')}}</li>
-              <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddToProduct')}}</li>
-              <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.delete')}}</li>
-            </ul>
-            <ul
-              v-else
-              class="category-list-menu"
-              :id="'category-list-menu-'+categoryItem.id"
-              style="overflow:auto"
-            >
-              <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addChildCategory(categoryItem.id, categoryItem.level, categoryItem.products, index)">{{$t('text.directEditAddChildCategory')}}</li>
-              <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addNewQuestion(categoryItem.id, categoryItem.level, categoryItem.products, index)">{{$t('text.directEditAddNewQuestion')}}</li>
-              <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addToProduct(categoryItem.id, keyTitleDialog, categoryItem.products, 'categories')">{{$t('text.directEditAddToProduct')}}</li>
-              <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="deleteItem(categoryItem.id, 'categories')">{{$t('text.delete')}}</li>
-            </ul>
-          </div>
-        <!-- End: Category menu-->
+          {{categoryItem.text}}
+          <!-- Begin: Category menu-->
+          <el-popover
+            placement="bottom"
+            width="200"
+            trigger="click"
+            :id="'category-menu-box-'+categoryItem.id"
+            popper-class="category-menu-box"
+          >
+            <div v-if="categoryItem.type === 'categories'">
+              <ul
+                v-if="menuDisabled || categoryItem.disabled"
+                class="category-list-menu disabled"
+                :id="'category-list-menu-'+categoryItem.id"
+                style="overflow:auto"
+              >
+                <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddChildCategory')}}</li>
+                <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddNewQuestion')}}</li>
+                <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddToProduct')}}</li>
+                <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.delete')}}</li>
+              </ul>
+              <ul
+                v-else
+                class="category-list-menu"
+                :id="'category-list-menu-'+categoryItem.id"
+                style="overflow:auto"
+              >
+                <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addChildCategory(categoryItem.id, categoryItem.level, categoryItem.products, index)">{{$t('text.directEditAddChildCategory')}}</li>
+                <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addNewQuestion(categoryItem.id, categoryItem.level, categoryItem.products, index)">{{$t('text.directEditAddNewQuestion')}}</li>
+                <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addToProduct(categoryItem.id, keyTitleDialog, categoryItem.products, 'categories')">{{$t('text.directEditAddToProduct')}}</li>
+                <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="deleteItem(categoryItem.id, 'categories')">{{$t('text.delete')}}</li>
+              </ul>
+            </div>
+          <!-- End: Category menu-->
 
-        <!-- Begin: Question menu-->
-          <div v-else>
-            <ul
-              v-if="menuDisabled || categoryItem.disabled"
-              class="category-list-menu disabled"
-              :id="'category-list-menu-'+categoryItem.id"
-              style="overflow:auto"
-            >
-              <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddToProduct')}}</li>
-              <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.delete')}}</li>
-            </ul>
-            <ul
-              v-else
-              class="category-list-menu"
-              :id="'category-list-menu-'+categoryItem.id"
-              style="overflow:auto"
-            >
-              <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addToProduct(categoryItem.id, keyTitleDialog, categoryItem.products, 'question')">{{$t('text.directEditAddToProduct')}}</li>
-              <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="deleteItem(categoryItem.id, 'question')">{{$t('text.delete')}}</li>
-            </ul>
-          </div>
-        <!-- End: Question menu-->
+          <!-- Begin: Question menu-->
+            <div v-else>
+              <ul
+                v-if="menuDisabled || categoryItem.disabled"
+                class="category-list-menu disabled"
+                :id="'category-list-menu-'+categoryItem.id"
+                style="overflow:auto"
+              >
+                <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddToProduct')}}</li>
+                <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.delete')}}</li>
+              </ul>
+              <ul
+                v-else
+                class="category-list-menu"
+                :id="'category-list-menu-'+categoryItem.id"
+                style="overflow:auto"
+              >
+                <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addToProduct(categoryItem.id, keyTitleDialog, categoryItem.products, 'question')">{{$t('text.directEditAddToProduct')}}</li>
+                <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="deleteItem(categoryItem.id, 'question')">{{$t('text.delete')}}</li>
+              </ul>
+            </div>
+          <!-- End: Question menu-->
 
-          <el-button slot="reference" icon="el-icon-more"></el-button>
-        </el-popover>
-      </li>
-    </ul>
+            <el-button slot="reference" style="text-align:center;margin-left:auto;margin-right:auto; padding: 0; height: 30px; width: 20px; overflow: hidden">
+              <svg-icon name='more_category' width="100%" height="100%" style="display: block; position: relative; top: 50%; left: 50%;  transform: translate(-25%, -30%);"></svg-icon>
+            </el-button>
+          </el-popover>
+        </li>
+      </ul>
+    </div>
     <modal-add-category-product
       :modalTitle="$t(titleDialog)"
       :visible.sync="dialogAddVisible"
@@ -99,6 +103,7 @@
       :confirmData="confirmData"
     >
     </confirm-dialog>
+    <el-button type="primary" class="btn-add-category">{{$t('text.directEditAddCategory')}}</el-button>
   </el-card>
 </template>
 
@@ -112,6 +117,7 @@ import { Prop, Watch } from 'vue-property-decorator'
 import { delCategoryProduct, delCategory } from '@/api/categories'
 import { delQuestion, delQuestionProduct } from '@/api/questions'
 import { APIErrorCode, APIError } from '@/utils/request'
+import '@/icons/components/more_category'
 
 interface CategoryListItem {
   id: number
@@ -409,6 +415,11 @@ export default class ListCategory extends Vue {
 .box-card {
   padding-bottom: 20px;
 }
+.box_list_category {
+  width: 100%;
+  height: calc(100vh - 320px);
+  overflow: auto;
+}
 .infinite-list{
   padding: 0;
   cursor: pointer;
@@ -468,5 +479,20 @@ export default class ListCategory extends Vue {
 
 .disabled {
   color: rgb(163, 160, 160);
+}
+
+.btn-add-category {
+  position: absolute;
+  bottom: 0;
+  height: 30px;
+  width: 20px;
+  width: 90%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
 }
 </style>

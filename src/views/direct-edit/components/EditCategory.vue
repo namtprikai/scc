@@ -16,7 +16,6 @@
           @reloadListCategory='getCategoryQuestion'
           v-loading="isLoading"
         />
-        <el-button type="primary" class="btn-add-category">{{$t('labelText.directEditAddCategory')}}</el-button>
       </el-col>
       <el-col :span="14" class="box_detail_category">
         <el-card
@@ -26,16 +25,18 @@
           <div slot="header" class="clearfix card_item_title">
             <span>{{$t('text.directEditDetail')}}</span>
           </div>
-          <detail-category
-            v-show="categorySeleted.type === 'categories'"
-            :categorySeleted='categorySeleted'
-            :productId='productId'
-            @reloadListCategory='getCategoryQuestion'
-          />
-          <detail-question
-            v-show="categorySeleted.type === 'questions'"
-            :detailQuestion='categorySeleted'
-          />
+          <div class="form_detail">
+            <detail-category
+              v-show="categorySeleted.type === 'categories'"
+              :categorySeleted='categorySeleted'
+              :productId='productId'
+              @reloadListCategory='getCategoryQuestion'
+            />
+            <detail-question
+              v-show="categorySeleted.type === 'questions'"
+              :detailQuestion='categorySeleted'
+            />
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -133,6 +134,10 @@ export default class EditCategory extends Vue {
 .box-card{
   width: 100%;
   height: calc(100vh - 200px);
+}
+.form_detail {
+  width: 100%;
+  height: calc(100vh - 300px);
   overflow: auto;
 }
 .box_list_category {
@@ -141,15 +146,6 @@ export default class EditCategory extends Vue {
 .card_item_title{
   text-align: center;
   color: #008CFF;
-}
-
-.btn-add-category {
-  position: absolute;
-  z-index: 1000;
-  bottom: 0;
-  width: 90%;
-  left: 50%;
-  transform: translate(-50%, 0);
 }
 
 @media screen and (max-width:1024px) {
