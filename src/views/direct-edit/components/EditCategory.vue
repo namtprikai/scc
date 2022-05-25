@@ -6,8 +6,8 @@
       :data="listProduct"
       @getCategoryQuestion="getCategoryQuestion"
     />
-    <el-row :gutter="12">
-      <el-col :span="12" class="box_list_category">
+    <el-row :gutter="24">
+      <el-col :span="10" class="box_list_category">
         <list-category
           :listCategories="listCategories"
           :listProduct="listProduct"
@@ -18,7 +18,7 @@
         />
         <el-button type="primary" class="btn-add-category">{{$t('labelText.directEditAddCategory')}}</el-button>
       </el-col>
-      <el-col :span="12" class="box_detail_category">
+      <el-col :span="14" class="box_detail_category">
         <el-card
           class="box-card box_detail_category"
           :shadow="'never'"
@@ -72,13 +72,6 @@ export default class EditCategory extends Vue {
     type: ''
   }
 
-  productDefault = [{
-    id: 0,
-    name: String(this.$t('validError.exists')),
-    created: '',
-    modified: ''
-  }]
-
   private isLoading = false
   listCategories = []
 
@@ -90,14 +83,8 @@ export default class EditCategory extends Vue {
     this.isLoading = true
     try {
       const { data } = await getProduct(this.listQuery)
-
-      /* IF data not empty then get data to show in select product
-        Else using default data
-      */
-      if (data.length > 0) {
-        const products : IProductListItemData[] = camelizeKeys(data) as IProductListItemData[]
-        this.listProduct = products
-      } else this.listProduct = this.productDefault
+      const products : IProductListItemData[] = camelizeKeys(data) as IProductListItemData[]
+      this.listProduct = products
     } catch {}
     this.isLoading = false
   }
