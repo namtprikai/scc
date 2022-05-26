@@ -35,6 +35,8 @@
           <detail-question
             v-show="categorySeleted.type === 'questions'"
             :detailQuestion='categorySeleted'
+            :productId="productId"
+            :categorySeleted="categorySeleted"
           />
         </el-card>
       </el-col>

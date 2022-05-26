@@ -41,9 +41,9 @@
       </el-form-item>
 
       <div class="detail">
-        <div class="keywork box-padding">
+        <div class="keywork">
           <p class="lable">
-            {{ $t("labelText.directEditKeywork") }}
+            {{ $t("labelText.directEditKeyword") }}
           </p>
           <div class="group">
             <tags-input
@@ -115,10 +115,11 @@ import Tinymce from '@/components/Tinymce/index.vue'
 import JsonEditor from '@/components/JsonEditorContent/JsonEditor.vue'
 import TagsInput from '@/components/TagsInput/index.vue'
 import { IDetailQuestion } from '@/api/types/question'
+import { createQuestionAnswer } from '@/api/questions'
 import ConfirmDialogDirect from '@/components/ConfirmDialog/ConfirmDialogDirect.vue'
 import { TranslateResult } from 'vue-i18n'
 import { getValidationMessage } from '@/utils/validate'
-import { ValidationError, ValidationType } from '@/utils/request'
+import { ValidationType, APIErrorCode, APIError } from '@/utils/request'
 
 interface ConfirmData {
   key: keyof IDetailQuestion | 'public'
@@ -136,6 +137,10 @@ interface ConfirmData {
   }
 })
 export default class extends Vue {
+  @Prop({ default: null }) private detailQuestion!: IDetailQuestion;
+  @Prop({ default: () => null }) private categorySeleted!: any
+  @Prop({ default: () => null }) private productId!: any
+
   questionForm: IDetailQuestion = {
     id: 0,
     title: '',
@@ -150,7 +155,7 @@ export default class extends Vue {
     }
   };
 
-  isAnswer = '';
+  isAnswer = '1';
   openDialog = false;
 
   confirmData: ConfirmData[] = [
@@ -176,13 +181,6 @@ export default class extends Vue {
     }
   ]
 
-  @Prop({ default: null }) private detailQuestion!: IDetailQuestion;
-
-  @Watch('detailQuestion')
-  onChangeQuestion() {
-    this.questionForm = this.detailQuestion
-  }
-
   private createRules = {
     title: [
       {
@@ -205,6 +203,11 @@ export default class extends Vue {
       }
     ]
   };
+
+  @Watch('detailQuestion')
+  onChangeQuestion() {
+    this.questionForm = this.detailQuestion
+  }
 
   addKeyword() {
     this.questionForm.keywords.push([])
@@ -240,6 +243,35 @@ export default class extends Vue {
   confirmCreateQuestion() {
     this.openDialog = false
     this.formatKeywords()
+  }
+
+  onSave() {
+    try {
+      if (this.detailQuestion && this.isAnswer) {
+        const dataPost = {
+          product_id: this.productId,
+          category_id: this.categorySeleted.id,
+          question: {
+            text: this.questionForm.title,
+            label: this.questionForm.label,
+            is_public: this.questionForm.isPublic,
+            config: this.questionForm.config
+          },
+          keywords: this.questionForm.keywords,
+          answer: this.questionForm.answer
+        }
+        // TODO: create question
+        createQuestionAnswer(dataPost)
+      }
+    } catch (error) {
+      if (error instanceof APIError && error.errorCode === APIErrorCode.Unauthorized) {
+        this.$message({
+          message: this.$tc(error.errorCode),
+          type: 'error',
+          duration: 5000
+        })
+      }
+    }
   }
 }
 </script>

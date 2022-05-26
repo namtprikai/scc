@@ -77,7 +77,7 @@ export default {
     directEditPublic: '公開',
     directEditQuestionTitle: '質問タイトル',
     directEditMemo: 'メモ',
-    directEditKeywords: 'キーワード',
+    directEditKeyword: 'キーワード',
     directEditAddGroup: 'グループの追加',
     directEditAnswer: '回答',
     directEditScenario: 'シナリオ',

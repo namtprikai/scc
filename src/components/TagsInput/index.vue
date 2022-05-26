@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component({
   name: 'TagsInput'
@@ -34,20 +34,27 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 export default class extends Vue {
   @Prop({ required: true }) private values!: string[]
   @Prop({ required: true }) private index!: number
-  @Prop({ required: true }) private removeKeyword!: (id: number) => {}
   @Prop({ required: true }) private updateKeyword!: (id: number, Tags: string[]) => {}
 
   private valueCopy = ''
   private tags: string[] = this.values || []
 
-  @Watch('value')
-  private onValueChange(value: any) {
-    this.valueCopy = value
+  validateNewTag() {
+    for (const item of this.tags) {
+      if (item === this.valueCopy.trim()) {
+        return false
+      }
+    }
+
+    return true
   }
 
   onEnter() {
-    this.tags.push(this.valueCopy)
-    this.updateKeyword(this.index, this.tags)
+    if (this.validateNewTag()) {
+      this.tags.push(this.valueCopy.trim())
+      this.updateKeyword(this.index, this.tags)
+    }
+
     this.valueCopy = ''
   }
 
