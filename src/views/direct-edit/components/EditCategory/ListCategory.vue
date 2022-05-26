@@ -24,6 +24,7 @@
             trigger="click"
             :id="'category-menu-box-'+categoryItem.id"
             popper-class="category-menu-box"
+            :disabled="menuDisabled || categoryItem.disabled"
           >
             <div v-if="categoryItem.type === 'categories'">
               <ul
@@ -78,8 +79,8 @@
             </div>
           <!-- End: Question menu-->
 
-            <el-button slot="reference" style="text-align:center;margin-left:auto;margin-right:auto; padding: 0; height: 30px; width: 20px; overflow: hidden">
-              <svg-icon name='more_category' width="100%" height="100%" style="display: block; position: relative; top: 50%; left: 50%;  transform: translate(-25%, -30%);"></svg-icon>
+            <el-button slot="reference" class="btn--more" :disabled="(menuDisabled || categoryItem.disabled) && isActive(categoryItem.id, categoryItem.type)">
+              <svg-icon name='more_category' width="100%" height="100%"></svg-icon>
             </el-button>
           </el-popover>
         </li>
@@ -501,6 +502,32 @@ export default class ListCategory extends Vue {
 
 .disabled {
   color: rgb(163, 160, 160);
+}
+
+::v-deep .btn--more {
+  text-align:center;
+  margin-left:auto;
+  margin-right:auto;
+  padding: 0;
+  height: 30px;
+  width: 20px;
+  overflow: hidden;
+ &.is-disabled{
+   color: #303133;
+   cursor: pointer;
+ }
+ &:disabled {
+  color: #C0C4CC;
+  cursor: not-allowed;
+ }
+  .svg-icon {
+    display: block;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-25%, -30%);
+
+  }
 }
 
 .btn-add-category {

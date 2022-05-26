@@ -115,13 +115,12 @@ import Tinymce from '@/components/Tinymce/index.vue'
 import JsonEditor from '@/components/JsonEditorContent/JsonEditor.vue'
 import TagsInput from '@/components/TagsInput/index.vue'
 import { IDetailQuestion } from '@/api/types/question'
-import { createQuestionAnswer, getDetailQuestion, lockQuestion } from '@/api/questions'
+import { createQuestionAnswer, lockQuestion } from '@/api/questions'
 import ConfirmDialogDirect from '@/components/ConfirmDialog/ConfirmDialogDirect.vue'
 import { TranslateResult } from 'vue-i18n'
 import { getValidationMessage } from '@/utils/validate'
 import { ValidationType, APIErrorCode, APIError } from '@/utils/request'
-
-import { mapKeys, snakeCase, camelCase, isEqual } from 'lodash'
+// import { mapKeys, snakeCase, camelCase, isEqual } from 'lodash'
 
 interface ConfirmData {
   key: keyof IDetailQuestion | 'public'
@@ -347,7 +346,7 @@ export default class extends Vue {
 <style lang="scss" scoped>
 .flex {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .questionForm {
@@ -364,7 +363,7 @@ export default class extends Vue {
     }
     .left {
       div {
-        justify-content: end;
+        justify-content: flex-end;
       }
     }
     .right {
