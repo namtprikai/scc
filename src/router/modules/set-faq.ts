@@ -29,11 +29,11 @@ const SetFAQ: RouteConfig = {
       }
     },
     {
-      path: 'set-keyword',
-      component: () => import(/* webpackChunkName: "menu2" */ '@/views/set-faq/set-keyword/index.vue'),
-      name: 'SetKeyword',
+      path: 'keywords',
+      component: () => import(/* webpackChunkName: "list-keyword" */ '@/views/keyword/list.vue'),
+      name: 'ListKeyword',
       meta: {
-        title: 'menuKeywordList',
+        title: 'keywordList',
         name: 'menuKeywordList'
       }
     }
