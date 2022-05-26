@@ -228,7 +228,6 @@ export default class extends Vue {
 
   @Watch('dataSelect')
   onChangeQuestion() {
-    // this.questionForm = this.detailQuestion
     this.handleGetDetailQuestions()
   }
 
@@ -261,7 +260,7 @@ export default class extends Vue {
         }
       }
       this.dataQuestionOld = Object.assign({}, this.questionForm)
-      this.lockQuestion(this.categorySeleted.id)
+      this.lockQuestion(this.detailQuestion.id)
     } catch (error) {}
     this.isLoading = false
   }

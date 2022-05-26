@@ -86,6 +86,7 @@ export default class ListCategory extends Vue {
   title = this.$t('text.modifyScreenModalConfirmTitle')
   isLoading = false
   dataSelected = null
+  dataChanged = true
 
   public dataCategoryNew: ICategoryDetailData = {
     id: 0,
@@ -199,14 +200,6 @@ export default class ListCategory extends Vue {
           duration: 5000
         })
       }
-
-      if (error instanceof APIError && error.errorCode === APIErrorCode.Locked) {
-        this.$message({
-          message: this.$tc(error.errorCode),
-          type: 'error',
-          duration: 5000
-        })
-      }
     }
   }
 
@@ -253,9 +246,26 @@ export default class ListCategory extends Vue {
         }
 
         if (arrStatusChanged[0] === false && arrStatusChanged[1] === false && arrStatusChanged[2] === false) {
+          this.dataChanged = false
+          const objLabel = {
+            key: 'label',
+            label: this.$t('labelText.directEditCategoryLabel'),
+            value: this.$t('helpText.screenItemNothingChanged')
+          }
+          arrStatusChanged[0] = true
+          this.confirmData.push(objLabel)
+
+          const objText = {
+            key: 'text',
+            label: this.$t('labelText.directEditCategoryText'),
+            value: this.$t('helpText.screenItemNothingChanged')
+          }
+          arrStatusChanged[1] = true
+          this.confirmData.push(objText)
+
           const objMessage = {
-            key: 'message',
-            label: 'Message',
+            key: 'config',
+            label: this.$t('labelText.config'),
             value: this.$t('helpText.screenItemNothingChanged')
           }
           this.confirmData.push(objMessage)
@@ -268,98 +278,105 @@ export default class ListCategory extends Vue {
   }
 
   handleAccept() {
-    (this.$refs.dataCategoryNew as ElForm).validate(async(valid: boolean) => {
-      this.dialogVisible = false
-      this.isLoading = true
-      if (valid) {
-        this.resetMessageValidate()
-        let dataPost = {}
-        if (this.dataCategoryNew.addChildCategory === true) {
-          dataPost = {
-            label:
-              this.dataCategoryNew.label.trim() === ''
-                ? null
-                : this.dataCategoryNew.label.trim(),
-            text:
-              this.dataCategoryNew.text.trim() === ''
-                ? null
-                : this.dataCategoryNew.text.trim(),
-            productId: [this.dataCategoryNew.productId],
-            parentId: this.dataCategoryNew.parentId
-          }
-        } else {
-          dataPost = {
-            label:
-              this.dataCategoryNew.label.trim() === ''
-                ? null
-                : this.dataCategoryNew.label.trim(),
-            text:
-              this.dataCategoryNew.text.trim() === ''
-                ? null
-                : this.dataCategoryNew.text.trim(),
-            config: this.dataCategoryNew.config,
-            parentId: this.dataCategoryNew.parentId
-          }
-        }
-        try {
+    /* If the data on the form changes, update the data again
+      If no change (dataChanged == false) then hide modal */
+    if (this.dataChanged || (!this.dataChanged && this.dataCategoryNew.addChildCategory)) {
+      (this.$refs.dataCategoryNew as ElForm).validate(async(valid: boolean) => {
+        this.dialogVisible = false
+        this.isLoading = true
+        if (valid) {
+          this.resetMessageValidate()
+          let dataPost = {}
           if (this.dataCategoryNew.addChildCategory === true) {
-            await createCategory(
-              mapKeys(dataPost, (v, k) => snakeCase(k))
-            )
+            dataPost = {
+              label:
+                this.dataCategoryNew.label.trim() === ''
+                  ? null
+                  : this.dataCategoryNew.label.trim(),
+              text:
+                this.dataCategoryNew.text.trim() === ''
+                  ? null
+                  : this.dataCategoryNew.text.trim(),
+              productId: [this.dataCategoryNew.productId],
+              parentId: this.dataCategoryNew.parentId
+            }
           } else {
-            await editCategory(
-              this.categorySeleted.id,
-              mapKeys(dataPost, (v, k) => snakeCase(k))
-            )
-          }
-          this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
-          // show modal create successfully
-          this.$alert(this.$t('message.categoryModifySuccess') as string, '', {
-            confirmButtonText: this.$t('text.ok') as string,
-            type: 'success',
-            center: true
-          })
-        } catch (err) {
-          // check if error 422
-          if (err instanceof ValidationError) {
-            const validationError = err as ValidationError
-            if (validationError.data?.length) {
-              validationError.data.forEach((err) => {
-                // get message error
-                switch (err.value) {
-                  case CategoryErrorValue.Label:
-                    this.updateCategoryError.label = getValidationMessage(
-                      err.type[0],
-                      this.$t('validError.required', { _field_: this.$t('labelText.directEditCategoryLabel') })
-                    )
-                    break
-                  case CategoryErrorValue.Text:
-                    this.updateCategoryError.text =
-                      getValidationMessage(
-                        err.type[0],
-                        this.$t('validError.required', { _field_: this.$t('labelText.directEditCategoryText') })
-                      )
-                    break
-                  case CategoryErrorValue.Config:
-                    this.updateCategoryError.config =
-                      getValidationMessage(
-                        err.type[0],
-                        this.$t('labelText.config')
-                      )
-                    break
-                  default:
-                    break
-                }
-              })
+            dataPost = {
+              label:
+                this.dataCategoryNew.label.trim() === ''
+                  ? null
+                  : this.dataCategoryNew.label.trim(),
+              text:
+                this.dataCategoryNew.text.trim() === ''
+                  ? null
+                  : this.dataCategoryNew.text.trim(),
+              config: this.dataCategoryNew.config,
+              parentId: this.dataCategoryNew.parentId
             }
           }
+          try {
+            if (this.dataCategoryNew.addChildCategory === true) {
+              await createCategory(
+                mapKeys(dataPost, (v, k) => snakeCase(k))
+              )
+            } else {
+              await editCategory(
+                this.categorySeleted.id,
+                mapKeys(dataPost, (v, k) => snakeCase(k))
+              )
+            }
+            this.dataCategoryOld = Object.assign({}, this.dataCategoryNew)
+            // show modal create successfully
+            this.$alert(this.$t('message.categoryModifySuccess') as string, '', {
+              confirmButtonText: this.$t('text.ok') as string,
+              type: 'success',
+              center: true
+            })
+          } catch (err) {
+            // check if error 422
+            if (err instanceof ValidationError) {
+              const validationError = err as ValidationError
+              if (validationError.data?.length) {
+                validationError.data.forEach((err) => {
+                  // get message error
+                  switch (err.value) {
+                    case CategoryErrorValue.Label:
+                      this.updateCategoryError.label = getValidationMessage(
+                        err.type[0],
+                        this.$t('validError.required', { _field_: this.$t('labelText.directEditCategoryLabel') })
+                      )
+                      break
+                    case CategoryErrorValue.Text:
+                      this.updateCategoryError.text =
+                        getValidationMessage(
+                          err.type[0],
+                          this.$t('validError.required', { _field_: this.$t('labelText.directEditCategoryText') })
+                        )
+                      break
+                    case CategoryErrorValue.Config:
+                      this.updateCategoryError.config =
+                        getValidationMessage(
+                          err.type[0],
+                          this.$t('labelText.config')
+                        )
+                      break
+                    default:
+                      break
+                  }
+                })
+              }
+            }
+          }
+        } else {
+          return false
         }
-      } else {
-        return false
-      }
-      this.isLoading = false
-      this.$emit('reloadListCategory', this.productId)
-    })
+        this.isLoading = false
+        this.$emit('reloadListCategory', this.productId)
+      })
+    } else {
+      this.dialogVisible = false
+      this.dataChanged = true
+    }
   }
 
   handleCancel() {

@@ -44,9 +44,9 @@
 import Component from 'vue-class-component'
 import Vue from 'vue'
 import { Prop, Watch } from 'vue-property-decorator'
-import { addCategoryProduct } from '@/api/categories'
-import { addQuestionProduct } from '@/api/questions'
-import { mapKeys, snakeCase } from 'lodash'
+// import { addCategoryProduct } from '@/api/categories'
+// import { addQuestionProduct } from '@/api/questions'
+// import { mapKeys, snakeCase } from 'lodash'
 import { APIErrorCode, APIError } from '@/utils/request'
 interface listProduct {
   value: string
@@ -83,33 +83,34 @@ export default class ModalAddCategoryProduct extends Vue {
 
   async save() {
     try {
+      let msgSuccess = 'directEditAddCategoryToProductsSuccess'
       if (this.data.type === 'question') {
-        const dataPost = {
-          source_product_id: this.data.products[0],
-          product_id: this.productAdded
-        }
-
+        // const dataPost = {
+        //   source_product_id: this.data.products[0],
+        //   product_id: this.productAdded
+        // }
+        msgSuccess = 'directEditAddQuestionToProductsSuccess'
         /* Call API addCategoryProduct */
-        await addQuestionProduct(
-          this.data.id,
-          mapKeys(dataPost, (v, k) => snakeCase(k))
-        )
+        // await addQuestionProduct(
+        //   this.data.id,
+        //   mapKeys(dataPost, (v, k) => snakeCase(k))
+        // )
       } else {
-        const dataPost = {
-          source_product_id: this.data.products[0],
-          product_id: this.productAdded,
-          including_childrens: this.checked
-        }
+        // const dataPost = {
+        //   source_product_id: this.data.products[0],
+        //   product_id: this.productAdded,
+        //   including_childrens: this.checked
+        // }
 
         /* Call API addQuestionProduct */
-        await addCategoryProduct(
-          this.data.id,
-          mapKeys(dataPost, (v, k) => snakeCase(k))
-        )
+        // await addCategoryProduct(
+        //   this.data.id,
+        //   mapKeys(dataPost, (v, k) => snakeCase(k))
+        // )
       }
 
       /* Show modal message create/edit success */
-      this.$alert(this.$t('message.directEditAddCategoryToProductsSuccess') as string, '', {
+      this.$alert(this.$t('message.' + msgSuccess) as string, '', {
         confirmButtonText: this.$t('text.ok') as string,
         type: 'success',
         center: true

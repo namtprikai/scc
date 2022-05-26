@@ -34,6 +34,6 @@ export const createQuestionAnswer = (data: any) =>
   })
 export const lockQuestion = (id: number) =>
   request({
-    url: `/question/${id}/lock/`,
+    url: `/question/${id}/lock`,
     method: 'get'
   })

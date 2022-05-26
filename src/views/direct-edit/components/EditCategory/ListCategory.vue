@@ -50,7 +50,7 @@
                 <li v-if="categoryItem.existCategory" class="category-list-menu-item disabled" :id="'category-list-menu-item-'+categoryItem.id">{{$t('text.directEditAddNewQuestion')}}</li>
                 <li v-else class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addNewQuestion(categoryItem.id, categoryItem.level, categoryItem.products, index)">{{$t('text.directEditAddNewQuestion')}}</li>
 
-                <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addToProduct(categoryItem.id, keyTitleDialog, categoryItem.products, 'categories')">{{$t('text.directEditAddToProduct')}}</li>
+                <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addToProduct(categoryItem.id, 'directEditAddCategoryToProductsTitle', categoryItem.products, 'categories')">{{$t('text.directEditAddToProduct')}}</li>
                 <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="deleteItem(categoryItem.id, 'categories')">{{$t('text.delete')}}</li>
               </ul>
             </div>
@@ -73,7 +73,7 @@
                 :id="'category-list-menu-'+categoryItem.id"
                 style="overflow:auto"
               >
-                <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addToProduct(categoryItem.id, keyTitleDialog, categoryItem.products, 'question')">{{$t('text.directEditAddToProduct')}}</li>
+                <li class="category-list-menu-item border" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="addToProduct(categoryItem.id, 'directEditQuestionToProduct', categoryItem.products, 'question')">{{$t('text.directEditAddToProduct')}}</li>
                 <li class="category-list-menu-item" :id="'category-list-menu-item-'+categoryItem.id" @click.prevent="deleteItem(categoryItem.id, 'question')">{{$t('text.delete')}}</li>
               </ul>
             </div>
@@ -152,7 +152,6 @@ export default class ListCategory extends Vue {
   dialogDeleteVisible = false
   confirmVisible = false
   confirmData = []
-  keyTitleDialog = 'directEditAddCategoryToProductsTitle'
   errorVerifyDelete = false
   itemSelectedData = {}
   typeItemSelected = ''
@@ -198,7 +197,7 @@ export default class ListCategory extends Vue {
 
         const arrayQuestions = categories[i].questions
         for (let x = 0; x < arrayQuestions.length; x++) {
-          arrayGroupCategories.push({ id: arrayQuestions[x].id, text: arrayQuestions[x].text, products: arrayQuestions[x].products, level: level + 1, type: 'questions' })
+          arrayGroupCategories.push({ id: arrayQuestions[x].id, text: arrayQuestions[x].text, products: arrayQuestions[x].product_id, level: level + 1, type: 'questions' })
         }
       }
 
