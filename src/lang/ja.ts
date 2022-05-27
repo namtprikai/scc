@@ -87,7 +87,12 @@ export default {
     directEditAnswerMemo: 'メモ',
     pinnedQueryLabel: 'ラベル',
     keywordLabel: 'ラベル',
-    keywordWeight: '重み·'
+    keywordWeight: '重み·',
+    logSearchTaskStatus: 'タスクステータス',
+    logSearchCorrespondenceType: '対応種別',
+    logSearchCorrespondenceContent: '対応内容',
+    logSearchComment: 'コメント',
+    logSearchAssignee: '対応者'
   },
   validError: {
     exists: '存在していません',
@@ -405,7 +410,9 @@ export default {
     searchRecommendQaDetailPinTypeYesAddBtn: '推奨QA追加',
     searchRecommendQaDetailPinTypeNoAddBtn: '非表示QA追加',
     directEditDeploy: 'Deploy',
-    directEditConditionGroupTitle: '条件グループ編集'
+    directEditConditionGroupTitle: '条件グループ編集',
+    logSearchCreatedTime: '開始時間',
+    logSearchEndTime: '終了時間'
   },
   helpText: {
     screenItemNothingChanged: '変更項目がありません',
