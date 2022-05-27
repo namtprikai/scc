@@ -51,8 +51,8 @@
               :key="JSON.stringify(tags) + index"
               :values="tags"
               :index="index"
-              :removeKeyword="removeKeyword"
-              :updateKeyword="updateKeyword"
+              @removeKeyword="removeKeyword"
+              @updateKeyword="updateKeyword"
             ></tags-input>
 
             <div class="flex">
@@ -128,6 +128,11 @@ interface ConfirmData {
   value?: any
 }
 
+interface DataSelect {
+  id: number
+  type: string
+}
+
 @Component({
   name: 'FormQuestion',
   components: {
@@ -138,7 +143,7 @@ interface ConfirmData {
   }
 })
 export default class extends Vue {
-  @Prop({ default: null }) private detailQuestion!: IDetailQuestion;
+  @Prop({ default: null }) private dataSelect!: DataSelect;
   @Prop({ default: () => null }) private categorySeleted!: any
   @Prop({ default: () => null }) private productId!: any
 
@@ -221,7 +226,7 @@ export default class extends Vue {
     ]
   };
 
-  @Watch('detailQuestion')
+  @Watch('dataSelect')
   onChangeQuestion() {
     // this.questionForm = this.detailQuestion
     this.handleGetDetailQuestions()
@@ -284,7 +289,7 @@ export default class extends Vue {
     this.questionForm.keywords.splice(index, 1)
   }
 
-  updateKeyword(index: number, tags: string[]) {
+  updateKeyword({ index, tags }: { index: number, tags: string[] }) {
     this.questionForm.keywords[index] = tags
   }
 
@@ -310,11 +315,12 @@ export default class extends Vue {
   confirmCreateQuestion() {
     this.openDialog = false
     this.formatKeywords()
+    this.onSave()
   }
 
   onSave() {
     try {
-      if (this.detailQuestion && this.isAnswer) {
+      if (this.dataSelect && this.isAnswer === '1') {
         const dataPost = {
           product_id: this.productId,
           category_id: this.categorySeleted.id,

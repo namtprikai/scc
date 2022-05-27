@@ -18,7 +18,7 @@
         </li>
       </ul>
 
-      <el-button type="primary" class="btn-delete" @click="removeKeyword(index)">{{
+      <el-button type="primary" class="btn-delete" @click="$emit('removeKeyword', index)">{{
         $t("text.delete")
       }}</el-button>
     </div>
@@ -34,7 +34,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 export default class extends Vue {
   @Prop({ required: true }) private values!: string[]
   @Prop({ required: true }) private index!: number
-  @Prop({ required: true }) private updateKeyword!: (id: number, Tags: string[]) => {}
 
   private valueCopy = ''
   private tags: string[] = this.values || []
@@ -52,7 +51,7 @@ export default class extends Vue {
   onEnter() {
     if (this.validateNewTag()) {
       this.tags.push(this.valueCopy.trim())
-      this.updateKeyword(this.index, this.tags)
+      this.$emit('updateKeyword', { index: this.index, tags: this.tags })
     }
 
     this.valueCopy = ''
