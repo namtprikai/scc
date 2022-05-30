@@ -120,17 +120,12 @@ import ConfirmDialogDirect from '@/components/ConfirmDialog/ConfirmDialogDirect.
 import { TranslateResult } from 'vue-i18n'
 import { getValidationMessage } from '@/utils/validate'
 import { ValidationType, APIErrorCode, APIError } from '@/utils/request'
-// import { mapKeys, snakeCase, camelCase, isEqual } from 'lodash'
+import { mapKeys, camelCase } from 'lodash'
 
 interface ConfirmData {
   key: keyof IDetailQuestion | 'public'
   label: TranslateResult
   value?: any
-}
-
-interface DataSelect {
-  id: number
-  type: string
 }
 
 @Component({
@@ -143,7 +138,7 @@ interface DataSelect {
   }
 })
 export default class extends Vue {
-  @Prop({ default: null }) private dataSelect!: DataSelect;
+  @Prop({ default: null }) private dataSelect!: any;
   @Prop({ default: () => null }) private categorySeleted!: any
   @Prop({ default: () => null }) private productId!: any
 
@@ -234,33 +229,42 @@ export default class extends Vue {
   async handleGetDetailQuestions() {
     this.isLoading = true
     try {
-      /* Waiting GetFullDetailQuestion API
-      const { data } = await getFullDetailQuestion(this.detailQuestion.id)
-      if (data.config) data.config = {}
-      //Get all key of object data and change this to camelCase
-      this.questionForm = mapKeys(data, (v, k) =>
-        camelCase(k)
-      ) as IDetailQuestion
+      if (this.dataSelect.addNewQuestion) {
+        this.questionForm = this.dataSelect
+        this.questionForm = mapKeys(this.dataSelect, (v, k) =>
+          camelCase(k)
+        ) as IDetailQuestion
 
-      // If data.config == null then set data.config = {}
-      if (data.config === null) this.questionForm.config = {}
-    */
+        this.dataQuestionOld = Object.assign({}, this.questionForm)
+      } else {
+        /* Waiting GetFullDetailQuestion API
+          const { data } = await getFullDetailQuestion(this.dataSelect.id)
+          if (data.config) data.config = {}
+          //Get all key of object data and change this to camelCase
+          this.questionForm = mapKeys(data, (v, k) =>
+            camelCase(k)
+          ) as IDetailQuestion
 
-      this.questionForm = {
-        id: 0,
-        title: 'Question demo',
-        label: 'Question demo',
-        isPublic: true,
-        config: {},
-        keywords: [],
-        answer: {
+          // If data.config == null then set data.config = {}
+          if (data.config === null) this.questionForm.config = {}
+        */
+
+        this.questionForm = {
           id: 0,
-          text: '',
-          config: {}
+          title: 'Question demo',
+          label: 'Question demo',
+          isPublic: true,
+          config: {},
+          keywords: [],
+          answer: {
+            id: 0,
+            text: '',
+            config: {}
+          }
         }
+        this.dataQuestionOld = Object.assign({}, this.questionForm)
+        this.lockQuestion(this.dataSelect.id)
       }
-      this.dataQuestionOld = Object.assign({}, this.questionForm)
-      this.lockQuestion(this.detailQuestion.id)
     } catch (error) {}
     this.isLoading = false
   }
@@ -297,7 +301,7 @@ export default class extends Vue {
     this.confirmData[1].value = this.questionForm.label
     this.confirmData[2].value = this.questionForm.isPublic
     this.confirmData[3].value = this.questionForm.keywords
-    this.confirmData[4].value = this.questionForm.answer
+    this.confirmData[4].value = this.questionForm.answer.text
     this.openDialog = true
   }
 
