@@ -13,6 +13,7 @@ import Resource from './modules/resource'
 import AnalysisPresentState from './modules/analysis-present-state'
 import SetProvider from './modules/set-provider'
 import Top from './modules/top'
+import SearchLog from './modules/search-log'
 Vue.use(VueRouter)
 
 export const constantRoutes: RouteConfig[] = [
@@ -95,6 +96,7 @@ export const constantRoutes: RouteConfig[] = [
   Resource,
   AnalysisPresentState,
   SetProvider,
+  SearchLog,
   {
     path: '*',
     redirect: '/404',
