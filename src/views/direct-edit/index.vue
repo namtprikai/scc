@@ -34,7 +34,7 @@
           />
           <detail-question
             v-show="itemType === 'questions'"
-            :detailQuestion='questionSelected'
+            :dataSelect='questionSelected'
             :productId="productId"
           />
         </el-card>

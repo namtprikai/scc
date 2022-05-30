@@ -61,6 +61,8 @@ export default class ModalCategoryDelete extends Vue {
       productId: this.productId
     }
     this.$emit('delete', confirmDelete)
+    this.checked = false
+    this.input = ''
   }
 }
 </script>
